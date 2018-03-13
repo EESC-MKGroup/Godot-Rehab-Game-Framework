@@ -1,0 +1,16 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl prop_asteroid_03_mat
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump -bm 0.350042 /home/rerob/Projetos/Unity3D/SpaceDodger/Assets/Models/P:/2013_10 - SpaceShooter/sourceimages/prop_asteroid_03_nrm.psd
+map_Kd /home/rerob/Projetos/Unity3D/SpaceDodger/Assets/Models/P:/2013_10 - SpaceShooter/sourceimages/prop_asteroid_03_dff.psd
+map_Ks /home/Program Files/Autodesk/Maya2014/bin/asteroid_03_spec.tif
+map_Ns /home/Program Files/Autodesk/Maya2014/bin/asteroid_03_spec.tif

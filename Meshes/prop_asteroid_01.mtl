@@ -1,0 +1,15 @@
+# Blender MTL File: 'vehicle_playerShip.FBX'
+# Material Count: 1
+
+newmtl prop_asteroid_01_mat
+Ns 62.745098
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump -bm 0.350042 /home/rerob/Projetos/Unity3D/SpaceDodger/Assets/Models/P:/2013_10 - SpaceShooter/sourceimages/prop_asteroid_01_nrm.psd
+map_Kd /home/rerob/Projetos/Unity3D/SpaceDodger/Assets/Models/P:/2013_10 - SpaceShooter/sourceimages/prop_asteroid_01_dff.psd
+map_Ks Map #9
