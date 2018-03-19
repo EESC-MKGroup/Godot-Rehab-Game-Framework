@@ -1,8 +1,22 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Meshes/prop_asteroid_03.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://Textures/prop_asteroid_03_dff.png" type="Texture" id=2]
 [ext_resource path="res://Textures/prop_asteroid_03_nrm.png" type="Texture" id=3]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends KinematicBody
+
+export var linear_speed = 1
+export var angular_speed = 1
+
+var rotation_axis = Vector3( rand_range( -1, 1 ), rand_range( -1, 1 ), rand_range( -1, 1 ) )
+
+func _physics_process( delta ):
+	move_and_collide( Vector3( -linear_speed, 0 ,0 ) * delta )
+	rotate( rotation_axis.normalized(), angular_speed * delta )
+"
 
 [sub_resource type="SpatialMaterial" id=2]
 
@@ -59,9 +73,9 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Anisotropy", "Flags", "Metallic", "NormalMap", "Vertex Color" ]
 
-[sub_resource type="SphereShape" id=1]
+[sub_resource type="SphereShape" id=3]
 
-radius = 1.0
+radius = 0.826136
 
 [node name="Asteroid" type="KinematicBody"]
 
@@ -76,6 +90,9 @@ axis_lock_angular_x = false
 axis_lock_angular_y = false
 axis_lock_angular_z = false
 collision/safe_margin = 0.001
+script = SubResource( 1 )
+linear_speed = 1
+angular_speed = 1
 
 [node name="MeshInstance" type="MeshInstance" parent="." index="0"]
 
@@ -95,7 +112,7 @@ _sections_unfolded = [ "material" ]
 
 [node name="CollisionShape" type="CollisionShape" parent="." index="1"]
 
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 disabled = false
 
 
