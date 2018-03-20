@@ -8,15 +8,43 @@
 
 script/source = "extends KinematicBody
 
-export var linear_speed = 1
+export var linear_speed = 2
 export var angular_speed = 1
+
+var diff_textures = [ preload( \"res://Textures/prop_asteroid_01_dff.png\" ),
+                      preload( \"res://Textures/prop_asteroid_02_dff.png\" ),
+                      preload( \"res://Textures/prop_asteroid_03_dff.png\" ) ]
+
+var norm_textures = [ preload( \"res://Textures/prop_asteroid_01_nrm.png\" ),
+                      preload( \"res://Textures/prop_asteroid_02_nrm.png\" ),
+                      preload( \"res://Textures/prop_asteroid_03_nrm.png\" ) ]
+
+var meshes = [ preload( \"res://Meshes/prop_asteroid_01.obj\" ),
+               preload( \"res://Meshes/prop_asteroid_02.obj\" ),
+               preload( \"res://Meshes/prop_asteroid_03.obj\" ) ]
+
+onready var asteroid_radius = get_node( 'CollisionShape' ).shape.radius
 
 var rotation_axis = Vector3( rand_range( -1, 1 ), rand_range( -1, 1 ), rand_range( -1, 1 ) )
 
+func _ready():
+	var type = randi() % meshes.size()
+	var meshInstance = get_node( \"MeshInstance\" )
+	meshInstance.mesh = meshes[ type ]
+	var material = SpatialMaterial.new()
+	material.vertex_color_use_as_albedo = true
+	material.albedo_texture = diff_textures[ type ]
+	material.normal_texture = norm_textures[ type ]
+	meshInstance.set_surface_material( 0, material )
+
 func _physics_process( delta ):
-	move_and_collide( Vector3( -linear_speed, 0 ,0 ) * delta )
+	var collision = move_and_collide( Vector3( -linear_speed, 0 ,0 ) * delta )
 	rotate( rotation_axis.normalized(), angular_speed * delta )
-"
+	
+	if collision: explode()
+
+func explode():
+	queue_free()"
 
 [sub_resource type="SpatialMaterial" id=2]
 
@@ -77,11 +105,11 @@ _sections_unfolded = [ "Albedo", "Anisotropy", "Flags", "Metallic", "NormalMap",
 
 radius = 0.826136
 
-[node name="Asteroid" type="KinematicBody"]
+[node name="Asteroid" type="KinematicBody" index="0"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
-collision_layer = 1
+collision_layer = 2
 collision_mask = 1
 axis_lock_linear_x = false
 axis_lock_linear_y = false
@@ -91,7 +119,8 @@ axis_lock_angular_y = false
 axis_lock_angular_z = false
 collision/safe_margin = 0.001
 script = SubResource( 1 )
-linear_speed = 1
+_sections_unfolded = [ "Collision", "collision" ]
+linear_speed = 2
 angular_speed = 1
 
 [node name="MeshInstance" type="MeshInstance" parent="." index="0"]
@@ -108,7 +137,7 @@ lod_max_hysteresis = 0.0
 mesh = ExtResource( 1 )
 skeleton = NodePath("..")
 material/0 = SubResource( 2 )
-_sections_unfolded = [ "material" ]
+_sections_unfolded = [ "Geometry", "Transform", "material" ]
 
 [node name="CollisionShape" type="CollisionShape" parent="." index="1"]
 
