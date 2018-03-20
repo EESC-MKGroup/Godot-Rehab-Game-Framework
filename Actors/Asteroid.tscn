@@ -105,7 +105,7 @@ _sections_unfolded = [ "Albedo", "Anisotropy", "Flags", "Metallic", "NormalMap",
 
 radius = 0.826136
 
-[node name="Asteroid" type="KinematicBody" index="0"]
+[node name="Asteroid" type="KinematicBody"]
 
 input_ray_pickable = true
 input_capture_on_drag = false

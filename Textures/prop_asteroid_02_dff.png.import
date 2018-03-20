@@ -7,10 +7,10 @@ path="res://.import/prop_asteroid_02_dff.png-e8a3f9454ec74cf808fcac256fbfccc6.st
 [deps]
 
 source_file="res://Textures/prop_asteroid_02_dff.png"
-source_md5="765249e748720f5f0df926efe4b893e3"
+source_md5="510e26ba4dbbb06f4a8d858d9d7e451d"
 
 dest_files=[ "res://.import/prop_asteroid_02_dff.png-e8a3f9454ec74cf808fcac256fbfccc6.stex" ]
-dest_md5="3a942cf551fabaa53cf19bdd45d6ff26"
+dest_md5="4522770e0ecf763169c96235b9a3cee4"
 
 [params]
 

@@ -26,15 +26,15 @@ func _process( delta ):
 		input_status = connection.get_u16()
 		for axis_values in input_values:
 			for index in axis_values.len():
-				axis_values[ index ] = get_float()
-		connection.get_bytes( BUFFER_PADDING )
-		connection.set_u16( output_status )
-		for axis_values in output_values:
-			for value in axis_values:
-				set_float( value )
-		connection.set_bytes( output_buffer )
+				axis_values[ index ] = connection.get_float()
+		connection.get_data( BUFFER_PADDING )
+	connection.put_u16( output_status )
+	for axis_values in output_values:
+		for value in axis_values:
+			connection.put_float( value )
+	connection.put_data( output_buffer )
 
-func connect( host, port ):
+func connect_client( host, port ):
 	connection.connect_to_host( host, port )
 	if connection.is_connected_to_host(): set_process( true )
 
@@ -50,3 +50,6 @@ func set_axis_values( axis, setpoint, stiffness ):
 
 func get_axis_values( axis ):
 	return input_values[ axis ]
+
+func _notification( what ):
+	if what == NOTIFICATION_PREDELETE: connection.disconnect_from_host()
