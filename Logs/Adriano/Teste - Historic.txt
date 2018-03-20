@@ -1,0 +1,2 @@
+﻿Adriano	Teste	Game Results							Time to Play			Time to Memorize			Time to Choose			Card Matches			Movements Amplitude				Movements Plan				Movements Done				
+Date	Obs	Member	Score	Win Rate	Matches	Turns	Game Time	Time to Read	Average Time	Fastest Time	Slowest Time	Average Time	Fastest Time	Slowest Time	Average Time	Fastest Time	Slowest Time	Suit Matches	Value Matches	Color Mathes	Plantar flexion	Dorsiflexion	Inversion	Eversion	Plantar flexion	Dorsiflexion	Inversion	Eversion	Plantar flexion	Dorsiflexion	Inversion	Eversion	

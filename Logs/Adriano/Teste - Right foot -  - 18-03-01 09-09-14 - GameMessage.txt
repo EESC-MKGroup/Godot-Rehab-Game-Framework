@@ -1,0 +1,70 @@
+﻿Time	Message	Number
+0	Game running - New turn
+0.3865117	Big Time Step Reading0
+0.3865117	Game running - New turn
+0.6215844	Big Time Step Reading0
+0.6215844	Game running - New turn
+0.8040802	Big Time Step Reading0.0168457
+0.8040802	Game running - New turn
+0.894542	Big Time Step Reading0.01669312
+0.894542	Game running - New turn
+0.9442416	Big Time Step Reading0.01702881
+0.9442416	Game running - New turn
+1.516173	Big Time Step Reading0.01750183
+1.516173	Game running - New turn
+1.53274	Big Time Step Reading0.01750183
+1.53274	Game running - New turn
+1.550079	Big Time Step Reading0.01750183
+1.550079	Game running - New turn
+1.648707	Big Time Step Reading0.01657104
+1.648707	Game running - New turn
+1.665275	Big Time Step Reading0.01657104
+1.665275	Game running - New turn
+1.842241	Big Time Step Reading0.0166626
+1.842241	Game running - New turn
+1.875375	Big Time Step Reading0.01657104
+1.875375	Game running - New turn
+2.335173	Big Time Step Reading0
+2.335173	Game running - New turn
+2.462334	Big Time Step Reading0.06089783
+2.462334	Game running - New turn
+2.831294	Big Time Step Reading0.0168457
+2.831294	Game running - New turn
+3.457658	Big Time Step Reading0
+3.457658	Game running - New turn
+3.763294	Big Time Step Reading0
+3.763294	Game running - New turn
+3.885376	Big Time Step Reading0.01657104
+3.885376	Game running - New turn
+4.001342	Big Time Step Reading0
+4.001342	Game running - New turn
+4.034476	Big Time Step Reading0
+4.034476	Game running - New turn
+4.291042	Big Time Step Reading0.01675415
+4.291042	Game running - New turn
+4.627478	Big Time Step Reading0.01657104
+4.627478	Game running - New turn
+4.644043	Big Time Step Reading0.01657104
+4.644043	Game running - New turn
+5.305762	Big Time Step Reading0.01652527
+5.305762	Game running - New turn
+5.672402	Big Time Step Reading0.02352905
+5.672402	Game running - New turn
+5.788157	Big Time Step Sending0.01701355
+5.788157	Game running - New turn
+5.887561	Big Time Step Reading0.01657104
+5.887561	Game running - New turn
+6.007767	Big Time Step Reading0.0171814
+6.007767	Game running - New turn
+6.850671	Big Time Step Reading0.02514648
+6.850671	Game running - New turn
+7.03299	Big Time Step Sending0.01670837
+7.03299	Game running - New turn
+7.049496	Big Time Step Sending0.01670837
+7.049496	Game running - New turn
+7.06604	Big Time Step Reading0.03302002
+7.06604	Game running - New turn
+7.082606	Big Time Step Reading0.03302002
+7.082606	Game running - New turn
+7.099173	Big Time Step Reading0.03302002
+7.099173	Game running - New turn

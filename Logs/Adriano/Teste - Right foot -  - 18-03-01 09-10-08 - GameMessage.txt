@@ -1,0 +1,47 @@
+﻿Time	Message	Number
+0.03317742	Big Time Step Reading0.0166626
+0.03317742	Game running - New turn
+0.08283202	Big Time Step Reading0.01701355
+0.08283202	Game running - New turn
+0.2052859	Big Time Step Reading0.01664734
+0.2052859	Game running - New turn
+0.4049907	Big Time Step Reading0.02485657
+0.4049907	Game running - New turn
+0.554095	Big Time Step Reading0.01657104
+0.554095	Game running - New turn
+1.043934	Big Time Step Reading0.03315735
+1.043934	Game running - New turn
+1.077422	Big Time Step Reading0
+1.077422	Game running - New turn
+1.599495	Big Time Step Reading0.02630615
+1.599495	Game running - New turn
+1.715465	Big Time Step Reading0
+1.715465	Game running - New turn
+1.917907	Big Time Step Reading0.03677368
+1.917907	Game running - New turn
+1.934471	Big Time Step Reading0.03677368
+1.934471	Game running - New turn
+2.033873	Big Time Step Reading0
+2.033873	Game running - New turn
+2.166406	Big Time Step Reading0.01657104
+2.166406	Game running - New turn
+2.291178	Big Time Step Reading0.01712036
+2.291178	Game running - New turn
+2.407145	Big Time Step Reading0.01686096
+2.407145	Game running - New turn
+2.440279	Big Time Step Reading0.01675415
+2.440279	Game running - New turn
+2.580014	Big Time Step Reading0
+2.580014	Game running - New turn
+3.01844	Big Time Step Reading0.01657104
+3.01844	Game running - New turn
+3.035006	Big Time Step Reading0.01657104
+3.035006	Game running - New turn
+3.192554	Big Time Step Reading0.01722717
+3.192554	Game running - New turn
+3.310025	Big Time Step Reading0
+3.310025	Game running - New turn
+3.386188	Big Time Step Reading0
+3.386188	Game running - New turn
+3.593858	Big Time Step Reading0.01657104
+3.593858	Game running - New turn
