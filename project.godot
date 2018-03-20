@@ -11,12 +11,12 @@ config_version=3
 [application]
 
 config/name="AnkleBot_Games"
-run/main_scene="res://Scenes/Background.tscn"
+run/main_scene="res://Scenes/AsteroidsGame.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Controller="*res://Scripts/controller_connection.gd"
+Controller="res://Scripts/controller_connection.gd"
 
 [display]
 
