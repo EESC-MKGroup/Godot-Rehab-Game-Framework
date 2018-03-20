@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Fonts/LuckiestGuy.ttf" type="DynamicFontData" id=1]
 
@@ -6,11 +6,23 @@
 
 script/source = "extends Control
 
-func _on_Button_pressed():
-	Controller.connect_client( '192.168.0.66', 8000 )
+onready var server_address = get_node( 'AddressInput' ).text
+onready var user_name = get_node( 'UserInput' ).text
+
+func _input( event ):
+	if event is InputEventKey:
+		if event.scancode == KEY_ESCAPE: OS.set_window_fullscreen( false )
+
+func _on_ConnectButton_pressed():
+	Controller.connect_client( server_address, 8000 )
 	Controller.set_status( 1 )
-	var axis_values = Controller.get_axis_values( Controller.VERTICAL )
-	print( axis_values )
+	Controller.set_user( user_name )
+ 
+func _on_AddressInput_text_entered( new_text ):
+	server_address = new_text
+
+func _on_UserInput_text_entered( new_text ):
+	user_name = new_text
 "
 
 [sub_resource type="DynamicFont" id=2]
@@ -22,30 +34,50 @@ extra_spacing_top = 8
 font_data = ExtResource( 1 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
+[sub_resource type="DynamicFont" id=3]
+
+size = 32
+use_mipmaps = true
+use_filter = false
+extra_spacing_top = 8
+font_data = ExtResource( 1 )
+_sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
+
+[sub_resource type="DynamicFont" id=4]
+
+size = 32
+use_mipmaps = true
+use_filter = false
+extra_spacing_top = 8
+font_data = ExtResource( 1 )
+_sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
+
 [node name="GUI" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 40.0
-margin_bottom = 40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = SubResource( 1 )
+_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Mouse", "Rect", "Size Flags" ]
 
-[node name="Button" type="Button" parent="." index="0"]
+[node name="ConnectButton" type="Button" parent="." index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 12.0
-margin_bottom = 20.0
+margin_left = 320.0
+margin_top = 10.0
+margin_right = 500.0
+margin_bottom = 60.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -61,8 +93,97 @@ group = null
 text = "Connect"
 flat = false
 align = 1
-_sections_unfolded = [ "custom_fonts" ]
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[node name="AddressInput" type="LineEdit" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 20.0
+margin_top = 10.0
+margin_right = 300.0
+margin_bottom = 60.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 3 )
+text = "127.0.0.1"
+align = 1
+focus_mode = 2
+context_menu_enabled = true
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+caret_position = 0
+_sections_unfolded = [ "Anchor", "Margin", "custom_fonts" ]
+
+[node name="StartButton" type="Button" parent="." index="2"]
+
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_left = -200.0
+margin_top = 10.0
+margin_right = -20.0
+margin_bottom = 60.0
+grow_horizontal = 0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 2 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Start"
+flat = false
+align = 1
+_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Margin", "Rect", "custom_fonts" ]
+
+[node name="UserInput" type="LineEdit" parent="." index="3"]
+
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_left = -500.0
+margin_top = 10.0
+margin_right = -220.0
+margin_bottom = 60.0
+grow_horizontal = 0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 4 )
+text = "User"
+align = 1
+focus_mode = 2
+context_menu_enabled = true
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+caret_position = 0
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
+
+[connection signal="pressed" from="ConnectButton" to="." method="_on_ConnectButton_pressed"]
+
+[connection signal="text_entered" from="AddressInput" to="." method="_on_AddressInput_text_entered"]
+
+[connection signal="text_entered" from="UserInput" to="." method="_on_UserInput_text_entered"]
 
 

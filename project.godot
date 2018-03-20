@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Controller="res://Scripts/controller_connection.gd"
+Controller="*res://Scripts/controller_connection.gd"
 
 [display]
 

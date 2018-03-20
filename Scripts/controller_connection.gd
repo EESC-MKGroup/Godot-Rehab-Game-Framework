@@ -5,6 +5,7 @@ enum INPUT { POSITION, VELOCITY, ACCELERATION, FORCE }
 enum OUTPUT { SETPOINT, STIFFNESS, USER, TIME }
 
 var input_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
+var input_limits = [ [ -0.001, 0001 ], [ -0.001, 0001 ] ]
 var output_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
 var input_status = 0
 var output_status = 0
@@ -19,7 +20,6 @@ func _ready():
 	output_buffer.resize( BUFFER_PADDING )
 	connection.set_no_delay( true )
 	set_process( false )
-	print( 'ready chamado' )
 
 func _process( delta ):
 	if connection.get_available_bytes() >= BUFFER_SIZE:
@@ -28,15 +28,16 @@ func _process( delta ):
 			for index in axis_values.len():
 				axis_values[ index ] = connection.get_float()
 		connection.get_data( BUFFER_PADDING )
-	connection.put_u16( output_status )
-	for axis_values in output_values:
-		for value in axis_values:
-			connection.put_float( value )
-	connection.put_data( output_buffer )
+		connection.put_u16( output_status )
+		for axis_values in output_values:
+			for value in axis_values:
+				connection.put_float( value )
+		connection.put_data( output_buffer )
 
 func connect_client( host, port ):
-	connection.connect_to_host( host, port )
-	if connection.is_connected_to_host(): set_process( true )
+	if not connection.is_connected_to_host():
+		connection.connect_to_host( host, port )
+		if connection.is_connected_to_host(): set_process( true )
 
 func set_status( status ):
 	output_status = status
@@ -50,6 +51,9 @@ func set_axis_values( axis, setpoint, stiffness ):
 
 func get_axis_values( axis ):
 	return input_values[ axis ]
+
+func set_user( user_name ):
+	output_values[ USER ] = user_name.hash()
 
 func _notification( what ):
 	if what == NOTIFICATION_PREDELETE: connection.disconnect_from_host()

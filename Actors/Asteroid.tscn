@@ -103,7 +103,7 @@ _sections_unfolded = [ "Albedo", "Anisotropy", "Flags", "Metallic", "NormalMap",
 
 [sub_resource type="SphereShape" id=3]
 
-radius = 0.826136
+radius = 0.774898
 
 [node name="Asteroid" type="KinematicBody"]
 

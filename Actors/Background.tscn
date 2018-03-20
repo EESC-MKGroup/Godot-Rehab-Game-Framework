@@ -12,9 +12,9 @@ func _process(delta):
 	region_rect.position += delta * Vector2( speed, 0 )
 "
 
-[node name="Background" type="Sprite3D" index="0"]
+[node name="Background" type="Sprite3D"]
 
-transform = Transform( 1, 6.51683e-07, -1.12515e-10, 1.12515e-10, -0.000345306, -1, -6.51683e-07, 1, -0.000345306, 0, 0, 0 )
+transform = Transform( 1, 0, 6.45772e-07, 0, 1, 0, -6.45772e-07, 0, 1, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
