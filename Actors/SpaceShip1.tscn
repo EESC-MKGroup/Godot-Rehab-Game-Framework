@@ -1,12 +1,13 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Meshes/vehicle_playerShip.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://Textures/vehicle_playerShip_orange_dff.png" type="Texture" id=2]
-[ext_resource path="res://Textures/vehicle_playerShip_orange_nrm.png" type="Texture" id=3]
+[ext_resource path="res://Textures/vehicle_playerShip_orange_emi.png" type="Texture" id=3]
+[ext_resource path="res://Textures/vehicle_playerShip_orange_nrm.png" type="Texture" id=4]
 
-[sub_resource type="BoxShape" id=1]
+[sub_resource type="ConvexPolygonShape" id=1]
 
-extents = Vector3( 0.53136, 0.785719, 0.22445 )
+points = PoolVector3Array( 0.0947266, -0.0939941, 0.833984, -0.0903931, -0.0629883, 0.830566, 0.0903931, -0.0629883, 0.830566, -0.0947266, -0.0939941, 0.833984, 0, -0.170654, -0.566895, -0.0947266, -0.0939941, 0.833984, 0.0947266, -0.0939941, 0.833984, 0.563477, -0.0695801, -0.649414, 0, -0.170654, -0.566895, 0.564453, -0.0919189, -0.647949, -0.563477, -0.0695801, -0.649414, -0.564453, -0.0919189, -0.647949, 0, -0.170654, -0.566895, 0.564453, -0.0919189, -0.647949, 0, -0.170654, -0.566895, 0.0947266, -0.0939941, 0.833984, 0, -0.170654, -0.566895, -0.564453, -0.0919189, -0.647949, -0.0947266, -0.0939941, 0.833984, 0, -0.170654, -0.566895, 0, 0.1604, -0.638184, -0.563477, -0.0695801, -0.649414, 0.563477, -0.0695801, -0.649414, 0, 0.1604, -0.638184, 0, -0.170654, -0.566895, -0.0947266, -0.0939941, 0.833984, -0.563477, -0.0695801, -0.649414, -0.0903931, -0.0629883, 0.830566, -0.0903931, -0.0629883, 0.830566, -0.563477, -0.0695801, -0.649414, 0, 0.1604, -0.638184, 0, 0.1604, -0.638184, 0.0903931, -0.0629883, 0.830566, -0.0903931, -0.0629883, 0.830566, 0, 0.1604, -0.638184, 0.563477, -0.0695801, -0.649414, 0.0903931, -0.0629883, 0.830566, 0.564453, -0.0919189, -0.647949, 0.0903931, -0.0629883, 0.830566, 0.563477, -0.0695801, -0.649414, 0.0903931, -0.0629883, 0.830566, 0.564453, -0.0919189, -0.647949, 0.0947266, -0.0939941, 0.833984, -0.0947266, -0.0939941, 0.833984, -0.564453, -0.0919189, -0.647949, -0.563477, -0.0695801, -0.649414 )
 
 [sub_resource type="SpatialMaterial" id=2]
 
@@ -38,10 +39,15 @@ metallic_specular = 0.0
 metallic_texture_channel = 4
 roughness = 0.0
 roughness_texture_channel = 0
-emission_enabled = false
+emission_enabled = true
+emission = Color( 0, 0, 0, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+emission_texture = ExtResource( 3 )
 normal_enabled = true
 normal_scale = 1.0
-normal_texture = ExtResource( 3 )
+normal_texture = ExtResource( 4 )
 rim_enabled = false
 clearcoat_enabled = false
 anisotropy_enabled = false
@@ -61,7 +67,7 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Flags", "Metallic", "NormalMap", "Parameters", "Roughness", "Vertex Color" ]
+_sections_unfolded = [ "Albedo", "Emission", "Flags", "Metallic", "NormalMap", "Parameters", "Roughness", "Vertex Color" ]
 
 [sub_resource type="SpatialMaterial" id=3]
 
@@ -114,9 +120,9 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Flags" ]
+_sections_unfolded = [ "Albedo", "Emission", "Flags" ]
 
-[node name="Player" type="KinematicBody"]
+[node name="SpaceShip1" type="KinematicBody"]
 
 input_ray_pickable = true
 input_capture_on_drag = false
@@ -129,13 +135,14 @@ axis_lock_angular_x = false
 axis_lock_angular_y = false
 axis_lock_angular_z = false
 collision/safe_margin = 0.001
-_sections_unfolded = [ "Collision" ]
+_sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="CollisionShape" type="CollisionShape" parent="." index="0"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.09649, -0.0426517 )
+transform = Transform( 1, -6.51683e-07, -1.12515e-10, -1.12515e-10, -0.000345306, 1, -6.51683e-07, -1, -0.000345306, 0, 0.00784636, -0.0826314 )
 shape = SubResource( 1 )
 disabled = false
+_sections_unfolded = [ "Transform" ]
 
 [node name="MeshInstance" type="MeshInstance" parent="." index="1"]
 

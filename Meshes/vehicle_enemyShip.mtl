@@ -1,0 +1,26 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl vehicle_enemyShip_glow_mat
+Ns 19.607843
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd P:/2013_10 - SpaceShooter/sourceimages/vehicle_enemyShip_dff.psd
+
+newmtl vehicle_enemyShip_metal_mat
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.135000 0.135000 0.135000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump -bm 0.350042 P:/2013_10 - SpaceShooter/sourceimages/vehicle_enemyShip_nrm.psd
+map_Kd P:/2013_10 - SpaceShooter/sourceimages/vehicle_enemyShip_dff.psd
+map_Ns P:/2013_10 - SpaceShooter/sourceimages/vehicle_enemyShip_spc.psd

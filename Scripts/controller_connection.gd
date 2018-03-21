@@ -37,6 +37,7 @@ func _process( delta ):
 func connect_client( host, port ):
 	if not connection.is_connected_to_host():
 		connection.connect_to_host( host, port )
+		while connection.get_status() == connection.STATUS_CONNECTING: continue
 		if connection.is_connected_to_host(): set_process( true )
 
 func set_status( status ):
@@ -54,6 +55,7 @@ func get_axis_values( axis ):
 
 func set_user( user_name ):
 	output_values[ USER ] = user_name.hash()
+	output_values[ TIME ] = OS.get_system_time_secs()
 
 func _notification( what ):
 	if what == NOTIFICATION_PREDELETE: connection.disconnect_from_host()
