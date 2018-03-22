@@ -2,31 +2,32 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/prop_asteroid_02_dff.png-e8a3f9454ec74cf808fcac256fbfccc6.stex"
+path.s3tc="res://.import/prop_asteroid_02_dff.png-e8a3f9454ec74cf808fcac256fbfccc6.s3tc.stex"
+path.etc2="res://.import/prop_asteroid_02_dff.png-e8a3f9454ec74cf808fcac256fbfccc6.etc2.stex"
 
 [deps]
 
 source_file="res://Textures/prop_asteroid_02_dff.png"
 source_md5="510e26ba4dbbb06f4a8d858d9d7e451d"
 
-dest_files=[ "res://.import/prop_asteroid_02_dff.png-e8a3f9454ec74cf808fcac256fbfccc6.stex" ]
-dest_md5="4522770e0ecf763169c96235b9a3cee4"
+dest_files=[ "res://.import/prop_asteroid_02_dff.png-e8a3f9454ec74cf808fcac256fbfccc6.s3tc.stex", "res://.import/prop_asteroid_02_dff.png-e8a3f9454ec74cf808fcac256fbfccc6.etc2.stex" ]
+dest_md5="1ec9396799c4488dc79c0398447c13a7"
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
-flags/repeat=0
+flags/repeat=true
 flags/filter=true
-flags/mipmaps=false
+flags/mipmaps=true
 flags/anisotropic=false
-flags/srgb=2
+flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

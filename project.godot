@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="AnkleBot_Games"
-run/main_scene="res://Scenes/AsteroidsGame.tscn"
+run/main_scene="res://Scenes/InitScreen.tscn"
 config/icon="res://icon.png"
 
 [autoload]

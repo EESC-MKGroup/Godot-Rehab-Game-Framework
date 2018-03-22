@@ -23,7 +23,9 @@ var meshes = [ preload( \"res://Meshes/prop_asteroid_01.obj\" ),
                preload( \"res://Meshes/prop_asteroid_02.obj\" ),
                preload( \"res://Meshes/prop_asteroid_03.obj\" ) ]
 
-onready var asteroid_radius = get_node( 'CollisionShape' ).shape.radius
+onready var asteroid_radius = get_node( \"CollisionShape\" ).shape.radius
+
+var explosion = preload( \"res://Actors/Explosion.tscn\" )
 
 var rotation_axis = Vector3( rand_range( -1, 1 ), rand_range( -1, 1 ), rand_range( -1, 1 ) )
 
@@ -44,6 +46,9 @@ func _physics_process( delta ):
 	if collision: explode()
 
 func explode():
+	var destroy_explosion = explosion.instance()
+	destroy_explosion.translation = translation
+	get_parent().add_child( destroy_explosion )
 	queue_free()"
 
 [sub_resource type="SpatialMaterial" id=2]

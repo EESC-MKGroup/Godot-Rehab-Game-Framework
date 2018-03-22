@@ -1,0 +1,23 @@
+# Blender MTL File: 'Watermelon.blend'
+# Material Count: 2
+
+newmtl Material.001
+Ns 96.078431
+Ka 1.000000 1.000000 1.000000
+Kd 0.180844 0.381585 0.067869
+Ks 0.500000 0.486667 0.486667
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl Material.002
+Ns 37.254902
+Ka 0.050000 0.050000 0.050000
+Kd 0.223115 0.321582 0.050408
+Ks 0.250000 0.250000 0.250000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 5
+map_Kd /home/leonardojc/Projetos/Trabalhos_Godot/AnkleBot-Games/Textures/Watermelon_01.png

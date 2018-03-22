@@ -3,8 +3,8 @@
 [sub_resource type="ProceduralSky" id=1]
 
 radiance_size = 4
-sky_top_color = Color( 1, 1, 1, 1 )
-sky_horizon_color = Color( 0.785156, 0.785156, 0.785156, 1 )
+sky_top_color = Color( 0.339844, 1, 0.969055, 1 )
+sky_horizon_color = Color( 0.400238, 0.633779, 0.839844, 1 )
 sky_curve = 0.25
 sky_energy = 1.0
 ground_bottom_color = Color( 0.101961, 0.145098, 0.188235, 1 )
@@ -19,6 +19,7 @@ sun_angle_max = 100.0
 sun_curve = 0.05
 sun_energy = 16.0
 texture_size = 2
+_sections_unfolded = [ "Sky" ]
 
 [resource]
 
@@ -28,7 +29,7 @@ background_sky_custom_fov = 0.0
 background_color = Color( 0, 0, 0, 1 )
 background_energy = 1.0
 background_canvas_max_layer = 0
-ambient_light_color = Color( 0.464844, 0.464844, 0.464844, 1 )
+ambient_light_color = Color( 0.707031, 0.979401, 1, 1 )
 ambient_light_energy = 1.0
 ambient_light_sky_contribution = 1.0
 fog_enabled = false

@@ -2,31 +2,32 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/part_jet_core_dff.png-efb5a943e8cfe9145525499a5567f688.stex"
+path.s3tc="res://.import/part_jet_core_dff.png-efb5a943e8cfe9145525499a5567f688.s3tc.stex"
+path.etc2="res://.import/part_jet_core_dff.png-efb5a943e8cfe9145525499a5567f688.etc2.stex"
 
 [deps]
 
 source_file="res://Textures/part_jet_core_dff.png"
 source_md5="0926c7dd1561bfc8c88c8461ca50f055"
 
-dest_files=[ "res://.import/part_jet_core_dff.png-efb5a943e8cfe9145525499a5567f688.stex" ]
-dest_md5="701a2463555b5aceb5f2d9a221cf0466"
+dest_files=[ "res://.import/part_jet_core_dff.png-efb5a943e8cfe9145525499a5567f688.s3tc.stex", "res://.import/part_jet_core_dff.png-efb5a943e8cfe9145525499a5567f688.etc2.stex" ]
+dest_md5="f3e6f31ae0e0acd7f0dc296f7b0b405a"
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
-flags/repeat=0
+flags/repeat=true
 flags/filter=true
-flags/mipmaps=false
+flags/mipmaps=true
 flags/anisotropic=false
-flags/srgb=2
+flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
