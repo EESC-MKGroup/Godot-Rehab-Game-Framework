@@ -16,10 +16,9 @@ onready var start_button = get_node( "GUI/StartButton" )
 func _ready():
 	set_physics_process( false )
 	start_button.connect( "pressed", self, "_on_StartButton_pressed" )
-	Controller.set_status( 2 )
+	Controller.set_status( 1 )
 
 func _physics_process( delta ):
-	print( boundaries.get_child_count() )
 	if boundaries.get_child_count() <= 1:
 		_spawn_asteroids()
 
@@ -35,7 +34,7 @@ func _spawn_asteroids():
 		var spawn_position = Vector3( boundary_extents.x, position, 0 )
 		spawned_asteroid.translate( spawn_position )
 		boundaries.add_child( spawned_asteroid )
-	Controller.set_axis_values( Controller.AXIS.VERTICAL, target_position, 1 )
+	Controller.set_axis_values( Controller.VERTICAL, target_position, 1 )
 	setpoint_display.text = ( "%+.3f" % target_position )
 
 func _on_StartButton_pressed():

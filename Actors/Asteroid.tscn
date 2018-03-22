@@ -9,7 +9,7 @@
 script/source = "extends KinematicBody
 
 export var linear_speed = 2
-export var angular_speed = 1
+export var angular_speed = 2
 
 var diff_textures = [ preload( \"res://Textures/prop_asteroid_01_dff.png\" ),
                       preload( \"res://Textures/prop_asteroid_02_dff.png\" ),
@@ -23,7 +23,8 @@ var meshes = [ preload( \"res://Meshes/prop_asteroid_01.obj\" ),
                preload( \"res://Meshes/prop_asteroid_02.obj\" ),
                preload( \"res://Meshes/prop_asteroid_03.obj\" ) ]
 
-onready var asteroid_radius = get_node( \"CollisionShape\" ).shape.radius
+onready var collider_radius = get_node( \"CollisionShape\" ).shape.radius
+onready var mesh_instance = get_node( \"MeshInstance\" )
 
 var explosion = preload( \"res://Actors/Explosion.tscn\" )
 
@@ -31,13 +32,12 @@ var rotation_axis = Vector3( rand_range( -1, 1 ), rand_range( -1, 1 ), rand_rang
 
 func _ready():
 	var type = randi() % meshes.size()
-	var meshInstance = get_node( \"MeshInstance\" )
-	meshInstance.mesh = meshes[ type ]
+	mesh_instance.mesh = meshes[ type ]
 	var material = SpatialMaterial.new()
 	material.vertex_color_use_as_albedo = true
 	material.albedo_texture = diff_textures[ type ]
 	material.normal_texture = norm_textures[ type ]
-	meshInstance.set_surface_material( 0, material )
+	mesh_instance.set_surface_material( 0, material )
 
 func _physics_process( delta ):
 	var collision = move_and_collide( Vector3( -linear_speed, 0 ,0 ) * delta )
@@ -126,7 +126,7 @@ collision/safe_margin = 0.001
 script = SubResource( 1 )
 _sections_unfolded = [ "Collision", "collision" ]
 linear_speed = 2
-angular_speed = 1
+angular_speed = 2
 
 [node name="MeshInstance" type="MeshInstance" parent="." index="0"]
 

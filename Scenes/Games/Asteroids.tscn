@@ -65,7 +65,7 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Player" parent="Area/Boundaries" index="0" instance=ExtResource( 3 )]
 
-transform = Transform( -1.62921e-07, 1, 6.93889e-18, -1, -1.62921e-07, 0, 0, -1.73472e-17, 1, -7.42383, 4.63143e-09, 0.349952 )
+transform = Transform( -1.62921e-07, 1, 6.93889e-18, -1, -1.62921e-07, 0, 0, -1.73472e-17, 1, -7.89499, 0, 0.349952 )
 script = SubResource( 2 )
 _sections_unfolded = [ "Axis Lock", "Collision", "Transform" ]
 
