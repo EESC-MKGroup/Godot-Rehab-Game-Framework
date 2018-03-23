@@ -4,11 +4,15 @@ enum AXIS { VERTICAL, HORIZONTAL }
 enum INPUT { POSITION, VELOCITY, ACCELERATION, FORCE }
 enum OUTPUT { SETPOINT, STIFFNESS, USER, TIME }
 
+const NULL_LIMITS = [ null, null ]
+
 var input_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
-var position_limits = [ [ -0.001, 0001 ], [ -0.001, 0001 ] ]
+var position_limits = NULL_LIMITS
 var output_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
 var input_status = 0
 var output_status = 0
+
+var is_calibrating = true setget set_calibration, get_calibration
 
 var connection = StreamPeerTCP.new()
 
@@ -23,13 +27,14 @@ func receive_data():
 		for value_index in axis_values.size():
 			axis_values[ value_index ] = connection.get_float()
 		var axis_limits = position_limits[ axis_index ]
-		axis_limits[ 0 ] = min( axis_values[ POSITION ], axis_limits[ 0 ] ) 
-		axis_limits[ 1 ] = max( axis_values[ POSITION ], axis_limits[ 1 ] ) 
-		var axis_range = axis_limits[ 1 ] - axis_limits[ 0 ]
-		axis_values[ POSITION ] -= axis_limits[ 0 ]
-		axis_values[ POSITION ] *= ( 2 / axis_range )
-		axis_values[ VELOCITY ] *= ( 2 / axis_range )
-		axis_values[ POSITION ] -= 1.0
+		if is_calibrating: 
+			_check_limits( axis_index, axis_values[ POSITION ] )
+		else:
+			var axis_range = axis_limits[ 1 ] - axis_limits[ 0 ]
+			axis_values[ POSITION ] -= axis_limits[ 0 ]
+			axis_values[ POSITION ] *= ( 2 / axis_range )
+			axis_values[ VELOCITY ] *= ( 2 / axis_range )
+			axis_values[ POSITION ] -= 1.0
 
 func send_data():
 	var output_buffer = StreamPeerBuffer.new()
@@ -63,14 +68,30 @@ func get_status():
 
 func set_axis_values( axis_index, setpoint, stiffness ):
 	var axis_limits = position_limits[ axis_index ]
-	var axis_range = axis_limits[ 1 ] - axis_limits[ 0 ]
-	setpoint = ( setpoint + 1 ) * axis_range / 2
-	setpoint += axis_limits[ 0 ]
-	output_values[ axis_index ][ SETPOINT ] = setpoint
-	output_values[ axis_index ][ STIFFNESS ] = stiffness
+	if not is_calibrating:
+		var axis_range = axis_limits[ 1 ] - axis_limits[ 0 ]
+		setpoint = ( setpoint + 1 ) * axis_range / 2
+		setpoint += axis_limits[ 0 ]
+		output_values[ axis_index ][ SETPOINT ] = setpoint
+		output_values[ axis_index ][ STIFFNESS ] = stiffness
 
 func get_axis_values( axis_index ):
 	return input_values[ axis_index ]
+
+func _check_limits( axis_index, value ):
+	if position_limits[ axis_index ] == null:
+		position_limits[ axis_index ] = [ value - 0.001, value + 0.001 ]
+	var axis_values = input_values[ axis_index ]
+	var axis_limits = position_limits[ axis_index ]
+	axis_limits[ 0 ] = min( axis_values[ POSITION ], axis_limits[ 0 ] ) 
+	axis_limits[ 1 ] = max( axis_values[ POSITION ], axis_limits[ 1 ] )
+
+func set_calibration( value ):
+	if value: position_limits = NULL_LIMITS
+	is_calibrating = value
+
+func get_calibration():
+	return is_calibrating
 
 func set_user( user_name ):
 	output_values[ VERTICAL ][ USER ] = hash( user_name )

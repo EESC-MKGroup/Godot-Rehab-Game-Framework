@@ -37,13 +37,17 @@ anti_aliasing_size = 1
 
 script/source = "extends Panel
 
-onready var server_address = get_node( \"AddressInput\" ).text
-onready var user_name = get_node( \"UserInput\" ).text
+onready var server_address_entry = get_node( \"AddressInput\" )
+onready var user_name_entry = get_node( \"UserInput\" )
 onready var position_slider = get_node( \"PositionSlider\" )
 onready var position_display = get_node( \"PositionSlider/NumericDisplay\" )
+onready var calibration_toggle = get_node( \"CalibrationToggle\" )
 
 func _ready():
 	Controller.set_status( 1 )
+	server_address_entry.text = Configuration.get_parameter( \"server_address\" )
+	user_name_entry.text = Configuration.get_parameter( \"user_name\" )
+	calibration_toggle.pressed = Controller.is_calibrating
 
 func _input( event ):
 	if event is InputEventKey:
@@ -56,17 +60,20 @@ func _process( delta ):
 	position_display.text = ( \"%+.3f\" % position )
 
 func _on_ConnectButton_pressed():
-	Controller.connect_client( server_address, 8000 )
-	Controller.set_user( user_name )
+	Controller.connect_client( server_address_entry.text, 8000 )
+	Controller.set_user( user_name_entry.text )
  
 func _on_AddressInput_text_entered( new_text ):
-	server_address = new_text
+	Configuration.set_parameter( \"server_address\", new_text )
 
 func _on_UserInput_text_entered( new_text ):
-	user_name = new_text
+	Configuration.set_parameter( \"user_name\", new_text )
 
 func _on_SetpointSlider_value_changed( value ):
 	Controller.set_axis_values( Controller.VERTICAL, value, 1 )
+
+func _on_CalibrationToggle_toggled( button_pressed ):
+	Controller.is_calibrating = button_pressed
 "
 
 [sub_resource type="GDScript" id=3]
@@ -169,9 +176,9 @@ anchor_top = 0.5
 anchor_right = 0.0
 anchor_bottom = 0.5
 margin_left = 30.0
-margin_top = -80.0
+margin_top = -100.0
 margin_right = 210.0
-margin_bottom = -30.0
+margin_bottom = -50.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -195,9 +202,9 @@ anchor_top = 0.5
 anchor_right = 0.0
 anchor_bottom = 0.5
 margin_left = 220.0
-margin_top = -80.0
+margin_top = -100.0
 margin_right = 500.0
-margin_bottom = -29.0
+margin_bottom = -50.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -223,9 +230,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -100.0
-margin_top = -80.0
+margin_top = -100.0
 margin_right = 80.0
-margin_bottom = -30.0
+margin_bottom = -50.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -249,9 +256,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = 90.0
-margin_top = -80.0
+margin_top = -100.0
 margin_right = 370.0
-margin_bottom = -30.0
+margin_bottom = -50.0
 grow_horizontal = 0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -278,9 +285,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = -200.0
-margin_top = -80.0
+margin_top = -100.0
 margin_right = -20.0
-margin_bottom = -30.0
+margin_bottom = -50.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -348,10 +355,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.0
-margin_left = 200.0
-margin_top = 50.0
-margin_right = -200.0
-margin_bottom = 14.0
+margin_left = 187.0
+margin_top = -189.0
+margin_right = -213.0
+margin_bottom = -100.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -375,9 +382,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 150.0
-margin_top = 90.0
+margin_top = 70.0
 margin_right = -640.0
-margin_bottom = 120.0
+margin_bottom = 100.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -431,9 +438,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 150.0
-margin_top = 150.0
+margin_top = 130.0
 margin_right = -640.0
-margin_bottom = 180.0
+margin_bottom = 160.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -455,6 +462,45 @@ ticks_on_borders = false
 focus_mode = 2
 _sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
 
+[node name="CalibrationToggle" type="CheckButton" parent="." index="11"]
+
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -150.0
+margin_top = -160.0
+margin_right = 150.0
+margin_bottom = -110.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Calibration:  "
+flat = false
+align = 0
+_sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
+
+[connection signal="text_entered" from="AddressInput" to="." method="_on_AddressInput_text_entered"]
+
+[connection signal="text_entered" from="UserInput" to="." method="_on_UserInput_text_entered"]
+
+[connection signal="pressed" from="ConnectButton" to="." method="_on_ConnectButton_pressed"]
+
 [connection signal="value_changed" from="SetpointSlider" to="." method="_on_SetpointSlider_value_changed"]
+
+[connection signal="toggled" from="CalibrationToggle" to="." method="_on_CalibrationToggle_toggled"]
 
 

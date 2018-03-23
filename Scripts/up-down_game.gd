@@ -19,7 +19,7 @@ onready var balloon = hand.get_node( "Balloon" )
 
 func _ready():
 	start_button.connect( "pressed", self, "_on_StartButton_pressed" )
-	Controller.set_status( 3 )
+	Controller.set_status( 4 )
 
 func _physics_process( delta ):
 	var controller_values = Controller.get_axis_values( Controller.VERTICAL )

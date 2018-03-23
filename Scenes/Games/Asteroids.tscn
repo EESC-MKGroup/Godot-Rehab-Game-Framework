@@ -32,6 +32,8 @@ _sections_unfolded = [ "Animation", "Flags", "Geometry", "Region", "Transform" ]
 
 [node name="Background" parent="." index="0" instance=ExtResource( 2 )]
 
+modulate = Color( 0.839844, 0.839844, 0.839844, 1 )
+
 [node name="Area" type="Area" parent="." index="1"]
 
 transform = Transform( 1, -1.7053e-13, 4.16334e-17, 0, 1, 0, 0, 0, 1, 9.3462e-11, -0.000286833, -0.830662 )

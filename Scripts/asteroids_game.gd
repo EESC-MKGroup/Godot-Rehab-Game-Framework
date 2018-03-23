@@ -16,7 +16,8 @@ onready var start_button = get_node( "GUI/StartButton" )
 func _ready():
 	set_physics_process( false )
 	start_button.connect( "pressed", self, "_on_StartButton_pressed" )
-	Controller.set_status( 1 )
+	if Controller.is_calibrating: Controller.set_status( 2 )
+	else: Controller.set_status( 3 )
 
 func _physics_process( delta ):
 	if boundaries.get_child_count() <= 1:

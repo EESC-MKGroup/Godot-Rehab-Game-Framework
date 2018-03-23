@@ -13,7 +13,7 @@
 
 extents = Vector3( 4.31559, 5.13088, 1.43905 )
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=2]
 
 render_priority = 0
 flags_transparent = false
@@ -66,7 +66,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Vertex Color" ]
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=3]
 
 render_priority = 0
 flags_transparent = false
@@ -119,7 +119,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Vertex Color" ]
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=4]
 
 render_priority = 0
 flags_transparent = false
@@ -171,16 +171,16 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="CylinderMesh" id=8]
+[sub_resource type="CylinderMesh" id=5]
 
-material = SubResource( 7 )
+material = SubResource( 4 )
 top_radius = 1.0
 bottom_radius = 1.0
 height = 2.0
 radial_segments = 16
 rings = 4
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=6]
 
 render_priority = 0
 flags_transparent = false
@@ -232,22 +232,22 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="CylinderMesh" id=10]
+[sub_resource type="CylinderMesh" id=7]
 
-material = SubResource( 9 )
+material = SubResource( 6 )
 top_radius = 1.0
 bottom_radius = 1.0
 height = 2.0
 radial_segments = 16
 rings = 4
 
-[sub_resource type="PlaneMesh" id=5]
+[sub_resource type="PlaneMesh" id=8]
 
 size = Vector2( 2, 2 )
 subdivide_width = 0
 subdivide_depth = 0
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=9]
 
 render_priority = 0
 flags_transparent = false
@@ -299,7 +299,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Metallic" ]
 
-[sub_resource type="ProceduralSky" id=11]
+[sub_resource type="ProceduralSky" id=10]
 
 radiance_size = 4
 sky_top_color = Color( 0.339844, 1, 0.969055, 1 )
@@ -320,10 +320,10 @@ sun_energy = 16.0
 texture_size = 2
 _sections_unfolded = [ "Sky" ]
 
-[sub_resource type="Environment" id=12]
+[sub_resource type="Environment" id=11]
 
 background_mode = 3
-background_sky = SubResource( 11 )
+background_sky = SubResource( 10 )
 background_sky_custom_fov = 0.0
 background_color = Color( 0.771286, 0.958497, 0.972656, 1 )
 background_energy = 1.0
@@ -400,7 +400,7 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Background" ]
 
-[node name="Up-Down" type="Spatial"]
+[node name="Game" type="Spatial"]
 
 script = ExtResource( 1 )
 
@@ -481,8 +481,8 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = ExtResource( 3 )
 skeleton = NodePath("..")
-material/0 = SubResource( 3 )
-material/1 = SubResource( 4 )
+material/0 = SubResource( 2 )
+material/1 = SubResource( 3 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Rope" type="MeshInstance" parent="GameSpace/Boundaries/Hand/Watermelon" index="0"]
@@ -497,7 +497,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 8 )
+mesh = SubResource( 5 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
@@ -532,7 +532,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 10 )
+mesh = SubResource( 7 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
@@ -594,14 +594,14 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 5 )
+mesh = SubResource( 8 )
 skeleton = NodePath("..")
-material/0 = SubResource( 6 )
+material/0 = SubResource( 9 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="6"]
 
-environment = SubResource( 12 )
+environment = SubResource( 11 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
