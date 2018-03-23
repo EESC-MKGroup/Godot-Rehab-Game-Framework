@@ -4,8 +4,6 @@ enum AXIS { VERTICAL, HORIZONTAL }
 enum INPUT { POSITION, VELOCITY, ACCELERATION, FORCE }
 enum OUTPUT { SETPOINT, STIFFNESS, USER, TIME }
 
-const BUFFER_SIZE = 2 + 8 * 4
-
 var input_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
 var position_limits = [ [ -0.001, 0001 ], [ -0.001, 0001 ] ]
 var output_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
@@ -45,7 +43,6 @@ func send_data():
 
 func _process( delta ):
 	send_data()
-	#if connection.get_available_bytes() >= BUFFER_SIZE:
 	receive_data()
 
 func connect_client( host, port ):
@@ -76,7 +73,7 @@ func get_axis_values( axis_index ):
 	return input_values[ axis_index ]
 
 func set_user( user_name ):
-	output_values[ VERTICAL ][ USER ] = 1#user_name.size()
+	output_values[ VERTICAL ][ USER ] = hash( user_name )
 	output_values[ VERTICAL ][ TIME ] = OS.get_system_time_secs()
 
 func _notification( what ):
