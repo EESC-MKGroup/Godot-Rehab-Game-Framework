@@ -28,22 +28,17 @@ func receive_data():
 			axis_values[ value_index ] = connection.get_float()
 		var axis_limits = position_limits[ axis_index ]
 		if is_calibrating: 
-			_check_limits( axis_index, axis_values[ POSITION ] )
-		else:
-			var axis_range = axis_limits[ 1 ] - axis_limits[ 0 ]
-			axis_values[ POSITION ] -= axis_limits[ 0 ]
-			axis_values[ POSITION ] *= ( 2 / axis_range )
-			axis_values[ VELOCITY ] *= ( 2 / axis_range )
-			axis_values[ POSITION ] -= 1.0
+			axis_limits = _check_limits( axis_limits, axis_values[ POSITION ] )
+			position_limits[ axis_index ] = axis_limits
+		elif axis_limits != null:
+			axis_values[ POSITION ] = _normalize( axis_values[ POSITION ], axis_limits )
 
 func send_data():
 	var output_buffer = StreamPeerBuffer.new()
 	output_buffer.put_u16( output_status )
 	for axis_values in output_values:
-		output_buffer.put_float( axis_values[ SETPOINT ] )
-		output_buffer.put_float( axis_values[ STIFFNESS ] )
-		output_buffer.put_u32( axis_values[ USER ] )
-		output_buffer.put_u32( axis_values[ TIME ] )
+		for value in axis_values:
+			output_buffer.put_float( value )
 	connection.put_data( output_buffer.data_array )
 
 func _process( delta ):
@@ -69,22 +64,26 @@ func get_status():
 func set_axis_values( axis_index, setpoint, stiffness ):
 	var axis_limits = position_limits[ axis_index ]
 	if not is_calibrating:
-		var axis_range = axis_limits[ 1 ] - axis_limits[ 0 ]
-		setpoint = ( setpoint + 1 ) * axis_range / 2
-		setpoint += axis_limits[ 0 ]
+		setpoint = _denormalize( setpoint, axis_limits )
 		output_values[ axis_index ][ SETPOINT ] = setpoint
 		output_values[ axis_index ][ STIFFNESS ] = stiffness
 
 func get_axis_values( axis_index ):
 	return input_values[ axis_index ]
 
-func _check_limits( axis_index, value ):
-	if position_limits[ axis_index ] == null:
-		position_limits[ axis_index ] = [ value - 0.001, value + 0.001 ]
-	var axis_values = input_values[ axis_index ]
-	var axis_limits = position_limits[ axis_index ]
-	axis_limits[ 0 ] = min( axis_values[ POSITION ], axis_limits[ 0 ] ) 
-	axis_limits[ 1 ] = max( axis_values[ POSITION ], axis_limits[ 1 ] )
+func _check_limits( limits, value ):
+	if limits == null: limits = [ value - 0.001, value + 0.001 ]
+	limits[ 0 ] = min( value, limits[ 0 ] ) 
+	limits[ 1 ] = max( value, limits[ 1 ] )
+	return limits
+
+func _normalize( value, limits ):
+	var value_range = limits[ 1 ] - limits[ 0 ]
+	return ( 2 * ( value - limits[ 0 ] ) / value_range ) - 1.0
+
+func _denormalize( value, limits ):
+	var value_range = limits[ 1 ] - limits[ 0 ]
+	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
 
 func set_calibration( value ):
 	if value: position_limits = NULL_LIMITS
@@ -93,9 +92,12 @@ func set_calibration( value ):
 func get_calibration():
 	return is_calibrating
 
-func set_user( user_name ):
-	output_values[ VERTICAL ][ USER ] = hash( user_name )
-	output_values[ VERTICAL ][ TIME ] = OS.get_system_time_secs()
+func set_identifier( user_name, time_stamp ):
+	output_values[ 0 ][ USER ] = hash( user_name )
+	output_values[ 0 ][ TIME ] = time_stamp
+
+func set_time_window( time_window_seconds ):
+	output_values[ 1 ][ TIME ] = time_window_seconds * 1000
 
 func _notification( what ):
 	if what == NOTIFICATION_PREDELETE: 

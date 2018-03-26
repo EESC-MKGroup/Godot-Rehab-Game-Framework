@@ -24,8 +24,12 @@ onready var start_button = get_node( "GUI/StartButton" )
 func _ready():
 	set_physics_process( false )
 	start_button.connect( "toggled", self, "_on_StartButton_toggled" )
-	if Controller.is_calibrating: Controller.set_status( 2 )
-	else: Controller.set_status( 3 )
+
+func _enter_tree():
+	Controller.set_time_window( 2 * boundary_extents.x / asteroid_speed  )
+	Controller.set_axis_values( Controller.VERTICAL, 0.0, 1.0 ) 
+	if Controller.is_calibrating: Controller.set_status( 3 )
+	else: Controller.set_status( 2 )
 
 func _physics_process( delta ):
 	score_area.translation.x -= asteroid_speed * delta
@@ -38,7 +42,7 @@ func _spawn_asteroids():
 		spawn_positions.append( asteroid_top + asteroid_index * asteroid_width )
 	var target_index = randi() % ASTEROID_SLOTS_NUMBER
 	var target_position = spawn_positions[ target_index ] 
-	score_area.translation = Vector3( boundary_extents.x, target_position, 0 )
+	score_area.translation.x = boundary_extents.x
 	var setpoint_position = target_position / boundary_extents.y
 	spawn_positions.remove( target_index )
 	for position in spawn_positions:
@@ -48,7 +52,7 @@ func _spawn_asteroids():
 		spawned_asteroid.linear_speed = asteroid_speed
 		boundaries.add_child( spawned_asteroid )
 	asteroids_number = spawn_positions.size()
-	Controller.set_axis_values( Controller.VERTICAL, setpoint_position, 1 )
+	Controller.set_axis_values( Controller.VERTICAL, setpoint_position, 30.0 )
 	setpoint_display.text = ( "%+.3f" % setpoint_position )
 
 func _on_StartButton_toggled( button_pressed ):

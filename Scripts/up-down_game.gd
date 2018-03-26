@@ -19,6 +19,8 @@ onready var balloon = hand.get_node( "Balloon" )
 
 func _ready():
 	start_button.connect( "pressed", self, "_on_StartButton_pressed" )
+
+func _enter_tree():
 	Controller.set_status( 4 )
 
 func _physics_process( delta ):
@@ -44,6 +46,7 @@ func _switch_objects():
 
 func _switch_and_reset():
 	_switch_objects()
+	setpoint_timer.stop()
 	setpoint_timer.start()
 
 func _on_StartButton_pressed():

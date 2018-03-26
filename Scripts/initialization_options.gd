@@ -7,10 +7,12 @@ onready var position_display = get_node( "PositionSlider/NumericDisplay" )
 onready var calibration_toggle = get_node( "CalibrationToggle" )
 
 func _ready():
-	Controller.set_status( 1 )
 	server_address_entry.text = Configuration.get_parameter( "server_address" )
 	user_name_entry.text = Configuration.get_parameter( "user_name" )
 	calibration_toggle.pressed = Controller.is_calibrating
+
+func _enter_tree():
+	Controller.set_status( 1 )
 
 func _input( event ):
 	if event is InputEventKey:
@@ -23,8 +25,12 @@ func _process( delta ):
 	position_display.text = ( "%+.3f" % position )
 
 func _on_ConnectButton_pressed():
-	Controller.connect_client( Configuration.get_parameter( "server_address" ), 8000 )
-	Controller.set_user( Configuration.get_parameter( "user_name" ) )
+	var server_address = Configuration.get_parameter( "server_address" )
+	Controller.connect_client( server_address, 8000 )
+	var user_name = Configuration.get_parameter( "user_name" )
+	var time_stamp = OS.get_system_time_secs()
+	Controller.set_identifier( user_name, time_stamp )
+	DataLog.create_new_log( user_name + "_" + str(time_stamp) )
 
 func _on_AddressInput_text_entered( new_text ):
 	Configuration.set_parameter( "server_address", new_text )
