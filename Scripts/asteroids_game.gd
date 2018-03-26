@@ -24,10 +24,10 @@ onready var start_button = get_node( "GUI/StartButton" )
 func _ready():
 	set_physics_process( false )
 	start_button.connect( "toggled", self, "_on_StartButton_toggled" )
-
-func _enter_tree():
 	Controller.set_time_window( 2 * boundary_extents.x / asteroid_speed  )
 	Controller.set_axis_values( Controller.VERTICAL, 0.0, 1.0 ) 
+
+func _enter_tree():
 	if Controller.is_calibrating: Controller.set_status( 3 )
 	else: Controller.set_status( 2 )
 
