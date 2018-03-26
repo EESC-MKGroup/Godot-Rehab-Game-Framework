@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/asteroids_game.gd" type="Script" id=1]
 [ext_resource path="res://Actors/Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Actors/SpaceShip1.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Audios/Music/music_background.wav" type="AudioStream" id=5]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -24,17 +25,22 @@ func _physics_process( delta ):
 	translation.y = new_position
 	rotation.x = ( rotation.x + 0.2 * position_delta / delta ) / 2"
 
-[node name="Game" type="Spatial"]
+[sub_resource type="BoxShape" id=3]
+
+extents = Vector3( 0.676006, 0.570533, 0.52626 )
+
+[node name="Game" type="Spatial" index="0"]
 
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Animation", "Flags", "Geometry", "Region", "Transform" ]
+asteroid_speed = 3
 
 [node name="Background" parent="." index="0" instance=ExtResource( 2 )]
 
 modulate = Color( 0.839844, 0.839844, 0.839844, 1 )
 
-[node name="Area" type="Area" parent="." index="1"]
+[node name="BoundaryArea" type="Area" parent="." index="1"]
 
 transform = Transform( 1, -1.7053e-13, 4.16334e-17, 0, 1, 0, 0, 0, 1, 9.3462e-11, -0.000286833, -0.830662 )
 input_ray_pickable = false
@@ -58,18 +64,47 @@ reverb_bus_name = "Master"
 reverb_bus_amount = 0.0
 reverb_bus_uniformity = 0.0
 
-[node name="Boundaries" type="CollisionShape" parent="Area" index="0"]
+[node name="Boundaries" type="CollisionShape" parent="BoundaryArea" index="0"]
 
 transform = Transform( 1, 0, 4.4671e-25, 0, 1, 0, 0, 0, 1, -1.05714e-13, 0.631391, -0.77693 )
 shape = SubResource( 1 )
 disabled = false
 _sections_unfolded = [ "Transform", "Visibility" ]
 
-[node name="Player" parent="Area/Boundaries" index="0" instance=ExtResource( 3 )]
+[node name="Player" parent="BoundaryArea/Boundaries" index="0" instance=ExtResource( 3 )]
 
 transform = Transform( -1.62921e-07, 1, 6.93889e-18, -1, -1.62921e-07, 0, 0, -1.73472e-17, 1, -7.89499, 0, 0.349952 )
 script = SubResource( 2 )
 _sections_unfolded = [ "Axis Lock", "Collision", "Transform" ]
+
+[node name="ScoreArea" type="Area" parent="BoundaryArea/Boundaries" index="1"]
+
+input_ray_pickable = false
+input_capture_on_drag = false
+space_override = 0
+gravity_point = false
+gravity_distance_scale = 0.0
+gravity_vec = Vector3( 0, -1, 0 )
+gravity = 9.8
+linear_damp = 0.1
+angular_damp = 1.0
+priority = 0.0
+monitoring = true
+monitorable = true
+collision_layer = 1
+collision_mask = 1
+audio_bus_override = false
+audio_bus_name = "Master"
+reverb_bus_enable = false
+reverb_bus_name = "Master"
+reverb_bus_amount = 0.0
+reverb_bus_uniformity = 0.0
+
+[node name="CollisionShape" type="CollisionShape" parent="BoundaryArea/Boundaries/ScoreArea" index="0"]
+
+transform = Transform( 1, 0, 4.4671e-25, 0, 1, 0, 0, 0, 1, -6.93889e-18, -4.00498e-09, 0.152374 )
+shape = SubResource( 3 )
+disabled = false
 
 [node name="Camera" type="Camera" parent="." index="2"]
 
@@ -118,6 +153,20 @@ _sections_unfolded = [ "Light" ]
 
 [node name="GUI" parent="." index="4" instance=ExtResource( 4 )]
 
-[connection signal="body_exited" from="Area" to="." method="_on_body_exited"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="5"]
+
+stream = ExtResource( 5 )
+volume_db = -4.0
+autoplay = true
+mix_target = 0
+bus = "Master"
+
+[connection signal="body_exited" from="BoundaryArea" to="." method="_on_body_exited"]
+
+[connection signal="body_exited" from="BoundaryArea" to="." method="_on_BoundaryArea_body_exited"]
+
+[connection signal="body_exited" from="BoundaryArea/Boundaries/ScoreArea" to="." method="_on_ScoreArea_body_exited"]
+
+[connection signal="finished" from="AudioStreamPlayer" to="AudioStreamPlayer" method="play"]
 
 

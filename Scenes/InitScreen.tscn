@@ -1,11 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Textures/logo_eesc.png" type="Texture" id=1]
 [ext_resource path="res://Textures/rerob_logo.png" type="Texture" id=2]
-[ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Fonts/LuckiestGuy.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Fonts/LuckiestGuy.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Scripts/initialization_options.gd" type="Script" id=4]
+[ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=5]
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
@@ -33,50 +34,44 @@ shadow_size = 0
 anti_aliasing = true
 anti_aliasing_size = 1
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="DynamicFont" id=3]
 
-script/source = "extends Panel
+size = 80
+use_mipmaps = true
+use_filter = true
+extra_spacing_top = 20
+font_data = ExtResource( 3 )
+_sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
-onready var server_address_entry = get_node( \"AddressInput\" )
-onready var user_name_entry = get_node( \"UserInput\" )
-onready var position_slider = get_node( \"PositionSlider\" )
-onready var position_display = get_node( \"PositionSlider/NumericDisplay\" )
-onready var calibration_toggle = get_node( \"CalibrationToggle\" )
+[sub_resource type="StyleBoxFlat" id=4]
 
-func _ready():
-	Controller.set_status( 1 )
-	server_address_entry.text = Configuration.get_parameter( \"server_address\" )
-	user_name_entry.text = Configuration.get_parameter( \"user_name\" )
-	calibration_toggle.pressed = Controller.is_calibrating
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+bg_color = Color( 0.6, 0.6, 0.6, 1 )
+draw_center = true
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color( 0.8, 0.8, 0.8, 1 )
+border_blend = false
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+corner_detail = 8
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+shadow_color = Color( 0, 0, 0, 0.6 )
+shadow_size = 0
+anti_aliasing = true
+anti_aliasing_size = 1
 
-func _input( event ):
-	if event is InputEventKey:
-		if event.scancode == KEY_ESCAPE: OS.set_window_fullscreen( false )
-
-func _process( delta ):
-	var axis_values = Controller.get_axis_values( Controller.VERTICAL )
-	var position = axis_values[ Controller.POSITION ]
-	position_slider.value = position
-	position_display.text = ( \"%+.3f\" % position )
-
-func _on_ConnectButton_pressed():
-	Controller.connect_client( server_address_entry.text, 8000 )
-	Controller.set_user( user_name_entry.text )
- 
-func _on_AddressInput_text_entered( new_text ):
-	Configuration.set_parameter( \"server_address\", new_text )
-
-func _on_UserInput_text_entered( new_text ):
-	Configuration.set_parameter( \"user_name\", new_text )
-
-func _on_SetpointSlider_value_changed( value ):
-	Controller.set_axis_values( Controller.VERTICAL, value, 1 )
-
-func _on_CalibrationToggle_toggled( button_pressed ):
-	Controller.is_calibrating = button_pressed
-"
-
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=5]
 
 script/source = "extends MenuButton
 
@@ -102,15 +97,6 @@ func _on_index_pressed( index ):
 	get_tree().change_scene( GAMES_PATH + \"/\" + game_name + GAME_EXT )
 "
 
-[sub_resource type="DynamicFont" id=4]
-
-size = 72
-use_mipmaps = true
-use_filter = true
-extra_spacing_top = 16
-font_data = ExtResource( 4 )
-_sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
-
 [node name="InitScreen" type="Panel" index="0"]
 
 anchor_left = 0.0
@@ -123,20 +109,37 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 1 )
-script = SubResource( 2 )
 _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_styles" ]
 
-[node name="EESCLogo" type="TextureRect" parent="." index="0"]
+[node name="TitlePanel" type="Panel" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -520.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/panel = SubResource( 2 )
+_sections_unfolded = [ "Margin", "custom_styles" ]
+
+[node name="EESCLogo" type="TextureRect" parent="TitlePanel" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 2115.0
-margin_bottom = 2229.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 2160.0
+margin_bottom = 2270.0
 rect_scale = Vector2( 0.075, 0.075 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -148,16 +151,16 @@ texture = ExtResource( 1 )
 stretch_mode = 0
 _sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
 
-[node name="ReRobLogo" type="TextureRect" parent="." index="1"]
+[node name="ReRobLogo" type="TextureRect" parent="TitlePanel" index="1"]
 
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.0
-margin_left = -190.0
-margin_top = 20.0
-margin_right = 10.0
-margin_bottom = 226.0
+margin_left = -180.0
+margin_top = 10.0
+margin_right = 26.0
+margin_bottom = 216.0
 rect_scale = Vector2( 0.8, 0.8 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -169,96 +172,63 @@ texture = ExtResource( 2 )
 stretch_mode = 0
 _sections_unfolded = [ "Margin", "Rect" ]
 
-[node name="AddressLabel" type="Label" parent="." index="2"]
+[node name="TitleLabel" type="Label" parent="TitlePanel" index="2"]
 
 anchor_left = 0.0
-anchor_top = 0.5
-anchor_right = 0.0
-anchor_bottom = 0.5
-margin_left = 30.0
-margin_top = -100.0
-margin_right = 210.0
-margin_bottom = -50.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_left = -10.0
+margin_top = 50.0
+margin_right = -10.0
+margin_bottom = 150.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "IP Address:"
+custom_colors/font_color_shadow = Color( 0.296875, 0.296875, 0.296875, 1 )
+text = "AnkleBot Games"
 align = 1
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
-
-[node name="AddressInput" type="LineEdit" parent="." index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.5
-anchor_right = 0.0
-anchor_bottom = 0.5
-margin_left = 220.0
-margin_top = -100.0
-margin_right = 500.0
-margin_bottom = -50.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 1
-size_flags_horizontal = 1
-size_flags_vertical = 1
-custom_fonts/font = ExtResource( 3 )
-text = "127.0.0.1"
-align = 1
-focus_mode = 2
-context_menu_enabled = true
-placeholder_alpha = 0.6
-caret_blink = true
-caret_blink_speed = 0.65
-caret_position = 0
 _sections_unfolded = [ "Anchor", "Margin", "custom_colors", "custom_fonts" ]
 
-[node name="UserLabel" type="Label" parent="." index="4"]
+[node name="ControlsPanel" type="Panel" parent="." index="1"]
 
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -100.0
-margin_top = -100.0
-margin_right = 80.0
-margin_bottom = -50.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 220.0
+margin_right = -10.0
+margin_bottom = -10.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
-mouse_filter = 2
+mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "User NAme:"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
+size_flags_vertical = 1
+custom_styles/panel = SubResource( 4 )
+script = ExtResource( 4 )
+_sections_unfolded = [ "Margin", "custom_styles" ]
 
-[node name="UserInput" type="LineEdit" parent="." index="5"]
+[node name="UserInput" type="LineEdit" parent="ControlsPanel" index="0"]
 
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 90.0
-margin_top = -100.0
-margin_right = 370.0
-margin_bottom = -50.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 220.0
+margin_top = 20.0
+margin_right = 490.0
+margin_bottom = 71.0
 grow_horizontal = 0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -267,7 +237,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 1
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 5 )
 text = "User"
 align = 1
 focus_mode = 2
@@ -278,16 +248,96 @@ caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
 
-[node name="ConnectButton" type="Button" parent="." index="6"]
+[node name="UserLabel" type="Label" parent="ControlsPanel/UserInput" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 0.0
+anchor_bottom = 0.5
+margin_left = -190.0
+margin_top = -25.5
+margin_right = -10.0
+margin_bottom = 24.5
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "User NAme:"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
+
+[node name="AddressInput" type="LineEdit" parent="ControlsPanel" index="1"]
+
+anchor_left = 0.5
+anchor_top = 0.0
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = 90.0
+margin_top = 20.0
+margin_right = 360.0
+margin_bottom = 70.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 5 )
+text = "127.0.0.1"
+align = 1
+focus_mode = 2
+context_menu_enabled = true
+placeholder_alpha = 0.6
+caret_blink = true
+caret_blink_speed = 0.65
+caret_position = 0
+_sections_unfolded = [ "Anchor", "Margin", "custom_colors", "custom_fonts" ]
+
+[node name="AddressLabel" type="Label" parent="ControlsPanel/AddressInput" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 0.0
+anchor_bottom = 0.5
+margin_left = -190.0
+margin_top = -25.5
+margin_right = -10.0
+margin_bottom = 24.5
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "IP Address:"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
+
+[node name="ConnectButton" type="Button" parent="ControlsPanel" index="2"]
 
 anchor_left = 1.0
-anchor_top = 0.5
+anchor_top = 0.0
 anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -200.0
-margin_top = -100.0
-margin_right = -20.0
-margin_bottom = -50.0
+anchor_bottom = 0.0
+margin_left = -210.0
+margin_top = 20.0
+margin_right = -30.0
+margin_bottom = 70.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -295,7 +345,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 5 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -305,7 +355,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[node name="GameSelectionButton" type="Panel" parent="." index="7"]
+[node name="GameSelectionButton" type="Panel" parent="ControlsPanel" index="3"]
 
 anchor_left = 0.5
 anchor_top = 1.0
@@ -323,7 +373,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Theme", "custom_colors", "custom_constants", "custom_fonts" ]
 
-[node name="GameSelectionList" type="MenuButton" parent="GameSelectionButton" index="0"]
+[node name="GameSelectionList" type="MenuButton" parent="ControlsPanel/GameSelectionButton" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -336,7 +386,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 5 )
 toggle_mode = false
 action_mode = 0
 enabled_focus_mode = 0
@@ -346,45 +396,19 @@ text = "Select Game"
 flat = true
 align = 1
 items = [  ]
-script = SubResource( 3 )
+script = SubResource( 5 )
 _sections_unfolded = [ "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[node name="Label" type="Label" parent="." index="8"]
+[node name="PositionSlider" type="HSlider" parent="ControlsPanel" index="4"]
 
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.0
-margin_left = 187.0
-margin_top = -189.0
-margin_right = -213.0
-margin_bottom = -100.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "AnkleBot Games"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
-
-[node name="PositionSlider" type="HSlider" parent="." index="9"]
-
-anchor_left = 0.0
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 150.0
-margin_top = 70.0
-margin_right = -640.0
-margin_bottom = 100.0
+margin_left = -490.0
+margin_top = -55.0
+margin_right = -10.0
+margin_bottom = -25.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -403,9 +427,9 @@ editable = false
 tick_count = 0
 ticks_on_borders = false
 focus_mode = 0
-_sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
 
-[node name="NumericDisplay" type="Label" parent="PositionSlider" index="0"]
+[node name="NumericDisplay" type="Label" parent="ControlsPanel/PositionSlider" index="0"]
 
 anchor_left = 0.5
 anchor_top = 0.0
@@ -421,7 +445,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
@@ -431,16 +455,16 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
-[node name="SetpointSlider" type="HSlider" parent="." index="10"]
+[node name="SetpointSlider" type="HSlider" parent="ControlsPanel" index="5"]
 
-anchor_left = 0.0
+anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 150.0
-margin_top = 130.0
-margin_right = -640.0
-margin_bottom = 160.0
+margin_left = -490.0
+margin_top = 5.0
+margin_right = -10.0
+margin_bottom = 35.0
 rect_scale = Vector2( 2, 2 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -462,16 +486,16 @@ ticks_on_borders = false
 focus_mode = 2
 _sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
 
-[node name="CalibrationToggle" type="CheckButton" parent="." index="11"]
+[node name="CalibrationToggle" type="CheckButton" parent="ControlsPanel" index="6"]
 
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
+anchor_bottom = 0.5
 margin_left = -150.0
-margin_top = -160.0
+margin_top = 75.0
 margin_right = 150.0
-margin_bottom = -110.0
+margin_bottom = 125.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -479,7 +503,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
@@ -493,14 +517,14 @@ flat = false
 align = 0
 _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
-[connection signal="text_entered" from="AddressInput" to="." method="_on_AddressInput_text_entered"]
+[connection signal="text_entered" from="ControlsPanel/UserInput" to="ControlsPanel" method="_on_UserInput_text_entered"]
 
-[connection signal="text_entered" from="UserInput" to="." method="_on_UserInput_text_entered"]
+[connection signal="text_entered" from="ControlsPanel/AddressInput" to="ControlsPanel" method="_on_AddressInput_text_entered"]
 
-[connection signal="pressed" from="ConnectButton" to="." method="_on_ConnectButton_pressed"]
+[connection signal="pressed" from="ControlsPanel/ConnectButton" to="ControlsPanel" method="_on_ConnectButton_pressed"]
 
-[connection signal="value_changed" from="SetpointSlider" to="." method="_on_SetpointSlider_value_changed"]
+[connection signal="value_changed" from="ControlsPanel/SetpointSlider" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]
 
-[connection signal="toggled" from="CalibrationToggle" to="." method="_on_CalibrationToggle_toggled"]
+[connection signal="toggled" from="ControlsPanel/CalibrationToggle" to="ControlsPanel" method="_on_CalibrationToggle_toggled"]
 
 

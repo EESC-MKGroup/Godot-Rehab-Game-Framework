@@ -2,25 +2,26 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/part_shockwave_dff.png-8142d4001e372e0dc1c3239ebe9357b5.stex"
+path.s3tc="res://.import/part_shockwave_dff.png-8142d4001e372e0dc1c3239ebe9357b5.s3tc.stex"
+path.etc2="res://.import/part_shockwave_dff.png-8142d4001e372e0dc1c3239ebe9357b5.etc2.stex"
 
 [deps]
 
 source_file="res://Textures/part_shockwave_dff.png"
-source_md5="b258e8514843c07824a6b97f7c9b6980"
+source_md5="5e34c472d8accf8d19647d42035b3970"
 
-dest_files=[ "res://.import/part_shockwave_dff.png-8142d4001e372e0dc1c3239ebe9357b5.stex" ]
-dest_md5="039dd8484142b919a5e4ca4219c375bd"
+dest_files=[ "res://.import/part_shockwave_dff.png-8142d4001e372e0dc1c3239ebe9357b5.s3tc.stex", "res://.import/part_shockwave_dff.png-8142d4001e372e0dc1c3239ebe9357b5.etc2.stex" ]
+dest_md5="721aec7ef1acbf4b520fc4599a86709b"
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/normal_map=0
-flags/repeat=0
+flags/repeat=true
 flags/filter=true
-flags/mipmaps=false
+flags/mipmaps=true
 flags/anisotropic=false
 flags/srgb=2
 process/fix_alpha_border=true
@@ -28,5 +29,5 @@ process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

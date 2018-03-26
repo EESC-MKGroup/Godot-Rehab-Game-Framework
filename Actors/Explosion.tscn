@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Textures/prop_asteroid_02_dff.png" type="Texture" id=1]
 [ext_resource path="res://Textures/prop_asteroid_01_dff.png" type="Texture" id=2]
 [ext_resource path="res://Audios/Sounds/explosion_asteroid.wav" type="AudioStream" id=3]
+[ext_resource path="res://Textures/part_shockwave_dff.png" type="Texture" id=4]
 
 [sub_resource type="Gradient" id=1]
 
@@ -28,9 +29,9 @@ spread = 120.0
 flatness = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 2.0
-initial_velocity_random = 0.0
-angular_velocity = 20.0
-angular_velocity_random = 0.5
+initial_velocity_random = 0.1
+angular_velocity = 0.1
+angular_velocity_random = 0.1
 linear_accel = 0.0
 linear_accel_random = 0.0
 radial_accel = -1.0
@@ -129,7 +130,7 @@ spread = 120.0
 flatness = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 3.0
-initial_velocity_random = 0.0
+initial_velocity_random = 0.1
 angular_velocity = 20.0
 angular_velocity_random = 0.5
 linear_accel = 0.0
@@ -140,7 +141,7 @@ tangential_accel = 0.0
 tangential_accel_random = 0.0
 damping = 0.0
 damping_random = 0.0
-angle = 45.0
+angle = 90.0
 angle_random = 1.0
 scale = 0.3
 scale_random = 1.0
@@ -216,6 +217,37 @@ radial_segments = 8
 rings = 8
 is_hemisphere = false
 
+[sub_resource type="Animation" id=9]
+
+resource_name = "shockwave"
+length = 1.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.25, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 3, 3, 3 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.25, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
 [node name="Explosion" type="Spatial"]
 
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
@@ -233,7 +265,7 @@ lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 emitting = true
-amount = 40
+amount = 20
 lifetime = 1.0
 one_shot = false
 preprocess = 0.0
@@ -262,7 +294,7 @@ lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 emitting = true
-amount = 40
+amount = 30
 lifetime = 1.0
 one_shot = false
 preprocess = 0.0
@@ -287,9 +319,52 @@ autoplay = true
 mix_target = 0
 bus = "Master"
 
-[connection signal="tree_entered" from="." to="FragmentsLighter" method="restart"]
+[node name="Sprite3D" type="Sprite3D" parent="." index="3"]
+
+transform = Transform( -4.76249e-07, 0, 2.9232, 0, 2.9232, 0, -2.9232, 0, -4.76249e-07, 0, 0, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+centered = true
+offset = Vector2( 0, 0 )
+flip_h = false
+flip_v = false
+modulate = Color( 1, 1, 1, 0.870402 )
+opacity = 1.0
+pixel_size = 0.01
+axis = 2
+transparent = true
+shaded = false
+double_sided = true
+alpha_cut = 0
+texture = ExtResource( 4 )
+vframes = 1
+hframes = 1
+frame = 0
+region_enabled = false
+region_rect = Rect2( 0, 0, 0, 0 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite3D" index="0"]
+
+root_node = NodePath("..")
+autoplay = "shockwave"
+playback_process_mode = 0
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/shockwave = SubResource( 9 )
+blend_times = [  ]
+_sections_unfolded = [ "Playback Options" ]
 
 [connection signal="tree_entered" from="." to="FragmentsDarker" method="restart"]
+
+[connection signal="tree_entered" from="." to="FragmentsLighter" method="restart"]
 
 [connection signal="finished" from="AudioStreamPlayer" to="." method="queue_free"]
 
