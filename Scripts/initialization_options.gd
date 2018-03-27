@@ -10,8 +10,6 @@ func _ready():
 	server_address_entry.text = Configuration.get_parameter( "server_address" )
 	user_name_entry.text = Configuration.get_parameter( "user_name" )
 	calibration_toggle.pressed = Controller.is_calibrating
-
-func _enter_tree():
 	Controller.set_status( 1 )
 
 func _input( event ):

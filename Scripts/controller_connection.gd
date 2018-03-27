@@ -55,8 +55,8 @@ func connect_client( host, port ):
 			output_status = 1
 			set_process( true )
 
-func set_status( status ):
-	output_status = status
+func set_status( value ):
+	output_status = value
 
 func get_status():
 	return input_status
@@ -96,8 +96,8 @@ func set_identifier( user_name, time_stamp ):
 	output_values[ 0 ][ USER ] = hash( user_name )
 	output_values[ 0 ][ TIME ] = time_stamp
 
-func set_time_window( time_window_seconds ):
-	output_values[ 1 ][ TIME ] = time_window_seconds * 1000
+func set_time_window( value ):
+	output_values[ 1 ][ TIME ] = value * 1000
 
 func _notification( what ):
 	if what == NOTIFICATION_PREDELETE: 

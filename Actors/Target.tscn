@@ -33,7 +33,7 @@ params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
 albedo_texture = ExtResource( 2 )
 metallic = 0.0
-metallic_specular = 0.5
+metallic_specular = 0.0
 metallic_texture_channel = 0
 roughness = 0.0
 roughness_texture_channel = 0
@@ -58,7 +58,7 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo" ]
+_sections_unfolded = [ "Albedo", "Metallic" ]
 
 [node name="TargetArea" type="Area"]
 

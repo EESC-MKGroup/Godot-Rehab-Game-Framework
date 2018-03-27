@@ -11,7 +11,7 @@
 
 [sub_resource type="BoxShape" id=1]
 
-extents = Vector3( 4.31559, 5.13088, 1.43905 )
+extents = Vector3( 3.5, 3.5, 1.5 )
 
 [sub_resource type="SpatialMaterial" id=2]
 
@@ -400,18 +400,11 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Background" ]
 
-[node name="Game" type="Spatial" index="0"]
+[node name="Game" type="Spatial"]
 
 script = ExtResource( 1 )
 
-[node name="Timer" type="Timer" parent="." index="0"]
-
-process_mode = 0
-wait_time = 5.0
-one_shot = false
-autostart = false
-
-[node name="GameSpace" type="Area" parent="." index="1"]
+[node name="GameSpace" type="Area" parent="." index="0"]
 
 input_ray_pickable = false
 input_capture_on_drag = false
@@ -464,12 +457,12 @@ transform = Transform( -5, 2.2076e-06, -2.22475e-07, -2.21506e-06, -4.93743, 0.7
 enabled = true
 exclude_parent = true
 cast_to = Vector3( 0, -3, 0 )
-collision_mask = 1
+collision_mask = 2
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Watermelon" type="MeshInstance" parent="GameSpace/Boundaries/Hand" index="1"]
 
-transform = Transform( -2.22474e-07, -5, 1.393e-06, 0.788553, -1.41065e-06, -4.93743, 4.93743, -6.13511e-14, 0.788553, 25, -0.745074, -0.438815 )
+transform = Transform( -2.22474e-07, -5, 1.393e-06, 0.788553, -1.41065e-06, -4.93743, 4.93743, -9.89493e-14, 0.788553, 16.6649, -0.745076, -0.438815 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -487,7 +480,7 @@ _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Rope" type="MeshInstance" parent="GameSpace/Boundaries/Hand/Watermelon" index="0"]
 
-transform = Transform( 0.00788552, 2.00644e-07, 0.0493743, -1.94719e-08, 3.26683, 1.28801e-15, -0.0493743, -1.25631e-06, 0.00788552, 7.45058e-09, 2.80891, 0.0760433 )
+transform = Transform( 0.00788552, 2.00644e-07, 0.0493743, -1.155e-08, 1.93776, 4.71662e-15, -0.0493743, -1.25631e-06, 0.00788552, 7.45058e-09, 2.67237, 0.0760433 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -504,7 +497,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Balloon" type="MeshInstance" parent="GameSpace/Boundaries/Hand" index="2"]
 
-transform = Transform( -1.33485e-06, -30, 8.35798e-06, 4.73132, -8.46391e-06, -29.6245, 29.6245, -1.70082e-12, 4.73132, -25.5129, -1.04935, -0.691122 )
+transform = Transform( -1.33485e-06, -30, 8.35798e-06, 4.73132, -8.46391e-06, -29.6245, 29.6245, -1.91495e-12, 4.73132, -16.5225, -1.04935, -0.691122 )
 visible = false
 layers = 1
 material_override = null
@@ -522,7 +515,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Rope" type="MeshInstance" parent="GameSpace/Boundaries/Hand/Balloon" index="0"]
 
-transform = Transform( 0.000630844, 3.34406e-08, 0.00394994, -1.44324e-09, 0.504448, 8.13534e-17, -0.00394994, -2.09384e-07, 0.000630844, 0.0148513, -0.698583, -0.00359752 )
+transform = Transform( 0.000630844, 3.34406e-08, 0.00394994, -8.09403e-10, 0.282906, 9.71955e-17, -0.00394994, -2.09384e-07, 0.000630844, 0.0148513, -0.48493, -0.00359752 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -540,8 +533,10 @@ _sections_unfolded = [ "Transform" ]
 [node name="Target" parent="GameSpace/Boundaries" index="1" instance=ExtResource( 7 )]
 
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, -2 )
+collision_layer = 2
+_sections_unfolded = [ "Collision", "Transform" ]
 
-[node name="SpotLight" type="SpotLight" parent="." index="2"]
+[node name="SpotLight" type="SpotLight" parent="." index="1"]
 
 transform = Transform( 0.950943, 0.0849509, -0.297473, 0, 0.961559, 0.274598, 0.309365, -0.261127, 0.914388, -4.87967, 9.413, 13.3031 )
 layers = 1
@@ -564,7 +559,7 @@ spot_angle = 37.5642
 spot_angle_attenuation = 1.0
 _sections_unfolded = [ "Light" ]
 
-[node name="Camera" type="Camera" parent="." index="3"]
+[node name="Camera" type="Camera" parent="." index="2"]
 
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.18777, 11.773 )
 keep_aspect = 1
@@ -580,9 +575,9 @@ size = 16.852
 near = 0.05
 far = 100.0
 
-[node name="GUI" parent="." index="4" instance=ExtResource( 8 )]
+[node name="GUI" parent="." index="3" instance=ExtResource( 8 )]
 
-[node name="Floor" type="MeshInstance" parent="." index="5"]
+[node name="Floor" type="MeshInstance" parent="." index="4"]
 
 transform = Transform( 50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0 )
 layers = 1
@@ -599,10 +594,10 @@ skeleton = NodePath("..")
 material/0 = SubResource( 9 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="6"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="5"]
 
 environment = SubResource( 11 )
 
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
 
 
