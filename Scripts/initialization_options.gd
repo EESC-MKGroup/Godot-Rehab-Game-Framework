@@ -26,9 +26,9 @@ func _on_ConnectButton_pressed():
 	var server_address = Configuration.get_parameter( "server_address" )
 	Controller.connect_client( server_address, 8000 )
 	var user_name = Configuration.get_parameter( "user_name" )
-	var time_stamp = OS.get_system_time_secs()
+	var time_stamp = OS.get_unix_time()
 	Controller.set_identifier( user_name, time_stamp )
-	DataLog.create_new_log( user_name + "_" + str(time_stamp) )
+	DataLog.create_new_log( user_name, time_stamp )
 
 func _on_AddressInput_text_entered( new_text ):
 	Configuration.set_parameter( "server_address", new_text )

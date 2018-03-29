@@ -4,7 +4,7 @@
 [ext_resource path="res://Actors/Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Actors/SpaceShip1.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Audios/Music/music_background.wav" type="AudioStream" id=5]
+[ext_resource path="res://Audios/Music/background_ambience.ogg" type="AudioStream" id=5]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -127,7 +127,7 @@ _sections_unfolded = [ "Light" ]
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="5"]
 
 stream = ExtResource( 5 )
-volume_db = -4.0
+volume_db = 0.0
 autoplay = true
 mix_target = 0
 bus = "Master"
@@ -135,7 +135,5 @@ bus = "Master"
 [connection signal="area_exited" from="BoundaryArea" to="." method="_on_BoundaryArea_area_exited"]
 
 [connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
-
-[connection signal="finished" from="AudioStreamPlayer" to="AudioStreamPlayer" method="play"]
 
 

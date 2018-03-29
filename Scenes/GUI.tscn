@@ -74,12 +74,13 @@ func _on_StartButton_toggled( button_pressed ):
 		game_timer.paused = false
 		game_timer.start()
 		start_button.text = \"Stop\"
+		_on_Timer_timeout()
 	else: 
 		game_timer.paused = true
 		start_button.text = \"Start\"
 "
 
-[sub_resource type="GDScript" id=4]
+[sub_resource type="GDScript" id=3]
 
 script/source = "extends Panel
 
@@ -267,7 +268,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-script = SubResource( 4 )
+script = SubResource( 3 )
 _sections_unfolded = [ "Margin", "Pause" ]
 
 [node name="Label" type="Label" parent="PauseMenu" index="0"]
@@ -404,9 +405,9 @@ _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
-[connection signal="toggled" from="StartButton" to="StartButton" method="_on_toggled"]
-
 [connection signal="toggled" from="StartButton" to="." method="_on_StartButton_toggled"]
+
+[connection signal="toggled" from="StartButton" to="StartButton" method="_on_toggled"]
 
 [connection signal="pressed" from="PauseMenu/ResumeButton" to="PauseMenu" method="_on_ResumeButton_pressed"]
 

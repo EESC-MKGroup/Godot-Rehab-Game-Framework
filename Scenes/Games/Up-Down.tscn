@@ -400,7 +400,7 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Background" ]
 
-[node name="Game" type="Spatial"]
+[node name="Game" type="Spatial" index="0"]
 
 script = ExtResource( 1 )
 
