@@ -15,7 +15,7 @@ onready var boundaries = boundary_area.get_node( "Boundaries" )
 onready var boundary_extents = boundaries.shape.extents
 
 var asteroid_wall = preload( "res://Actors/AsteroidWall.tscn" )
-var score_animation = preload( "res://Actors/ScoreAnimation.tscn" )
+var score_animation = preload( "res://Actors/PopUpAnimation.tscn" )
 
 onready var asteroid_width = 2 * boundary_extents.y / ASTEROID_SLOTS_NUMBER
 onready var asteroid_top = -boundary_extents.y + asteroid_width / 2
@@ -58,8 +58,7 @@ func _on_ScoreArea_body_exited( body, area ):
 	if area.get_asteroids_number() >= ASTEROID_SLOTS_NUMBER - 1:
 		score += 1
 		var score_up = score_animation.instance()
-		score_up.rotation = Vector3( 0, PI, PI / 2 )
-		score_up.translation.z = -0.5
+		score_up.set_animation( "score_up", "warpout" )
 		body.add_child( score_up )
 	setpoint_positions.pop_front()
 	_set_setpoint()

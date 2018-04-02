@@ -7,7 +7,7 @@ script/source = "extends Area
 onready var boundaries = get_node( \"Boundaries\" )
 onready var boundary_extents = boundaries.shape.extents
 
-var asteroid = preload( \"res://Actors/Asteroid.tscn\" )
+var asteroid = preload( \"res://Actors/Collider.tscn\" )
 
 var linear_speed = 0
 
@@ -17,6 +17,7 @@ func _physics_process( delta ):
 func spawn_asteroids( spawn_positions, speed ):
 	for position in spawn_positions:
 		var spawned_asteroid = asteroid.instance()
+		spawned_asteroid.set_object( \"asteroid_02\" )
 		spawned_asteroid.translate( Vector3( 0, position, 0 ) )
 		add_child( spawned_asteroid )
 	linear_speed = speed

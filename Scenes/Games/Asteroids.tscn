@@ -36,7 +36,7 @@ asteroid_speed = 3
 
 [node name="Background" parent="." index="0" instance=ExtResource( 2 )]
 
-modulate = Color( 0.839844, 0.839844, 0.839844, 1 )
+modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
 
 [node name="BoundaryArea" type="Area" parent="." index="1"]
 

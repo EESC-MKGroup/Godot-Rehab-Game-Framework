@@ -1,9 +1,11 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://Textures/prop_asteroid_02_dff.png" type="Texture" id=1]
-[ext_resource path="res://Textures/prop_asteroid_01_dff.png" type="Texture" id=2]
+[ext_resource path="res://Textures/asteroid_02_diffuse.png" type="Texture" id=1]
+[ext_resource path="res://Textures/asteroid_01_diffuse.png" type="Texture" id=2]
 [ext_resource path="res://Audios/Sounds/explosion_asteroid.wav" type="AudioStream" id=3]
 [ext_resource path="res://Textures/part_shockwave_dff.png" type="Texture" id=4]
+
+
 
 [sub_resource type="Gradient" id=1]
 

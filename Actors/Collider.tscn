@@ -64,7 +64,7 @@ _sections_unfolded = [ "Albedo", "Anisotropy", "Flags", "Metallic", "NormalMap",
 
 radius = 0.774898
 
-[node name="Collider" type="Area" index="0"]
+[node name="Collider" type="Area"]
 
 input_ray_pickable = true
 input_capture_on_drag = false

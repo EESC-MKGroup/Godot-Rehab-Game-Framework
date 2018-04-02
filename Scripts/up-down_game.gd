@@ -16,7 +16,7 @@ onready var ray = hand.get_node( "RayCast" )
 onready var watermelon = hand.get_node( "Watermelon" )
 onready var balloon = hand.get_node( "Balloon" )
 
-var score_animation = preload( "res://Actors/ScoreAnimation.tscn" )
+var score_animation = preload( "res://Actors/PopUpAnimation.tscn" )
 
 func _ready():
 	Controller.set_status( 4 )
@@ -29,11 +29,8 @@ func _physics_process( delta ):
 
 func _switch_objects():
 	if ray.is_colliding():
-		print( "target reached" ) 
 		var score_up = score_animation.instance()
-		score_up.rotation = Vector3( PI, -PI, 0 )
-		score_up.translation.y = -6.0
-		score_up.scale *= 10.0
+		score_up.set_animation( "score_up", "point" )
 		hand.add_child( score_up )
 	if direction == UP:
 		balloon.show()
