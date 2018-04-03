@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Scripts/up-down_game.gd" type="Script" id=1]
 [ext_resource path="res://Meshes/TOON_HAND.obj" type="ArrayMesh" id=2]
@@ -180,7 +180,67 @@ height = 2.0
 radial_segments = 16
 rings = 4
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SphereMesh" id=6]
+
+radius = 1.0
+height = 2.0
+radial_segments = 16
+rings = 16
+is_hemisphere = false
+
+[sub_resource type="SpatialMaterial" id=7]
+
+render_priority = 0
+flags_transparent = false
+flags_unshaded = false
+flags_vertex_lighting = false
+flags_no_depth_test = false
+flags_use_point_size = false
+flags_world_triplanar = false
+flags_fixed_size = false
+flags_albedo_tex_force_srgb = false
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
+params_diffuse_mode = 0
+params_specular_mode = 0
+params_blend_mode = 0
+params_cull_mode = 0
+params_depth_draw_mode = 0
+params_line_width = 1.0
+params_point_size = 1.0
+params_billboard_mode = 0
+params_grow = false
+params_use_alpha_scissor = false
+albedo_color = Color( 0.84668, 0.867188, 0.298096, 1 )
+metallic = 0.0
+metallic_specular = 0.0
+metallic_texture_channel = 0
+roughness = 0.0
+roughness_texture_channel = 0
+emission_enabled = false
+normal_enabled = false
+rim_enabled = false
+clearcoat_enabled = false
+anisotropy_enabled = false
+ao_enabled = false
+depth_enabled = false
+subsurf_scatter_enabled = false
+transmission_enabled = false
+refraction_enabled = false
+detail_enabled = false
+uv1_scale = Vector3( 1, 1, 1 )
+uv1_offset = Vector3( 0, 0, 0 )
+uv1_triplanar = false
+uv1_triplanar_sharpness = 1.0
+uv2_scale = Vector3( 1, 1, 1 )
+uv2_offset = Vector3( 0, 0, 0 )
+uv2_triplanar = false
+uv2_triplanar_sharpness = 1.0
+proximity_fade_enable = false
+distance_fade_enable = false
+_sections_unfolded = [ "Albedo", "Metallic" ]
+
+[sub_resource type="SpatialMaterial" id=8]
 
 render_priority = 0
 flags_transparent = false
@@ -232,22 +292,30 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo" ]
 
-[sub_resource type="CylinderMesh" id=7]
+[sub_resource type="CylinderMesh" id=9]
 
-material = SubResource( 6 )
+material = SubResource( 8 )
 top_radius = 1.0
 bottom_radius = 1.0
 height = 2.0
 radial_segments = 16
 rings = 4
 
-[sub_resource type="PlaneMesh" id=8]
+[sub_resource type="SphereMesh" id=10]
+
+radius = 1.0
+height = 2.0
+radial_segments = 16
+rings = 16
+is_hemisphere = false
+
+[sub_resource type="PlaneMesh" id=11]
 
 size = Vector2( 2, 2 )
 subdivide_width = 0
 subdivide_depth = 0
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=12]
 
 render_priority = 0
 flags_transparent = false
@@ -299,7 +367,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Metallic" ]
 
-[sub_resource type="ProceduralSky" id=10]
+[sub_resource type="ProceduralSky" id=13]
 
 radiance_size = 4
 sky_top_color = Color( 0.339844, 1, 0.969055, 1 )
@@ -320,10 +388,10 @@ sun_energy = 16.0
 texture_size = 2
 _sections_unfolded = [ "Sky" ]
 
-[sub_resource type="Environment" id=11]
+[sub_resource type="Environment" id=14]
 
 background_mode = 3
-background_sky = SubResource( 10 )
+background_sky = SubResource( 13 )
 background_sky_custom_fov = 0.0
 background_color = Color( 0.771286, 0.958497, 0.972656, 1 )
 background_energy = 1.0
@@ -462,7 +530,7 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Watermelon" type="MeshInstance" parent="GameSpace/Boundaries/Hand" index="1"]
 
-transform = Transform( -2.22474e-07, -5, 1.393e-06, 0.788553, -1.41065e-06, -4.93743, 4.93743, -9.89493e-14, 0.788553, 16.6649, -0.745076, -0.438815 )
+transform = Transform( -9.75531e-06, -5, 0, -4.33013, 8.44834e-06, -2.5, 2.5, -4.87765e-06, -4.33013, 16.6649, -0.745076, -0.438815 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -495,6 +563,23 @@ skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
 
+[node name="Knot" type="MeshInstance" parent="GameSpace/Boundaries/Hand/Watermelon" index="1"]
+
+transform = Transform( 0.0252801, 0.0216512, 0.140387, 0.0102017, 0.0660506, -0.0486127, -0.147502, 0.00827902, 0.0206984, 0.108537, 1.12491, 0.0843731 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 6 )
+skeleton = NodePath("..")
+material/0 = SubResource( 7 )
+_sections_unfolded = [ "Geometry", "Transform", "material" ]
+
 [node name="Balloon" type="MeshInstance" parent="GameSpace/Boundaries/Hand" index="2"]
 
 transform = Transform( -1.33485e-06, -30, 8.35798e-06, 4.73132, -8.46391e-06, -29.6245, 29.6245, -1.91495e-12, 4.73132, -16.5225, -1.04935, -0.691122 )
@@ -513,9 +598,9 @@ skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
 
-[node name="Rope" type="MeshInstance" parent="GameSpace/Boundaries/Hand/Balloon" index="0"]
+[node name="Thread" type="MeshInstance" parent="GameSpace/Boundaries/Hand/Balloon" index="0"]
 
-transform = Transform( 0.000630844, 3.34406e-08, 0.00394994, -8.09403e-10, 0.282906, 9.71955e-17, -0.00394994, -2.09384e-07, 0.000630844, 0.0148513, -0.48493, -0.00359752 )
+transform = Transform( 0.000630844, 9.57381e-09, 0.00394994, -8.09403e-10, 0.3, 9.69397e-16, -0.00394994, -5.99455e-08, 0.000630844, 0.00653105, -0.48493, -0.00359753 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -525,14 +610,31 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 7 )
+mesh = SubResource( 9 )
+skeleton = NodePath("..")
+material/0 = null
+_sections_unfolded = [ "Transform" ]
+
+[node name="Knot" type="MeshInstance" parent="GameSpace/Boundaries/Hand/Balloon" index="1"]
+
+transform = Transform( 0.00189854, -0.00226503, 0.0118874, 0.000773968, 0.00555605, 0.00484615, -0.0128373, -3.97861e-09, 0.00205024, 0.00923077, -0.193128, -0.00359755 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 10 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
 
 [node name="Target" parent="GameSpace/Boundaries" index="1" instance=ExtResource( 7 )]
 
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, -2 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 3.5, -2 )
 collision_layer = 2
 _sections_unfolded = [ "Collision", "Transform" ]
 
@@ -589,14 +691,14 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 8 )
+mesh = SubResource( 11 )
 skeleton = NodePath("..")
-material/0 = SubResource( 9 )
+material/0 = SubResource( 12 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="5"]
 
-environment = SubResource( 11 )
+environment = SubResource( 14 )
 
 [connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
 
