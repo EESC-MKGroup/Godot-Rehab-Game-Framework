@@ -27,7 +27,7 @@ func _physics_process( delta ):
 	
 	DataLog.register_values( [ translation.y ] )"
 
-[node name="Game" type="Spatial" index="0"]
+[node name="Game" type="Spatial"]
 
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 script = ExtResource( 1 )
@@ -36,7 +36,7 @@ asteroid_speed = 3
 
 [node name="Background" parent="." index="0" instance=ExtResource( 2 )]
 
-modulate = Color( 0.839844, 0.839844, 0.839844, 1 )
+modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
 
 [node name="BoundaryArea" type="Area" parent="." index="1"]
 

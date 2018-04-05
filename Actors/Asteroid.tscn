@@ -1,52 +1,21 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://Meshes/prop_asteroid_03.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://Textures/prop_asteroid_03_dff.png" type="Texture" id=2]
-[ext_resource path="res://Textures/prop_asteroid_03_nrm.png" type="Texture" id=3]
+[ext_resource path="res://Actors/Collider.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Actors/Explosion.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Meshes/asteroid_02.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://Textures/asteroid_02_diffuse.png" type="Texture" id=4]
+[ext_resource path="res://Textures/asteroid_02_normal.png" type="Texture" id=5]
 
 [sub_resource type="GDScript" id=1]
 
-script/source = "extends Area
+script/source = "extends \"res://Scripts/collider.gd\"
 
-export var angular_speed = 2
+var meshes = [ preload( \"res://Meshes/asteroid_02.obj\" ) ]
+var diffuse_maps = [ preload( \"res://Textures/asteroid_02_diffuse.png\" ) ]
+var normal_maps = [ preload( \"res://Textures/asteroid_02_normal.png\" ) ]
 
-var diff_textures = [ preload( \"res://Textures/prop_asteroid_01_dff.png\" ),
-                      preload( \"res://Textures/prop_asteroid_02_dff.png\" ),
-                      preload( \"res://Textures/prop_asteroid_03_dff.png\" ) ]
-
-var norm_textures = [ preload( \"res://Textures/prop_asteroid_01_nrm.png\" ),
-                      preload( \"res://Textures/prop_asteroid_02_nrm.png\" ),
-                      preload( \"res://Textures/prop_asteroid_03_nrm.png\" ) ]
-
-var meshes = [ preload( \"res://Meshes/prop_asteroid_01.obj\" ),
-               preload( \"res://Meshes/prop_asteroid_02.obj\" ),
-               preload( \"res://Meshes/prop_asteroid_03.obj\" ) ]
-
-onready var collider_radius = get_node( \"CollisionShape\" ).shape.radius
-onready var mesh_instance = get_node( \"MeshInstance\" )
-
-var explosion = preload( \"res://Actors/Explosion.tscn\" )
-
-var rotation_axis = Vector3( rand_range( -1, 1 ), rand_range( -1, 1 ), rand_range( -1, 1 ) )
-
-func _ready():
-	var type = randi() % meshes.size()
-	mesh_instance.mesh = meshes[ type ]
-	var material = SpatialMaterial.new()
-	material.vertex_color_use_as_albedo = true
-	material.albedo_texture = diff_textures[ type ]
-	material.normal_texture = norm_textures[ type ]
-	mesh_instance.set_surface_material( 0, material )
-
-func _physics_process( delta ):
-	rotate( rotation_axis.normalized(), angular_speed * delta )
-
-func _on_body_entered( body ):
-	var destroy_explosion = explosion.instance()
-	destroy_explosion.translation = translation
-	get_parent().add_child( destroy_explosion )
-	queue_free()
-"
+func _enter_tree():
+	set_multi_object( meshes, diffuse_maps, normal_maps )"
 
 [sub_resource type="SpatialMaterial" id=2]
 
@@ -59,8 +28,8 @@ flags_use_point_size = false
 flags_world_triplanar = false
 flags_fixed_size = false
 flags_albedo_tex_force_srgb = false
-vertex_color_use_as_albedo = true
-vertex_color_is_srgb = true
+vertex_color_use_as_albedo = false
+vertex_color_is_srgb = false
 params_diffuse_mode = 0
 params_specular_mode = 0
 params_blend_mode = 0
@@ -72,16 +41,16 @@ params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
-albedo_texture = ExtResource( 2 )
+albedo_texture = ExtResource( 4 )
 metallic = 0.0
-metallic_specular = 0.0
+metallic_specular = 0.5
 metallic_texture_channel = 0
 roughness = 0.0
 roughness_texture_channel = 0
 emission_enabled = false
 normal_enabled = true
 normal_scale = 1.0
-normal_texture = ExtResource( 3 )
+normal_texture = ExtResource( 5 )
 rim_enabled = false
 clearcoat_enabled = false
 anisotropy_enabled = false
@@ -101,59 +70,17 @@ uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
-_sections_unfolded = [ "Albedo", "Anisotropy", "Flags", "Metallic", "NormalMap", "Vertex Color" ]
+_sections_unfolded = [ "Albedo", "Metallic", "NormalMap" ]
 
-[sub_resource type="SphereShape" id=3]
+[node name="Collider" instance=ExtResource( 1 )]
 
-radius = 0.774898
-
-[node name="Asteroid" type="Area"]
-
-input_ray_pickable = true
-input_capture_on_drag = false
-space_override = 0
-gravity_point = false
-gravity_distance_scale = 0.0
-gravity_vec = Vector3( 0, -1, 0 )
-gravity = 9.8
-linear_damp = 0.1
-angular_damp = 1.0
-priority = 0.0
-monitoring = true
-monitorable = true
-collision_layer = 2
-collision_mask = 1
-audio_bus_override = false
-audio_bus_name = "Master"
-reverb_bus_enable = false
-reverb_bus_name = "Master"
-reverb_bus_amount = 0.0
-reverb_bus_uniformity = 0.0
 script = SubResource( 1 )
-_sections_unfolded = [ "Collision", "collision" ]
 angular_speed = 2
+destroy_effect = ExtResource( 2 )
 
-[node name="MeshInstance" type="MeshInstance" parent="." index="0"]
+[node name="MeshInstance" parent="." index="0"]
 
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-mesh = ExtResource( 1 )
-skeleton = NodePath("..")
+mesh = ExtResource( 3 )
 material/0 = SubResource( 2 )
-_sections_unfolded = [ "Geometry", "Transform", "material" ]
-
-[node name="CollisionShape" type="CollisionShape" parent="." index="1"]
-
-shape = SubResource( 3 )
-disabled = false
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 
 

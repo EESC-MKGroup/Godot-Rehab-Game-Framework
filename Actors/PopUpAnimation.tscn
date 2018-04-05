@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Textures/score_up.png" type="Texture" id=1]
+[ext_resource path="res://Audios/Sounds/warpout.wav" type="AudioStream" id=2]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Node2D
+
+onready var camera = get_tree().get_root().get_node( \"Game/Camera\" )
+
+func _ready():
+	position = camera.unproject_position( get_parent().global_transform.origin )
+
+func set_animation( sprite_name, sound_name ):
+	$Sprite.texture = load( \"res://Textures/\" + sprite_name + \".png\" )
+	$AudioStreamPlayer.stream = load( \"res://Audios/Sounds/\" + sound_name + \".wav\" )"
+
+[sub_resource type="Animation" id=2]
+
+length = 0.5
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -10 ) ]
+}
+
+[node name="PopUpAnimation" type="Node2D"]
+
+script = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="0"]
+
+root_node = NodePath("..")
+autoplay = "score_up"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/score_up = SubResource( 2 )
+blend_times = [  ]
+_sections_unfolded = [ "Playback Options" ]
+
+[node name="Sprite" type="Sprite" parent="." index="1"]
+
+position = Vector2( 20, -20 )
+texture = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="2"]
+
+stream = ExtResource( 2 )
+volume_db = -5.0
+autoplay = true
+mix_target = 0
+bus = "Master"
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="queue_free"]
+
+

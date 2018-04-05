@@ -25,7 +25,7 @@ func receive_data():
 	for axis_index in range(input_values.size()):
 		var axis_values = input_values[ axis_index ]
 		for value_index in axis_values.size():
-			axis_values[ value_index ] = connection.get_float()
+			axis_values[ value_index ] = -connection.get_float()
 		var axis_limits = position_limits[ axis_index ]
 		if is_calibrating: 
 			axis_limits = _check_limits( axis_limits, axis_values[ POSITION ] )
@@ -65,7 +65,7 @@ func set_axis_values( axis_index, setpoint, stiffness ):
 	var axis_limits = position_limits[ axis_index ]
 	if not is_calibrating:
 		setpoint = _denormalize( setpoint, axis_limits )
-		output_values[ axis_index ][ SETPOINT ] = setpoint
+		output_values[ axis_index ][ SETPOINT ] = -setpoint
 		output_values[ axis_index ][ STIFFNESS ] = stiffness
 
 func get_axis_values( axis_index ):
@@ -93,7 +93,10 @@ func get_calibration():
 	return is_calibrating
 
 func set_identifier( user_name, time_stamp ):
-	output_values[ 0 ][ USER ] = hash( user_name )
+	var string_buffer = StreamPeerBuffer.new()
+	string_buffer.put_data( user_name.to_ascii() )
+	#string_buffer.get_u8()
+	output_values[ 0 ][ USER ] = string_buffer.get_u32()
 	output_values[ 0 ][ TIME ] = time_stamp
 
 func set_time_window( value ):

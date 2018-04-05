@@ -26,9 +26,9 @@ func get_asteroids_number():
 
 [sub_resource type="BoxShape" id=2]
 
-extents = Vector3( 0.67, 4.5, 0.5 )
+extents = Vector3( 0.67, 4.5, 0.6 )
 
-[node name="AsteroidWall" type="Area"]
+[node name="Wall" type="Area"]
 
 input_ray_pickable = false
 input_capture_on_drag = false
