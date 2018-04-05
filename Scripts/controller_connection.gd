@@ -4,10 +4,9 @@ enum AXIS { VERTICAL, HORIZONTAL }
 enum INPUT { POSITION, VELOCITY, ACCELERATION, FORCE }
 enum OUTPUT { SETPOINT, STIFFNESS, USER, TIME }
 
-const NULL_LIMITS = [ null, null ]
-
+var position_limits = [ null, null ]
+var force_limits = [ NAN, NAN ]
 var input_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
-var position_limits = NULL_LIMITS
 var output_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
 var input_status = 0
 var output_status = 0
@@ -18,20 +17,21 @@ var connection = StreamPeerTCP.new()
 
 func _ready():
 	#connection.set_no_delay( true )
+	set_calibration( true )
 	set_process( false )
 
 func receive_data():
 	input_status = connection.get_u16()
-	for axis_index in range(input_values.size()):
+	for axis_index in range( input_values.size() ):
 		var axis_values = input_values[ axis_index ]
 		for value_index in axis_values.size():
 			axis_values[ value_index ] = -connection.get_float()
-		var axis_limits = position_limits[ axis_index ]
 		if is_calibrating: 
-			axis_limits = _check_limits( axis_limits, axis_values[ POSITION ] )
-			position_limits[ axis_index ] = axis_limits
-		elif axis_limits != null:
-			axis_values[ POSITION ] = _normalize( axis_values[ POSITION ], axis_limits )
+			position_limits[ axis_index ] = _check_limits( position_limits[ axis_index ], axis_values[ POSITION ] )
+			force_limits[ axis_index ] = _check_max( force_limits[ axis_index ], axis_values[ FORCE ] )
+		elif position_limits[ axis_index ] != null:
+			axis_values[ POSITION ] = _normalize( axis_values[ POSITION ], position_limits[ axis_index ] )
+			axis_values[ FORCE ] = _scale( axis_values[ FORCE ], force_limits[ axis_index ] )
 
 func send_data():
 	var output_buffer = StreamPeerBuffer.new()
@@ -85,8 +85,20 @@ func _denormalize( value, limits ):
 	var value_range = limits[ 1 ] - limits[ 0 ]
 	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
 
+func _check_max( max_value, value ):
+	if max_value == NAN: max_value = 0.001
+	return max( abs(value), max_value ) 
+
+func _scale( value, max_value ):
+	return value / max_value
+
+func _unscale( value, max_value ):
+	return value * max_value
+
 func set_calibration( value ):
-	if value: position_limits = NULL_LIMITS
+	if value: 
+		position_limits = [ null, null ]
+		force_limits = [ NAN, NAN ]
 	is_calibrating = value
 
 func get_calibration():
