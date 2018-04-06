@@ -330,6 +330,7 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 [node name="Watermelon" type="MeshInstance" parent="GameSpace/Boundaries/Player" index="1"]
 
 transform = Transform( -1.77177, -0.625576, 4.63352, -4.57653, -0.782347, -1.85561, 0.957168, -4.89863, -0.295366, 0, 0, 0 )
+visible = false
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -365,7 +366,6 @@ _sections_unfolded = [ "Transform" ]
 [node name="Balloon" type="MeshInstance" parent="GameSpace/Boundaries/Player" index="2"]
 
 transform = Transform( -1.33485e-06, -30, 8.35798e-06, 4.73132, -8.46391e-06, -29.6245, 29.6245, -1.91495e-12, 4.73132, 0, 0, 0 )
-visible = false
 layers = 1
 material_override = null
 cast_shadow = 1

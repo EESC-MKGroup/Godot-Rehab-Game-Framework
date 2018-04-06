@@ -86,7 +86,7 @@ func _denormalize( value, limits ):
 	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
 
 func _check_max( max_value, value ):
-	if max_value == NAN: max_value = 0.001
+	if is_nan( max_value ): max_value = 0.001
 	return max( abs(value), max_value ) 
 
 func _scale( value, max_value ):

@@ -1,7 +1,7 @@
 extends Spatial
 
-enum DIRECTION { UP = 1, DOWN = -1 }
-var direction = DOWN 
+enum DIRECTION { UP = -1, DOWN = 1 }
+var direction = UP 
 
 export(float, 0.0, 1.0) var max_setpoint = 0.3 
 
@@ -21,13 +21,16 @@ onready var ray = player.get_node( "RayCast" )
 var score_animation = preload( "res://Actors/PopUpAnimation.tscn" )
 
 func _ready():
-	Controller.set_status( 4 )
+	if Controller.is_calibrating: Controller.set_status( 1 )
+	else: Controller.set_status( 4 )
+	Controller.set_axis_values( Controller.VERTICAL, 0.0, 1 )
+	setpoint_display.text = ( "%+.3f" % 0.0 )
 
 func _physics_process( delta ):
 	var controller_values = Controller.get_axis_values( Controller.VERTICAL )
 	var new_position = controller_values[ Controller.POSITION ] * max_position
 	new_position = clamp( new_position / max_setpoint, -max_position, max_position )
-	player.translation.y = new_position
+	player.translation.y = -new_position
 
 func _switch_objects():
 	if ray.is_colliding():
@@ -43,9 +46,9 @@ func _switch_objects():
 		balloon.hide()
 		direction = UP
 	var target_position = direction * max_position
-	target.translation.y = target_position
+	target.translation.y = -target_position
 	Controller.set_axis_values( Controller.VERTICAL, direction * max_setpoint, 1 )
-	setpoint_display.text = ( "%+.3f" % direction )
+	setpoint_display.text = ( "%+.3f" % ( direction * max_setpoint ) )
 
 func _on_GUI_game_timeout():
 	_switch_objects()
