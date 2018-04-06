@@ -75,7 +75,7 @@ _sections_unfolded = [ "Albedo", "Metallic", "NormalMap" ]
 [node name="Collider" instance=ExtResource( 1 )]
 
 script = SubResource( 1 )
-angular_speed = 2
+angular_speed = 2.0
 destroy_effect = ExtResource( 2 )
 
 [node name="MeshInstance" parent="." index="0"]

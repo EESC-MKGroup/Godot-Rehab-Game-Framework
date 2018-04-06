@@ -4,7 +4,7 @@
 [ext_resource path="res://Textures/asteroid_03_diffuse.png" type="Texture" id=2]
 [ext_resource path="res://Textures/asteroid_03_normal.png" type="Texture" id=3]
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=1]
 
 render_priority = 0
 flags_transparent = false
@@ -100,7 +100,7 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = ExtResource( 1 )
 skeleton = NodePath("..")
-material/0 = SubResource( 3 )
+material/0 = SubResource( 1 )
 _sections_unfolded = [ "Geometry", "Transform", "material" ]
 
 [node name="CollisionShape" type="CollisionShape" parent="." index="1"]

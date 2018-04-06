@@ -194,7 +194,7 @@ height = 0.3
 radial_segments = 16
 rings = 4
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="SpatialMaterial" id=7]
 
 render_priority = 0
 flags_transparent = false
@@ -249,7 +249,7 @@ _sections_unfolded = [ "Albedo", "Metallic" ]
 
 [sub_resource type="CylinderMesh" id=8]
 
-material = SubResource( 10 )
+material = SubResource( 7 )
 top_radius = 1.0
 bottom_radius = 1.0
 height = 0.3
@@ -308,7 +308,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Parameters" ]
 
-[sub_resource type="SpatialMaterial" id=11]
+[sub_resource type="SpatialMaterial" id=10]
 
 render_priority = 0
 flags_transparent = true
@@ -364,9 +364,9 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission", "Flags", "Vertex Color" ]
 
-[sub_resource type="CylinderMesh" id=12]
+[sub_resource type="CylinderMesh" id=11]
 
-material = SubResource( 11 )
+material = SubResource( 10 )
 top_radius = 1.0
 bottom_radius = 1.0
 height = 0.3
@@ -506,7 +506,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 12 )
+mesh = SubResource( 11 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Geometry", "Transform", "material" ]

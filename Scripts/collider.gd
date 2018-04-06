@@ -1,6 +1,6 @@
 extends Area
 
-export var angular_speed = 0
+export(float, 5) var angular_speed = 0
 
 export(PackedScene) var destroy_effect = null
 

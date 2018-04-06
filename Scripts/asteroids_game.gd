@@ -1,12 +1,12 @@
 extends Node
 
 const ASTEROID_SLOTS_NUMBER = 5
-
-var target_index = 0
-var old_target_index = 0
+const PHASES_STIFFNESS = [ 100.0, 50.0, 30.0, 0.0 ]
+const PHASE_WAVES_NUMBER = 10
 
 var setpoint_positions = []
-var setpoint_position = 0
+
+var waves_count = 0
 var score = 0
 
 onready var boundary_area = get_node( "BoundaryArea" )
@@ -19,8 +19,6 @@ var score_animation = preload( "res://Actors/PopUpAnimation.tscn" )
 onready var asteroid_width = 2 * boundary_extents.y / ASTEROID_SLOTS_NUMBER
 onready var asteroid_top = -boundary_extents.y + asteroid_width / 2
 
-export var asteroid_speed = 3
-
 onready var setpoint_display = get_node( "GUI/SetpointDisplay" )
 
 func _ready():
@@ -29,32 +27,27 @@ func _ready():
 	else: Controller.set_status( 2 )
 
 func _set_setpoint():
-	var setpoint_position = setpoint_positions.front()
-	Controller.set_axis_values( Controller.VERTICAL, setpoint_position, 30.0 )
-	setpoint_display.text = ( "%+.3f" % setpoint_position )
+	if setpoint_positions.size() > 0:
+		var setpoint_position = setpoint_positions.front()
+		var stiffness_phase = int( waves_count / PHASE_WAVES_NUMBER ) % PHASES_STIFFNESS.size()
+		Controller.set_axis_values( Controller.VERTICAL, setpoint_position, PHASES_STIFFNESS[ stiffness_phase ] )
+		setpoint_display.text = ( "%+.3f" % setpoint_position )
 
 func _spawn_asteroids():
-	var spawn_positions = []
-	for asteroid_index in range( 0, ASTEROID_SLOTS_NUMBER ):
-		spawn_positions.append( asteroid_top + asteroid_index * asteroid_width )
-	while target_index == old_target_index:
-		target_index = randi() % ASTEROID_SLOTS_NUMBER
-	old_target_index = target_index
-	var target_position = spawn_positions[ target_index ] 
-	setpoint_positions.push_back( target_position / boundary_extents.y )
-	spawn_positions.remove( target_index )
 	var score_area = asteroid_wall.instance()
-	score_area.translation.x = boundary_extents.x
-	score_area.spawn_asteroids( spawn_positions, asteroid_speed )
+	score_area.translation.x = boundary_extents.x + score_area.get_width().x
 	score_area.connect( "body_exited", self, "_on_ScoreArea_body_exited", [ score_area ] )
 	boundaries.add_child( score_area )
+	var target_position = score_area.spawn_colliders( ASTEROID_SLOTS_NUMBER )
+	setpoint_positions.push_back( target_position / boundary_extents.y )
 	_set_setpoint()
+	waves_count += 1
 
 func _on_BoundaryArea_area_exited( area ):
 	area.queue_free()
 
 func _on_ScoreArea_body_exited( body, area ):
-	if area.get_asteroids_number() >= ASTEROID_SLOTS_NUMBER - 1:
+	if area.get_colliders_number() >= ASTEROID_SLOTS_NUMBER - 1:
 		score += 1
 		var score_up = score_animation.instance()
 		score_up.set_animation( "score_up", "warpout" )

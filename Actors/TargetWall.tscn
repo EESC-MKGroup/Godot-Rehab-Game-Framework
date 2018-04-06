@@ -1,0 +1,83 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Area
+
+signal collider_reached
+
+export(PackedScene) var collider = null
+export(int, \"Point\", \"Hole\", \"Block\") var spawn_mode = 0
+export(float, 5) var linear_speed = 0
+
+func _physics_process( delta ):
+	translation.x -= linear_speed * delta
+
+func spawn_colliders( slots_number ):
+	randomize()
+	var slot_width = 2 * $Boundaries.shape.extents.y / slots_number
+	var slot_top = -$Boundaries.shape.extents.y + slot_width / 2
+	var spawn_positions = []
+	for slot_index in range( 0, slots_number ):
+		spawn_positions.append( slot_top + slot_index * slot_width )
+	while get_parent().target_index == get_parent().old_target_index:
+		get_parent().target_index = randi() % slots_number
+	get_parent().old_target_index = get_parent().target_index
+	var target_position = spawn_positions[ get_parent().target_index ]
+	if spawn_mode == 0: spawn_positions = [ target_position ]
+	elif spawn_mode == 1: spawn_positions.remove( get_parent().target_index )
+	for position in spawn_positions:
+		var spawned_collider = collider.instance()
+		spawned_collider.translate( Vector3( 0, position, 0 ) )
+		spawned_collider.connect( \"body_entered\", self, \"_on_Collider_body_entered\", [ spawned_collider ] )
+		$Boundaries.add_child( spawned_collider )
+	return target_position
+
+func _on_Collider_body_entered( collider ):
+	emit_signal( \"collider_reached\", collider )
+
+func get_colliders_number():
+	return $Boundaries.get_child_count()
+
+func get_width():
+	return 2 * $Boundaries.shape.extents"
+
+[sub_resource type="BoxShape" id=2]
+
+extents = Vector3( 0.67, 4.5, 0.6 )
+
+[node name="Wall" type="Area"]
+
+input_ray_pickable = false
+input_capture_on_drag = false
+space_override = 0
+gravity_point = false
+gravity_distance_scale = 0.0
+gravity_vec = Vector3( 0, -1, 0 )
+gravity = 9.8
+linear_damp = 0.1
+angular_damp = 1.0
+priority = 0.0
+monitoring = true
+monitorable = true
+collision_layer = 2
+collision_mask = 1
+audio_bus_override = false
+audio_bus_name = "Master"
+reverb_bus_enable = false
+reverb_bus_name = "Master"
+reverb_bus_amount = 0.0
+reverb_bus_uniformity = 0.0
+script = SubResource( 1 )
+_sections_unfolded = [ "Collision" ]
+collider = null
+spawn_mode = 0
+linear_speed = 0
+
+[node name="Boundaries" type="CollisionShape" parent="." index="0"]
+
+transform = Transform( 1, 0, 4.4671e-25, 0, 1, 0, 0, 0, 1, -6.93889e-18, -4.00498e-09, 0.152374 )
+shape = SubResource( 2 )
+disabled = false
+
+

@@ -278,7 +278,7 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Background" ]
 
-[node name="Game" type="Spatial" index="0"]
+[node name="Game" type="Spatial"]
 
 script = ExtResource( 1 )
 max_setpoint = 0.3
@@ -329,7 +329,7 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Watermelon" type="MeshInstance" parent="GameSpace/Boundaries/Player" index="1"]
 
-transform = Transform( -9.75531e-06, -5, 0, -4.33013, 8.44834e-06, -2.5, 2.5, -4.87765e-06, -4.33013, 0, 0, 0 )
+transform = Transform( -1.77177, -0.625576, 4.63352, -4.57653, -0.782347, -1.85561, 0.957168, -4.89863, -0.295366, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -347,7 +347,7 @@ _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Hand" type="MeshInstance" parent="GameSpace/Boundaries/Player/Watermelon" index="0"]
 
-transform = Transform( 0.111687, -0.0063996, 0.0999254, -0.00400346, -0.149859, -0.00512286, 0.10005, 0.0011474, -0.111753, 0.433275, -1.12948, -0.151798 )
+transform = Transform( 0.136928, -0.0560146, -0.0247599, -0.0317031, -0.0129459, -0.146039, 0.0523985, 0.138545, -0.0236567, -0.283619, -0.586759, 0.798378 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -428,7 +428,7 @@ _sections_unfolded = [ "Light" ]
 
 [node name="Camera" type="Camera" parent="." index="2"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.18777, 10.1476 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.83886, 10.1476 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null
