@@ -9,7 +9,7 @@ path="res://.import/banana.obj-5cc84e5b91046796aa63a508e332fd7f.mesh"
 files=[ "res://.import/banana.obj-5cc84e5b91046796aa63a508e332fd7f.mesh" ]
 
 source_file="res://Meshes/banana.obj"
-source_md5="a2df86782cdfe8a13d42e06e083ee7c2"
+source_md5="7f4fa7dc8a0d8d1734d0af4964084e83"
 
 dest_files=[ "res://.import/banana.obj-5cc84e5b91046796aa63a508e332fd7f.mesh", "res://.import/banana.obj-5cc84e5b91046796aa63a508e332fd7f.mesh" ]
 dest_md5="9c20ccebedd886c94e2f480a385b3661"
