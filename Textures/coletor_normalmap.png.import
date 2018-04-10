@@ -2,25 +2,26 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/coletor_normalmap.png-95e20e450d936b6d7ab3756f2ff6dad5.stex"
+path.s3tc="res://.import/coletor_normalmap.png-95e20e450d936b6d7ab3756f2ff6dad5.s3tc.stex"
+path.etc2="res://.import/coletor_normalmap.png-95e20e450d936b6d7ab3756f2ff6dad5.etc2.stex"
 
 [deps]
 
 source_file="res://Textures/coletor_normalmap.png"
 source_md5="712e46234ed1a65aa406ddb0fdfc6861"
 
-dest_files=[ "res://.import/coletor_normalmap.png-95e20e450d936b6d7ab3756f2ff6dad5.stex" ]
-dest_md5="95afed18efb6f923a63fc7878b614d1a"
+dest_files=[ "res://.import/coletor_normalmap.png-95e20e450d936b6d7ab3756f2ff6dad5.s3tc.stex", "res://.import/coletor_normalmap.png-95e20e450d936b6d7ab3756f2ff6dad5.etc2.stex" ]
+dest_md5="004acfd148b5254700371d10eb3036a5"
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/lossy_quality=0.7
 compress/hdr_mode=0
-compress/normal_map=0
-flags/repeat=0
+compress/normal_map=1
+flags/repeat=true
 flags/filter=true
-flags/mipmaps=false
+flags/mipmaps=true
 flags/anisotropic=false
 flags/srgb=2
 process/fix_alpha_border=true
@@ -28,5 +29,5 @@ process/premult_alpha=false
 process/HDR_as_SRGB=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

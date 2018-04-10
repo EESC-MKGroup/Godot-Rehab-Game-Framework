@@ -1,0 +1,128 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Scripts/asteroids_game.gd" type="Script" id=1]
+[ext_resource path="res://Actors/Background.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Actors/Monster.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Audios/Music/background_ambience.ogg" type="AudioStream" id=5]
+
+[sub_resource type="BoxShape" id=1]
+
+extents = Vector3( 10, 4.5, 1.32514 )
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="GDScript" id=2]
+
+script/source = "extends CollisionShape
+
+var target_index = 0
+var old_target_index = 0"
+
+[node name="Game" type="Spatial" index="0"]
+
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+script = ExtResource( 1 )
+_sections_unfolded = [ "Animation", "Flags", "Geometry", "Region", "Transform" ]
+
+[node name="Background" parent="." index="0" instance=ExtResource( 2 )]
+
+modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
+
+[node name="BoundaryArea" type="Area" parent="." index="1"]
+
+transform = Transform( 1, -1.7053e-13, 4.16334e-17, 0, 1, 0, 0, 0, 1, 0, -0.1, -0.830662 )
+input_ray_pickable = false
+input_capture_on_drag = false
+space_override = 0
+gravity_point = false
+gravity_distance_scale = 0.0
+gravity_vec = Vector3( 0, -1, 0 )
+gravity = 9.8
+linear_damp = 0.1
+angular_damp = 1.0
+priority = 0.0
+monitoring = true
+monitorable = true
+collision_layer = 1
+collision_mask = 1
+audio_bus_override = false
+audio_bus_name = "Master"
+reverb_bus_enable = false
+reverb_bus_name = "Master"
+reverb_bus_amount = 0.0
+reverb_bus_uniformity = 0.0
+_sections_unfolded = [ "Transform" ]
+
+[node name="Boundaries" type="CollisionShape" parent="BoundaryArea" index="0"]
+
+transform = Transform( 1, 0, 0, 0, -1, 3.25841e-07, 0, -3.25841e-07, -1, -1.05714e-13, 0.631391, -0.77693 )
+shape = SubResource( 1 )
+disabled = false
+script = SubResource( 2 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="Character" parent="BoundaryArea/Boundaries" index="0" instance=ExtResource( 3 )]
+
+transform = Transform( 0.4, 0, -2.87736e-24, 0, 0.4, 0, 7.88861e-32, 0, 0.4, -7.6293, -1.95638e-09, 0 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Camera" type="Camera" parent="." index="2"]
+
+transform = Transform( 1, -1.50996e-07, -1.50996e-07, -1.50996e-07, -1, 3.25846e-07, -1.50996e-07, -3.25846e-07, -1, -1.11022e-16, -8.89413e-07, -5.46065 )
+keep_aspect = 1
+cull_mask = 1048575
+environment = null
+h_offset = 0.0
+v_offset = 0.0
+doppler_tracking = 0
+projection = 1
+current = true
+fov = 70.0
+size = 10.5
+near = 0.05
+far = 100.0
+_sections_unfolded = [ "Transform" ]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="3"]
+
+transform = Transform( 1, 8.95487e-07, 6.04247e-07, 8.95278e-07, -0.373954, -0.927447, -6.04556e-07, 0.927447, -0.373954, 6.80916e-06, -10.4496, -6.15625 )
+layers = 1
+light_color = Color( 1, 1, 1, 1 )
+light_energy = 3.0
+light_indirect_energy = 1.0
+light_negative = false
+light_specular = 0.5
+light_bake_mode = 1
+light_cull_mask = -1
+shadow_enabled = false
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_bias = 0.1
+shadow_contact = 0.0
+shadow_reverse_cull_face = false
+editor_only = false
+directional_shadow_mode = 2
+directional_shadow_split_1 = 0.1
+directional_shadow_split_2 = 0.2
+directional_shadow_split_3 = 0.5
+directional_shadow_blend_splits = false
+directional_shadow_normal_bias = 0.8
+directional_shadow_bias_split_scale = 0.25
+directional_shadow_depth_range = 0
+directional_shadow_max_distance = 200.0
+_sections_unfolded = [ "Light" ]
+
+[node name="GUI" parent="." index="4" instance=ExtResource( 4 )]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="5"]
+
+stream = ExtResource( 5 )
+volume_db = 0.0
+autoplay = true
+mix_target = 0
+bus = "Master"
+
+[connection signal="area_exited" from="BoundaryArea" to="." method="_on_BoundaryArea_area_exited"]
+
+[connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
+
+

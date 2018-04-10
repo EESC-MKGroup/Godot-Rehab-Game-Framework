@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/kiwi.obj-22e54a95215aa05b050bf07327f50103.mesh"
+
+[deps]
+
+files=[ "res://.import/kiwi.obj-22e54a95215aa05b050bf07327f50103.mesh" ]
+
+source_file="res://Meshes/kiwi.obj"
+source_md5="35182e486066c0cc8894d47a91e8b88a"
+
+dest_files=[ "res://.import/kiwi.obj-22e54a95215aa05b050bf07327f50103.mesh", "res://.import/kiwi.obj-22e54a95215aa05b050bf07327f50103.mesh" ]
+dest_md5="6a4d98e7baa1e0a09e2d349eddada150"
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )

@@ -405,9 +405,9 @@ _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
-[connection signal="toggled" from="StartButton" to="." method="_on_StartButton_toggled"]
-
 [connection signal="toggled" from="StartButton" to="StartButton" method="_on_toggled"]
+
+[connection signal="toggled" from="StartButton" to="." method="_on_StartButton_toggled"]
 
 [connection signal="pressed" from="PauseMenu/ResumeButton" to="PauseMenu" method="_on_ResumeButton_pressed"]
 

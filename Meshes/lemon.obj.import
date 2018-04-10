@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/lemon.obj-4e30b94bdff34acec34d4e642aebe0ea.mesh"
+
+[deps]
+
+files=[ "res://.import/lemon.obj-4e30b94bdff34acec34d4e642aebe0ea.mesh" ]
+
+source_file="res://Meshes/lemon.obj"
+source_md5="463ec3ec3f877d6c35b814bd065a6336"
+
+dest_files=[ "res://.import/lemon.obj-4e30b94bdff34acec34d4e642aebe0ea.mesh", "res://.import/lemon.obj-4e30b94bdff34acec34d4e642aebe0ea.mesh" ]
+dest_md5="0242f5227fa10b9ea56bbefe1caf70b6"
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
