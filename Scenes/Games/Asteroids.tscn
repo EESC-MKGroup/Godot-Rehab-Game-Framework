@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/asteroids_game.gd" type="Script" id=1]
 [ext_resource path="res://Actors/Background.tscn" type="PackedScene" id=2]
@@ -11,34 +11,19 @@
 extents = Vector3( 10, 4.5, 1.32514 )
 _sections_unfolded = [ "Resource" ]
 
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=2]
 
 script/source = "extends CollisionShape
 
 var target_index = 0
 var old_target_index = 0"
 
-[sub_resource type="GDScript" id=2]
-
-script/source = "extends KinematicBody
-
-onready var max_position = get_parent().shape.extents.y
-
-func _physics_process( delta ):
-	var controller_values = Controller.get_axis_values( Controller.VERTICAL )
-	var new_position = controller_values[ Controller.POSITION ] * max_position
-	new_position = clamp( new_position, -max_position, max_position )
-	var position_delta = new_position - translation.y
-	translation.y = new_position
-	rotation.x = ( rotation.x + 0.15 * position_delta / delta ) / 2
-	
-	DataLog.register_values( [ translation.y ] )"
-
 [node name="Game" type="Spatial" index="0"]
 
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Animation", "Flags", "Geometry", "Region", "Transform" ]
+max_setpoint = 0.8
 
 [node name="Background" parent="." index="0" instance=ExtResource( 2 )]
 
@@ -74,14 +59,13 @@ _sections_unfolded = [ "Transform" ]
 transform = Transform( 1, 0, 4.4671e-25, 0, 1, 0, 0, 0, 1, -1.05714e-13, 0.631391, -0.77693 )
 shape = SubResource( 1 )
 disabled = false
-script = SubResource( 3 )
+script = SubResource( 2 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Player" parent="BoundaryArea/Boundaries" index="0" instance=ExtResource( 3 )]
 
 transform = Transform( -1.62921e-07, 1, 6.93889e-18, -1, -1.62921e-07, 0, 0, -1.73472e-17, 1, -7.89499, 0, 0.349952 )
 collision_layer = 3
-script = SubResource( 2 )
 _sections_unfolded = [ "Axis Lock", "Collision", "Transform" ]
 
 [node name="Camera" type="Camera" parent="." index="2"]
@@ -142,5 +126,7 @@ bus = "Master"
 [connection signal="area_exited" from="BoundaryArea" to="." method="_on_BoundaryArea_area_exited"]
 
 [connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
+
+[connection signal="game_toggle" from="GUI" to="." method="_on_GUI_game_toggle"]
 
 

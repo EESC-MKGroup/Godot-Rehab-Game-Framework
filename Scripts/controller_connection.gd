@@ -5,7 +5,7 @@ enum INPUT { POSITION, VELOCITY, ACCELERATION, FORCE }
 enum OUTPUT { SETPOINT, STIFFNESS, USER, TIME }
 
 var position_limits = [ null, null ]
-var force_limits = [ NAN, NAN ]
+var force_limits = [ null, null ]
 var input_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
 var output_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
 var input_status = 0
@@ -28,7 +28,7 @@ func receive_data():
 			axis_values[ value_index ] = -connection.get_float()
 		if is_calibrating: 
 			position_limits[ axis_index ] = _check_limits( position_limits[ axis_index ], axis_values[ POSITION ] )
-			force_limits[ axis_index ] = _check_max( force_limits[ axis_index ], axis_values[ FORCE ] )
+			force_limits[ axis_index ] = _check_limits( force_limits[ axis_index ], axis_values[ FORCE ] )
 		elif position_limits[ axis_index ] != null:
 			axis_values[ POSITION ] = _normalize( axis_values[ POSITION ], position_limits[ axis_index ] )
 			axis_values[ FORCE ] = _scale( axis_values[ FORCE ], force_limits[ axis_index ] )
@@ -85,20 +85,20 @@ func _denormalize( value, limits ):
 	var value_range = limits[ 1 ] - limits[ 0 ]
 	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
 
-func _check_max( max_value, value ):
-	if is_nan( max_value ): max_value = 0.001
-	return max( abs(value), max_value ) 
+func _scale( value, limits ):
+	if value < 0.0 and limits[ 0 ] < 0.0: return -value / limits[ 0 ]
+	elif value > 0.0 and limits[ 1 ] > 0.0: return value / limits[ 1 ]
+	return 0.0
 
-func _scale( value, max_value ):
-	return value / max_value
-
-func _unscale( value, max_value ):
-	return value * max_value
+func _unscale( value, limits ):
+	if value < 0.0 and limits[ 0 ] < 0.0: return -value * limits[ 0 ]
+	elif value > 0.0 and limits[ 1 ] > 0.0: return value * limits[ 1 ]
+	return 0.0
 
 func set_calibration( value ):
 	if value: 
 		position_limits = [ null, null ]
-		force_limits = [ NAN, NAN ]
+		force_limits = [ null, null ]
 	is_calibrating = value
 
 func get_calibration():

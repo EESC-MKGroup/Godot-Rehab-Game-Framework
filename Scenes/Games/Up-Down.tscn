@@ -278,10 +278,10 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Background" ]
 
-[node name="Game" type="Spatial"]
+[node name="Game" type="Spatial" index="0"]
 
 script = ExtResource( 1 )
-max_setpoint = 0.3
+max_setpoint = 0.7
 
 [node name="GameSpace" type="Area" parent="." index="0"]
 
@@ -366,6 +366,7 @@ _sections_unfolded = [ "Transform" ]
 [node name="Balloon" type="MeshInstance" parent="GameSpace/Boundaries/Player" index="2"]
 
 transform = Transform( -1.33485e-06, -30, 8.35798e-06, 4.73132, -8.46391e-06, -29.6245, 29.6245, -1.91495e-12, 4.73132, 0, 0, 0 )
+visible = false
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -466,5 +467,7 @@ _sections_unfolded = [ "Transform", "material" ]
 environment = SubResource( 7 )
 
 [connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
+
+[connection signal="game_toggle" from="GUI" to="." method="_on_GUI_game_toggle"]
 
 

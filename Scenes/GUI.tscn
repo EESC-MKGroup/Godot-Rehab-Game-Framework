@@ -46,16 +46,11 @@ onready var start_button = get_node( \"StartButton\" )
 onready var pause_menu = get_node( \"PauseMenu\" )
 
 signal game_timeout
+signal game_toggle
 
 func _ready():
 	_on_TimeWindowSlider_value_changed( time_window_slider.value )
-	_on_StartButton_toggled( false )
-
-func _input( event ):
-	if event is InputEventKey:
-		if event.scancode == KEY_ESCAPE: 
-			pause_menu.show()
-			get_tree().paused = true
+	game_timer.paused = true
 
 func _process( delta ):
 	var input_values = Controller.get_axis_values( Controller.VERTICAL )
@@ -78,6 +73,9 @@ func _on_StartButton_toggled( button_pressed ):
 	else: 
 		game_timer.paused = true
 		start_button.text = \"Start\"
+		pause_menu.show()
+		get_tree().paused = true
+	emit_signal( \"game_toggle\", button_pressed )
 "
 
 [sub_resource type="GDScript" id=3]
@@ -405,9 +403,9 @@ _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
-[connection signal="toggled" from="StartButton" to="StartButton" method="_on_toggled"]
-
 [connection signal="toggled" from="StartButton" to="." method="_on_StartButton_toggled"]
+
+[connection signal="toggled" from="StartButton" to="StartButton" method="_on_toggled"]
 
 [connection signal="pressed" from="PauseMenu/ResumeButton" to="PauseMenu" method="_on_ResumeButton_pressed"]
 
