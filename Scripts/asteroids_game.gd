@@ -17,7 +17,7 @@ onready var boundary_extents = boundaries.shape.extents
 
 onready var player = boundaries.get_node( "Player" )
 
-var asteroid_wall = preload( "res://Actors/AsteroidWall.tscn" )
+var asteroid_wall = preload( "res://Actors/FruitWall.tscn" )
 var score_animation = preload( "res://Actors/PopUpAnimation.tscn" )
 
 onready var asteroid_width = 2 * boundary_extents.y / ASTEROID_SLOTS_NUMBER
@@ -46,6 +46,7 @@ func _spawn_asteroids():
 	var score_area = asteroid_wall.instance()
 	score_area.translation.x = boundary_extents.x + waves_count * 2 * score_area.get_width().x
 	score_area.connect( "body_exited", self, "_on_ScoreArea_body_exited", [ score_area ] )
+	score_area.connect( "collider_reached", self, "_on_ScoreArea_collider_reached" )
 	boundaries.add_child( score_area )
 	var target_position = score_area.spawn_colliders( ASTEROID_SLOTS_NUMBER )
 	setpoint_positions.push_back( target_position / boundary_extents.y )
@@ -63,6 +64,9 @@ func _on_ScoreArea_body_exited( body, area ):
 		body.add_child( score_up )
 	setpoint_positions.pop_front()
 	_set_setpoint()
+
+func _on_ScoreArea_collider_reached( collider ):
+	player.eat( collider )
 
 func _on_GUI_game_timeout():
 	_spawn_asteroids()

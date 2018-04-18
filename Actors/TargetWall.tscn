@@ -33,7 +33,7 @@ func spawn_colliders( slots_number ):
 		$Boundaries.add_child( spawned_collider )
 	return target_position
 
-func _on_Collider_body_entered( collider ):
+func _on_Collider_body_entered( body, collider ):
 	emit_signal( \"collider_reached\", collider )
 
 func get_colliders_number():

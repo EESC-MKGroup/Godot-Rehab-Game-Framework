@@ -14,15 +14,16 @@ func set_multi_object( meshes, diffuse_maps, normal_maps ):
 	material.albedo_texture = diffuse_maps[ object_index ]
 	material.normal_texture = normal_maps[ object_index ]
 	$MeshInstance.set_surface_material( 0, material )
+	if destroy_effect != null:
+		connect( "body_entered", self, "_on_body_entered" )
 
 func _physics_process( delta ):
 	rotate( rotation_axis.normalized(), angular_speed * delta )
 
 func _on_body_entered( body ):
-	if destroy_effect != null:
-		var effect = destroy_effect.instance()
-		effect.translation = translation
-		get_parent().add_child( effect )
+	var effect = destroy_effect.instance()
+	effect.translation = translation
+	get_parent().add_child( effect )
 	queue_free()
 
 func get_width():
