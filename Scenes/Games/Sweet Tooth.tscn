@@ -95,6 +95,7 @@ transform = Transform( 1, 0, 0, 0, -1, 3.25841e-07, 0, -3.25841e-07, -1, 0, 0, 0
 material_override = SubResource( 1 )
 modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
 texture = ExtResource( 3 )
+speed = 50
 
 [node name="BoundaryArea" type="Area" parent="." index="1"]
 
