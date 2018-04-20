@@ -32,7 +32,7 @@ var normal_maps = [ preload( \"res://Textures/orange_normal.png\" ),
 func _enter_tree():
 	set_multi_object( meshes, diffuse_maps, normal_maps )"
 
-[node name="Collider" index="0" instance=ExtResource( 1 )]
+[node name="Collider" instance=ExtResource( 1 )]
 
 script = SubResource( 1 )
 angular_speed = 1.0

@@ -7,7 +7,7 @@
 [ext_resource path="res://Meshes/Tooth.material" type="Material" id=5]
 [ext_resource path="res://Audios/Sounds/swallow.wav" type="AudioStream" id=6]
 
-[sub_resource type="GDScript" id=7]
+[sub_resource type="GDScript" id=1]
 
 script/source = "extends KinematicBody
 
@@ -21,13 +21,12 @@ func interact( item ):
 func _on_AnimationPlayer_animation_finished( anim_name ):
 	$AnimationPlayer.play( \"Idle\" )"
 
-[sub_resource type="SphereShape" id=8]
+[sub_resource type="SphereShape" id=2]
 
-radius = 2.17585
+radius = 2.10239
 
-[sub_resource type="ArrayMesh" id=1]
+[sub_resource type="ArrayMesh" id=3]
 
-resource_name = "Sphere"
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 surfaces/0 = {
@@ -57,9 +56,8 @@ surfaces/1 = {
 "vertex_count": 260
 }
 
-[sub_resource type="ArrayMesh" id=2]
+[sub_resource type="ArrayMesh" id=4]
 
-resource_name = "Sphere.002"
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 surfaces/0 = {
@@ -89,9 +87,8 @@ surfaces/1 = {
 "vertex_count": 130
 }
 
-[sub_resource type="ArrayMesh" id=3]
+[sub_resource type="ArrayMesh" id=5]
 
-resource_name = "Cone.001"
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 surfaces/0 = {
@@ -108,9 +105,8 @@ surfaces/0 = {
 "vertex_count": 224
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=6]
 
-resource_name = "Eat"
 length = 0.916667
 loop = false
 step = 0.1
@@ -136,9 +132,8 @@ tracks/2/imported = true
 tracks/2/enabled = true
 tracks/2/keys = PoolRealArray( 0, 1, -4.07898e-14, 5.68423e-08, 7.51714e-08, 1.49012e-08, -1.70419e-14, -9.10383e-15, 1, 1, 1, 1, 0.0666667, 1, 8.67341e-16, 2.68479e-08, 1.16757e-07, -0.0106974, 3.507e-08, 2.19294e-08, 0.999943, 1, 1, 1, 0.133333, 1, 2.37227e-14, 8.49295e-08, 2.79388e-08, -0.0388871, -3.16979e-08, 2.78473e-08, 0.999244, 1, 1, 1, 0.266667, 1, 1.26147e-15, 3.0625e-08, 1.18627e-07, -0.123627, -4.95031e-08, -5.5096e-09, 0.992329, 1, 1, 1, 0.333333, 1, 6.30132e-15, 7.33717e-09, 6.8298e-08, -0.15671, 5.27279e-15, -1.30397e-14, 0.987645, 1, 1, 1, 0.4, 1, 1.95377e-14, 3.56099e-08, 6.81867e-08, -0.17029, -1.3186e-08, -3.93692e-08, 0.985394, 1, 1, 1, 0.466667, 1, -2.07316e-14, -2.44214e-08, 2.08298e-08, -0.148366, 1.48711e-09, 9.45483e-09, 0.988933, 1, 1, 1, 0.6, 1, 4.96836e-15, 2.69222e-08, 1.35605e-07, 0.030714, 1.17552e-09, -4.10258e-08, 0.999528, 1, 1, 1, 0.666667, 1, -1.69044e-14, -2.78646e-08, 1.03778e-07, 0.0719424, -1.0114e-08, 6.82001e-10, 0.997409, 1, 1, 1, 0.733333, 1, -2.47948e-14, -7.03476e-09, 1.28199e-07, 0.0596985, 6.69526e-09, 6.66094e-09, 0.998217, 1, 1, 1, 0.866667, 1, -6.57103e-14, 1.15911e-08, 7.15797e-08, 0.00703069, -2.64623e-08, 7.32694e-08, 0.999975, 1, 1, 1, 0.916667, 1, -4.07898e-14, 5.68423e-08, 7.51714e-08, 1.49012e-08, -1.70419e-14, -9.10383e-15, 1, 1, 1, 1 )
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=7]
 
-resource_name = "Idle"
 length = 2.125
 loop = false
 step = 0.1
@@ -164,9 +159,8 @@ tracks/2/imported = true
 tracks/2/enabled = true
 tracks/2/keys = PoolRealArray( 0, 1, -4.07898e-14, 5.68423e-08, 7.51714e-08, 1.49012e-08, -1.70419e-14, -9.10383e-15, 1, 1, 1, 1, 0.0666667, 1, 1.402e-09, 3.08025e-08, 1.46861e-07, 0.0017377, 1.24557e-08, -3.05384e-08, 0.999999, 1, 1, 1, 0.133333, 1, -2.92002e-09, 3.27638e-08, 1.34114e-09, 0.00663583, 3.18948e-08, 1.28001e-08, 0.999978, 1, 1, 1, 0.733333, 1, 1.10429e-08, 6.36049e-09, 9.5999e-08, 0.0935397, -3.6092e-08, -1.69977e-09, 0.995616, 1, 1, 1, 0.8, 1, -2.47863e-08, 4.8318e-09, 9.92879e-08, 0.0952366, -1.64549e-08, 4.2235e-08, 0.995455, 1, 1, 1, 0.866667, 1, -3.33573e-08, -9.30136e-09, -7.07416e-09, 0.0925367, -5.60744e-08, 3.54303e-08, 0.995709, 1, 1, 1, 0.933333, 1, 8.6227e-09, 2.95761e-09, 2.35344e-07, 0.0855413, -5.28779e-08, -7.90421e-09, 0.996335, 1, 1, 1, 1.13333, 1, -1.27989e-08, -4.29389e-08, 7.91889e-08, 0.0547896, -1.27127e-08, -3.67699e-08, 0.998498, 1, 1, 1, 1.2, 1, 3.58736e-09, 1.44344e-07, 9.4974e-08, 0.0483121, 2.00704e-10, -1.32484e-08, 0.998832, 1, 1, 1, 1.26667, 1, -4.31989e-09, 1.02833e-07, 2.29741e-07, 0.0445955, 2.49974e-09, 1.54438e-08, 0.999005, 1, 1, 1, 1.33333, 1, -1.01379e-09, 1.60699e-07, 1.03283e-07, 0.0424949, 3.15933e-09, -4.18198e-09, 0.999097, 1, 1, 1, 1.4, 1, 3.17208e-09, 1.1331e-07, 1.12759e-07, 0.0418004, 1.72718e-08, 6.6787e-08, 0.999126, 1, 1, 1, 1.46667, 1, -2.19161e-09, -2.32247e-08, 6.38246e-08, 0.0414702, -6.86859e-09, -5.72008e-08, 0.99914, 1, 1, 1, 1.53333, 1, 4.18424e-09, 1.48924e-07, -2.05742e-08, 0.040553, -6.39333e-08, 7.89493e-08, 0.999177, 1, 1, 1, 1.6, 1, 2.12205e-09, 7.75443e-08, 4.9581e-08, 0.0383092, -2.77917e-08, 4.84664e-08, 0.999266, 1, 1, 1, 1.66667, 1, 2.83835e-08, 1.42799e-07, 5.81823e-08, 0.0345451, 3.49261e-09, -4.33202e-09, 0.999403, 1, 1, 1, 1.73333, 1, 6.58218e-09, 7.2873e-08, 7.52183e-08, 0.0286709, 3.66881e-09, -3.37238e-08, 0.999589, 1, 1, 1, 1.93333, 1, 1.02829e-09, -1.07065e-08, 2.72493e-08, 0.00685084, 1.69831e-08, -1.70284e-08, 0.999977, 1, 1, 1, 2, 1, -2.69886e-10, -7.56258e-08, 5.64927e-08, 0.00207646, 1.79017e-09, -3.92159e-09, 0.999998, 1, 1, 1, 2.06667, 1, 5.85118e-11, 3.06916e-08, 1.46861e-07, 0.000204511, 5.07604e-09, -3.03557e-08, 1, 1, 1, 1, 2.125, 1, -4.07898e-14, 5.68423e-08, 7.51714e-08, 1.49012e-08, -1.70419e-14, -9.10383e-15, 1, 1, 1, 1 )
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=8]
 
-resource_name = "SETUP"
 length = 0.0833333
 loop = false
 step = 0.1
@@ -194,6 +188,7 @@ tracks/2/keys = PoolRealArray( 0, 1, -4.07898e-14, 5.68423e-08, 7.51714e-08, 1.4
 
 [node name="Character" type="KinematicBody"]
 
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0 )
 input_ray_pickable = true
 input_capture_on_drag = false
 collision_layer = 1
@@ -205,16 +200,17 @@ axis_lock_angular_x = false
 axis_lock_angular_y = false
 axis_lock_angular_z = false
 collision/safe_margin = 0.001
-script = SubResource( 7 )
+script = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="CollisionShape" type="CollisionShape" parent="." index="0"]
 
-shape = SubResource( 8 )
+shape = SubResource( 2 )
 disabled = false
 
 [node name="Armature" type="Spatial" parent="." index="1"]
 
-transform = Transform( 0.913159, 0.77855, 0, -0.77855, 0.913159, 0, 0, 0, 1.2, 0, 0, 0 )
+transform = Transform( 0.760966, 0.648792, 0, -0.648792, 0.760966, 0, 0, 0, 1, 0, 0, 0 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Skeleton" type="Skeleton" parent="Armature" index="0"]
@@ -241,7 +237,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 1 )
+mesh = SubResource( 3 )
 skeleton = NodePath("..")
 material/0 = null
 material/1 = null
@@ -257,7 +253,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 2 )
+mesh = SubResource( 4 )
 skeleton = NodePath("..")
 material/0 = null
 material/1 = null
@@ -273,7 +269,7 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 3 )
+mesh = SubResource( 5 )
 skeleton = NodePath("..")
 material/0 = null
 
@@ -284,9 +280,9 @@ autoplay = "Idle"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/Eat = SubResource( 4 )
-anims/Idle = SubResource( 5 )
-anims/SETUP = SubResource( 6 )
+anims/Eat = SubResource( 6 )
+anims/Idle = SubResource( 7 )
+anims/SETUP = SubResource( 8 )
 blend_times = [  ]
 
 [node name="Tween" type="Tween" parent="." index="3"]
