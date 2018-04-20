@@ -1,15 +1,13 @@
 extends Panel
 
-onready var server_address_entry = get_node( "AddressInput" )
-onready var user_name_entry = get_node( "UserInput" )
 onready var position_slider = get_node( "PositionSlider" )
 onready var position_display = get_node( "PositionSlider/NumericDisplay" )
-onready var calibration_toggle = get_node( "CalibrationToggle" )
 
 func _ready():
-	server_address_entry.text = Configuration.get_parameter( "server_address" )
-	user_name_entry.text = Configuration.get_parameter( "user_name" )
-	calibration_toggle.pressed = Controller.is_calibrating
+	$AddressInput.text = Configuration.get_parameter( "server_address" )
+	$UserInput.text = Configuration.get_parameter( "user_name" )
+	$CalibrationToggle.pressed = Controller.is_calibrating
+	$DirectionSelector.pressed = ( Controller.direction_axis == Controller.HORIZONTAL )
 	Controller.set_status( 1 )
 
 func _input( event ):
@@ -30,10 +28,10 @@ func _on_ConnectButton_pressed():
 	Controller.set_identifier( user_name, time_stamp )
 	DataLog.create_new_log( user_name, time_stamp )
 
-func _on_AddressInput_text_entered( new_text ):
+func _on_AddressInput_text_changed( new_text ):
 	Configuration.set_parameter( "server_address", new_text )
 
-func _on_UserInput_text_entered( new_text ):
+func _on_UserInput_text_changed( new_text ):
 	Configuration.set_parameter( "user_name", new_text )
 
 func _on_SetpointSlider_value_changed( value ):
@@ -41,3 +39,7 @@ func _on_SetpointSlider_value_changed( value ):
 
 func _on_CalibrationToggle_toggled( button_pressed ):
 	Controller.is_calibrating = button_pressed
+
+func _on_DirectionSelector_toggled( button_pressed ):
+	if button_pressed: Controller.direction_axis = Controller.HORIZONTAL
+	else: Controller.direction_axis = Controller.VERTICAL

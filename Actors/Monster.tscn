@@ -11,6 +11,10 @@
 
 script/source = "extends KinematicBody
 
+#func _ready():
+#	if Controller.direction_axis == Controller.HORIZONTAL:
+#		rotate_x( PI / 2 )
+
 func interact( item ):
 	$AnimationPlayer.play( \"Eat\" )
 	$AudioStreamPlayer.play()

@@ -30,6 +30,8 @@ onready var initial_position = effector.translation.y
 onready var initial_scale = spring.scale.y
 onready var max_displacement = abs( effector.translation.y ) / 2
 
+var controller_axis = Controller.direction_axis
+
 func _ready():
 	Controller.set_status( 5 )
 	if Controller.is_calibrating: 
@@ -39,10 +41,10 @@ func _ready():
 		cycles_number = HOLD_CYCLES
 		timeouts_active_number = HOLD_TIMEOUTS
 	timeouts_number = timeouts_active_number + REST_TIMEOUTS
-	Controller.set_axis_values( Controller.VERTICAL, 0, 50.0 )
+	Controller.set_axis_values( controller_axis, 0, 50.0 )
 
 func _physics_process( delta ):
-	var controller_values = Controller.get_axis_values( Controller.VERTICAL )
+	var controller_values = Controller.get_axis_values( controller_axis )
 	var player_force = abs( controller_values[ Controller.FORCE ] )
 	var displacement = player_force * max_displacement
 	displacement = clamp( displacement, 0.0, max_displacement )

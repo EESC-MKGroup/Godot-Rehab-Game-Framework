@@ -23,13 +23,23 @@ onready var collider_top = -boundary_extents.y + collider_width / 2
 
 onready var setpoint_display = get_node( "GUI/SetpointDisplay" )
 
+var controller_axis = Controller.direction_axis
+
+func _ready():
+	if controller_axis == Controller.HORIZONTAL:
+		$Camera.rotate_z( PI / 2 )
+		$Camera.translation.x = -3.7
+		$Background.translation.x = $Camera.translation.x
+		var background_size = $Background.region_rect.size
+		background_size = Vector2( background_size.y, background_size.x )
+		$Background.region_rect = Rect2( Vector2( 0, 0 ), background_size )
+
 func _physics_process( delta ):
-	var controller_values = Controller.get_axis_values( Controller.VERTICAL )
+	var controller_values = Controller.get_axis_values( controller_axis )
 	var new_position = controller_values[ Controller.POSITION ] * boundary_extents.y
 	new_position = clamp( new_position, -boundary_extents.y, boundary_extents.y )
 	var position_delta = new_position - player.translation.y
 	player.translation.y = new_position
-	player.rotation.x = ( player.rotation.x + 0.15 * position_delta / delta ) / 2
 
 	DataLog.register_values( [ player.translation.y ] )
 
@@ -37,7 +47,7 @@ func _set_setpoint():
 	if setpoint_positions.size() > 0:
 		var setpoint_position = setpoint_positions.front()
 		var stiffness_phase = int( waves_count / PHASE_WAVES_NUMBER ) % PHASES_STIFFNESS.size()
-		Controller.set_axis_values( Controller.VERTICAL, setpoint_position, PHASES_STIFFNESS[ stiffness_phase ] )
+		Controller.set_axis_values( controller_axis, setpoint_position, PHASES_STIFFNESS[ stiffness_phase ] )
 		setpoint_display.text = ( "%+.3f" % setpoint_position )
 
 func _spawn_colliders():
@@ -69,6 +79,6 @@ func _on_GUI_game_timeout():
 	_spawn_colliders()
 
 func _on_GUI_game_toggle( started ):
-	Controller.set_axis_values( Controller.VERTICAL, 0.0, 1.0 )
+	Controller.set_axis_values( controller_axis, 0.0, 1.0 )
 	if Controller.is_calibrating: Controller.set_status( 3 )
-	else: Controller.set_status( 2 )
+	else: Controller.set_status( 2 if controller_axis == Controller.VERTICAL else 6 )

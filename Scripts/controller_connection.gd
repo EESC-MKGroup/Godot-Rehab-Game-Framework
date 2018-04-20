@@ -12,6 +12,7 @@ var input_status = 0
 var output_status = 0
 
 var is_calibrating = true setget set_calibration, get_calibration
+var direction_axis = VERTICAL setget set_direction, get_direction
 
 var max_effort = 1.0
 
@@ -108,11 +109,23 @@ func set_calibration( value ):
 func get_calibration():
 	return is_calibrating
 
+func set_direction( value ):
+	if value == VERTICAL or value == HORIZONTAL:
+		direction_axis = value
+
+func get_direction():
+	return direction_axis
+
 func set_identifier( user_name, time_stamp ):
 	var string_buffer = StreamPeerBuffer.new()
-	string_buffer.put_data( user_name.to_ascii() )
-	#string_buffer.get_u8()
+	#string_buffer.put_data( user_name.to_ascii() )
+	print( user_name )
+	for byte in user_name.to_ascii():
+		string_buffer.put_u8( byte )
+	for byte_index in string_buffer.get_available_bytes():
+		print( string_buffer.get_u8() )
 	output_values[ 0 ][ USER ] = string_buffer.get_u32()
+	print( "user: %d %x" % [ output_values[ 0 ][ USER ], output_values[ 0 ][ USER ] ] )
 	output_values[ 0 ][ TIME ] = time_stamp
 
 func set_time_window( value ):

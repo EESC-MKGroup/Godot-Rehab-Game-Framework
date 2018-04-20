@@ -25,11 +25,15 @@ onready var ray = player.get_node( "RayCast" )
 
 var score_animation = preload( "res://Actors/ScorePing.tscn" )
 
+var controller_axis = Controller.direction_axis
+
 func _ready():
+	if controller_axis == Controller.HORIZONTAL:
+		$Camera.rotate_z( PI / 2 )
 	setpoint_display.text = ( "%+.3f" % 0.0 )
 
 func _physics_process( delta ):
-	var controller_values = Controller.get_axis_values( Controller.VERTICAL )
+	var controller_values = Controller.get_axis_values( controller_axis )
 	var new_position = controller_values[ Controller.POSITION ] * max_position
 	new_position = clamp( new_position, -max_position, max_position )
 	player.translation.y = -new_position
@@ -46,7 +50,7 @@ func _change_display():
 		balloon.hide()
 	var target_position = direction * max_position
 	target.translation.y = -target_position
-	Controller.set_axis_values( Controller.VERTICAL, direction, 1 )
+	Controller.set_axis_values( controller_axis, direction, 1 )
 	setpoint_display.text = ( "%+.3f" % direction )
 
 func _switch_objects():
@@ -79,6 +83,6 @@ func _on_GUI_game_timeout():
 
 func _on_GUI_game_toggle( started ):
 	if Controller.is_calibrating: Controller.set_status( 1 )
-	else: Controller.set_status( 4 )
-	Controller.set_axis_values( Controller.VERTICAL, 0.0, 1 )
+	else: Controller.set_status( 4 if controller_axis == Controller.VERTICAL else 8 )
+	Controller.set_axis_values( controller_axis, 0.0, 1 )
 	_change_display()

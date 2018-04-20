@@ -97,7 +97,7 @@ func _on_index_pressed( index ):
 	get_tree().change_scene( GAMES_PATH + \"/\" + game_name + GAME_EXT )
 "
 
-[node name="InitScreen" type="Panel"]
+[node name="InitScreen" type="Panel" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -491,13 +491,13 @@ _sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
 
 [node name="CalibrationToggle" type="CheckButton" parent="ControlsPanel" index="6"]
 
-anchor_left = 0.5
+anchor_left = 0.0
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 0.0
 anchor_bottom = 0.5
-margin_left = -150.0
+margin_left = 200.0
 margin_top = 75.0
-margin_right = 150.0
+margin_right = 500.0
 margin_bottom = 125.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -518,16 +518,49 @@ group = null
 text = "Calibration:  "
 flat = false
 align = 0
-_sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
+_sections_unfolded = [ "Anchor", "Margin", "custom_colors", "custom_fonts" ]
 
-[connection signal="text_entered" from="ControlsPanel/UserInput" to="ControlsPanel" method="_on_UserInput_text_entered"]
+[node name="DirectionSelector" type="CheckButton" parent="ControlsPanel" index="7"]
 
-[connection signal="text_entered" from="ControlsPanel/AddressInput" to="ControlsPanel" method="_on_AddressInput_text_entered"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -650.0
+margin_top = 75.0
+margin_right = -200.0
+margin_bottom = 125.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+toggle_mode = true
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Horizontal Direction:"
+flat = false
+align = 0
+_sections_unfolded = [ "Margin", "custom_colors", "custom_constants", "custom_fonts", "custom_icons", "custom_styles" ]
+
+[connection signal="text_changed" from="ControlsPanel/UserInput" to="ControlsPanel" method="_on_UserInput_text_changed"]
+
+[connection signal="text_changed" from="ControlsPanel/AddressInput" to="ControlsPanel" method="_on_AddressInput_text_changed"]
 
 [connection signal="pressed" from="ControlsPanel/ConnectButton" to="ControlsPanel" method="_on_ConnectButton_pressed"]
 
 [connection signal="value_changed" from="ControlsPanel/SetpointSlider" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]
 
 [connection signal="toggled" from="ControlsPanel/CalibrationToggle" to="ControlsPanel" method="_on_CalibrationToggle_toggled"]
+
+[connection signal="toggled" from="ControlsPanel/DirectionSelector" to="ControlsPanel" method="_on_DirectionSelector_toggled"]
 
 
