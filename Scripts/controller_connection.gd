@@ -13,6 +13,8 @@ var output_status = 0
 
 var is_calibrating = true setget set_calibration, get_calibration
 
+var max_effort = 1.0
+
 var connection = StreamPeerTCP.new()
 
 func _ready():
@@ -32,6 +34,8 @@ func receive_data():
 		elif position_limits[ axis_index ] != null:
 			axis_values[ POSITION ] = _normalize( axis_values[ POSITION ], position_limits[ axis_index ] )
 			axis_values[ FORCE ] = _scale( axis_values[ FORCE ], force_limits[ axis_index ] )
+		for value_index in axis_values.size():
+			axis_values[ value_index ] /= max_effort
 
 func send_data():
 	var output_buffer = StreamPeerBuffer.new()
@@ -65,7 +69,7 @@ func set_axis_values( axis_index, setpoint, stiffness ):
 	var axis_limits = position_limits[ axis_index ]
 	if not is_calibrating:
 		setpoint = _denormalize( setpoint, axis_limits )
-		output_values[ axis_index ][ SETPOINT ] = -setpoint
+		output_values[ axis_index ][ SETPOINT ] = -setpoint * max_effort
 		output_values[ axis_index ][ STIFFNESS ] = stiffness
 
 func get_axis_values( axis_index ):
@@ -113,6 +117,9 @@ func set_identifier( user_name, time_stamp ):
 
 func set_time_window( value ):
 	output_values[ 1 ][ TIME ] = value * 1000
+
+func set_max_effort( value ):
+	max_effort = value / 100.0
 
 func _notification( what ):
 	if what == NOTIFICATION_PREDELETE: 

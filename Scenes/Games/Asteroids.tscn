@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Scripts/asteroids_game.gd" type="Script" id=1]
-[ext_resource path="res://Actors/Background.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Actors/SpaceShip1.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Audios/Music/background_ambience.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Scripts/target_wall_game.gd" type="Script" id=1]
+[ext_resource path="res://Actors/AsteroidWall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Actors/ScoreWarpout.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Actors/Background.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Actors/SpaceShip1.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Audios/Music/background_ambience.ogg" type="AudioStream" id=7]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -23,9 +25,10 @@ var old_target_index = 0"
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Animation", "Flags", "Geometry", "Region", "Transform" ]
-max_setpoint = 0.8
+target_wall = ExtResource( 2 )
+score_animation = ExtResource( 3 )
 
-[node name="Background" parent="." index="0" instance=ExtResource( 2 )]
+[node name="Background" parent="." index="0" instance=ExtResource( 4 )]
 
 modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
 
@@ -62,7 +65,7 @@ disabled = false
 script = SubResource( 2 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
-[node name="Player" parent="BoundaryArea/Boundaries" index="0" instance=ExtResource( 3 )]
+[node name="Player" parent="BoundaryArea/Boundaries" index="0" instance=ExtResource( 5 )]
 
 transform = Transform( -1.62921e-07, 1, 6.93889e-18, -1, -1.62921e-07, 0, 0, -1.73472e-17, 1, -7.89499, 0, 0.349952 )
 collision_layer = 3
@@ -113,11 +116,11 @@ directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Light" ]
 
-[node name="GUI" parent="." index="4" instance=ExtResource( 4 )]
+[node name="GUI" parent="." index="4" instance=ExtResource( 6 )]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="5"]
 
-stream = ExtResource( 5 )
+stream = ExtResource( 7 )
 volume_db = 0.0
 autoplay = true
 mix_target = 0

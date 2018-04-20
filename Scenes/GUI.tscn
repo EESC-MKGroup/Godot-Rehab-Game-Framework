@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Fonts/LuckiestGuyGame.tres" type="DynamicFont" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -41,6 +42,9 @@ onready var time_window_slider = get_node( \"TimeWindowSlider\" )
 onready var time_window_display = time_window_slider.get_node( \"Label\" )
 onready var game_timer = get_node( \"Timer\" )
 
+onready var effort_slider = get_node( \"EffortSlider\" )
+onready var effort_display = effort_slider.get_node( \"Label\" )
+
 onready var start_button = get_node( \"StartButton\" )
 
 onready var pause_menu = get_node( \"PauseMenu\" )
@@ -50,6 +54,7 @@ signal game_toggle
 
 func _ready():
 	_on_TimeWindowSlider_value_changed( time_window_slider.value )
+	_on_EffortSlider_value_changed( effort_slider.value )
 	game_timer.paused = true
 
 func _process( delta ):
@@ -59,7 +64,11 @@ func _process( delta ):
 func _on_TimeWindowSlider_value_changed( value ):
 	Controller.set_time_window( value )
 	game_timer.wait_time = value
-	time_window_display.text = \"Time Window: \" + str(value)
+	time_window_display.text = \"Window: \" + str(value) + \"s\"
+
+func _on_EffortSlider_value_changed( value ):
+	Controller.set_max_effort( value )
+	effort_display.text = \"Effort: \" + str(value) + \"%\"
 
 func _on_Timer_timeout():
 	emit_signal( \"game_timeout\" )
@@ -75,8 +84,7 @@ func _on_StartButton_toggled( button_pressed ):
 		start_button.text = \"Start\"
 		pause_menu.show()
 		get_tree().paused = true
-	emit_signal( \"game_toggle\", button_pressed )
-"
+	emit_signal( \"game_toggle\", button_pressed )"
 
 [sub_resource type="GDScript" id=3]
 
@@ -150,9 +158,9 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 200.0
+margin_left = 170.0
 margin_top = 15.0
-margin_right = 350.0
+margin_right = 300.0
 margin_bottom = 66.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -161,7 +169,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 1 )
-text = "0"
+text = "+0.000"
 align = 1
 focus_mode = 0
 context_menu_enabled = true
@@ -177,7 +185,7 @@ anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
 anchor_bottom = 0.5
-margin_left = -180.0
+margin_left = -150.0
 margin_top = -30.5
 margin_bottom = 29.5
 rect_pivot_offset = Vector2( 0, 0 )
@@ -186,7 +194,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Setpoint:"
 align = 1
@@ -202,9 +210,9 @@ anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
 anchor_bottom = 0.0
-margin_left = -80.0
+margin_left = -170.0
 margin_top = 15.0
-margin_right = 70.0
+margin_right = -40.0
 margin_bottom = 66.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -213,7 +221,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 1 )
-text = "0"
+text = "+0.000"
 align = 1
 focus_mode = 0
 context_menu_enabled = true
@@ -229,7 +237,7 @@ anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
 anchor_bottom = 0.5
-margin_left = -180.0
+margin_left = -150.0
 margin_top = -30.5
 margin_bottom = 29.5
 rect_pivot_offset = Vector2( 0, 0 )
@@ -238,7 +246,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Position:"
 align = 1
@@ -354,9 +362,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 125.0
+margin_left = 20.0
 margin_top = -30.0
-margin_right = 425.0
+margin_right = 200.0
 margin_bottom = -10.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -376,7 +384,7 @@ editable = true
 tick_count = 5
 ticks_on_borders = true
 focus_mode = 2
-_sections_unfolded = [ "Margin" ]
+_sections_unfolded = [ "Margin", "Rect" ]
 
 [node name="Label" type="Label" parent="TimeWindowSlider" index="0"]
 
@@ -385,15 +393,70 @@ anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.0
 margin_top = -35.0
+margin_bottom = 6.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Time Window: 1"
+text = "Window: 1s"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
+
+[node name="EffortSlider" type="HSlider" parent="." index="6"]
+
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 240.0
+margin_top = -30.0
+margin_right = 420.0
+margin_bottom = -10.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+min_value = 0.0
+max_value = 100.0
+step = 10.0
+page = 0.0
+value = 50.0
+exp_edit = false
+rounded = true
+editable = true
+tick_count = 5
+ticks_on_borders = true
+focus_mode = 2
+_sections_unfolded = [ "Margin", "Rect" ]
+
+[node name="Label" type="Label" parent="EffortSlider" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_top = -35.0
+margin_bottom = 6.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Effort: 50%"
 align = 1
 valign = 1
 percent_visible = 1.0
@@ -403,14 +466,16 @@ _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 
-[connection signal="toggled" from="StartButton" to="." method="_on_StartButton_toggled"]
-
 [connection signal="toggled" from="StartButton" to="StartButton" method="_on_toggled"]
+
+[connection signal="toggled" from="StartButton" to="." method="_on_StartButton_toggled"]
 
 [connection signal="pressed" from="PauseMenu/ResumeButton" to="PauseMenu" method="_on_ResumeButton_pressed"]
 
 [connection signal="pressed" from="PauseMenu/ExitButton" to="PauseMenu" method="_on_ExitButton_pressed"]
 
 [connection signal="value_changed" from="TimeWindowSlider" to="." method="_on_TimeWindowSlider_value_changed"]
+
+[connection signal="value_changed" from="EffortSlider" to="." method="_on_EffortSlider_value_changed"]
 
 

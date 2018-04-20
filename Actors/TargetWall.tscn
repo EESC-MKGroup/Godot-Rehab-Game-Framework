@@ -5,10 +5,13 @@
 script/source = "extends Area
 
 signal collider_reached
+signal wall_passed
 
 export(PackedScene) var collider = null
 export(int, \"Point\", \"Hole\", \"Block\") var spawn_mode = 0
 export(float, 5) var linear_speed = 0
+
+var has_collided = false
 
 func _physics_process( delta ):
 	translation.x -= linear_speed * delta
@@ -34,13 +37,21 @@ func spawn_colliders( slots_number ):
 	return target_position
 
 func _on_Collider_body_entered( body, collider ):
+	has_collided = true
 	emit_signal( \"collider_reached\", collider )
+
+func _on_body_exited( body ):
+	var has_passed_ok = false
+	if has_collided and spawn_mode == 0: has_passed_ok = true
+	elif not has_collided and spawn_mode == 1: has_passed_ok = true
+	emit_signal( \"wall_passed\", has_passed_ok )
 
 func get_colliders_number():
 	return $Boundaries.get_child_count()
 
 func get_width():
-	return 2 * $Boundaries.shape.extents"
+	return 2 * $Boundaries.shape.extents
+"
 
 [sub_resource type="BoxShape" id=2]
 
@@ -80,5 +91,7 @@ transform = Transform( 1, 0, 4.4671e-25, 0, 1, 0, 0, 0, 1, -6.93889e-18, -4.0049
 shape = SubResource( 2 )
 disabled = false
 _sections_unfolded = [ "Transform" ]
+
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
 
 

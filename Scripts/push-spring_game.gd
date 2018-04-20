@@ -8,8 +8,6 @@ const MAX_TIMEOUTS = 2
 const HOLD_CYCLES = 5
 const HOLD_TIMEOUTS = 15
 
-export(float, 0.0, 1.0) var max_setpoint = 0.2
-
 var cycles_number = 0
 var cycles_count = 0
 var timeouts_number = 0
@@ -46,7 +44,7 @@ func _ready():
 func _physics_process( delta ):
 	var controller_values = Controller.get_axis_values( Controller.VERTICAL )
 	var player_force = abs( controller_values[ Controller.FORCE ] )
-	var displacement = player_force / max_setpoint * max_displacement
+	var displacement = player_force * max_displacement
 	displacement = clamp( displacement, 0.0, max_displacement )
 	effector.translation.y = initial_position + displacement
 	spring.scale.y = initial_scale * effector.translation.y / initial_position

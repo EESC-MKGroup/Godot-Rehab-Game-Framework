@@ -278,10 +278,9 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Background" ]
 
-[node name="Game" type="Spatial" index="0"]
+[node name="Game" type="Spatial"]
 
 script = ExtResource( 1 )
-max_setpoint = 0.7
 
 [node name="GameSpace" type="Area" parent="." index="0"]
 
@@ -321,7 +320,7 @@ _sections_unfolded = [ "Transform" ]
 [node name="RayCast" type="RayCast" parent="GameSpace/Boundaries/Player" index="0"]
 
 transform = Transform( -5, 2.2076e-06, -2.22475e-07, -2.21506e-06, -4.93743, 0.788554, 1.28472e-07, 0.788554, 4.93743, 0, 0.468246, -0.0747832 )
-enabled = true
+enabled = false
 exclude_parent = true
 cast_to = Vector3( 0, -3, 0 )
 collision_mask = 2
@@ -400,7 +399,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Target" parent="GameSpace/Boundaries" index="1" instance=ExtResource( 7 )]
 
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 5, -1.2 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, -1.2 )
 collision_layer = 2
 _sections_unfolded = [ "Collision", "Transform" ]
 

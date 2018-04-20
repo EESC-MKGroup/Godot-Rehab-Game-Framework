@@ -1,15 +1,22 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Meshes/vehicle_playerShip.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://Textures/vehicle_playerShip_orange_dff.png" type="Texture" id=2]
 [ext_resource path="res://Textures/vehicle_playerShip_orange_emi.png" type="Texture" id=3]
 [ext_resource path="res://Textures/vehicle_playerShip_orange_nrm.png" type="Texture" id=4]
 
-[sub_resource type="ConvexPolygonShape" id=1]
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends KinematicBody
+
+func interact( collider ):
+	pass"
+
+[sub_resource type="ConvexPolygonShape" id=2]
 
 points = PoolVector3Array( 0.0947266, -0.0939941, 0.833984, -0.0903931, -0.0629883, 0.830566, 0.0903931, -0.0629883, 0.830566, -0.0947266, -0.0939941, 0.833984, 0, -0.170654, -0.566895, -0.0947266, -0.0939941, 0.833984, 0.0947266, -0.0939941, 0.833984, 0.563477, -0.0695801, -0.649414, 0, -0.170654, -0.566895, 0.564453, -0.0919189, -0.647949, -0.563477, -0.0695801, -0.649414, -0.564453, -0.0919189, -0.647949, 0, -0.170654, -0.566895, 0.564453, -0.0919189, -0.647949, 0, -0.170654, -0.566895, 0.0947266, -0.0939941, 0.833984, 0, -0.170654, -0.566895, -0.564453, -0.0919189, -0.647949, -0.0947266, -0.0939941, 0.833984, 0, -0.170654, -0.566895, 0, 0.1604, -0.638184, -0.563477, -0.0695801, -0.649414, 0.563477, -0.0695801, -0.649414, 0, 0.1604, -0.638184, 0, -0.170654, -0.566895, -0.0947266, -0.0939941, 0.833984, -0.563477, -0.0695801, -0.649414, -0.0903931, -0.0629883, 0.830566, -0.0903931, -0.0629883, 0.830566, -0.563477, -0.0695801, -0.649414, 0, 0.1604, -0.638184, 0, 0.1604, -0.638184, 0.0903931, -0.0629883, 0.830566, -0.0903931, -0.0629883, 0.830566, 0, 0.1604, -0.638184, 0.563477, -0.0695801, -0.649414, 0.0903931, -0.0629883, 0.830566, 0.564453, -0.0919189, -0.647949, 0.0903931, -0.0629883, 0.830566, 0.563477, -0.0695801, -0.649414, 0.0903931, -0.0629883, 0.830566, 0.564453, -0.0919189, -0.647949, 0.0947266, -0.0939941, 0.833984, -0.0947266, -0.0939941, 0.833984, -0.564453, -0.0919189, -0.647949, -0.563477, -0.0695801, -0.649414 )
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=3]
 
 render_priority = 0
 flags_transparent = false
@@ -69,7 +76,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Ambient Occlusion", "Anisotropy", "Clearcoat", "Depth", "Detail", "Emission", "Flags", "Metallic", "NormalMap", "Parameters", "Refraction", "Rim", "Roughness", "Subsurf Scatter", "Vertex Color" ]
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=4]
 
 render_priority = 0
 flags_transparent = false
@@ -126,31 +133,31 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Anisotropy", "Emission", "Flags", "Metallic", "Refraction", "Rim" ]
 
-[sub_resource type="Gradient" id=4]
+[sub_resource type="Gradient" id=5]
 
 offsets = PoolRealArray( 0, 1 )
 colors = PoolColorArray( 1, 0.977783, 0.644531, 1, 1, 0.632812, 0, 1 )
 
-[sub_resource type="GradientTexture" id=5]
+[sub_resource type="GradientTexture" id=6]
 
 flags = 4
-gradient = SubResource( 4 )
+gradient = SubResource( 5 )
 width = 2048
 
-[sub_resource type="Curve" id=6]
+[sub_resource type="Curve" id=7]
 
 min_value = 0.0
 max_value = 1.0
 bake_resolution = 100
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.00585938 ), -1.6271, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=7]
+[sub_resource type="CurveTexture" id=8]
 
 flags = 4
 width = 2048
-curve = SubResource( 6 )
+curve = SubResource( 7 )
 
-[sub_resource type="ParticlesMaterial" id=8]
+[sub_resource type="ParticlesMaterial" id=9]
 
 render_priority = 0
 trail_divisor = 1
@@ -177,8 +184,8 @@ angle = 0.0
 angle_random = 0.0
 scale = 1.0
 scale_random = 0.0
-scale_curve = SubResource( 7 )
-color_ramp = SubResource( 5 )
+scale_curve = SubResource( 8 )
+color_ramp = SubResource( 6 )
 hue_variation = 0.0
 hue_variation_random = 0.0
 anim_speed = 0.0
@@ -188,7 +195,7 @@ anim_offset_random = 0.0
 anim_loop = false
 _sections_unfolded = [ "Color", "Emission Shape", "Gravity", "Initial Velocity", "Scale", "Spread" ]
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=10]
 
 render_priority = 0
 flags_transparent = false
@@ -244,29 +251,29 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Distance Fade", "Emission", "Flags", "Vertex Color" ]
 
-[sub_resource type="SphereMesh" id=10]
+[sub_resource type="SphereMesh" id=11]
 
-material = SubResource( 9 )
+material = SubResource( 10 )
 radius = 0.04
 height = 0.08
 radial_segments = 8
 rings = 8
 is_hemisphere = false
 
-[sub_resource type="Curve" id=11]
+[sub_resource type="Curve" id=12]
 
 min_value = 0.0
 max_value = 1.0
 bake_resolution = 100
 _data = [ Vector2( 0, 0.779297 ), 0.0, 1.3896, 0, 0, Vector2( 0.248126, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.177734 ), -1.57724, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=12]
+[sub_resource type="CurveTexture" id=13]
 
 flags = 4
 width = 2048
-curve = SubResource( 11 )
+curve = SubResource( 12 )
 
-[sub_resource type="ParticlesMaterial" id=13]
+[sub_resource type="ParticlesMaterial" id=14]
 
 render_priority = 0
 trail_divisor = 1
@@ -293,8 +300,8 @@ angle = 0.0
 angle_random = 0.0
 scale = 1.0
 scale_random = 0.0
-scale_curve = SubResource( 12 )
-color_ramp = SubResource( 5 )
+scale_curve = SubResource( 13 )
+color_ramp = SubResource( 6 )
 hue_variation = 0.0
 hue_variation_random = 0.0
 anim_speed = 0.0
@@ -304,7 +311,7 @@ anim_offset_random = 0.0
 anim_loop = false
 _sections_unfolded = [ "Color", "Emission Shape", "Gravity", "Initial Velocity", "Scale", "Spread" ]
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=15]
 
 render_priority = 0
 flags_transparent = false
@@ -362,9 +369,9 @@ distance_fade_min_distance = 0.0
 distance_fade_max_distance = 1.0
 _sections_unfolded = [ "Albedo", "Distance Fade", "Emission", "Flags", "Vertex Color" ]
 
-[sub_resource type="SphereMesh" id=15]
+[sub_resource type="SphereMesh" id=16]
 
-material = SubResource( 14 )
+material = SubResource( 15 )
 radius = 0.08
 height = 0.16
 radial_segments = 8
@@ -384,12 +391,13 @@ axis_lock_angular_x = false
 axis_lock_angular_y = false
 axis_lock_angular_z = false
 collision/safe_margin = 0.001
+script = SubResource( 1 )
 _sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="CollisionShape" type="CollisionShape" parent="." index="0"]
 
 transform = Transform( 1, -6.51683e-07, -1.12515e-10, -1.12515e-10, -0.000345306, 1, -6.51683e-07, -1, -0.000345306, 0, 0.00784636, -0.0826314 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 disabled = false
 _sections_unfolded = [ "Transform" ]
 
@@ -407,8 +415,8 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = ExtResource( 1 )
 skeleton = NodePath("..")
-material/0 = SubResource( 2 )
-material/1 = SubResource( 3 )
+material/0 = SubResource( 3 )
+material/1 = SubResource( 4 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="JetFire" type="Particles" parent="." index="2"]
@@ -436,9 +444,9 @@ fract_delta = true
 visibility_aabb = AABB( -0.890485, -0.577304, -1.54776, 1.78097, 1.13117, 3.0877 )
 local_coords = true
 draw_order = 0
-process_material = SubResource( 8 )
+process_material = SubResource( 9 )
 draw_passes = 1
-draw_pass_1 = SubResource( 10 )
+draw_pass_1 = SubResource( 11 )
 _sections_unfolded = [ "Draw Passes", "Drawing", "Geometry", "Process Material", "Time", "Transform" ]
 
 [node name="JetFire2" type="Particles" parent="." index="3"]
@@ -466,9 +474,9 @@ fract_delta = true
 visibility_aabb = AABB( -0.890485, -0.577304, -1.54776, 1.78097, 1.13117, 3.0877 )
 local_coords = true
 draw_order = 0
-process_material = SubResource( 13 )
+process_material = SubResource( 14 )
 draw_passes = 1
-draw_pass_1 = SubResource( 15 )
+draw_pass_1 = SubResource( 16 )
 _sections_unfolded = [ "Draw Passes", "Drawing", "Geometry", "Process Material", "Time", "Transform" ]
 
 [node name="OmniLight" type="OmniLight" parent="." index="4"]

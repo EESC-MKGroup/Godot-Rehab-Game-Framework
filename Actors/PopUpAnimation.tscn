@@ -1,7 +1,4 @@
-[gd_scene load_steps=5 format=2]
-
-[ext_resource path="res://Textures/score_up.png" type="Texture" id=1]
-[ext_resource path="res://Audios/Sounds/warpout.wav" type="AudioStream" id=2]
+[gd_scene load_steps=3 format=2]
 
 [sub_resource type="GDScript" id=1]
 
@@ -12,9 +9,9 @@ onready var camera = get_tree().get_root().get_node( \"Game/Camera\" )
 func _ready():
 	position = camera.unproject_position( get_parent().global_transform.origin )
 
-func set_animation( sprite_name, sound_name ):
-	$Sprite.texture = load( \"res://Textures/\" + sprite_name + \".png\" )
-	$AudioStreamPlayer.stream = load( \"res://Audios/Sounds/\" + sound_name + \".wav\" )"
+#func set_animation( sprite_name, sound_name ):
+#	$Sprite.texture = load( \"res://Textures/\" + sprite_name + \".png\" )
+#	$AudioStreamPlayer.stream = load( \"res://Audios/Sounds/\" + sound_name + \".wav\" )"
 
 [sub_resource type="Animation" id=2]
 
@@ -65,12 +62,11 @@ _sections_unfolded = [ "Playback Options" ]
 [node name="Sprite" type="Sprite" parent="." index="1"]
 
 position = Vector2( 20, -20 )
-texture = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="2"]
 
-stream = ExtResource( 2 )
+stream = null
 volume_db = -5.0
 autoplay = true
 mix_target = 0
