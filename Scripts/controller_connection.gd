@@ -117,14 +117,14 @@ func get_direction():
 	return direction_axis
 
 func set_identifier( user_name, time_stamp ):
-	var string_buffer = StreamPeerBuffer.new()
-	#string_buffer.put_data( user_name.to_ascii() )
+	var user_id = 0x00000000
+	var user_string = user_name.to_ascii()
 	print( user_name )
-	for byte in user_name.to_ascii():
-		string_buffer.put_u8( byte )
-	for byte_index in string_buffer.get_available_bytes():
-		print( string_buffer.get_u8() )
-	output_values[ 0 ][ USER ] = string_buffer.get_u32()
+	for byte_index in user_string.size():
+		print( "%d %x" % [ user_string[ byte_index ], user_string[ byte_index ] ] )
+		var byte_offset = ( 3 - byte_index ) * 8
+		user_id |= ( user_string[ byte_index ] << byte_offset )
+	output_values[ 0 ][ USER ] = user_id
 	print( "user: %d %x" % [ output_values[ 0 ][ USER ], output_values[ 0 ][ USER ] ] )
 	output_values[ 0 ][ TIME ] = time_stamp
 

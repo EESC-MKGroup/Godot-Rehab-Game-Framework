@@ -26,6 +26,7 @@ onready var setpoint_display = get_node( "GUI/SetpointDisplay" )
 var controller_axis = Controller.direction_axis
 
 func _ready():
+	$GUI.set_timeouts( 3.0, 0.0 )
 	if controller_axis == Controller.HORIZONTAL:
 		$Camera.rotate_z( PI / 2 )
 		$Camera.translation.x = -3.7

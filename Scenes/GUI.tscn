@@ -38,9 +38,13 @@ script/source = "extends Control
 onready var setpoint_display = get_node( \"SetpointDisplay\" )
 onready var position_display = get_node( \"PositionDisplay\" )
 
-onready var time_window_slider = get_node( \"TimeWindowSlider\" )
-onready var time_window_display = time_window_slider.get_node( \"Label\" )
-onready var game_timer = get_node( \"Timer\" )
+onready var play_timeout_slider = get_node( \"PlayTimeoutSlider\" )
+onready var play_timeout_display = play_timeout_slider.get_node( \"Label\" )
+onready var play_timer = get_node( \"PlayTimer\" )
+
+onready var rest_timeout_slider = get_node( \"RestTimeoutSlider\" )
+onready var rest_timeout_display = rest_timeout_slider.get_node( \"Label\" )
+onready var rest_timer = get_node( \"RestTimer\" )
 
 onready var effort_slider = get_node( \"EffortSlider\" )
 onready var effort_display = effort_slider.get_node( \"Label\" )
@@ -52,54 +56,81 @@ onready var pause_menu = get_node( \"PauseMenu\" )
 signal game_timeout
 signal game_toggle
 
+var timeouts_count = 0
+
 func _ready():
-	_on_TimeWindowSlider_value_changed( time_window_slider.value )
+	_on_PlayTimeoutSlider_value_changed( play_timeout_slider.value )
+	_on_RestTimeoutSlider_value_changed( rest_timeout_slider.value )
 	_on_EffortSlider_value_changed( effort_slider.value )
-	game_timer.paused = true
+	play_timer.paused = true
+	rest_timer.paused = true
 
 func _process( delta ):
 	var input_values = Controller.get_axis_values( Controller.VERTICAL )
 	position_display.text = ( \"%+.3f\" % input_values[ Controller.POSITION ] )
 
-func _on_TimeWindowSlider_value_changed( value ):
+func set_timeouts( play_timeout_value, rest_timeout_value ):
+	play_timeout_slider.value = play_timeout_value
+	rest_timeout_slider.value = rest_timeout_value
+
+func end_play():
+	play_timer.paused = true
+	rest_timer.paused = false
+	rest_timer.start()
+
+func _on_PlayTimeoutSlider_value_changed( value ):
 	Controller.set_time_window( value )
-	game_timer.wait_time = value
-	time_window_display.text = \"Window: \" + str(value) + \"s\"
+	play_timer.wait_time = value
+	play_timeout_display.text = \"Play: \" + str(value) + \"s\"
+
+func _on_RestTimeoutSlider_value_changed( value ):
+	rest_timer.wait_time = value
+	rest_timeout_display.text = \"Rest: \" + str(value) + \"s\"
 
 func _on_EffortSlider_value_changed( value ):
 	Controller.set_max_effort( value )
 	effort_display.text = \"Effort: \" + str(value) + \"%\"
 
-func _on_Timer_timeout():
-	emit_signal( \"game_timeout\" )
+func _on_PlayTimer_timeout():
+	emit_signal( \"game_timeout\", timeouts_count )
+	timeouts_count += 1
+
+func _on_RestTimer_timeout():
+	timeouts_count = 0
+	play_timer.paused = false
+	play_timer.start()
 
 func _on_StartButton_toggled( button_pressed ):
 	if button_pressed: 
-		game_timer.paused = false
-		game_timer.start()
+		play_timer.paused = false
+		play_timer.start()
 		start_button.text = \"Stop\"
 		_on_Timer_timeout()
 	else: 
-		game_timer.paused = true
+		play_timer.paused = true
 		start_button.text = \"Start\"
 		pause_menu.show()
 		get_tree().paused = true
+	rest_timer.paused = true
 	emit_signal( \"game_toggle\", button_pressed )"
 
 [sub_resource type="GDScript" id=3]
 
 script/source = "extends Panel
 
+onready var start_button = get_tree().get_root().get_node( \"StartButton\" )
+
 func _on_ResumeButton_pressed():
 	hide()
 	get_tree().paused = false
+	start_button.pressed = false
 
 func _on_ExitButton_pressed():
 	get_tree().paused = false
 	get_tree().change_scene( \"res://Scenes/InitScreen.tscn\" )
 "
 
-[node name="GUI" type="Panel"]
+[node name="GUI" type="Panel" index="0"]
 
 self_modulate = Color( 1, 1, 1, 0.498039 )
 anchor_left = 0.0
@@ -117,14 +148,21 @@ custom_styles/panel = SubResource( 1 )
 script = SubResource( 2 )
 _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_styles" ]
 
-[node name="Timer" type="Timer" parent="." index="0"]
+[node name="PlayTimer" type="Timer" parent="." index="0"]
 
 process_mode = 1
 wait_time = 1.0
 one_shot = false
 autostart = false
 
-[node name="StartButton" type="Button" parent="." index="1"]
+[node name="RestTimer" type="Timer" parent="." index="1"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
+[node name="StartButton" type="Button" parent="." index="2"]
 
 anchor_left = 1.0
 anchor_top = 0.0
@@ -152,7 +190,33 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[node name="SetpointDisplay" type="LineEdit" parent="." index="2"]
+[node name="VariableLabel" type="Label" parent="." index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 20.0
+margin_top = 10.0
+margin_right = 170.0
+margin_bottom = 70.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Set/Real:"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
+
+[node name="SetpointDisplay" type="LineEdit" parent="." index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -179,40 +243,15 @@ caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
 
-[node name="SetpointLabel" type="Label" parent="SetpointDisplay" index="2"]
+[node name="MeasureDisplay" type="LineEdit" parent="." index="5"]
 
 anchor_left = 0.0
-anchor_top = 0.5
-anchor_right = 0.0
-anchor_bottom = 0.5
-margin_left = -150.0
-margin_top = -30.5
-margin_bottom = 29.5
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = ExtResource( 2 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Setpoint:"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Margin", "Rect", "custom_colors", "custom_fonts" ]
-
-[node name="PositionDisplay" type="LineEdit" parent="." index="3"]
-
-anchor_left = 0.5
 anchor_top = 0.0
-anchor_right = 0.5
+anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = -170.0
+margin_left = 310.0
 margin_top = 15.0
-margin_right = -40.0
+margin_right = 440.0
 margin_bottom = 66.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -231,32 +270,7 @@ caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
 
-[node name="PositionLabel" type="Label" parent="PositionDisplay" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.5
-anchor_right = 0.0
-anchor_bottom = 0.5
-margin_left = -150.0
-margin_top = -30.5
-margin_bottom = 29.5
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = ExtResource( 2 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Position:"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
-
-[node name="PauseMenu" type="Panel" parent="." index="4"]
+[node name="PauseMenu" type="Panel" parent="." index="6"]
 
 pause_mode = 2
 visible = false
@@ -356,16 +370,16 @@ flat = false
 align = 1
 _sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
 
-[node name="TimeWindowSlider" type="HSlider" parent="." index="5"]
+[node name="PlayTimeoutSlider" type="HSlider" parent="." index="7"]
 
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = -30.0
-margin_right = 200.0
-margin_bottom = -10.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_left = 500.0
+margin_top = 50.0
+margin_right = -600.0
+margin_bottom = 70.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -386,7 +400,7 @@ ticks_on_borders = true
 focus_mode = 2
 _sections_unfolded = [ "Margin", "Rect" ]
 
-[node name="Label" type="Label" parent="TimeWindowSlider" index="0"]
+[node name="Label" type="Label" parent="PlayTimeoutSlider" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -402,7 +416,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Window: 1s"
+text = "Play: 1s"
 align = 1
 valign = 1
 percent_visible = 1.0
@@ -410,16 +424,70 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
-[node name="EffortSlider" type="HSlider" parent="." index="6"]
+[node name="RestTimeoutSlider" type="HSlider" parent="." index="8"]
 
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = 240.0
-margin_top = -30.0
-margin_right = 420.0
-margin_bottom = -10.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_left = 690.0
+margin_top = 50.0
+margin_right = -410.0
+margin_bottom = 70.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+min_value = 0.0
+max_value = 120.0
+step = 1.0
+page = 0.0
+value = 60.0
+exp_edit = false
+rounded = true
+editable = true
+tick_count = 11
+ticks_on_borders = true
+focus_mode = 2
+_sections_unfolded = [ "Margin", "Rect" ]
+
+[node name="Label" type="Label" parent="RestTimeoutSlider" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_top = -35.0
+margin_bottom = 6.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Rest: 1s"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
+
+[node name="EffortSlider" type="HSlider" parent="." index="9"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 0.0
+margin_left = 880.0
+margin_top = 50.0
+margin_right = -220.0
+margin_bottom = 70.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 focus_mode = 2
@@ -435,7 +503,7 @@ value = 50.0
 exp_edit = false
 rounded = true
 editable = true
-tick_count = 5
+tick_count = 11
 ticks_on_borders = true
 focus_mode = 2
 _sections_unfolded = [ "Margin", "Rect" ]
@@ -464,17 +532,21 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="PlayTimer" to="." method="_on_PlayTimer_timeout"]
 
-[connection signal="toggled" from="StartButton" to="StartButton" method="_on_toggled"]
+[connection signal="timeout" from="RestTimer" to="." method="_on_RestTimer_timeout"]
 
 [connection signal="toggled" from="StartButton" to="." method="_on_StartButton_toggled"]
+
+[connection signal="toggled" from="StartButton" to="StartButton" method="_on_toggled"]
 
 [connection signal="pressed" from="PauseMenu/ResumeButton" to="PauseMenu" method="_on_ResumeButton_pressed"]
 
 [connection signal="pressed" from="PauseMenu/ExitButton" to="PauseMenu" method="_on_ExitButton_pressed"]
 
-[connection signal="value_changed" from="TimeWindowSlider" to="." method="_on_TimeWindowSlider_value_changed"]
+[connection signal="value_changed" from="PlayTimeoutSlider" to="." method="_on_PlayTimeoutSlider_value_changed"]
+
+[connection signal="value_changed" from="RestTimeoutSlider" to="." method="_on_RestTimeoutSlider_value_changed"]
 
 [connection signal="value_changed" from="EffortSlider" to="." method="_on_EffortSlider_value_changed"]
 

@@ -1,13 +1,11 @@
 extends Spatial
 
-const REST_TIMEOUTS = 20
-const PLAY_CYCLES = 3
-const PLAY_TIMEOUTS = 8
+const PLAY_TIMEOUT = 3.0
+const REST_TIMEOUT = 120.0
 
 enum DIRECTION { NONE = 0, UP = -1, DOWN = 1 }
 
 var cycles_count = 0
-var timeouts_count = 0
 var direction = UP 
 
 onready var setpoint_timer = get_node( "Timer" )
@@ -28,6 +26,7 @@ var score_animation = preload( "res://Actors/ScorePing.tscn" )
 var controller_axis = Controller.direction_axis
 
 func _ready():
+	$GUI.set_timeouts( PLAY_TIMEOUT, REST_TIMEOUT )
 	if controller_axis == Controller.HORIZONTAL:
 		$Camera.rotate_z( PI / 2 )
 	setpoint_display.text = ( "%+.3f" % 0.0 )
@@ -53,7 +52,7 @@ func _change_display():
 	Controller.set_axis_values( controller_axis, direction, 1 )
 	setpoint_display.text = ( "%+.3f" % direction )
 
-func _switch_objects():
+func _on_GUI_game_timeout( timeouts_count ):
 	if direction == NONE:
 		ray.enabled = false
 		print( "rest phase (%d/%d)" % [ timeouts_count, PLAY_TIMEOUTS + REST_TIMEOUTS ] )
@@ -69,17 +68,14 @@ func _switch_objects():
 	if cycles_count < PLAY_CYCLES:
 		if timeouts_count >= PLAY_TIMEOUTS: 
 			direction = NONE
+			$GUI.end_play()
 		if timeouts_count >= PLAY_TIMEOUTS + REST_TIMEOUTS: 
 			direction = UP
 			cycles_count += 1
-			timeouts_count = 0
 			if cycles_count >= PLAY_CYCLES:
 				direction = NONE
-	timeouts_count += 1
+				$GUI.end_play()
 	_change_display()
-
-func _on_GUI_game_timeout():
-	_switch_objects()
 
 func _on_GUI_game_toggle( started ):
 	if Controller.is_calibrating: Controller.set_status( 1 )
