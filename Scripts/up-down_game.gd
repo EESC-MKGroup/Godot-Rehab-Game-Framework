@@ -11,7 +11,7 @@ const PLAY_TIMEOUTS = 8
 var cycles_count = 0
 var direction = NONE 
 
-onready var setpoint_timer = get_node( "Timer" )
+var score = 0
 
 onready var boundaries = get_node( "GameSpace/Boundaries" )
 onready var max_position = boundaries.shape.extents.y
@@ -59,6 +59,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 		direction = DOWN
 	else:
 		if ray.is_colliding():
+			score += 1
 			var score_up = score_animation.instance()
 			player.add_child( score_up )
 		if direction == UP: direction = DOWN
@@ -70,7 +71,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 			cycles_count += 1
 			print( "rest phase (%d/%d)" % [ cycles_count, PLAY_CYCLES ] )
 			$GUI.wait_rest()
-			if cycles_count >= PLAY_CYCLES: print( "game finished" )
+			if cycles_count >= PLAY_CYCLES: $GUI.end_game( PLAY_TIMEOUTS * PLAY_CYCLES, score )
 		_change_display()
 
 func _on_GUI_game_toggle( started ):
