@@ -13,8 +13,6 @@ var direction = NONE
 
 onready var setpoint_timer = get_node( "Timer" )
 
-onready var setpoint_display = get_node( "GUI/SetpointDisplay" )
-
 onready var boundaries = get_node( "GameSpace/Boundaries" )
 onready var max_position = boundaries.shape.extents.y
 
@@ -32,7 +30,8 @@ func _ready():
 	$GUI.set_timeouts( PLAY_TIMEOUT, REST_TIMEOUT )
 	if controller_axis == Controller.HORIZONTAL:
 		$Camera.rotate_z( PI / 2 )
-	setpoint_display.text = ( "%+.3f" % 0.0 )
+	Controller.set_axis_values( controller_axis, 0.0, 0 )
+	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
 	var controller_values = Controller.get_axis_values( controller_axis )
@@ -53,7 +52,7 @@ func _change_display():
 	var target_position = direction * max_position
 	target.translation.y = -target_position
 	Controller.set_axis_values( controller_axis, direction, 1 )
-	setpoint_display.text = ( "%+.3f" % direction )
+	$GUI.display_setpoint( direction )
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if direction == NONE:
@@ -70,7 +69,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 			direction = NONE
 			cycles_count += 1
 			print( "rest phase (%d/%d)" % [ cycles_count, PLAY_CYCLES ] )
-			$GUI.end_play()
+			$GUI.wait_rest()
 			if cycles_count >= PLAY_CYCLES: print( "game finished" )
 		_change_display()
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Fonts/LuckiestGuyGame.tres" type="DynamicFont" id=2]
@@ -52,6 +52,8 @@ onready var effort_display = effort_slider.get_node( \"Label\" )
 onready var start_button = get_node( \"StartButton\" )
 
 onready var pause_menu = get_node( \"PauseMenu\" )
+onready var end_menu = get_node( \"EndMenu\" )
+onready var score_display = end_menu.get_node( \"ScoreDisplay\" )
 
 signal game_timeout
 signal game_toggle
@@ -66,17 +68,29 @@ func _ready():
 	rest_timer.paused = true
 
 func _process( delta ):
-	var input_values = Controller.get_axis_values( Controller.VERTICAL )
+	var direction_axis = Controller.direction_axis
+	var input_values = Controller.get_axis_values( direction_axis )
 	measure_display.text = ( \"%+.3f\" % input_values[ Controller.POSITION ] )
+
+func display_setpoint( setpoint_value ):
+	setpoint_display.text = ( \"%+.3f\" % setpoint_value )
 
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	play_timeout_slider.value = play_timeout_value
 	rest_timeout_slider.value = rest_timeout_value
 
-func end_play():
+func wait_rest():
 	play_timer.paused = true
 	rest_timer.paused = false
 	rest_timer.start()
+
+func end_game( targets_number, score ):
+	play_timer.paused = true
+	rest_timer.paused = true
+	#get_tree().paused = true
+	#start_button.pressed = false
+	score_display.text = ( \"Targets: %d\\nScore: %d (%.1f%s)\" % [ targets_number, score, 100 * score / targets_number, \"%\" ] )
+	end_menu.show()
 
 func _on_PlayTimeoutSlider_value_changed( value ):
 	Controller.set_time_window( value )
@@ -112,16 +126,10 @@ func _on_StartButton_toggled( button_pressed ):
 		pause_menu.show()
 		get_tree().paused = true
 	rest_timer.paused = true
-	emit_signal( \"game_toggle\", button_pressed )"
-
-[sub_resource type="GDScript" id=3]
-
-script/source = "extends Panel
-
-onready var start_button = get_tree().get_root().get_node( \"StartButton\" )
+	emit_signal( \"game_toggle\", button_pressed )
 
 func _on_ResumeButton_pressed():
-	hide()
+	pause_menu.hide()
 	get_tree().paused = false
 	start_button.pressed = false
 
@@ -288,7 +296,6 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-script = SubResource( 3 )
 _sections_unfolded = [ "Margin", "Pause" ]
 
 [node name="Label" type="Label" parent="PauseMenu" index="0"]
@@ -370,7 +377,105 @@ flat = false
 align = 1
 _sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
 
-[node name="PlayTimeoutSlider" type="HSlider" parent="." index="7"]
+[node name="EndMenu" type="Panel" parent="." index="7"]
+
+pause_mode = 2
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 450.0
+margin_top = 200.0
+margin_right = -450.0
+margin_bottom = 450.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Margin", "Pause" ]
+
+[node name="Label" type="Label" parent="EndMenu" index="0"]
+
+anchor_left = 0.5
+anchor_top = 0.0
+anchor_right = 0.5
+anchor_bottom = 0.0
+margin_left = -92.0
+margin_top = 30.0
+margin_right = 92.0
+margin_bottom = 71.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 1 )
+text = "Game Over"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
+
+[node name="ScoreDisplay" type="Label" parent="EndMenu" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 50.0
+margin_top = -60.0
+margin_right = -50.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 1 )
+text = "Targets: 0
+Points: 0"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
+
+[node name="ExitButton" type="Button" parent="EndMenu" index="2"]
+
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 50.0
+margin_top = -100.0
+margin_right = -50.0
+margin_bottom = -40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 1 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+text = "Initial Screen"
+flat = false
+align = 1
+_sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
+
+[node name="PlayTimeoutSlider" type="HSlider" parent="." index="8"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -424,7 +529,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
-[node name="RestTimeoutSlider" type="HSlider" parent="." index="8"]
+[node name="RestTimeoutSlider" type="HSlider" parent="." index="9"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -478,7 +583,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
-[node name="EffortSlider" type="HSlider" parent="." index="9"]
+[node name="EffortSlider" type="HSlider" parent="." index="10"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -538,11 +643,11 @@ _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
 [connection signal="toggled" from="StartButton" to="." method="_on_StartButton_toggled"]
 
-[connection signal="toggled" from="StartButton" to="StartButton" method="_on_toggled"]
+[connection signal="pressed" from="PauseMenu/ResumeButton" to="." method="_on_ResumeButton_pressed"]
 
-[connection signal="pressed" from="PauseMenu/ResumeButton" to="PauseMenu" method="_on_ResumeButton_pressed"]
+[connection signal="pressed" from="PauseMenu/ExitButton" to="." method="_on_ExitButton_pressed"]
 
-[connection signal="pressed" from="PauseMenu/ExitButton" to="PauseMenu" method="_on_ExitButton_pressed"]
+[connection signal="pressed" from="EndMenu/ExitButton" to="." method="_on_ExitButton_pressed"]
 
 [connection signal="value_changed" from="PlayTimeoutSlider" to="." method="_on_PlayTimeoutSlider_value_changed"]
 
