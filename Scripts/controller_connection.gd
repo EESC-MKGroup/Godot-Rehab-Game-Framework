@@ -76,6 +76,9 @@ func set_axis_values( axis_index, setpoint, stiffness ):
 func get_axis_values( axis_index ):
 	return input_values[ axis_index ]
 
+func get_setpoint( axis_index ):
+	return -output_values[ axis_index ][ SETPOINT ] / max_effort
+
 func _check_limits( limits, value ):
 	if limits == null: limits = [ value - 0.001, value + 0.001 ]
 	limits[ 0 ] = min( value, limits[ 0 ] ) 

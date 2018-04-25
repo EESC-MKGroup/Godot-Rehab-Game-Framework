@@ -1,12 +1,15 @@
 extends Spatial
 
+enum DIRECTION { NONE = 0, UP = -1, DOWN = 1 }
+
 const PLAY_TIMEOUT = 3.0
 const REST_TIMEOUT = 120.0
 
-enum DIRECTION { NONE = 0, UP = -1, DOWN = 1 }
+const PLAY_CYCLES = 3
+const PLAY_TIMEOUTS = 8
 
 var cycles_count = 0
-var direction = UP 
+var direction = NONE 
 
 onready var setpoint_timer = get_node( "Timer" )
 
@@ -54,28 +57,22 @@ func _change_display():
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if direction == NONE:
-		ray.enabled = false
-		print( "rest phase (%d/%d)" % [ timeouts_count, PLAY_TIMEOUTS + REST_TIMEOUTS ] )
+		direction = DOWN
 	else:
 		if ray.is_colliding():
 			var score_up = score_animation.instance()
 			player.add_child( score_up )
-		ray.enabled = true
 		if direction == UP: direction = DOWN
 		elif direction == DOWN: direction = UP
-		print( "play phase (%d/%d)" % [ timeouts_count, PLAY_TIMEOUTS ] )
-	_change_display()
 	if cycles_count < PLAY_CYCLES:
+		print( "play phase (%d/%d)" % [ timeouts_count, PLAY_TIMEOUTS ] )
 		if timeouts_count >= PLAY_TIMEOUTS: 
 			direction = NONE
-			$GUI.end_play()
-		if timeouts_count >= PLAY_TIMEOUTS + REST_TIMEOUTS: 
-			direction = UP
 			cycles_count += 1
-			if cycles_count >= PLAY_CYCLES:
-				direction = NONE
-				$GUI.end_play()
-	_change_display()
+			print( "rest phase (%d/%d)" % [ cycles_count, PLAY_CYCLES ] )
+			$GUI.end_play()
+			if cycles_count >= PLAY_CYCLES: print( "game finished" )
+		_change_display()
 
 func _on_GUI_game_toggle( started ):
 	if Controller.is_calibrating: Controller.set_status( 1 )

@@ -278,7 +278,7 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Background" ]
 
-[node name="Game" type="Spatial" index="0"]
+[node name="Game" type="Spatial"]
 
 script = ExtResource( 1 )
 
@@ -320,7 +320,7 @@ _sections_unfolded = [ "Transform" ]
 [node name="RayCast" type="RayCast" parent="GameSpace/Boundaries/Player" index="0"]
 
 transform = Transform( -5, 2.2076e-06, -2.22475e-07, -2.21506e-06, -4.93743, 0.788554, 1.28472e-07, 0.788554, 4.93743, 0, 0.468246, -0.0747832 )
-enabled = false
+enabled = true
 exclude_parent = true
 cast_to = Vector3( 0, -3, 0 )
 collision_mask = 2

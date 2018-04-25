@@ -373,7 +373,7 @@ height = 0.3
 radial_segments = 16
 rings = 4
 
-[node name="Game" type="Spatial"]
+[node name="Game" type="Spatial" index="0"]
 
 script = ExtResource( 1 )
 

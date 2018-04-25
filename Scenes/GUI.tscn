@@ -36,7 +36,7 @@ anti_aliasing_size = 1
 script/source = "extends Control
 
 onready var setpoint_display = get_node( \"SetpointDisplay\" )
-onready var position_display = get_node( \"PositionDisplay\" )
+onready var measure_display = get_node( \"MeasureDisplay\" )
 
 onready var play_timeout_slider = get_node( \"PlayTimeoutSlider\" )
 onready var play_timeout_display = play_timeout_slider.get_node( \"Label\" )
@@ -67,7 +67,7 @@ func _ready():
 
 func _process( delta ):
 	var input_values = Controller.get_axis_values( Controller.VERTICAL )
-	position_display.text = ( \"%+.3f\" % input_values[ Controller.POSITION ] )
+	measure_display.text = ( \"%+.3f\" % input_values[ Controller.POSITION ] )
 
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	play_timeout_slider.value = play_timeout_value
@@ -105,7 +105,7 @@ func _on_StartButton_toggled( button_pressed ):
 		play_timer.paused = false
 		play_timer.start()
 		start_button.text = \"Stop\"
-		_on_Timer_timeout()
+		_on_PlayTimer_timeout()
 	else: 
 		play_timer.paused = true
 		start_button.text = \"Start\"
@@ -130,7 +130,7 @@ func _on_ExitButton_pressed():
 	get_tree().change_scene( \"res://Scenes/InitScreen.tscn\" )
 "
 
-[node name="GUI" type="Panel" index="0"]
+[node name="GUI" type="Panel"]
 
 self_modulate = Color( 1, 1, 1, 0.498039 )
 anchor_left = 0.0
