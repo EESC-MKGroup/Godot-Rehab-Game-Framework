@@ -25,26 +25,31 @@ onready var initial_position = effector.translation.y
 onready var initial_scale = spring.scale.y
 onready var max_displacement = abs( effector.translation.y ) / 2
 
-var controller_axis = Controller.direction_axis
-
 func _ready():
 	Controller.set_status( 5 )
 	if Controller.is_calibrating: 
 		cycles_number = MAX_CYCLES
 		$GUI.set_timeouts( MAX_TIMEOUT, REST_TIMEOUT )
+		$GUI.set_max_effort( 100.0 )
 	else:
 		cycles_number = HOLD_CYCLES
 		$GUI.set_timeouts( HOLD_TIMEOUT, REST_TIMEOUT )
-	Controller.set_axis_values( controller_axis, 0, 50.0 )
+		$GUI.set_max_effort( 70.0 )
+	Controller.set_axis_values( 0, 50.0 )
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
-	var controller_values = Controller.get_axis_values( controller_axis )
-	var player_force = abs( controller_values[ Controller.FORCE ] )
-	var displacement = player_force * max_displacement
+	var player_force = Controller.get_axis_values()[ Controller.FORCE ]
+	var displacement_factor = abs( player_force )
+	var displacement = displacement_factor * max_displacement
 	displacement = clamp( displacement, 0.0, max_displacement )
 	effector.translation.y = initial_position + displacement
 	spring.scale.y = initial_scale * effector.translation.y / initial_position
+	
+	if not Controller.is_calibrating:
+		var score_state = 0
+		if direction != NONE: score_state = 1 if displacement == max_displacement else -1
+		DataLog.register_values( [ direction, player_force, score_state ] )
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if direction == NONE: direction = UP

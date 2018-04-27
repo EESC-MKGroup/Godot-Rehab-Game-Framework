@@ -13,7 +13,6 @@ var setpoint_position = 0
 var total_waves_number = PHASES_STIFFNESS.size() * PHASE_WAVES_NUMBER
 var waves_count = 0
 var score = 0
-
 var score_state = 0
 
 onready var boundary_area = get_node( "BoundaryArea" )
@@ -25,11 +24,11 @@ onready var player = boundaries.get_node( "Player" )
 onready var collider_width = 2 * boundary_extents.y / COLLIDER_SLOTS_NUMBER
 onready var collider_top = -boundary_extents.y + collider_width / 2
 
-var controller_axis = Controller.direction_axis
-
 func _ready():
 	$GUI.set_timeouts( 3.0, 0.0 )
-	if controller_axis == Controller.HORIZONTAL:
+	if Controller.is_calibrating: $GUI.set_max_effort( 100.0 )
+	else: $GUI.set_max_effort( 80.0 )
+	if Controller.direction_axis == Controller.HORIZONTAL:
 		$Camera.rotate_z( PI / 2 )
 		$Camera.translation.x = -3.7
 		$Background.translation.x = $Camera.translation.x
@@ -39,20 +38,22 @@ func _ready():
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
-	var controller_values = Controller.get_axis_values( controller_axis )
+	var controller_values = Controller.get_axis_values()
 	var new_position = controller_values[ Controller.POSITION ] * boundary_extents.y
 	new_position = clamp( new_position, -boundary_extents.y, boundary_extents.y )
 	var position_delta = new_position - player.translation.y
 	player.translation.y = new_position
-
-	DataLog.register_values( [ setpoint_position, player.translation.y, score_state ] )
-	score_state = 0
+	
+	if not Controller.is_calibrating:
+		var measure_position = player.translation.y / boundary_extents.y
+		DataLog.register_values( [ setpoint_position, player.translation.y, score_state ] )
+		score_state = 0
 
 func _set_setpoint():
 	if setpoint_positions.size() > 0:
 		setpoint_position = setpoint_positions.front()
 		var stiffness_phase = int( waves_count / PHASE_WAVES_NUMBER ) % PHASES_STIFFNESS.size()
-		Controller.set_axis_values( controller_axis, setpoint_position, PHASES_STIFFNESS[ stiffness_phase ] )
+		Controller.set_axis_values( setpoint_position, PHASES_STIFFNESS[ stiffness_phase ] )
 		$GUI.display_setpoint( setpoint_position )
 
 func _on_GUI_game_timeout( timeouts_count ):
@@ -85,6 +86,7 @@ func _on_ScoreArea_collider_reached( collider ):
 	player.interact( collider )
 
 func _on_GUI_game_toggle( started ):
-	Controller.set_axis_values( controller_axis, 0.0, 1.0 )
+	Controller.set_axis_values( 0.0, 1.0 )
 	if Controller.is_calibrating: Controller.set_status( 3 )
-	else: Controller.set_status( 2 if controller_axis == Controller.VERTICAL else 6 )
+	elif Controller.direction_axis == Controller.VERTICAL: Controller.set_status( 2 )
+	else: Controller.set_status( 6 )

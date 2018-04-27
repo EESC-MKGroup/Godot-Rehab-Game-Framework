@@ -66,18 +66,15 @@ func set_status( value ):
 func get_status():
 	return input_status
 
-func set_axis_values( axis_index, setpoint, stiffness ):
-	var axis_limits = position_limits[ axis_index ]
+func set_axis_values( setpoint, stiffness ):
+	var axis_limits = position_limits[ direction_axis ]
 	if not is_calibrating:
 		setpoint = _denormalize( setpoint, axis_limits )
-		output_values[ axis_index ][ SETPOINT ] = -setpoint * max_effort
-		output_values[ axis_index ][ STIFFNESS ] = stiffness
+		output_values[ direction_axis ][ SETPOINT ] = -setpoint * max_effort
+		output_values[ direction_axis ][ STIFFNESS ] = stiffness
 
-func get_axis_values( axis_index ):
-	return input_values[ axis_index ]
-
-func get_setpoint( axis_index ):
-	return -output_values[ axis_index ][ SETPOINT ] / max_effort
+func get_axis_values():
+	return input_values[ direction_axis ]
 
 func _check_limits( limits, value ):
 	if limits == null: limits = [ value - 0.001, value + 0.001 ]
@@ -90,6 +87,7 @@ func _normalize( value, limits ):
 	return ( 2 * ( value - limits[ 0 ] ) / value_range ) - 1.0
 
 func _denormalize( value, limits ):
+	if limits == null: return value
 	var value_range = limits[ 1 ] - limits[ 0 ]
 	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
 

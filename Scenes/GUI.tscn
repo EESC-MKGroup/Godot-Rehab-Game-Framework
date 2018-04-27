@@ -68,8 +68,7 @@ func _ready():
 	rest_timer.paused = true
 
 func _process( delta ):
-	var direction_axis = Controller.direction_axis
-	var input_values = Controller.get_axis_values( direction_axis )
+	var input_values = Controller.get_axis_values()
 	measure_display.text = ( \"%+.3f\" % input_values[ Controller.POSITION ] )
 
 func display_setpoint( setpoint_value ):
@@ -78,6 +77,9 @@ func display_setpoint( setpoint_value ):
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	play_timeout_slider.value = play_timeout_value
 	rest_timeout_slider.value = rest_timeout_value
+
+func set_max_effort( max_effort ):
+	effort_slider.value = max_effort
 
 func wait_rest():
 	play_timer.paused = true

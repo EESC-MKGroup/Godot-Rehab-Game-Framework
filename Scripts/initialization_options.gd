@@ -15,7 +15,7 @@ func _input( event ):
 		if event.scancode == KEY_ESCAPE: get_tree().quit()
 
 func _process( delta ):
-	var axis_values = Controller.get_axis_values( Controller.VERTICAL )
+	var axis_values = Controller.get_axis_values()
 	var position = axis_values[ Controller.POSITION ]
 	position_slider.value = position
 	position_display.text = ( "%+.3f" % position )
@@ -35,7 +35,7 @@ func _on_UserInput_text_changed( new_text ):
 	Configuration.set_parameter( "user_name", new_text )
 
 func _on_SetpointSlider_value_changed( value ):
-	Controller.set_axis_values( Controller.VERTICAL, value, 1 )
+	Controller.set_axis_values( value, 1 )
 
 func _on_CalibrationToggle_toggled( button_pressed ):
 	Controller.is_calibrating = button_pressed
