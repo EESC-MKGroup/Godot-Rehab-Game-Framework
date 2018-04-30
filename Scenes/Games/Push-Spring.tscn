@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scripts/push-spring_game.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Wall.png" type="Texture" id=2]
@@ -11,6 +11,8 @@
 [ext_resource path="res://Meshes/toon_hand_point.obj" type="ArrayMesh" id=9]
 [ext_resource path="res://Meshes/arrow.obj" type="ArrayMesh" id=10]
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Fonts/LuckiestGuyGame.tres" type="DynamicFont" id=12]
+[ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=13]
 
 [sub_resource type="SpatialMaterial" id=1]
 
@@ -486,7 +488,35 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission" ]
 
-[node name="Game" type="Spatial"]
+[sub_resource type="StyleBoxFlat" id=14]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+bg_color = Color( 0.6, 0.6, 0.6, 1 )
+draw_center = true
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color( 0.8, 0.8, 0.8, 1 )
+border_blend = false
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+corner_detail = 8
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+shadow_color = Color( 0, 0, 0, 0.6 )
+shadow_size = 0
+anti_aliasing = true
+anti_aliasing_size = 1
+
+[node name="Game" type="Spatial" index="0"]
 
 script = ExtResource( 1 )
 
@@ -633,7 +663,7 @@ visible = false
 
 [node name="Arrow1" type="MeshInstance" parent="SpringBase/Arrow" index="0"]
 
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, -4, -3.5, 0 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, -3.5, -3.5, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -650,7 +680,7 @@ _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Arrow2" type="MeshInstance" parent="SpringBase/Arrow" index="1"]
 
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, 4, -3.5, 0 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, 3.5, -3.5, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -689,6 +719,82 @@ omni_shadow_detail = 1
 _sections_unfolded = [ "Light", "Spot" ]
 
 [node name="GUI" parent="." index="5" instance=ExtResource( 11 )]
+
+editor/display_folded = true
+
+[node name="ForcePanel" type="Panel" parent="." index="6"]
+
+visible = false
+self_modulate = Color( 1, 1, 1, 0.498039 )
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -180.0
+margin_top = -60.0
+margin_right = -10.0
+margin_bottom = 60.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 14 )
+_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_styles" ]
+
+[node name="VariableLabel" type="Label" parent="ForcePanel" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 12.0
+margin_top = 10.0
+margin_right = 162.0
+margin_bottom = 50.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 12 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Force"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
+
+[node name="MeasureDisplay" type="LineEdit" parent="ForcePanel" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 20.0
+margin_top = 60.0
+margin_right = 150.0
+margin_bottom = 111.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 13 )
+text = "+00.0N"
+align = 1
+focus_mode = 0
+context_menu_enabled = true
+placeholder_alpha = 0.6
+caret_blink = false
+caret_blink_speed = 0.65
+caret_position = 0
+_sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
 
 [connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
 

@@ -21,16 +21,22 @@ onready var spring = base.get_node( "Spring" )
 onready var target = base.get_node( "Target" )
 onready var arrow = base.get_node( "Arrow" )
 
+onready var force_panel = get_node( "ForcePanel" )
+onready var force_display = force_panel.get_node( "MeasureDisplay" )
+
 onready var initial_position = effector.translation.y
 onready var initial_scale = spring.scale.y
 onready var max_displacement = abs( effector.translation.y ) / 2
 
 func _ready():
 	Controller.set_status( 5 )
+	if Controller.direction_axis == Controller.HORIZONTAL:
+		$Camera.rotate_z( PI / 2 )
 	if Controller.is_calibrating: 
 		cycles_number = MAX_CYCLES
 		$GUI.set_timeouts( MAX_TIMEOUT, REST_TIMEOUT )
 		$GUI.set_max_effort( 100.0 )
+		force_panel.show()
 	else:
 		cycles_number = HOLD_CYCLES
 		$GUI.set_timeouts( HOLD_TIMEOUT, REST_TIMEOUT )
@@ -46,6 +52,8 @@ func _physics_process( delta ):
 	effector.translation.y = initial_position + displacement
 	spring.scale.y = initial_scale * effector.translation.y / initial_position
 	
+	force_display.text = ( "%+4.1fN" % player_force )
+	
 	if not Controller.is_calibrating:
 		var score_state = 0
 		if direction != NONE: score_state = 1 if displacement == max_displacement else -1
@@ -54,7 +62,6 @@ func _physics_process( delta ):
 func _on_GUI_game_timeout( timeouts_count ):
 	if direction == NONE: direction = UP
 	if timeouts_count == 0: 
-		print( "play" )
 		arrow.show()
 		if cycles_count >= cycles_number:
 			if direction == UP: 
@@ -63,7 +70,6 @@ func _on_GUI_game_timeout( timeouts_count ):
 			cycles_count = 0
 		$GUI.display_setpoint( direction )
 	if timeouts_count == 1:
-		print( "rest" ) 
 		arrow.hide()
 		cycles_count += 1
 		$GUI.wait_rest()
@@ -72,7 +78,6 @@ func _on_GUI_game_timeout( timeouts_count ):
 			direction = NONE
 			$GUI.end_game( 2 * cycles_number, 0 )
 		$GUI.display_setpoint( 0.0 )
-	print( "timeout: %d %d %d" % [ direction, cycles_count, timeouts_count ] )
 
 func _on_GUI_game_toggle( started ):
 	if not Controller.is_calibrating: target.show()

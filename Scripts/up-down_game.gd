@@ -74,11 +74,9 @@ func _on_GUI_game_timeout( timeouts_count ):
 		if direction == UP: direction = DOWN
 		elif direction == DOWN: direction = UP
 	if cycles_count < PLAY_CYCLES:
-		print( "play phase (%d/%d)" % [ timeouts_count, PLAY_TIMEOUTS ] )
 		if timeouts_count >= PLAY_TIMEOUTS: 
 			direction = NONE
 			cycles_count += 1
-			print( "rest phase (%d/%d)" % [ cycles_count, PLAY_CYCLES ] )
 			$GUI.wait_rest()
 			if cycles_count >= PLAY_CYCLES: $GUI.end_game( PLAY_TIMEOUTS * PLAY_CYCLES, score )
 		_change_display()
