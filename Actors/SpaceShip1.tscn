@@ -403,14 +403,14 @@ _sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="CollisionShape" type="CollisionShape" parent="." index="0"]
 
-transform = Transform( 1, -6.51683e-07, -1.12515e-10, -1.12515e-10, -0.000345306, 1, -6.51683e-07, -1, -0.000345306, 0, 0.00784636, -0.0826314 )
+transform = Transform( 1, 0, 0, 0, 0.000345306, 1, 0, -1, 0.000345306, 0, 0.0208571, -0.0839378 )
 shape = SubResource( 2 )
 disabled = false
 _sections_unfolded = [ "Transform" ]
 
 [node name="MeshInstance" type="MeshInstance" parent="." index="1"]
 
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -2.8213e-07, 1, 0, -1, -2.8213e-07, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -428,7 +428,7 @@ _sections_unfolded = [ "Transform", "material" ]
 
 [node name="JetFire" type="Particles" parent="." index="2"]
 
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.769266, -0.0788263 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.769266, -0.0856008 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -458,7 +458,7 @@ _sections_unfolded = [ "Draw Passes", "Drawing", "Geometry", "Process Material",
 
 [node name="JetFire2" type="Particles" parent="." index="3"]
 
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.769266, -0.0788263 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.769266, -0.0856008 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -488,7 +488,7 @@ _sections_unfolded = [ "Draw Passes", "Drawing", "Geometry", "Process Material",
 
 [node name="OmniLight" type="OmniLight" parent="." index="4"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.995544, -0.0750174 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.995544, -0.0817919 )
 layers = 1
 light_color = Color( 1, 0.8526, 0.460938, 1 )
 light_energy = 2.0

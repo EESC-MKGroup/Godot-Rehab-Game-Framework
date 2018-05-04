@@ -20,9 +20,9 @@ script/source = "extends CollisionShape
 var target_index = 0
 var old_target_index = 0"
 
-[node name="Game" type="Spatial"]
+[node name="Game" type="Spatial" index="0"]
 
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+transform = Transform( 1, -2.84217e-14, -1.12515e-10, -1.12515e-10, -0.000345306, -1, -2.84217e-14, 1, -0.000345306, 0, 0, 0 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Animation", "Flags", "Geometry", "Region", "Transform" ]
 target_wall = ExtResource( 2 )
@@ -59,7 +59,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Boundaries" type="CollisionShape" parent="BoundaryArea" index="0"]
 
-transform = Transform( 1, 0, 4.4671e-25, 0, 1, 0, 0, 0, 1, -1.05714e-13, 0.631391, -0.77693 )
+transform = Transform( 1, -8.74228e-08, 1.50996e-07, -8.74228e-08, -1, 0, 1.50996e-07, -1.32005e-14, -1, -1.05714e-13, 0.631391, -0.77693 )
 shape = SubResource( 1 )
 disabled = false
 script = SubResource( 2 )
@@ -67,7 +67,7 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Player" parent="BoundaryArea/Boundaries" index="0" instance=ExtResource( 5 )]
 
-transform = Transform( -1.62921e-07, 1, 6.93889e-18, -1, -1.62921e-07, 0, 0, -1.73472e-17, 1, -7.89499, 0, 0.349952 )
+transform = Transform( -1.62921e-07, 1, -6.67522e-15, 1, 1.62921e-07, 3.25846e-07, 3.25846e-07, 6.68909e-14, -1, -7.89499, 5.76256e-09, 0.349952 )
 collision_layer = 3
 _sections_unfolded = [ "Axis Lock", "Collision", "Transform" ]
 

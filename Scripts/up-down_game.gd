@@ -1,6 +1,6 @@
 extends Spatial
 
-enum DIRECTION { NONE = 0, UP = -1, DOWN = 1 }
+enum DIRECTION { NONE = 0, UP = 1, DOWN = -1 }
 
 const PLAY_TIMEOUT = 3.0
 const REST_TIMEOUT = 120.0
@@ -38,7 +38,7 @@ func _physics_process( delta ):
 	var controller_values = Controller.get_axis_values()
 	var new_position = controller_values[ Controller.POSITION ] * max_position
 	new_position = clamp( new_position, -max_position, max_position )
-	player.translation.y = -new_position
+	player.translation.y = new_position
 	
 	if not Controller.is_calibrating:
 		var measure_value = player.translation.y / max_position
@@ -56,7 +56,7 @@ func _change_display():
 		watermelon.show()
 		balloon.hide()
 	var target_position = direction * max_position
-	target.translation.y = -target_position
+	target.translation.y = target_position
 	Controller.set_axis_values( direction, 1 )
 	$GUI.display_setpoint( direction )
 

@@ -1,6 +1,6 @@
 extends Spatial
 
-enum DIRECTION { NONE = 0, UP = -1, DOWN = 1 }
+enum DIRECTION { NONE = 0, UP = 1, DOWN = -1 }
 
 const MAX_TIMEOUT = 6.0
 const MAX_CYCLES = 3

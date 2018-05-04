@@ -28,7 +28,7 @@ func receive_data():
 	for axis_index in range( input_values.size() ):
 		var axis_values = input_values[ axis_index ]
 		for value_index in axis_values.size():
-			axis_values[ value_index ] = -connection.get_float()
+			axis_values[ value_index ] = connection.get_float()
 		if is_calibrating: 
 			position_limits[ axis_index ] = _check_limits( position_limits[ axis_index ], axis_values[ POSITION ] )
 			force_limits[ axis_index ] = _check_limits( force_limits[ axis_index ], axis_values[ FORCE ] )
@@ -70,7 +70,7 @@ func set_axis_values( setpoint, stiffness ):
 	var axis_limits = position_limits[ direction_axis ]
 	if not is_calibrating:
 		setpoint = _denormalize( setpoint, axis_limits )
-		output_values[ direction_axis ][ SETPOINT ] = -setpoint * max_effort
+		output_values[ direction_axis ][ SETPOINT ] = setpoint * max_effort
 		output_values[ direction_axis ][ STIFFNESS ] = stiffness
 
 func get_axis_values():
