@@ -135,8 +135,8 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Player" parent="BoundaryArea/Boundaries" index="0" instance=ExtResource( 9 )]
 
-transform = Transform( 0.4, 0, -1.94468e-23, 0, 0.4, 0, 7.88861e-32, 0, 0.4, -7.6293, 1.09119e-07, 0.30057 )
-_sections_unfolded = [ "Collision", "Transform" ]
+transform = Transform( 0.4, 0, -2.44099e-23, 0, 0.4, 0, 7.88861e-32, 0, 0.4, -7.6293, 1.09119e-07, 0.30057 )
+_sections_unfolded = [ "Axis Lock", "Collision", "Transform" ]
 
 [node name="Camera" type="Camera" parent="." index="2"]
 
