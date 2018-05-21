@@ -192,4 +192,6 @@ bus = "Master"
 
 [connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
 
+[connection signal="game_toggle" from="GUI" to="." method="_on_GUI_game_toggle"]
+
 

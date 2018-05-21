@@ -20,7 +20,7 @@ script/source = "extends CollisionShape
 var target_index = 0
 var old_target_index = 0"
 
-[node name="Game" type="Spatial" index="0"]
+[node name="Game" type="Spatial"]
 
 transform = Transform( 1, -2.84217e-14, -1.12515e-10, -1.12515e-10, -0.000345306, -1, -2.84217e-14, 1, -0.000345306, 0, 0, 0 )
 script = ExtResource( 1 )

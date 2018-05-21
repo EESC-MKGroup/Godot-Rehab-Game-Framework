@@ -62,6 +62,7 @@ func connect_client( host, port ):
 
 func set_status( value ):
 	output_status = value
+	print( "setting status %d" % output_status )
 
 func get_status():
 	return input_status
@@ -123,7 +124,7 @@ func set_identifier( user_name, time_stamp ):
 	print( user_name )
 	for byte_index in user_string.size():
 		print( "%d %x" % [ user_string[ byte_index ], user_string[ byte_index ] ] )
-		var byte_offset = ( 3 - byte_index ) * 8
+		var byte_offset = ( user_string.size() - 1 - byte_index ) * 8
 		user_id |= ( user_string[ byte_index ] << byte_offset )
 	output_values[ 0 ][ USER ] = user_id
 	print( "user: %d %x" % [ output_values[ 0 ][ USER ], output_values[ 0 ][ USER ] ] )

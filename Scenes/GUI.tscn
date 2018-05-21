@@ -3,7 +3,7 @@
 [ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Fonts/LuckiestGuyGame.tres" type="DynamicFont" id=2]
 
-[sub_resource type="StyleBoxFlat" id=14]
+[sub_resource type="StyleBoxFlat" id=1]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
@@ -31,7 +31,7 @@ shadow_size = 0
 anti_aliasing = true
 anti_aliasing_size = 1
 
-[sub_resource type="GDScript" id=15]
+[sub_resource type="GDScript" id=2]
 
 script/source = "extends Control
 
@@ -155,8 +155,8 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 14 )
-script = SubResource( 15 )
+custom_styles/panel = SubResource( 1 )
+script = SubResource( 2 )
 _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_styles" ]
 
 [node name="PlayTimer" type="Timer" parent="." index="0"]
