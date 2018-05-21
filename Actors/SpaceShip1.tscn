@@ -16,7 +16,7 @@ func interact( collider ):
 
 func _physics_process( delta ):
 	var position_delta = translation.y - old_position
-	rotation.x = ( rotation.x + 0.15 * position_delta / delta ) / 2
+	rotation.x = 0.75 * rotation.x + 0.25 * 0.15 * position_delta / delta
 	old_position = translation.y"
 
 [sub_resource type="ConvexPolygonShape" id=2]
@@ -86,7 +86,7 @@ _sections_unfolded = [ "Albedo", "Ambient Occlusion", "Anisotropy", "Clearcoat",
 [sub_resource type="SpatialMaterial" id=4]
 
 render_priority = 0
-flags_transparent = false
+flags_transparent = true
 flags_unshaded = false
 flags_vertex_lighting = false
 flags_no_depth_test = false
@@ -106,7 +106,7 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
+albedo_color = Color( 0.796875, 0.796875, 0.796875, 1 )
 albedo_texture = ExtResource( 2 )
 metallic = 0.0
 metallic_specular = 0.5

@@ -62,7 +62,7 @@ func _change_display():
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if direction == NONE:
-		direction = UP
+		direction = UP if ( cycles_count % 2 == 0 ) else DOWN
 	else:
 		if ray.is_colliding():
 			score += 1

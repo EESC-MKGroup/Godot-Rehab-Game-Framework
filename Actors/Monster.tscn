@@ -19,7 +19,7 @@ var old_position = 0.0
 
 func _physics_process( delta ):
 	var position_delta = translation.y - old_position
-	rotation.z = ( rotation.z + 0.10 * position_delta / delta ) / 2
+	rotation.z = 0.9 * rotation.z + 0.1 * 0.10 * position_delta / delta
 	old_position = translation.y
 
 func interact( item ):

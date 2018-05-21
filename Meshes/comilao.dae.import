@@ -7,10 +7,10 @@ path="res://.import/comilao.dae-0c489ed404211af60f33ad3c537121f1.scn"
 [deps]
 
 source_file="res://Meshes/comilao.dae"
-source_md5="5181a97945af0c1867727d9f556415fb"
+source_md5="ee29902c4e6fe887035cdddfb99afedc"
 
 dest_files=[ "res://.import/comilao.dae-0c489ed404211af60f33ad3c537121f1.scn" ]
-dest_md5="4ddaac255035e4d137774d39e606eb6f"
+dest_md5="c2ae9467772db482d0dc8530c1161230"
 
 [params]
 
