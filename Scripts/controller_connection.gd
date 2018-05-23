@@ -34,7 +34,8 @@ func receive_data():
 			force_limits[ axis_index ] = _check_limits( force_limits[ axis_index ], axis_values[ FORCE ] )
 		elif position_limits[ axis_index ] != null:
 			axis_values[ POSITION ] = _normalize( axis_values[ POSITION ], position_limits[ axis_index ] )
-			axis_values[ FORCE ] = _scale( axis_values[ FORCE ], force_limits[ axis_index ] )
+			#axis_values[ FORCE ] = _scale( axis_values[ FORCE ], force_limits[ axis_index ] )
+			axis_values[ FORCE ] = _normalize( axis_values[ FORCE ], force_limits[ axis_index ] )
 		for value_index in axis_values.size():
 			axis_values[ value_index ] /= max_effort
 

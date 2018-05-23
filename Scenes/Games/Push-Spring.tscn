@@ -334,7 +334,7 @@ params_point_size = 1.0
 params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
-albedo_color = Color( 1, 0, 0, 0.498039 )
+albedo_color = Color( 1, 0, 0, 0.705882 )
 metallic = 0.0
 metallic_specular = 0.5
 metallic_texture_channel = 0
@@ -641,7 +641,7 @@ _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Target" type="MeshInstance" parent="SpringBase" index="2"]
 
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.72824, 0 )
+transform = Transform( 1.1, 0, 0, 0, 0.2, 0, 0, 0, 1.1, 0, -1.72824, 0 )
 visible = false
 layers = 1
 material_override = null
@@ -720,20 +720,17 @@ _sections_unfolded = [ "Light", "Spot" ]
 
 [node name="GUI" parent="." index="5" instance=ExtResource( 11 )]
 
-editor/display_folded = true
-
 [node name="ForcePanel" type="Panel" parent="." index="6"]
 
-visible = false
 self_modulate = Color( 1, 1, 1, 0.498039 )
-anchor_left = 1.0
-anchor_top = 0.5
+anchor_left = 0.0
+anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = -180.0
-margin_top = -60.0
-margin_right = -10.0
-margin_bottom = 60.0
+anchor_bottom = 1.0
+margin_left = 555.0
+margin_top = -140.0
+margin_right = -555.0
+margin_bottom = -20.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0

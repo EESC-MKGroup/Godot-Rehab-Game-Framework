@@ -26,7 +26,7 @@ onready var force_display = force_panel.get_node( "MeasureDisplay" )
 
 onready var initial_position = effector.translation.y
 onready var initial_scale = spring.scale.y
-onready var max_displacement = abs( effector.translation.y ) / 2
+onready var max_displacement = 0.8 * abs( effector.translation.y )
 
 func _ready():
 	Controller.set_status( 5 )
@@ -40,7 +40,7 @@ func _ready():
 	else:
 		cycles_number = HOLD_CYCLES
 		$GUI.set_timeouts( HOLD_TIMEOUT, REST_TIMEOUT )
-		$GUI.set_max_effort( 70.0 )
+		$GUI.set_max_effort( 20.0 )
 	Controller.set_axis_values( 0, 50.0 )
 	$GUI.display_setpoint( 0.0 )
 
