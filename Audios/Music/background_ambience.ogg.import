@@ -7,10 +7,7 @@ path="res://.import/background_ambience.ogg-2823c918e319e964f78697247dd144ad.ogg
 [deps]
 
 source_file="res://Audios/Music/background_ambience.ogg"
-source_md5="e225eae01f605b92964c86470a2537f5"
-
 dest_files=[ "res://.import/background_ambience.ogg-2823c918e319e964f78697247dd144ad.oggstr" ]
-dest_md5="2ffe78d6ccd4218dd21f9c3b2f3172c1"
 
 [params]
 

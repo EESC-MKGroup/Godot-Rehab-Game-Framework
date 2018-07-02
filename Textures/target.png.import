@@ -8,10 +8,7 @@ path.etc2="res://.import/target.png-2e5b733b38a9053e13ab6f79ceb61206.etc2.stex"
 [deps]
 
 source_file="res://Textures/target.png"
-source_md5="d8813b5fccf1fc12d337be4fbcd25a2e"
-
 dest_files=[ "res://.import/target.png-2e5b733b38a9053e13ab6f79ceb61206.s3tc.stex", "res://.import/target.png-2e5b733b38a9053e13ab6f79ceb61206.etc2.stex" ]
-dest_md5="f96eb47e797769dbffc244bc2794c3f7"
 
 [params]
 

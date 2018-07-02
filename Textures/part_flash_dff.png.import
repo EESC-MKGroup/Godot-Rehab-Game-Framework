@@ -8,10 +8,7 @@ path.etc2="res://.import/part_flash_dff.png-335492bf887892414f83a4ef01469836.etc
 [deps]
 
 source_file="res://Textures/part_flash_dff.png"
-source_md5="af3ea1bda462fc098e80882fa33981a2"
-
 dest_files=[ "res://.import/part_flash_dff.png-335492bf887892414f83a4ef01469836.s3tc.stex", "res://.import/part_flash_dff.png-335492bf887892414f83a4ef01469836.etc2.stex" ]
-dest_md5="5f123fc47cfbe751f1bc1b989e476a9d"
 
 [params]
 

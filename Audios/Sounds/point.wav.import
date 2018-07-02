@@ -7,10 +7,7 @@ path="res://.import/point.wav-22fc7d2bdbb747267ce6ade8d56e3bea.sample"
 [deps]
 
 source_file="res://Audios/Sounds/point.wav"
-source_md5="340e9d49c94437a3abcbd856141126fd"
-
 dest_files=[ "res://.import/point.wav-22fc7d2bdbb747267ce6ade8d56e3bea.sample" ]
-dest_md5="d5b77909bc719ebc0ae3b1ecd40aed0f"
 
 [params]
 

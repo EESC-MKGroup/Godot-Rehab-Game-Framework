@@ -7,10 +7,7 @@ path="res://.import/rerob_logo.png-902b83f76d34d75eaaa6f8d98c5365b1.stex"
 [deps]
 
 source_file="res://Textures/rerob_logo.png"
-source_md5="dcda29b03d98d689445e2da8534f2ccf"
-
 dest_files=[ "res://.import/rerob_logo.png-902b83f76d34d75eaaa6f8d98c5365b1.stex" ]
-dest_md5="081b5e53408d97feb26f5f4c68bdc43d"
 
 [params]
 

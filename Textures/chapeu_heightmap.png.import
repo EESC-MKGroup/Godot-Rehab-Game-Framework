@@ -7,10 +7,7 @@ path="res://.import/chapeu_heightmap.png-a2bde6bf75a3f00c5b206fcfdff95eb5.stex"
 [deps]
 
 source_file="res://Textures/chapeu_heightmap.png"
-source_md5="9d7d58dc4fcf634c74943e82d70e4a42"
-
 dest_files=[ "res://.import/chapeu_heightmap.png-a2bde6bf75a3f00c5b206fcfdff95eb5.stex" ]
-dest_md5="4cdedfb3d1da448380282f16bdbb6f55"
 
 [params]
 

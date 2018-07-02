@@ -7,10 +7,7 @@ path="res://.import/lemon_bump.jpg-9089a4e836125fdabeb00ab557bbb710.stex"
 [deps]
 
 source_file="res://Textures/lemon_bump.jpg"
-source_md5="8d072916f1ed281198b8964dacb9f0e7"
-
 dest_files=[ "res://.import/lemon_bump.jpg-9089a4e836125fdabeb00ab557bbb710.stex" ]
-dest_md5="6485f3c20034939cb1bda385e29f54f0"
 
 [params]
 

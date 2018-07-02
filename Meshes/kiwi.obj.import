@@ -9,10 +9,7 @@ path="res://.import/kiwi.obj-22e54a95215aa05b050bf07327f50103.mesh"
 files=[ "res://.import/kiwi.obj-22e54a95215aa05b050bf07327f50103.mesh" ]
 
 source_file="res://Meshes/kiwi.obj"
-source_md5="236b4342969505d1f8f1c4fab7a2c3bf"
-
 dest_files=[ "res://.import/kiwi.obj-22e54a95215aa05b050bf07327f50103.mesh", "res://.import/kiwi.obj-22e54a95215aa05b050bf07327f50103.mesh" ]
-dest_md5="44be1b7e78a34ec9a7bb28fca3288cf7"
 
 [params]
 

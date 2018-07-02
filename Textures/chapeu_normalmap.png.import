@@ -7,10 +7,7 @@ path="res://.import/chapeu_normalmap.png-bf335c33fcd1a0f474734609236e34a4.stex"
 [deps]
 
 source_file="res://Textures/chapeu_normalmap.png"
-source_md5="14f1f7f793c8d3c54209095da383ea8f"
-
 dest_files=[ "res://.import/chapeu_normalmap.png-bf335c33fcd1a0f474734609236e34a4.stex" ]
-dest_md5="02db39f0a993dcb3e484399721c1b8d4"
 
 [params]
 

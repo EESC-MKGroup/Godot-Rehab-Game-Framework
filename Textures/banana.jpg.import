@@ -8,10 +8,7 @@ path.etc2="res://.import/banana.jpg-54b657aedcc9954b823d07e4d590eeea.etc2.stex"
 [deps]
 
 source_file="res://Textures/banana.jpg"
-source_md5="2d6c17d160ff0ef865a93667d526e1d2"
-
 dest_files=[ "res://.import/banana.jpg-54b657aedcc9954b823d07e4d590eeea.s3tc.stex", "res://.import/banana.jpg-54b657aedcc9954b823d07e4d590eeea.etc2.stex" ]
-dest_md5="ada3cd3bded060d867a8440d18d0ac3e"
 
 [params]
 

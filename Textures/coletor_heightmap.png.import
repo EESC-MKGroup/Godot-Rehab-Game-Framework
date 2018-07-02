@@ -8,10 +8,7 @@ path.etc2="res://.import/coletor_heightmap.png-195015cc27e38b9effa625f479a60299.
 [deps]
 
 source_file="res://Textures/coletor_heightmap.png"
-source_md5="52738bd925c4953c704a092dd872dae4"
-
 dest_files=[ "res://.import/coletor_heightmap.png-195015cc27e38b9effa625f479a60299.s3tc.stex", "res://.import/coletor_heightmap.png-195015cc27e38b9effa625f479a60299.etc2.stex" ]
-dest_md5="e14d5f3e1e7db6c5bb724e82b4416103"
 
 [params]
 

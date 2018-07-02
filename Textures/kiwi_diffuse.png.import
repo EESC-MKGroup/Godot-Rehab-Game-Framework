@@ -8,10 +8,7 @@ path.etc2="res://.import/kiwi_diffuse.png-6dcb4236ef7cf255c973ae902ab32445.etc2.
 [deps]
 
 source_file="res://Textures/kiwi_diffuse.png"
-source_md5="4435a8e9aa832f536574e7ba36d10049"
-
 dest_files=[ "res://.import/kiwi_diffuse.png-6dcb4236ef7cf255c973ae902ab32445.s3tc.stex", "res://.import/kiwi_diffuse.png-6dcb4236ef7cf255c973ae902ab32445.etc2.stex" ]
-dest_md5="fd17dd15f06dcc32248df4f4e1868019"
 
 [params]
 

@@ -9,10 +9,7 @@ path="res://.import/vehicle_enemyShip.obj-baef1704ca46694e1cfdab486bbe0fa8.mesh"
 files=[ "res://.import/vehicle_enemyShip.obj-baef1704ca46694e1cfdab486bbe0fa8.mesh" ]
 
 source_file="res://Meshes/vehicle_enemyShip.obj"
-source_md5="c2ea451c47c7623ae55cd05b1970b165"
-
 dest_files=[ "res://.import/vehicle_enemyShip.obj-baef1704ca46694e1cfdab486bbe0fa8.mesh", "res://.import/vehicle_enemyShip.obj-baef1704ca46694e1cfdab486bbe0fa8.mesh" ]
-dest_md5="b3c57bd60497e551d68c296f8c777c7d"
 
 [params]
 

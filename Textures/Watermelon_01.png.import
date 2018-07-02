@@ -8,10 +8,7 @@ path.etc2="res://.import/Watermelon_01.png-3cc1eaacfc82e54c99631901eb67719d.etc2
 [deps]
 
 source_file="res://Textures/Watermelon_01.png"
-source_md5="3bd31e33f2d6a07423ee5eeff6c370b6"
-
 dest_files=[ "res://.import/Watermelon_01.png-3cc1eaacfc82e54c99631901eb67719d.s3tc.stex", "res://.import/Watermelon_01.png-3cc1eaacfc82e54c99631901eb67719d.etc2.stex" ]
-dest_md5="0c6582e307bd7700dad7b9184444595d"
 
 [params]
 

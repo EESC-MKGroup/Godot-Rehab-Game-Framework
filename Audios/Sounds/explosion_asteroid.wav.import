@@ -7,10 +7,7 @@ path="res://.import/explosion_asteroid.wav-4662693a8e917078bf4b1264a5791f89.samp
 [deps]
 
 source_file="res://Audios/Sounds/explosion_asteroid.wav"
-source_md5="905b4568d65f6a617739c56902c49051"
-
 dest_files=[ "res://.import/explosion_asteroid.wav-4662693a8e917078bf4b1264a5791f89.sample" ]
-dest_md5="57b0cf585813ef0e414d5e56697b5561"
 
 [params]
 

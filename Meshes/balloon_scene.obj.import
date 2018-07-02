@@ -9,10 +9,7 @@ path="res://.import/balloon_scene.obj-5b991391379b034363ae1a21854f2f40.mesh"
 files=[ "res://.import/balloon_scene.obj-5b991391379b034363ae1a21854f2f40.mesh" ]
 
 source_file="res://Meshes/balloon_scene.obj"
-source_md5="5d201759773f76585f8df92afd579133"
-
 dest_files=[ "res://.import/balloon_scene.obj-5b991391379b034363ae1a21854f2f40.mesh", "res://.import/balloon_scene.obj-5b991391379b034363ae1a21854f2f40.mesh" ]
-dest_md5="3f31e67714e79be57757fae61f355c8d"
 
 [params]
 

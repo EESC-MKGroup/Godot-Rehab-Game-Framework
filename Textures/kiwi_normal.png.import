@@ -8,10 +8,7 @@ path.etc2="res://.import/kiwi_normal.png-582379b8217609281703066729332ad5.etc2.s
 [deps]
 
 source_file="res://Textures/kiwi_normal.png"
-source_md5="976b2c0fae7c611f02e0fb5e0aaf9e91"
-
 dest_files=[ "res://.import/kiwi_normal.png-582379b8217609281703066729332ad5.s3tc.stex", "res://.import/kiwi_normal.png-582379b8217609281703066729332ad5.etc2.stex" ]
-dest_md5="e436446e5fab38f24dd9311492354802"
 
 [params]
 

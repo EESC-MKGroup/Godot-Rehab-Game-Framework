@@ -8,10 +8,7 @@ path.etc2="res://.import/coletor_lightmap.png-b82d2db9c2e355e78906ddfe2542d61e.e
 [deps]
 
 source_file="res://Textures/coletor_lightmap.png"
-source_md5="eff140dabbe0d1b7abb99a4b3e252bfb"
-
 dest_files=[ "res://.import/coletor_lightmap.png-b82d2db9c2e355e78906ddfe2542d61e.s3tc.stex", "res://.import/coletor_lightmap.png-b82d2db9c2e355e78906ddfe2542d61e.etc2.stex" ]
-dest_md5="4efd07841a5759cb6ef5f72ff3f79405"
 
 [params]
 

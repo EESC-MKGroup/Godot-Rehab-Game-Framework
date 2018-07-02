@@ -8,10 +8,7 @@ path.etc2="res://.import/guloso_normal.png-86d9ff289251159974f19eeff4493b72.etc2
 [deps]
 
 source_file="res://Textures/guloso_normal.png"
-source_md5="976c2173a76f28a524c6c18150daaeb4"
-
 dest_files=[ "res://.import/guloso_normal.png-86d9ff289251159974f19eeff4493b72.s3tc.stex", "res://.import/guloso_normal.png-86d9ff289251159974f19eeff4493b72.etc2.stex" ]
-dest_md5="ca223a92d8ce87a80dbbaa68de97d020"
 
 [params]
 

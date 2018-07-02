@@ -9,10 +9,7 @@ path="res://.import/orange.obj-5a21d160d3e1b63ec84dd1ca7f223093.mesh"
 files=[ "res://.import/orange.obj-5a21d160d3e1b63ec84dd1ca7f223093.mesh" ]
 
 source_file="res://Meshes/orange.obj"
-source_md5="10ec27a250c6ae0aa4c6329e70a2ff3c"
-
 dest_files=[ "res://.import/orange.obj-5a21d160d3e1b63ec84dd1ca7f223093.mesh", "res://.import/orange.obj-5a21d160d3e1b63ec84dd1ca7f223093.mesh" ]
-dest_md5="17abc74d8190b2be64a953ba838ba9eb"
 
 [params]
 

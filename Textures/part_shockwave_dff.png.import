@@ -8,10 +8,7 @@ path.etc2="res://.import/part_shockwave_dff.png-8142d4001e372e0dc1c3239ebe9357b5
 [deps]
 
 source_file="res://Textures/part_shockwave_dff.png"
-source_md5="5e34c472d8accf8d19647d42035b3970"
-
 dest_files=[ "res://.import/part_shockwave_dff.png-8142d4001e372e0dc1c3239ebe9357b5.s3tc.stex", "res://.import/part_shockwave_dff.png-8142d4001e372e0dc1c3239ebe9357b5.etc2.stex" ]
-dest_md5="721aec7ef1acbf4b520fc4599a86709b"
 
 [params]
 

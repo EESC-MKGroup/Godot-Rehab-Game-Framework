@@ -8,10 +8,7 @@ path.etc2="res://.import/Floor_Wood_spec.png-c1d9a1b5c6d1cfa8c868a46c556efb98.et
 [deps]
 
 source_file="res://Textures/Floor_Wood_spec.png"
-source_md5="7d9c638108358e3657513eed49e9b6bb"
-
 dest_files=[ "res://.import/Floor_Wood_spec.png-c1d9a1b5c6d1cfa8c868a46c556efb98.s3tc.stex", "res://.import/Floor_Wood_spec.png-c1d9a1b5c6d1cfa8c868a46c556efb98.etc2.stex" ]
-dest_md5="622b544ac19821c5e967b87bdf351820"
 
 [params]
 

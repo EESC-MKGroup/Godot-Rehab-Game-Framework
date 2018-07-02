@@ -7,10 +7,7 @@ path="res://.import/apple_bump.jpg-5d9f8ee57888749c69ec69b0fd6b9c72.stex"
 [deps]
 
 source_file="res://Textures/apple_bump.jpg"
-source_md5="0f873c0c082e8bd2ec5177b406f48428"
-
 dest_files=[ "res://.import/apple_bump.jpg-5d9f8ee57888749c69ec69b0fd6b9c72.stex" ]
-dest_md5="40b6d692478cb2ddff9c84e07ec1b228"
 
 [params]
 

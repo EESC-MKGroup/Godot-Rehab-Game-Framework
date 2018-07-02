@@ -7,10 +7,7 @@ path="res://.import/cherry_normal.png-a8f091030725bb72d9bbb9b6c3bc1464.stex"
 [deps]
 
 source_file="res://Textures/cherry_normal.png"
-source_md5="5c94e77dab4bf31a329cbbc6d438a413"
-
 dest_files=[ "res://.import/cherry_normal.png-a8f091030725bb72d9bbb9b6c3bc1464.stex" ]
-dest_md5="d500a4122e4ae5e23563696c73ffb876"
 
 [params]
 

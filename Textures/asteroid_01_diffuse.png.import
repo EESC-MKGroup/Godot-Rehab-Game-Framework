@@ -8,10 +8,7 @@ path.etc2="res://.import/asteroid_01_diffuse.png-cae98581713b9f5c225661e292999dc
 [deps]
 
 source_file="res://Textures/asteroid_01_diffuse.png"
-source_md5="d5b637fb8004f281cb60ba9b1eae2999"
-
 dest_files=[ "res://.import/asteroid_01_diffuse.png-cae98581713b9f5c225661e292999dc4.s3tc.stex", "res://.import/asteroid_01_diffuse.png-cae98581713b9f5c225661e292999dc4.etc2.stex" ]
-dest_md5="a74c85d979ebd6e0a94623aaed877386"
 
 [params]
 

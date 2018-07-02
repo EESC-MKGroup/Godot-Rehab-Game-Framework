@@ -9,10 +9,7 @@ path="res://.import/lemon.obj-4e30b94bdff34acec34d4e642aebe0ea.mesh"
 files=[ "res://.import/lemon.obj-4e30b94bdff34acec34d4e642aebe0ea.mesh" ]
 
 source_file="res://Meshes/lemon.obj"
-source_md5="398061972554616f331a30f6a4e59af0"
-
 dest_files=[ "res://.import/lemon.obj-4e30b94bdff34acec34d4e642aebe0ea.mesh", "res://.import/lemon.obj-4e30b94bdff34acec34d4e642aebe0ea.mesh" ]
-dest_md5="88a50597ff4a5d31f82adcc0e0dc23af"
 
 [params]
 

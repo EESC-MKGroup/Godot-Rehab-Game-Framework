@@ -9,10 +9,7 @@ path="res://.import/arrow.obj-21a107812e28e9a000b99bf5bbfcf58e.mesh"
 files=[ "res://.import/arrow.obj-21a107812e28e9a000b99bf5bbfcf58e.mesh" ]
 
 source_file="res://Meshes/arrow.obj"
-source_md5="7b3bf7e83d6d9169bd78bc1c418cb9ec"
-
 dest_files=[ "res://.import/arrow.obj-21a107812e28e9a000b99bf5bbfcf58e.mesh", "res://.import/arrow.obj-21a107812e28e9a000b99bf5bbfcf58e.mesh" ]
-dest_md5="70e421bf72e213a92fb8914619818607"
 
 [params]
 

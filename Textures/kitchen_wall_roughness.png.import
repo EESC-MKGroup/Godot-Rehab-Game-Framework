@@ -8,10 +8,7 @@ path.etc2="res://.import/kitchen_wall_roughness.png-2853e938a6a42f943f7df8e5c29e
 [deps]
 
 source_file="res://Textures/kitchen_wall_roughness.png"
-source_md5="841312308444c132c7874b8b82f9383a"
-
 dest_files=[ "res://.import/kitchen_wall_roughness.png-2853e938a6a42f943f7df8e5c29e5acf.s3tc.stex", "res://.import/kitchen_wall_roughness.png-2853e938a6a42f943f7df8e5c29e5acf.etc2.stex" ]
-dest_md5="c4459a87dad298b576a7199018952de8"
 
 [params]
 

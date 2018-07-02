@@ -8,10 +8,7 @@ path.etc2="res://.import/Wall.png-a6a13e8708e749df7842f3726ae39eaa.etc2.stex"
 [deps]
 
 source_file="res://Textures/Wall.png"
-source_md5="60d146c5e6856d30b73ea515396e4187"
-
 dest_files=[ "res://.import/Wall.png-a6a13e8708e749df7842f3726ae39eaa.s3tc.stex", "res://.import/Wall.png-a6a13e8708e749df7842f3726ae39eaa.etc2.stex" ]
-dest_md5="97da9450858938e9f484b79146455de9"
 
 [params]
 

@@ -10,7 +10,7 @@ config_version=3
 
 [application]
 
-config/name="AnkleBot_Games"
+config/name="Rehab_Games"
 run/main_scene="res://Scenes/InitScreen.tscn"
 config/use_custom_user_dir=true
 config/icon="res://icon.png"

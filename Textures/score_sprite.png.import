@@ -8,10 +8,7 @@ path.etc2="res://.import/score_sprite.png-cf60019b5dbb7037e2023acfce0a92a4.etc2.
 [deps]
 
 source_file="res://Textures/score_sprite.png"
-source_md5="56c64007e83c46d0f0aed4abd0e5cd63"
-
 dest_files=[ "res://.import/score_sprite.png-cf60019b5dbb7037e2023acfce0a92a4.s3tc.stex", "res://.import/score_sprite.png-cf60019b5dbb7037e2023acfce0a92a4.etc2.stex" ]
-dest_md5="e7047c2fe409ee0bd61e059b5eb38aa6"
 
 [params]
 

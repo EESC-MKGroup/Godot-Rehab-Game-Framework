@@ -7,10 +7,7 @@ path="res://.import/vehicle_enemyShip_purple_dff.png-afb975593a4a94a9fe1b48711ef
 [deps]
 
 source_file="res://Textures/vehicle_enemyShip_purple_dff.png"
-source_md5="e4ac91dbb69864e60496379331c77456"
-
 dest_files=[ "res://.import/vehicle_enemyShip_purple_dff.png-afb975593a4a94a9fe1b48711ef8a9db.stex" ]
-dest_md5="0ce57f31c0fbabec7d887859e7d1c76a"
 
 [params]
 

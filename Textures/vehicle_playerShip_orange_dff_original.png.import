@@ -7,10 +7,7 @@ path="res://.import/vehicle_playerShip_orange_dff_original.png-59e03ea10af68e195
 [deps]
 
 source_file="res://Textures/vehicle_playerShip_orange_dff_original.png"
-source_md5="ee0ac1cd10d6997d657926d6a9648856"
-
 dest_files=[ "res://.import/vehicle_playerShip_orange_dff_original.png-59e03ea10af68e1953a70e049fa00367.stex" ]
-dest_md5="af7594bc5109ef6be6c942054a5500e0"
 
 [params]
 

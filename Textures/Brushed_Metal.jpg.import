@@ -8,10 +8,7 @@ path.etc2="res://.import/Brushed_Metal.jpg-ab714e26b8697ce9f43737d5d1b6b256.etc2
 [deps]
 
 source_file="res://Textures/Brushed_Metal.jpg"
-source_md5="033220ae6f0d41879d0d67d5e543ef2d"
-
 dest_files=[ "res://.import/Brushed_Metal.jpg-ab714e26b8697ce9f43737d5d1b6b256.s3tc.stex", "res://.import/Brushed_Metal.jpg-ab714e26b8697ce9f43737d5d1b6b256.etc2.stex" ]
-dest_md5="df3aac4cfc09900502728bf35b14f08f"
 
 [params]
 

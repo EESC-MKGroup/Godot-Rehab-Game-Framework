@@ -8,10 +8,7 @@ path.etc2="res://.import/orange_diffuse.png-3dd0d6c0eb08a0648823695f2e705ba8.etc
 [deps]
 
 source_file="res://Textures/orange_diffuse.png"
-source_md5="7f103702032704a83d7856acdc761a76"
-
 dest_files=[ "res://.import/orange_diffuse.png-3dd0d6c0eb08a0648823695f2e705ba8.s3tc.stex", "res://.import/orange_diffuse.png-3dd0d6c0eb08a0648823695f2e705ba8.etc2.stex" ]
-dest_md5="7d29cbef85d9686f6082b534956b861a"
 
 [params]
 

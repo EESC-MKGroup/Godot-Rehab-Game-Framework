@@ -9,10 +9,7 @@ path="res://.import/asteroid_02.obj-53bd22f395474d041838626ad0a659fa.mesh"
 files=[ "res://.import/asteroid_02.obj-53bd22f395474d041838626ad0a659fa.mesh" ]
 
 source_file="res://Meshes/asteroid_02.obj"
-source_md5="7c607c8dafcc115de1d063ce1a22ae9e"
-
 dest_files=[ "res://.import/asteroid_02.obj-53bd22f395474d041838626ad0a659fa.mesh", "res://.import/asteroid_02.obj-53bd22f395474d041838626ad0a659fa.mesh" ]
-dest_md5="9029bc85a208d6efbb4a35efac45eff1"
 
 [params]
 

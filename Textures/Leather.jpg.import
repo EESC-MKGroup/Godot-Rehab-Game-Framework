@@ -8,10 +8,7 @@ path.etc2="res://.import/Leather.jpg-c682e6bb72a1ae27b85fd81619146596.etc2.stex"
 [deps]
 
 source_file="res://Textures/Leather.jpg"
-source_md5="a6bf166c7f48dc25973a76ee13724d79"
-
 dest_files=[ "res://.import/Leather.jpg-c682e6bb72a1ae27b85fd81619146596.s3tc.stex", "res://.import/Leather.jpg-c682e6bb72a1ae27b85fd81619146596.etc2.stex" ]
-dest_md5="c156ee3cc51ae6fd2fdee3bbd90064cf"
 
 [params]
 

@@ -7,10 +7,7 @@ path="res://.import/cherry_diffuse.png-596c523d6318623d17921652eda0ab6a.stex"
 [deps]
 
 source_file="res://Textures/cherry_diffuse.png"
-source_md5="8dbc79ccaa5bc7c2d16ed25cd2db45c0"
-
 dest_files=[ "res://.import/cherry_diffuse.png-596c523d6318623d17921652eda0ab6a.stex" ]
-dest_md5="94d8fe9e12bd6b7652edabf751bfa25b"
 
 [params]
 

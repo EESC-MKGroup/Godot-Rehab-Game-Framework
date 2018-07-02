@@ -7,10 +7,7 @@ path="res://.import/laser1.wav-e20f45b53bfa2f7fcea7260dc967aabe.sample"
 [deps]
 
 source_file="res://Audios/Sounds/laser1.wav"
-source_md5="b7e537639c38045ba16aa3f130d1623e"
-
 dest_files=[ "res://.import/laser1.wav-e20f45b53bfa2f7fcea7260dc967aabe.sample" ]
-dest_md5="5763a975db13797067f2476b34373f14"
 
 [params]
 

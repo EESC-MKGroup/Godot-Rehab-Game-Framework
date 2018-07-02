@@ -7,10 +7,7 @@ path="res://.import/logo_eesc.png-a6f13461e4857411f356eab46329d52b.stex"
 [deps]
 
 source_file="res://Textures/logo_eesc.png"
-source_md5="fa8f83b244e917b66a6720f39cd4c0d4"
-
 dest_files=[ "res://.import/logo_eesc.png-a6f13461e4857411f356eab46329d52b.stex" ]
-dest_md5="f2bf1775823eb433ea4e6c5d0f8f3cfd"
 
 [params]
 

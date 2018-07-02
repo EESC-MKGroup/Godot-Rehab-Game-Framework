@@ -7,10 +7,7 @@ path="res://.import/kiwi_normal.jpg-42a47de074d73076e6533f90953ff17f.stex"
 [deps]
 
 source_file="res://Textures/kiwi_normal.jpg"
-source_md5="464ac00da599a24d825fc5fe2508771a"
-
 dest_files=[ "res://.import/kiwi_normal.jpg-42a47de074d73076e6533f90953ff17f.stex" ]
-dest_md5="80c3b5dbcddd8d0a2eedaf1ea2fee828"
 
 [params]
 

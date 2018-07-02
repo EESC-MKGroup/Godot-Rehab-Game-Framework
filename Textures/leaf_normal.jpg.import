@@ -8,10 +8,7 @@ path.etc2="res://.import/leaf_normal.jpg-6b3e910b320a99c3cef360ded75b04c7.etc2.s
 [deps]
 
 source_file="res://Textures/leaf_normal.jpg"
-source_md5="5df56a638b5823076a053c8c1b20eac0"
-
 dest_files=[ "res://.import/leaf_normal.jpg-6b3e910b320a99c3cef360ded75b04c7.s3tc.stex", "res://.import/leaf_normal.jpg-6b3e910b320a99c3cef360ded75b04c7.etc2.stex" ]
-dest_md5="92293866db3ee9013ca9f8f70d2a23bb"
 
 [params]
 

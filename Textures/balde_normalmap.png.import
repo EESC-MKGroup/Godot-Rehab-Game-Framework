@@ -7,10 +7,7 @@ path="res://.import/balde_normalmap.png-9f2a143778aa3274ca9706d16d3e21b8.stex"
 [deps]
 
 source_file="res://Textures/balde_normalmap.png"
-source_md5="1aab786b958b62fd1f33cbb0adfb7bcf"
-
 dest_files=[ "res://.import/balde_normalmap.png-9f2a143778aa3274ca9706d16d3e21b8.stex" ]
-dest_md5="59f6c876d678cb0ef89eecc8cc6ec250"
 
 [params]
 

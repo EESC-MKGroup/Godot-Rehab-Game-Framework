@@ -7,10 +7,7 @@ path="res://.import/olho.png-39efe56e8806fefe0e2e6f0f943bd99c.stex"
 [deps]
 
 source_file="res://Textures/olho.png"
-source_md5="a648086ac06c4ef448d37349a17abeff"
-
 dest_files=[ "res://.import/olho.png-39efe56e8806fefe0e2e6f0f943bd99c.stex" ]
-dest_md5="3c3177fbc4cb01b4d56a9d52346d4c63"
 
 [params]
 

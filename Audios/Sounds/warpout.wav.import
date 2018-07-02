@@ -7,10 +7,7 @@ path="res://.import/warpout.wav-f81660ade7e6b063367b4112709391d7.sample"
 [deps]
 
 source_file="res://Audios/Sounds/warpout.wav"
-source_md5="194e5ecca81ab937ae7ebb676ae26391"
-
 dest_files=[ "res://.import/warpout.wav-f81660ade7e6b063367b4112709391d7.sample" ]
-dest_md5="04aa3625b5b906cd24f366c76efb1b3a"
 
 [params]
 

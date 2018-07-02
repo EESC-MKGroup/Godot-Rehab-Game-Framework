@@ -7,10 +7,7 @@ path="res://.import/strawberry_diffuse.png-f5d99902f3dfa03796a0146739f6ffb9.stex
 [deps]
 
 source_file="res://Textures/strawberry_diffuse.png"
-source_md5="385972b5881f84d345bbf86b0b57fe61"
-
 dest_files=[ "res://.import/strawberry_diffuse.png-f5d99902f3dfa03796a0146739f6ffb9.stex" ]
-dest_md5="ef05c2356ecc62506e78cea753c23fc3"
 
 [params]
 

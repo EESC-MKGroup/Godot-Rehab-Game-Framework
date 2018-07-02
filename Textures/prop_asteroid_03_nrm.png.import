@@ -8,10 +8,7 @@ path.etc2="res://.import/prop_asteroid_03_nrm.png-6f8c253070ecbacf1ef6ca919338a2
 [deps]
 
 source_file="res://Textures/prop_asteroid_03_nrm.png"
-source_md5="0d2a6c539643f389c1e4d5d9ed39aabd"
-
 dest_files=[ "res://.import/prop_asteroid_03_nrm.png-6f8c253070ecbacf1ef6ca919338a2bb.s3tc.stex", "res://.import/prop_asteroid_03_nrm.png-6f8c253070ecbacf1ef6ca919338a2bb.etc2.stex" ]
-dest_md5="06df174e07dceb359c2f2d88193615ef"
 
 [params]
 

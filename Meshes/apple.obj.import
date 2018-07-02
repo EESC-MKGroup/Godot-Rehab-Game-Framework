@@ -9,10 +9,7 @@ path="res://.import/apple.obj-3cc8f59dcff5120e139fad6b134cc517.mesh"
 files=[ "res://.import/apple.obj-3cc8f59dcff5120e139fad6b134cc517.mesh" ]
 
 source_file="res://Meshes/apple.obj"
-source_md5="3570d7e20820bd90bae8cc94965c4d3d"
-
 dest_files=[ "res://.import/apple.obj-3cc8f59dcff5120e139fad6b134cc517.mesh", "res://.import/apple.obj-3cc8f59dcff5120e139fad6b134cc517.mesh" ]
-dest_md5="385c18c9d10724efc8f4305e0cdf504e"
 
 [params]
 

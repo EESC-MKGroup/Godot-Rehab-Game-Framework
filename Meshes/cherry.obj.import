@@ -9,10 +9,7 @@ path="res://.import/cherry.obj-9ac16fee6e7f97e4a56ec05e3d558665.mesh"
 files=[ "res://.import/cherry.obj-9ac16fee6e7f97e4a56ec05e3d558665.mesh" ]
 
 source_file="res://Meshes/cherry.obj"
-source_md5="d9bf3919cf14c6cf517b17e63ffde52d"
-
 dest_files=[ "res://.import/cherry.obj-9ac16fee6e7f97e4a56ec05e3d558665.mesh", "res://.import/cherry.obj-9ac16fee6e7f97e4a56ec05e3d558665.mesh" ]
-dest_md5="14b86b7879e35ceb2c9c9479e6daa0e8"
 
 [params]
 

@@ -7,10 +7,7 @@ path="res://.import/leaf_diffuse.jpg-a4d5aacb7ce52af0237f8df06893c138.stex"
 [deps]
 
 source_file="res://Textures/leaf_diffuse.jpg"
-source_md5="fdee45f23f46ff0e89be1829838076e1"
-
 dest_files=[ "res://.import/leaf_diffuse.jpg-a4d5aacb7ce52af0237f8df06893c138.stex" ]
-dest_md5="a9698a4e81087b8b06026f9d80e75084"
 
 [params]
 

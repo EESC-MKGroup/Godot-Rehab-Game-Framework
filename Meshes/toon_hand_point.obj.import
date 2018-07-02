@@ -9,10 +9,7 @@ path="res://.import/toon_hand_point.obj-11ce0b200b992e63f85c4eebac5562ae.mesh"
 files=[ "res://.import/toon_hand_point.obj-11ce0b200b992e63f85c4eebac5562ae.mesh" ]
 
 source_file="res://Meshes/toon_hand_point.obj"
-source_md5="820a8d683d6bf92cd048c5e0a0d35a4d"
-
 dest_files=[ "res://.import/toon_hand_point.obj-11ce0b200b992e63f85c4eebac5562ae.mesh", "res://.import/toon_hand_point.obj-11ce0b200b992e63f85c4eebac5562ae.mesh" ]
-dest_md5="fcb4f439278692b6c272aa829d2ef87e"
 
 [params]
 

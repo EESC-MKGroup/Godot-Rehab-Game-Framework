@@ -7,10 +7,7 @@ path="res://.import/balde_lightmap.png-caabb9411d8d239f7a931109a8a7d132.stex"
 [deps]
 
 source_file="res://Textures/balde_lightmap.png"
-source_md5="e78b805737e35150099e1eb230665034"
-
 dest_files=[ "res://.import/balde_lightmap.png-caabb9411d8d239f7a931109a8a7d132.stex" ]
-dest_md5="8a61f5d79e91c657c600dbc56877bf27"
 
 [params]
 

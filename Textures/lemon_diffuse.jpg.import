@@ -7,10 +7,7 @@ path="res://.import/lemon_diffuse.jpg-7a8939d29c96ba8ee45459e3cdb013ab.stex"
 [deps]
 
 source_file="res://Textures/lemon_diffuse.jpg"
-source_md5="946f40e777c0fe32066abaf2f10e0073"
-
 dest_files=[ "res://.import/lemon_diffuse.jpg-7a8939d29c96ba8ee45459e3cdb013ab.stex" ]
-dest_md5="42a0dff5fc9d58a66ca6deaa7ae78af4"
 
 [params]
 

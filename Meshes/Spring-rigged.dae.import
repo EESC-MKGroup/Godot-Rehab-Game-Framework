@@ -7,10 +7,7 @@ path="res://.import/Spring-rigged.dae-8778e861a7d01d49fb4756be65190a33.scn"
 [deps]
 
 source_file="res://Meshes/Spring-rigged.dae"
-source_md5="4b7436b2edeef2f85a80e57d82b8ec61"
-
 dest_files=[ "res://.import/Spring-rigged.dae-8778e861a7d01d49fb4756be65190a33.scn" ]
-dest_md5="4638fb4b16cb36979a9458ec90a20791"
 
 [params]
 

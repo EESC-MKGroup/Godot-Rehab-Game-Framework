@@ -8,10 +8,7 @@ path.etc2="res://.import/guloso_occlusion.png-0dc56d9257818ee929e5ee009f8d6b55.e
 [deps]
 
 source_file="res://Textures/guloso_occlusion.png"
-source_md5="2539509cfe23686c7f7ebb07b4d7faa6"
-
 dest_files=[ "res://.import/guloso_occlusion.png-0dc56d9257818ee929e5ee009f8d6b55.s3tc.stex", "res://.import/guloso_occlusion.png-0dc56d9257818ee929e5ee009f8d6b55.etc2.stex" ]
-dest_md5="0d1ebd8db0267cc5fdc16a23da4dc789"
 
 [params]
 

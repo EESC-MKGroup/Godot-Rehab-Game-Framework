@@ -7,10 +7,7 @@ path="res://.import/part_spark_small_dff.png-548d9fe2afbec1e9b278c6917a7cdb7b.st
 [deps]
 
 source_file="res://Textures/part_spark_small_dff.png"
-source_md5="22dd19725909fa350f9716ac68f8d268"
-
 dest_files=[ "res://.import/part_spark_small_dff.png-548d9fe2afbec1e9b278c6917a7cdb7b.stex" ]
-dest_md5="842bba1bbc3ca4facfd0b32f4d7d84dd"
 
 [params]
 

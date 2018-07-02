@@ -7,10 +7,7 @@ path="res://.import/coletor_animated.dae-48054f6bf4b22cecdeec0475b0b45afa.scn"
 [deps]
 
 source_file="res://Meshes/coletor_animated.dae"
-source_md5="fcb3bd3345ea2d6f258ebe35fd699780"
-
 dest_files=[ "res://.import/coletor_animated.dae-48054f6bf4b22cecdeec0475b0b45afa.scn" ]
-dest_md5="584ed7fd5546edd8a9b686240ea6768b"
 
 [params]
 

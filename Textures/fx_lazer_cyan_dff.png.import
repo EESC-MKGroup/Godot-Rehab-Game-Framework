@@ -7,10 +7,7 @@ path="res://.import/fx_lazer_cyan_dff.png-9b66e672ce32a6633ef26650d6651d91.stex"
 [deps]
 
 source_file="res://Textures/fx_lazer_cyan_dff.png"
-source_md5="431456524c9f8de593f798de492c8e8b"
-
 dest_files=[ "res://.import/fx_lazer_cyan_dff.png-9b66e672ce32a6633ef26650d6651d91.stex" ]
-dest_md5="d85b84448e3870f87b5e41cc565b2de5"
 
 [params]
 

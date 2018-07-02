@@ -7,10 +7,7 @@ path="res://.import/strawberry_leaves.png-ea5e24d5472a563bdde8207dd18c3aa8.stex"
 [deps]
 
 source_file="res://Textures/strawberry_leaves.png"
-source_md5="b1ecf5f2ca25b676085f1ca69556e8c9"
-
 dest_files=[ "res://.import/strawberry_leaves.png-ea5e24d5472a563bdde8207dd18c3aa8.stex" ]
-dest_md5="452a23e897bde60d101646718da6efb7"
 
 [params]
 

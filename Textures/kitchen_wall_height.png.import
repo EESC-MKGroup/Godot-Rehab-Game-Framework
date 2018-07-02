@@ -7,10 +7,7 @@ path="res://.import/kitchen_wall_height.png-92abd2ac16685fbd1fdb0e1dee8cb169.ste
 [deps]
 
 source_file="res://Textures/kitchen_wall_height.png"
-source_md5="927f788f64a78aff073ec6c0a34bc1c0"
-
 dest_files=[ "res://.import/kitchen_wall_height.png-92abd2ac16685fbd1fdb0e1dee8cb169.stex" ]
-dest_md5="7f443dad4a437055c4a28fdb43fb593b"
 
 [params]
 

@@ -9,10 +9,7 @@ path="res://.import/strawberry.obj-65e7c6ffddf890a3b6204164e4ad702a.mesh"
 files=[ "res://.import/strawberry.obj-65e7c6ffddf890a3b6204164e4ad702a.mesh" ]
 
 source_file="res://Meshes/strawberry.obj"
-source_md5="b0e5579a6243f57573f80091459f7fbf"
-
 dest_files=[ "res://.import/strawberry.obj-65e7c6ffddf890a3b6204164e4ad702a.mesh", "res://.import/strawberry.obj-65e7c6ffddf890a3b6204164e4ad702a.mesh" ]
-dest_md5="33043ecca5b1f015ca4ce26c0de79411"
 
 [params]
 

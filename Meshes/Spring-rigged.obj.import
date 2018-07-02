@@ -9,10 +9,7 @@ path="res://.import/Spring-rigged.obj-9110a39ad166b914707ab5bc96e6efab.mesh"
 files=[ "res://.import/Spring-rigged.obj-9110a39ad166b914707ab5bc96e6efab.mesh" ]
 
 source_file="res://Meshes/Spring-rigged.obj"
-source_md5="44e5222305d06b428c922f6a1fd62cd6"
-
 dest_files=[ "res://.import/Spring-rigged.obj-9110a39ad166b914707ab5bc96e6efab.mesh", "res://.import/Spring-rigged.obj-9110a39ad166b914707ab5bc96e6efab.mesh" ]
-dest_md5="970c55aeca1305c91edc4bb30a0ac27d"
 
 [params]
 

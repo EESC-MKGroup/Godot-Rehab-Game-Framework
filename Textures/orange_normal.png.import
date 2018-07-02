@@ -8,10 +8,7 @@ path.etc2="res://.import/orange_normal.png-b2afb3d38f5e2dfc81538c3285bc6fa8.etc2
 [deps]
 
 source_file="res://Textures/orange_normal.png"
-source_md5="e2b4fde87200e8f075f36dfe9b92b532"
-
 dest_files=[ "res://.import/orange_normal.png-b2afb3d38f5e2dfc81538c3285bc6fa8.s3tc.stex", "res://.import/orange_normal.png-b2afb3d38f5e2dfc81538c3285bc6fa8.etc2.stex" ]
-dest_md5="61ceead3a0e16fe0c5c249f83e35aec9"
 
 [params]
 

@@ -8,10 +8,7 @@ path.etc2="res://.import/kitchen_wall_normal.png-a92ee4561bc817c3ec865eecbc1c606
 [deps]
 
 source_file="res://Textures/kitchen_wall_normal.png"
-source_md5="e15b7103f400407fb4aaf35a5636be25"
-
 dest_files=[ "res://.import/kitchen_wall_normal.png-a92ee4561bc817c3ec865eecbc1c6069.s3tc.stex", "res://.import/kitchen_wall_normal.png-a92ee4561bc817c3ec865eecbc1c6069.etc2.stex" ]
-dest_md5="4d2a809d17cd9a86aa218357c4f68f89"
 
 [params]
 

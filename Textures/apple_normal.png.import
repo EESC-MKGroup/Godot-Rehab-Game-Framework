@@ -8,10 +8,7 @@ path.etc2="res://.import/apple_normal.png-06dda137aa971f0cf53ecfdd87089245.etc2.
 [deps]
 
 source_file="res://Textures/apple_normal.png"
-source_md5="05cdb5b91172698effd3c0d6021deea3"
-
 dest_files=[ "res://.import/apple_normal.png-06dda137aa971f0cf53ecfdd87089245.s3tc.stex", "res://.import/apple_normal.png-06dda137aa971f0cf53ecfdd87089245.etc2.stex" ]
-dest_md5="c4be79d083f143fe1ccc8fe915648c06"
 
 [params]
 

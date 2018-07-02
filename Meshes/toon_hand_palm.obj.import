@@ -9,10 +9,7 @@ path="res://.import/toon_hand_palm.obj-e7f9d0a5bcf9b69804ba67bfeaa14153.mesh"
 files=[ "res://.import/toon_hand_palm.obj-e7f9d0a5bcf9b69804ba67bfeaa14153.mesh" ]
 
 source_file="res://Meshes/toon_hand_palm.obj"
-source_md5="b4c52363cbfa74bf20c6a99ae39a24d6"
-
 dest_files=[ "res://.import/toon_hand_palm.obj-e7f9d0a5bcf9b69804ba67bfeaa14153.mesh", "res://.import/toon_hand_palm.obj-e7f9d0a5bcf9b69804ba67bfeaa14153.mesh" ]
-dest_md5="759254c7a66b90cf3bac4a98aeb8822a"
 
 [params]
 

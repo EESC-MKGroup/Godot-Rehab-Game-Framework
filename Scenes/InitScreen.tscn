@@ -97,7 +97,7 @@ func _on_index_pressed( index ):
 	get_tree().change_scene( GAMES_PATH + \"/\" + game_name + GAME_EXT )
 "
 
-[node name="InitScreen" type="Panel"]
+[node name="InitScreen" type="Panel" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0

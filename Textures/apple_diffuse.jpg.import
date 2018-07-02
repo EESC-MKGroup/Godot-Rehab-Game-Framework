@@ -8,10 +8,7 @@ path.etc2="res://.import/apple_diffuse.jpg-4a56b951900d0e7d47290f66f66c8a36.etc2
 [deps]
 
 source_file="res://Textures/apple_diffuse.jpg"
-source_md5="2ad5bdeadfe395d31e29aaefdf8d76ab"
-
 dest_files=[ "res://.import/apple_diffuse.jpg-4a56b951900d0e7d47290f66f66c8a36.s3tc.stex", "res://.import/apple_diffuse.jpg-4a56b951900d0e7d47290f66f66c8a36.etc2.stex" ]
-dest_md5="52995c88cc0e3db2237bdb753cfc1e60"
 
 [params]
 

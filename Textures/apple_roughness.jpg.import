@@ -7,10 +7,7 @@ path="res://.import/apple_roughness.jpg-2f6d9efa31e1801ec080a5864f69493f.stex"
 [deps]
 
 source_file="res://Textures/apple_roughness.jpg"
-source_md5="5993852d09352d5711b128ba89c1187b"
-
 dest_files=[ "res://.import/apple_roughness.jpg-2f6d9efa31e1801ec080a5864f69493f.stex" ]
-dest_md5="e80d6a51dee9251a825ad4c9942c6d90"
 
 [params]
 

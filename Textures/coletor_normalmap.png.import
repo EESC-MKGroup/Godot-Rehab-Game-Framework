@@ -8,10 +8,7 @@ path.etc2="res://.import/coletor_normalmap.png-95e20e450d936b6d7ab3756f2ff6dad5.
 [deps]
 
 source_file="res://Textures/coletor_normalmap.png"
-source_md5="712e46234ed1a65aa406ddb0fdfc6861"
-
 dest_files=[ "res://.import/coletor_normalmap.png-95e20e450d936b6d7ab3756f2ff6dad5.s3tc.stex", "res://.import/coletor_normalmap.png-95e20e450d936b6d7ab3756f2ff6dad5.etc2.stex" ]
-dest_md5="004acfd148b5254700371d10eb3036a5"
 
 [params]
 

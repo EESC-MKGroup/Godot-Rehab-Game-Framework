@@ -7,10 +7,7 @@ path="res://.import/balde_heightmap.png-f47386637677aac20b2e8053a3098054.stex"
 [deps]
 
 source_file="res://Textures/balde_heightmap.png"
-source_md5="7988056afe8298581c417a2475435da8"
-
 dest_files=[ "res://.import/balde_heightmap.png-f47386637677aac20b2e8053a3098054.stex" ]
-dest_md5="0cb3d238f63a91e9e2b7a8d0194d657e"
 
 [params]
 

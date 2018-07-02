@@ -9,10 +9,7 @@ path="res://.import/prop_asteroid_03.obj-335a9fc948888e7e0f0045ee8e63f9af.mesh"
 files=[ "res://.import/prop_asteroid_03.obj-335a9fc948888e7e0f0045ee8e63f9af.mesh" ]
 
 source_file="res://Meshes/prop_asteroid_03.obj"
-source_md5="2d33be752cee18046aeab3acf854be80"
-
 dest_files=[ "res://.import/prop_asteroid_03.obj-335a9fc948888e7e0f0045ee8e63f9af.mesh", "res://.import/prop_asteroid_03.obj-335a9fc948888e7e0f0045ee8e63f9af.mesh" ]
-dest_md5="942bf7b74763644d03bdc3d4260530f7"
 
 [params]
 

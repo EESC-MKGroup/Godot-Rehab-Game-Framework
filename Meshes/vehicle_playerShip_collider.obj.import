@@ -9,10 +9,7 @@ path="res://.import/vehicle_playerShip_collider.obj-ea373ff1f61132f39a7dbf792b7e
 files=[ "res://.import/vehicle_playerShip_collider.obj-ea373ff1f61132f39a7dbf792b7e53f5.mesh" ]
 
 source_file="res://Meshes/vehicle_playerShip_collider.obj"
-source_md5="87cba95070e0099a55c703aea0df7aef"
-
 dest_files=[ "res://.import/vehicle_playerShip_collider.obj-ea373ff1f61132f39a7dbf792b7e53f5.mesh", "res://.import/vehicle_playerShip_collider.obj-ea373ff1f61132f39a7dbf792b7e53f5.mesh" ]
-dest_md5="d29589084c3b8c8821bb2fa95a922382"
 
 [params]
 

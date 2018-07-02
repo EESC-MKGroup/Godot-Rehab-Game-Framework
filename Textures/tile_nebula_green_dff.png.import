@@ -8,10 +8,7 @@ path.etc2="res://.import/tile_nebula_green_dff.png-c1e30b06335cf99f93e968596512e
 [deps]
 
 source_file="res://Textures/tile_nebula_green_dff.png"
-source_md5="a9debf0c4c95d1b879ec5a4231c9be31"
-
 dest_files=[ "res://.import/tile_nebula_green_dff.png-c1e30b06335cf99f93e968596512eb5e.s3tc.stex", "res://.import/tile_nebula_green_dff.png-c1e30b06335cf99f93e968596512eb5e.etc2.stex" ]
-dest_md5="018e31d3249d2864990010b603a52bc2"
 
 [params]
 

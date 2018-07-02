@@ -8,10 +8,7 @@ path.etc2="res://.import/milky_way.png-8ad19517e5430cc00828e5fe871125aa.etc2.ste
 [deps]
 
 source_file="res://Textures/milky_way.png"
-source_md5="e3e41f59e7e6e4283158eab0e9c0eb26"
-
 dest_files=[ "res://.import/milky_way.png-8ad19517e5430cc00828e5fe871125aa.s3tc.stex", "res://.import/milky_way.png-8ad19517e5430cc00828e5fe871125aa.etc2.stex" ]
-dest_md5="bc0b2490aa39c4105f9e633f9b287898"
 
 [params]
 

@@ -8,10 +8,7 @@ path.etc2="res://.import/vehicle_playerShip_orange_emi.png-0c2b262d0a5c3707a8bbf
 [deps]
 
 source_file="res://Textures/vehicle_playerShip_orange_emi.png"
-source_md5="2cee4a0d918e7e13341ad3554b0c71c1"
-
 dest_files=[ "res://.import/vehicle_playerShip_orange_emi.png-0c2b262d0a5c3707a8bbf6f7003e08c8.s3tc.stex", "res://.import/vehicle_playerShip_orange_emi.png-0c2b262d0a5c3707a8bbf6f7003e08c8.etc2.stex" ]
-dest_md5="7653aeb818ac8f5a979d2ec454a4c729"
 
 [params]
 

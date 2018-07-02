@@ -9,10 +9,7 @@ path="res://.import/targetFBS.obj-473d9c302708156fa57af368befa1d9e.mesh"
 files=[ "res://.import/targetFBS.obj-473d9c302708156fa57af368befa1d9e.mesh" ]
 
 source_file="res://Meshes/targetFBS.obj"
-source_md5="c1ff7db005e2add2e3085b01a87aaf94"
-
 dest_files=[ "res://.import/targetFBS.obj-473d9c302708156fa57af368befa1d9e.mesh", "res://.import/targetFBS.obj-473d9c302708156fa57af368befa1d9e.mesh" ]
-dest_md5="2b837b4e3ac49dcb8c20843400278a3a"
 
 [params]
 

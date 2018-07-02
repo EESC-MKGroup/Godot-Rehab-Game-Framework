@@ -7,10 +7,7 @@ path="res://.import/chapeu_lightmap.png-3f16a031a8113623e794fed67c38201a.stex"
 [deps]
 
 source_file="res://Textures/chapeu_lightmap.png"
-source_md5="df28ef8c42a1e2f27237e51e7c314330"
-
 dest_files=[ "res://.import/chapeu_lightmap.png-3f16a031a8113623e794fed67c38201a.stex" ]
-dest_md5="e802f11f1e795f9c616fa93d6af50aaa"
 
 [params]
 

@@ -8,10 +8,7 @@ path.etc2="res://.import/part_enginePulse_dff.png-b705e5fe11a8e5c34e4d7c54876e32
 [deps]
 
 source_file="res://Textures/part_enginePulse_dff.png"
-source_md5="3508344d3ce0db3730c87923d5f5ebc0"
-
 dest_files=[ "res://.import/part_enginePulse_dff.png-b705e5fe11a8e5c34e4d7c54876e3253.s3tc.stex", "res://.import/part_enginePulse_dff.png-b705e5fe11a8e5c34e4d7c54876e3253.etc2.stex" ]
-dest_md5="da6f74714bc081e60f2f8250dc5f4ceb"
 
 [params]
 

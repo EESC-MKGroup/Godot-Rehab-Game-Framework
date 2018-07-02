@@ -7,10 +7,7 @@ path="res://.import/orange_diffuse.jpg-f324f3b05d01ea07f0dc11be61fc8f69.stex"
 [deps]
 
 source_file="res://Textures/orange_diffuse.jpg"
-source_md5="0eba03a96058a2b492c28865916bfd75"
-
 dest_files=[ "res://.import/orange_diffuse.jpg-f324f3b05d01ea07f0dc11be61fc8f69.stex" ]
-dest_md5="3673d15716c91ae1e83be3ed7af12cfa"
 
 [params]
 

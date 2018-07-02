@@ -7,10 +7,7 @@ path="res://.import/weapon_player.wav-87c2d29bb6b47fea1e8248794db54fec.sample"
 [deps]
 
 source_file="res://Audios/Sounds/weapon_player.wav"
-source_md5="c98fe5e1af7e1a619d9d2bad24a14c69"
-
 dest_files=[ "res://.import/weapon_player.wav-87c2d29bb6b47fea1e8248794db54fec.sample" ]
-dest_md5="39c8a8b9622db66cf361806a3ec652a8"
 
 [params]
 

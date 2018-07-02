@@ -9,10 +9,7 @@ path="res://.import/Watermelon.obj-0abd81b6e6400515a59903639efaeee8.mesh"
 files=[ "res://.import/Watermelon.obj-0abd81b6e6400515a59903639efaeee8.mesh" ]
 
 source_file="res://Meshes/Watermelon.obj"
-source_md5="3d3871d19c41ba10c397d8aa2f2e473b"
-
 dest_files=[ "res://.import/Watermelon.obj-0abd81b6e6400515a59903639efaeee8.mesh", "res://.import/Watermelon.obj-0abd81b6e6400515a59903639efaeee8.mesh" ]
-dest_md5="5d5383d199715c212a3aa08ebb470f43"
 
 [params]
 

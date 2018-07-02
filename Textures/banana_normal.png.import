@@ -7,10 +7,7 @@ path="res://.import/banana_normal.png-420161ed694ba4f472a65cdf6c9ee74e.stex"
 [deps]
 
 source_file="res://Textures/banana_normal.png"
-source_md5="30aa4d37ff97ed5eee69bea685e8822f"
-
 dest_files=[ "res://.import/banana_normal.png-420161ed694ba4f472a65cdf6c9ee74e.stex" ]
-dest_md5="abf71b9bc34129a061ce85c0d774c987"
 
 [params]
 

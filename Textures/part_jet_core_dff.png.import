@@ -8,10 +8,7 @@ path.etc2="res://.import/part_jet_core_dff.png-efb5a943e8cfe9145525499a5567f688.
 [deps]
 
 source_file="res://Textures/part_jet_core_dff.png"
-source_md5="0926c7dd1561bfc8c88c8461ca50f055"
-
 dest_files=[ "res://.import/part_jet_core_dff.png-efb5a943e8cfe9145525499a5567f688.s3tc.stex", "res://.import/part_jet_core_dff.png-efb5a943e8cfe9145525499a5567f688.etc2.stex" ]
-dest_md5="f3e6f31ae0e0acd7f0dc296f7b0b405a"
 
 [params]
 

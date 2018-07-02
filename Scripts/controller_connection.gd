@@ -16,7 +16,7 @@ var direction_axis = VERTICAL setget set_direction, get_direction
 
 var max_effort = 1.0
 
-var connection = StreamPeerTCP.new()
+var connection = PacketPeerUDP.new()
 
 func _ready():
 	#connection.set_no_delay( true )

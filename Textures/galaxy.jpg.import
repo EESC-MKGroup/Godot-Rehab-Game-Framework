@@ -7,10 +7,7 @@ path="res://.import/galaxy.jpg-2355012f2660575ff35cfc3c6da772f9.stex"
 [deps]
 
 source_file="res://Textures/galaxy.jpg"
-source_md5="557e1d8f39367ea6ffcd16ebb33c0f4c"
-
 dest_files=[ "res://.import/galaxy.jpg-2355012f2660575ff35cfc3c6da772f9.stex" ]
-dest_md5="3b3758cdb9dde9697ee3877d31d99f77"
 
 [params]
 
