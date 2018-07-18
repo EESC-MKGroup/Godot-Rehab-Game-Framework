@@ -7,15 +7,13 @@ const FLOAT_SIZE = 4
 const AXIS_DATA_SIZE = 1 + Variable.TOTAL_NUMBER * FLOAT_SIZE
 var MAX_AXES_NUMBER = int( BUFFER_SIZE / AXIS_DATA_SIZE )
 
-var position_limits = [ null, null ]
-var force_limits = [ null, null ]
-var input_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
-var output_values = [ [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ]
-var input_status = 0
-var output_status = 0
+var input_buffer = StreamPeerBuffer.new()
+var output_buffer = StreamPeerBuffer.new()
 
-var is_calibrating = true setget set_calibration, get_calibration
-var direction_axis = VERTICAL setget set_direction, get_direction
+var input_limits = []
+var output_limits = []
+var input_values = []
+var output_values = []
 
 var max_effort = 1.0
 
@@ -25,8 +23,20 @@ func _ready():
 	#connection.set_no_delay( true )
 	set_calibration( true )
 	set_process( false )
+	input_buffer.resize( BUFFER_SIZE )
+	output_buffer.resize( BUFFER_SIZE )
+	for axis_index in range( Variable.TOTAL_NUMBER ):
+		input_values.append( 0 )
+		output_values.append( 0 )
+		input_limits.append( null )
+		output_limits.append( null )
 
 func receive_data():
+	var input_event = InputEventJoypadMotion()
+	input_event.device = 1
+	input_event.axis = 0
+	input_event.axis_value = 0
+	Input.parse_input_event( input_event )
 	input_status = connection.get_u16()
 	for axis_index in range( input_values.size() ):
 		var axis_values = input_values[ axis_index ]
@@ -42,17 +52,13 @@ func receive_data():
 		for value_index in axis_values.size():
 			axis_values[ value_index ] /= max_effort
 
-func send_data():
-	var output_buffer = StreamPeerBuffer.new()
+func _process( delta ):
+	output_buffer.seek( 0 )
 	output_buffer.put_u16( output_status )
 	for axis_values in output_values:
 		for value in axis_values:
 			output_buffer.put_float( value )
 	connection.put_data( output_buffer.data_array )
-
-func _process( delta ):
-	send_data()
-	receive_data()
 
 func connect_client( host, port ):
 	if not connection.is_connected_to_host():

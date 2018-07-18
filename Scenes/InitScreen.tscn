@@ -277,16 +277,16 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="AxisSelectionButton" type="Panel" parent="ControlsPanel" index="1"]
+[node name="DeviceSelectionButton" type="Panel" parent="ControlsPanel" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = 212.0
-margin_top = -152.0
-margin_right = -688.0
-margin_bottom = -92.0
+margin_left = 214.0
+margin_top = -150.0
+margin_right = -686.0
+margin_bottom = -90.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -295,7 +295,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Theme", "custom_colors", "custom_constants", "custom_fonts" ]
 
-[node name="AxisSelectionList" type="MenuButton" parent="ControlsPanel/AxisSelectionButton" index="0"]
+[node name="SelectionList" type="MenuButton" parent="ControlsPanel/DeviceSelectionButton" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -314,13 +314,82 @@ action_mode = 0
 enabled_focus_mode = 0
 shortcut = null
 group = null
-text = "Select Game"
+text = "<Select>"
 flat = true
 align = 1
 items = [  ]
 _sections_unfolded = [ "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[node name="AxisLabel" type="Label" parent="ControlsPanel/AxisSelectionButton" index="1"]
+[node name="Label" type="Label" parent="ControlsPanel/DeviceSelectionButton" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 0.0
+anchor_bottom = 0.5
+margin_left = -124.0
+margin_top = -25.0
+margin_right = -4.0
+margin_bottom = 25.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Device:"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
+
+[node name="AxisSelectionButton" type="Panel" parent="ControlsPanel" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 785.0
+margin_top = -150.0
+margin_right = -115.0
+margin_bottom = -90.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "Theme", "custom_colors", "custom_constants", "custom_fonts" ]
+
+[node name="SelectionList" type="MenuButton" parent="ControlsPanel/AxisSelectionButton" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 5 )
+toggle_mode = false
+action_mode = 0
+enabled_focus_mode = 0
+shortcut = null
+group = null
+text = "<Select>"
+flat = true
+align = 1
+items = [  ]
+_sections_unfolded = [ "Grow Direction", "Margin", "Rect", "custom_fonts" ]
+
+[node name="Label" type="Label" parent="ControlsPanel/AxisSelectionButton" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.5
@@ -328,7 +397,7 @@ anchor_right = 0.0
 anchor_bottom = 0.5
 margin_left = -85.0
 margin_top = -25.0
-margin_right = -10.0
+margin_right = -5.0
 margin_bottom = 25.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -339,75 +408,6 @@ size_flags_vertical = 4
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Axis:"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
-
-[node name="VariableSelectionButton2" type="Panel" parent="ControlsPanel" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = 783.0
-margin_top = -152.0
-margin_right = -117.0
-margin_bottom = -92.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "Theme", "custom_colors", "custom_constants", "custom_fonts" ]
-
-[node name="VariableSelectionList" type="MenuButton" parent="ControlsPanel/VariableSelectionButton2" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_vertical = 0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-custom_fonts/font = ExtResource( 5 )
-toggle_mode = false
-action_mode = 0
-enabled_focus_mode = 0
-shortcut = null
-group = null
-text = "Select Game"
-flat = true
-align = 1
-items = [  ]
-_sections_unfolded = [ "Grow Direction", "Margin", "Rect", "custom_fonts" ]
-
-[node name="VariableLabel" type="Label" parent="ControlsPanel/VariableSelectionButton2" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.5
-anchor_right = 0.0
-anchor_bottom = 0.5
-margin_left = -157.0
-margin_top = -25.0
-margin_right = -10.0
-margin_bottom = 25.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Variable:"
 align = 1
 valign = 1
 percent_visible = 1.0
@@ -547,9 +547,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -490.0
-margin_top = -22.0
+margin_top = -20.0
 margin_right = 150.0
-margin_bottom = 8.0
+margin_bottom = 10.0
 rect_scale = Vector2( 1.5, 1.5 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -603,9 +603,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -490.0
-margin_top = 18.0
+margin_top = 20.0
 margin_right = 150.0
-margin_bottom = 48.0
+margin_bottom = 50.0
 rect_scale = Vector2( 1.5, 1.5 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -633,9 +633,9 @@ anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
 anchor_bottom = 0.5
-margin_left = 200.0
+margin_left = 650.0
 margin_top = 89.0
-margin_right = 500.0
+margin_right = 950.0
 margin_bottom = 139.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -656,17 +656,17 @@ group = null
 text = "Calibration:  "
 flat = false
 align = 0
-_sections_unfolded = [ "Anchor", "Margin", "custom_colors", "custom_fonts" ]
+_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="DirectionSelector" type="CheckButton" parent="ControlsPanel" index="9"]
+[node name="OffsetToggle" type="CheckButton" parent="ControlsPanel" index="9"]
 
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -650.0
+margin_left = -960.0
 margin_top = 89.0
-margin_right = -200.0
+margin_right = -750.0
 margin_bottom = 139.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -684,10 +684,10 @@ toggle_mode = true
 enabled_focus_mode = 2
 shortcut = null
 group = null
-text = "Horizontal Direction:"
+text = "Offset:   "
 flat = false
 align = 0
-_sections_unfolded = [ "Margin", "custom_colors", "custom_constants", "custom_fonts", "custom_icons", "custom_styles" ]
+_sections_unfolded = [ "Margin", "Rect", "custom_colors", "custom_constants", "custom_fonts", "custom_icons", "custom_styles" ]
 
 [connection signal="text_changed" from="ControlsPanel/UserInput" to="ControlsPanel" method="_on_UserInput_text_changed"]
 
@@ -699,6 +699,6 @@ _sections_unfolded = [ "Margin", "custom_colors", "custom_constants", "custom_fo
 
 [connection signal="toggled" from="ControlsPanel/CalibrationToggle" to="ControlsPanel" method="_on_CalibrationToggle_toggled"]
 
-[connection signal="toggled" from="ControlsPanel/DirectionSelector" to="ControlsPanel" method="_on_DirectionSelector_toggled"]
+[connection signal="toggled" from="ControlsPanel/OffsetToggle" to="ControlsPanel" method="_on_DirectionSelector_toggled"]
 
 
