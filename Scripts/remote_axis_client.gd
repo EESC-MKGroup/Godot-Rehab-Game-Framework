@@ -2,6 +2,8 @@ extends Node
 
 enum Variable { POSITION, VELOCITY, ACCELERATION, FORCE, INERTIA, STIFFNESS, DAMPING, TOTAL_NUMBER }
 
+const DEVICE_ID = "ff"
+
 const BUFFER_SIZE = 512
 const FLOAT_SIZE = 4
 const AXIS_DATA_SIZE = 1 + Variable.TOTAL_NUMBER * FLOAT_SIZE
@@ -19,6 +21,9 @@ var max_effort = 1.0
 
 var connection = PacketPeerUDP.new()
 
+var receive_thread = Thread.new()
+var is_receiving = false
+
 func _ready():
 	#connection.set_no_delay( true )
 	set_calibration( true )
@@ -32,50 +37,43 @@ func _ready():
 		output_limits.append( null )
 
 func receive_data():
-	var input_event = InputEventJoypadMotion()
-	input_event.device = 1
-	input_event.axis = 0
-	input_event.axis_value = 0
-	Input.parse_input_event( input_event )
-	input_status = connection.get_u16()
-	for axis_index in range( input_values.size() ):
-		var axis_values = input_values[ axis_index ]
-		for value_index in axis_values.size():
-			axis_values[ value_index ] = connection.get_float()
-		if is_calibrating: 
-			position_limits[ axis_index ] = _check_limits( position_limits[ axis_index ], axis_values[ POSITION ] )
-			force_limits[ axis_index ] = _check_limits( force_limits[ axis_index ], axis_values[ FORCE ] )
-		elif position_limits[ axis_index ] != null:
-			axis_values[ POSITION ] = _normalize( axis_values[ POSITION ], position_limits[ axis_index ] )
-			#axis_values[ FORCE ] = _scale( axis_values[ FORCE ], force_limits[ axis_index ] )
-			axis_values[ FORCE ] = _normalize( axis_values[ FORCE ], force_limits[ axis_index ] )
-		for value_index in axis_values.size():
-			axis_values[ value_index ] /= max_effort
+	is_receiving = true
+	while( is_receiving ):
+		input_buffer.set_position( 0 )
+		input_buffer.put_data( connection.get_packet() )
+		var inputs_number = input_buffer.get_u8()
+		for input_index in range( inputs_number ):
+			var axis_index = input_buffer.get_u8()
+			for variable in range( Variable.TOTAL_NUMBER ):
+				var axis_value = input_buffer.get_float()
+				if variable == Variable.FORCE:
+					if is_calibrating:
+						input_limits[ axis_index ] = _check_limits( input_limits[ axis_index ], variable )
+					elif position_limits[ axis_index ] != null:
+						variable = _normalize( variable, input_limits[ axis_index ] )
+					variable /= max_effort
+					var input_event = InputEventJoypadMotion()
+					input_event.device = 1
+					input_event.axis = axis_index
+					input_event.axis_value = axis_value
+					Input.parse_input_event( input_event )
 
 func _process( delta ):
+	var xy_feedback = Input.get_joy_vibration_strength( 1 )
+	var z_feedback = Input.get_joy_vibration_duration( 1 )
+#	var feedback_values = [ xy_feedback.x >> 16 & 0xFFFF
 	output_buffer.seek( 0 )
-	output_buffer.put_u16( output_status )
-	for axis_values in output_values:
-		for value in axis_values:
-			output_buffer.put_float( value )
+	output_buffer.put_u8( 6 )
+	for axis_index in range( 6 ):
+		output_buffer.put_u8( axis_index )
+		for variable in range( Variable.TOTAL_NUMBER ):
+			output_buffer.put_float(  )
 	connection.put_data( output_buffer.data_array )
 
 func connect_client( host, port ):
-	if not connection.is_connected_to_host():
-		connection.connect_to_host( host, port )
-		while connection.get_status() == connection.STATUS_CONNECTING: 
-			print( "connecting to %s:%d" % [ host, port ] )
-			continue
-		if connection.is_connected_to_host(): 
-			output_status = 1
-			set_process( true )
-
-func set_status( value ):
-	output_status = value
-	print( "setting status %d" % output_status )
-
-func get_status():
-	return input_status
+	connection.set_dest_address( host, port )
+	if not is_receiving: receive_thread.start( self, "receive_data" )
+	set_process( true )
 
 func set_axis_values( setpoint, stiffness ):
 	var axis_limits = position_limits[ direction_axis ]

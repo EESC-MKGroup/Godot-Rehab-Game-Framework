@@ -3,7 +3,6 @@ extends Node
 enum Request { GET_INFO = 1, DISABLE, ENABLE, RESET, PASSIVATE, OPERATE, OFFSET, CALIBRATE, PREPROCESS, SET_USER, SET_CONFIG }
 enum Reply { GOT_INFO = 1, DISABLED, ENABLED, ERROR, PASSIVE, OPERATING, OFFSETTING, CALIBRATING, PREPROCESSING, USER_SET, CONFIG_SET }
 
-const REMOTE_DEVICE_ID = 0xFF
 const LOCAL_DEVICE_AXES_NUMBER = 4
 
 signal state_changed
@@ -49,8 +48,8 @@ func get_devices_list():
 func get_axes_list( device_index ):
 	return axes_list[ device_index ]
 
-func _add_remote_device_input( device_id, device_axes ):
-	var controller_mapping = str(REMOTE_DEVICE_ID) + "," + device_id
+func _add_remote_device_input( device_name, device_axes ):
+	var controller_mapping = RemoteAxisClient.DEVICE_ID + "," + device_name
 	if device_axes.size() > 0:
 		for axis_index in range( device_axes.size() ):
 			controller_mapping += "," + device_axes[ axis_index ] + ":a" + str(axis_index)

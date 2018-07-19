@@ -19,6 +19,7 @@ config/icon="res://icon.png"
 
 InfoStateClient="*res://Scripts/info_state_client.gd"
 RemoteAxisClient="*res://Scripts/remote_axis_client.gd"
+InputAxis="*res://Scripts/input_axis.gd"
 Configuration="*res://Scripts/persistent_configuration.gd"
 DataLog="*res://Scripts/data_log.gd"
 
