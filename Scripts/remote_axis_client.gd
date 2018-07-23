@@ -59,9 +59,6 @@ func receive_data():
 					Input.parse_input_event( input_event )
 
 func _process( delta ):
-	var xy_feedback = Input.get_joy_vibration_strength( 1 )
-	var z_feedback = Input.get_joy_vibration_duration( 1 )
-#	var feedback_values = [ xy_feedback.x >> 16 & 0xFFFF
 	output_buffer.seek( 0 )
 	output_buffer.put_u8( 6 )
 	for axis_index in range( 6 ):
