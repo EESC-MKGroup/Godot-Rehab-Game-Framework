@@ -5,7 +5,26 @@ const LOCAL_DEVICE_AXES = [ 0, 1, 2, 3, 6, 7 ]
 var device_index = 0 setget _set_device_index
 var axis_index = 0 setget _set_axis_index
 
-func 
+var device_ids_list = []
+var devices_list = []
+var axes_list = []
+
+func get_devices_list():
+	devices_list = []
+	device_ids_list = Input.get_connected_joypads()
+	for device_id in device_ids_list:
+		devices_list.append( Input.get_joy_name( device_id ) )
+	return devices_list
+
+func get_axes_list():
+	axes_list = []
+	var device_id = device_ids_list[ device_index ]
+	if device_id == InfoStateClient.remote_device_id:
+		axes_list = InfoStateClient.remote_axes_list
+	else:
+		for axis_index in LOCAL_DEVICE_AXES:
+			axes_list.append( Input.get_joy_axis_string( axis_index ) )
+	return axes_list
 
 func get_value():
 	return Input.get_joy_axis( device_index, axis_index )
@@ -26,3 +45,8 @@ func get_feedbacks( feedback_device_index ):
 							z_feedback & 0xFFFF, z_feedback >> 16 & 0xFFFF ]
 	return feedback_values
 
+#func _set_device_index( value ):
+#	if value <= 
+
+#func _set_axis_index( value ):
+#	
