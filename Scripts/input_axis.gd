@@ -45,8 +45,8 @@ func get_feedbacks( feedback_device_index ):
 							z_feedback & 0xFFFF, z_feedback >> 16 & 0xFFFF ]
 	return feedback_values
 
-#func _set_device_index( value ):
-#	if value <= 
+func _set_device_index( value ):
+	if value < devices_list.size(): device_index = value
 
-#func _set_axis_index( value ):
-#	
+func _set_axis_index( value ):
+	if value < axes_list.size(): axis_index = value
