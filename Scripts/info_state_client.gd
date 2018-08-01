@@ -3,11 +3,13 @@ extends Node
 enum Request { GET_INFO = 1, DISABLE, ENABLE, RESET, PASSIVATE, OPERATE, OFFSET, CALIBRATE, PREPROCESS, SET_USER, SET_CONFIG }
 enum Reply { GOT_INFO = 1, DISABLED, ENABLED, ERROR, PASSIVE, OPERATING, OFFSETTING, CALIBRATING, PREPROCESSING, USER_SET, CONFIG_SET }
 
+const SERVER_PORT = 50000
+
 const REMOTE_DEVICE_GUID = "ff"
 
 const LOCAL_DEVICE_AXES_NUMBER = 4
 
-signal state_changed
+signal reply_received
 signal client_connected
 
 var connection = StreamPeerTCP.new()
@@ -28,21 +30,21 @@ func _process( delta ):
 		remote_axes_list = remote_device_info[ "axes" ]
 		_add_remote_device_input()
 		_update_remote_device()
-		emit_signal( "state_changed", reply_code )
+		emit_signal( "reply_received", reply_code )
 
-func connect_client( host, port ):
+func connect_client( host ):
 	if not connection.is_connected_to_host():
-		connection.connect_to_host( host, port )
+		connection.connect_to_host( host, SERVER_PORT )
 		while connection.get_status() == connection.STATUS_CONNECTING: 
-			print( "connecting to %s:%d" % [ host, port ] )
+			print( "connecting to %s:%d" % [ host, SERVER_PORT ] )
 			continue
 		if connection.is_connected_to_host(): 
 			emit_signal( "client_connected" )
 			set_process( true )
 
-func refresh_axes_info():
+func send_request( request_code ):
 	if connection.is_connected_to_host():
-		connection.put_u8( GET_INFO )
+		connection.put_u8( request_code )
 
 func _get_remote_device_id():
 	return remote_device_id

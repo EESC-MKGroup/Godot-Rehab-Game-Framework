@@ -1,7 +1,5 @@
 extends Panel
 
-const INFO_SERVER_STATE_PORT = 50000
-
 onready var position_slider = get_node( "PositionSlider" )
 onready var position_display = get_node( "PositionSlider/NumericDisplay" )
 
@@ -15,7 +13,7 @@ func _ready():
 	$AxisSelectionButton/SelectionList.get_popup().connect( "index_pressed", self, "_on_Axis_index_pressed" )
 #	for variable_name in [ "Position", "Velocity", "Acceleration", "Force", "Inertia", "Stiffness", "Damping" ]:
 #		$VariableSelectionButton/AxisSelectionList.get_popup().add_item( variable_name )
-	InfoStateClient.connect( "state_changed", self, "_on_state_changed" )
+	InfoStateClient.connect( "reply_received", self, "_on_reply_received" )
 	InfoStateClient.connect( "client_connected", self, "_on_client_connected" )
 
 func _input( event ):
@@ -27,18 +25,29 @@ func _process( delta ):
 	position_display.text = ( "%+.3f" % position_slider.value )
 
 func _on_ConnectButton_pressed():
-	var server_address = Configuration.get_parameter( "server_address" )
-	InfoStateClient.connect_client( server_address, INFO_SERVER_STATE_PORT )
-	InfoStateClient.refresh_axes_info()
+	RemoteAxisClient.connect_client( $AddressInput.text )
+	InfoStateClient.connect_client( $AddressInput.text )
+	InfoStateClient.send_request( InfoStateClient.Request.GET_INFO )
 #	DataLog.create_new_log( user_name, time_stamp )
 
-func _on_state_changed( new_state ):
-	if new_state == InfoStateClient.GOT_INFO:
-		$DeviceSelectionButton/SelectionList.get_popup().clear()
-		var devices = InputAxis.get_devices_list()
-		for device_name in devices:
-			$DeviceSelectionButton/SelectionList.get_popup().add_item( device_name )
-		_on_Device_index_pressed( 0 )
+func _on_reply_received( reply_code ):
+	match reply_code:
+		InfoStateClient.Reply.GOT_INFO:
+			$DeviceSelectionButton/SelectionList.get_popup().clear()
+			var devices = InputAxis.get_devices_list()
+			for device_name in devices:
+				$DeviceSelectionButton/SelectionList.get_popup().add_item( device_name )
+			_on_Device_index_pressed( 0 )
+		InfoStateClient.Reply.OFFSETTING:
+			$OffsetToggle.pressed = true
+			$CalibrationToggle.pressed = false
+		InfoStateClient.Reply.CALIBRATING:
+			$OffsetToggle.pressed = false
+			$CalibrationToggle.pressed = true
+		_:
+#		InfoStateClient.Reply.PASSIVATING:
+			$OffsetToggle.pressed = false
+			$CalibrationToggle.pressed = false
 
 func _on_Device_index_pressed( index ):
 	InputAxis.device_index = index
@@ -52,20 +61,20 @@ func _on_Axis_index_pressed( index ):
 
 func _on_client_connected():
 	$ConnectButton.text = "Refresh"
+	Configuration.set_parameter( "server_address", $AddressInput.text )
+	Configuration.set_parameter( "user_name", $UserInput.text )
 
 func _on_AddressInput_text_changed( new_text ):
-	Configuration.set_parameter( "server_address", new_text )
 	$ConnectButton.text = "Connect"
 
-func _on_UserInput_text_changed( new_text ):
-	Configuration.set_parameter( "user_name", new_text )
-
 func _on_SetpointSlider_value_changed( value ):
-	RemoteAxisClient.set_axis_values( value, 1 )
+	InputAxis.set_feedback( value )
 
 func _on_CalibrationToggle_toggled( button_pressed ):
+	var request = InfoStateClient.Request.CALIBRATE if button_pressed else InfoStateClient.Request.PASSIVATE
+	InfoStateClient.send_request( request )
 	RemoteAxisClient.is_calibrating = button_pressed
 
 func _on_OffsetToggle_toggled( button_pressed ):
-	if button_pressed: RemoteAxisClient.direction_axis = RemoteAxisClient.HORIZONTAL
-	else: RemoteAxisClient.direction_axis = RemoteAxisClient.VERTICAL
+	var request = InfoStateClient.Request.OFFSET if button_pressed else InfoStateClient.Request.PASSIVATE
+	InfoStateClient.send_request( request )

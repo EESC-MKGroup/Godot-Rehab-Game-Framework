@@ -689,8 +689,6 @@ flat = false
 align = 0
 _sections_unfolded = [ "Margin", "Rect", "custom_colors", "custom_constants", "custom_fonts", "custom_icons", "custom_styles" ]
 
-[connection signal="text_changed" from="ControlsPanel/UserInput" to="ControlsPanel" method="_on_UserInput_text_changed"]
-
 [connection signal="text_changed" from="ControlsPanel/AddressInput" to="ControlsPanel" method="_on_AddressInput_text_changed"]
 
 [connection signal="pressed" from="ControlsPanel/ConnectButton" to="ControlsPanel" method="_on_ConnectButton_pressed"]

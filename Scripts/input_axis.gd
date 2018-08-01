@@ -47,6 +47,10 @@ func get_feedbacks( feedback_device_index ):
 
 func _set_device_index( value ):
 	if value < devices_list.size(): device_index = value
+	if device_ids_list[ device_index ] == InfoStateClient.remote_device_id:
+		RemoteDeviceClient.start_processing()
+	else:
+		RemoteDeviceClient.stop_processing()
 
 func _set_axis_index( value ):
 	if value < axes_list.size(): axis_index = value

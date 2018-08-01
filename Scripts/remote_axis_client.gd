@@ -2,6 +2,8 @@ extends Node
 
 enum Variable { POSITION, VELOCITY, ACCELERATION, FORCE, INERTIA, STIFFNESS, DAMPING, TOTAL_NUMBER }
 
+const SERVER_PORT = 50001
+
 const DEVICE_ID = "ff"
 
 const BUFFER_SIZE = 512
@@ -60,17 +62,25 @@ func receive_data():
 
 func _process( delta ):
 	output_buffer.seek( 0 )
-	output_buffer.put_u8( 6 )
+	output_buffer.put_u8( InputStateClient.remote_axis_list.size() )
 	for axis_index in range( 6 ):
 		output_buffer.put_u8( axis_index )
 		for variable in range( Variable.TOTAL_NUMBER ):
 			output_buffer.put_float(  )
 	connection.put_data( output_buffer.data_array )
 
-func connect_client( host, port ):
-	connection.set_dest_address( host, port )
+func connect_client( host ):
+	connection.set_dest_address( host, SERVER_PORT )
+
+func start_processing():
 	if not is_receiving: receive_thread.start( self, "receive_data" )
 	set_process( true )
+
+func stop_processing():
+	set_process( false )
+	if is_receiving:
+		is_receiving = false
+		receive_thread.wait_to_finish()
 
 func set_axis_values( setpoint, stiffness ):
 	var axis_limits = position_limits[ direction_axis ]
