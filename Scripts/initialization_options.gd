@@ -6,7 +6,7 @@ onready var position_display = get_node( "PositionSlider/NumericDisplay" )
 func _ready():
 	$AddressInput.text = Configuration.get_parameter( "server_address" )
 	$UserInput.text = Configuration.get_parameter( "user_name" )
-	$CalibrationToggle.pressed = RemoteAxisClient.is_calibrating
+	$CalibrationToggle.pressed = RemoteDeviceClient.is_calibrating
 	$DeviceSelectionButton/SelectionList.get_popup().add_font_override( "font", get_font( "font" ) )
 	$AxisSelectionButton/SelectionList.get_popup().add_font_override( "font", get_font( "font" ) )
 	$DeviceSelectionButton/SelectionList.get_popup().connect( "index_pressed", self, "_on_Device_index_pressed" )
@@ -25,7 +25,8 @@ func _process( delta ):
 	position_display.text = ( "%+.3f" % position_slider.value )
 
 func _on_ConnectButton_pressed():
-	RemoteAxisClient.connect_client( $AddressInput.text )
+	print( "_on_ConnectButton_pressed" )
+	RemoteDeviceClient.connect_client( $AddressInput.text )
 	InfoStateClient.connect_client( $AddressInput.text )
 	InfoStateClient.send_request( InfoStateClient.Request.GET_INFO )
 #	DataLog.create_new_log( user_name, time_stamp )
@@ -50,6 +51,7 @@ func _on_reply_received( reply_code ):
 			$CalibrationToggle.pressed = false
 
 func _on_Device_index_pressed( index ):
+	print( "_on_Device_index_pressed" )
 	InputAxis.device_index = index
 	$AxisSelectionButton/AxisSelectionList.get_popup().clear()
 	var axes_list = InputAxis.get_axes_list()
@@ -57,24 +59,30 @@ func _on_Device_index_pressed( index ):
 		$AxisSelectionButton/AxisSelectionList.get_popup().add_item( axis_name )
 
 func _on_Axis_index_pressed( index ):
+	print( "_on_Axis_index_pressed" )
 	InputAxis.axis_index = index
 
 func _on_client_connected():
+	print( "_on_client_connected" )
 	$ConnectButton.text = "Refresh"
 	Configuration.set_parameter( "server_address", $AddressInput.text )
 	Configuration.set_parameter( "user_name", $UserInput.text )
 
 func _on_AddressInput_text_changed( new_text ):
+	print( "_on_AddressInput_text_changed" )
 	$ConnectButton.text = "Connect"
 
 func _on_SetpointSlider_value_changed( value ):
+	print( "_on_SetpointSlider_value_changed" )
 	InputAxis.set_feedback( value )
 
 func _on_CalibrationToggle_toggled( button_pressed ):
+	print( "_on_CalibrationToggle_toggled" )
 	var request = InfoStateClient.Request.CALIBRATE if button_pressed else InfoStateClient.Request.PASSIVATE
 	InfoStateClient.send_request( request )
-	RemoteAxisClient.is_calibrating = button_pressed
+	RemoteDeviceClient.is_calibrating = button_pressed
 
 func _on_OffsetToggle_toggled( button_pressed ):
+	print( "_on_OffsetToggle_toggled" )
 	var request = InfoStateClient.Request.OFFSET if button_pressed else InfoStateClient.Request.PASSIVATE
 	InfoStateClient.send_request( request )

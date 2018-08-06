@@ -67,3 +67,7 @@ func _update_remote_device():
 	for device_id in device_ids_list:
 		if Input.get_joy_guid( device_id ) == REMOTE_DEVICE_GUID:
 			remote_device_id = device_id
+
+func _notification( what ):
+	if what == NOTIFICATION_PREDELETE: 
+		connection.disconnect_from_host()

@@ -29,17 +29,26 @@ func get_axes_list():
 func get_value():
 	return Input.get_joy_axis( device_index, axis_index )
 
-func set_feedback( setpoint_value ):
-	var device_setpoints = [ [ 0, 0 ], [ 0, 0 ], [ 0, 0 ] ]
-	device_setpoints[ device_index ][ axis_index ] = setpoint_value 
-	var x_feedback = device_setpoints[ 0 ][ 0 ] | ( device_setpoints[ 0 ][ 1 ] << 16 )
-	var y_feedback = device_setpoints[ 1 ][ 0 ] | ( device_setpoints[ 1 ][ 1 ] << 16 )
-	var z_feedback = device_setpoints[ 2 ][ 0 ] | ( device_setpoints[ 2 ][ 1 ] << 16 )
-	Input.start_joy_vibration( device_index, x_feedback, y_feedback, z_feedback )
+func set_value( value ):
+	var input_event = InputEventJoypadMotion()
+	input_event.device = device_ids_list[ device_index ]
+	input_event.axis = axis_index
+	input_event.axis_value = value
+	Input.parse_input_event( input_event )
 
-func get_feedbacks( feedback_device_index ):
-	var xy_feedback = Input.get_joy_vibration_strength( feedback_device_index )
-	var z_feedback = Input.get_joy_vibration_duration( feedback_device_index )
+func set_feedback( setpoint_value ):
+	var device_setpoints = [ 0, 0, 0, 0, 0, 0 ]
+	var device_id = device_ids_list[ device_index ]
+	device_setpoints[ axis_index ] = setpoint_value 
+	var x_feedback = device_setpoints[ 0 ] | ( device_setpoints[ 1 ] << 16 )
+	var y_feedback = device_setpoints[ 2 ] | ( device_setpoints[ 3 ] << 16 )
+	var z_feedback = device_setpoints[ 4 ] | ( device_setpoints[ 5 ] << 16 )
+	Input.start_joy_vibration( device_id, x_feedback, y_feedback, z_feedback )
+
+func get_feedbacks():
+	var device_id = device_ids_list[ device_index ]
+	var xy_feedback = Input.get_joy_vibration_strength( device_id )
+	var z_feedback = Input.get_joy_vibration_duration( device_id )
 	var feedback_values = [ xy_feedback.x & 0xFFFF, xy_feedback.x >> 16 & 0xFFFF,
 							xy_feedback.y & 0xFFFF, xy_feedback.y >> 16 & 0xFFFF,
 							z_feedback & 0xFFFF, z_feedback >> 16 & 0xFFFF ]

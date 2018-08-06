@@ -19,6 +19,8 @@ var output_limits = []
 var input_values = []
 var output_values = []
 
+var is_calibrating = false
+
 var max_effort = 1.0
 
 var connection = PacketPeerUDP.new()
@@ -50,23 +52,22 @@ func receive_data():
 				var axis_value = input_buffer.get_float()
 				if variable == Variable.FORCE:
 					if is_calibrating:
-						input_limits[ axis_index ] = _check_limits( input_limits[ axis_index ], variable )
-					elif position_limits[ axis_index ] != null:
-						variable = _normalize( variable, input_limits[ axis_index ] )
-					variable /= max_effort
-					var input_event = InputEventJoypadMotion()
-					input_event.device = 1
-					input_event.axis = axis_index
-					input_event.axis_value = axis_value
-					Input.parse_input_event( input_event )
+						input_limits[ axis_index ] = _check_limits( input_limits[ axis_index ], axis_value )
+					elif input_limits[ axis_index ] != null:
+						axis_value = _normalize( axis_value, input_limits[ axis_index ] )
+					axis_value /= max_effort
+					InputAxis.set_value( axis_value )
 
 func _process( delta ):
 	output_buffer.seek( 0 )
-	output_buffer.put_u8( InputStateClient.remote_axis_list.size() )
-	for axis_index in range( 6 ):
+	var axes_number = InfoStateClient.remote_axis_list.size()
+	var feedbacks_list = InputAxis.get_feedbacks()
+	output_buffer.put_u8( axes_number )
+	for axis_index in range( axes_number ):
 		output_buffer.put_u8( axis_index )
 		for variable in range( Variable.TOTAL_NUMBER ):
-			output_buffer.put_float(  )
+			var output = feedbacks_list[ axis_index ] if variable == Variable.POSITION else 0
+			output_buffer.put_float( output )
 	connection.put_data( output_buffer.data_array )
 
 func connect_client( host ):
@@ -81,16 +82,6 @@ func stop_processing():
 	if is_receiving:
 		is_receiving = false
 		receive_thread.wait_to_finish()
-
-func set_axis_values( setpoint, stiffness ):
-	var axis_limits = position_limits[ direction_axis ]
-	if not is_calibrating:
-		setpoint = _denormalize( setpoint, axis_limits )
-		output_values[ direction_axis ][ SETPOINT ] = setpoint * max_effort
-		output_values[ direction_axis ][ STIFFNESS ] = stiffness
-
-func get_axis_values():
-	return input_values[ direction_axis ]
 
 func _check_limits( limits, value ):
 	if limits == null: limits = [ value - 0.001, value + 0.001 ]
@@ -107,52 +98,19 @@ func _denormalize( value, limits ):
 	var value_range = limits[ 1 ] - limits[ 0 ]
 	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
 
-func _scale( value, limits ):
-	if value < 0.0 and limits[ 0 ] < 0.0: return -value / limits[ 0 ]
-	elif value > 0.0 and limits[ 1 ] > 0.0: return value / limits[ 1 ]
-	return 0.0
-
-func _unscale( value, limits ):
-	if value < 0.0 and limits[ 0 ] < 0.0: return -value * limits[ 0 ]
-	elif value > 0.0 and limits[ 1 ] > 0.0: return value * limits[ 1 ]
-	return 0.0
-
 func set_calibration( value ):
 	if value: 
-		position_limits = [ null, null ]
-		force_limits = [ null, null ]
+		for axis_index in range( Variable.TOTAL_NUMBER ):
+			input_limits[ axis_index ] = null
+			output_limits[ axis_index ] = null
 	is_calibrating = value
 
 func get_calibration():
 	return is_calibrating
-
-func set_direction( value ):
-	if value == VERTICAL or value == HORIZONTAL:
-		direction_axis = value
-
-func get_direction():
-	return direction_axis
-
-func set_identifier( user_name, time_stamp ):
-	var user_id = 0x00000000
-	var user_string = user_name.to_ascii()
-	print( user_name )
-	for byte_index in user_string.size():
-		print( "%d %x" % [ user_string[ byte_index ], user_string[ byte_index ] ] )
-		var byte_offset = ( user_string.size() - 1 - byte_index ) * 8
-		user_id |= ( user_string[ byte_index ] << byte_offset )
-	output_values[ 0 ][ USER ] = user_id
-	print( "user: %d %x" % [ output_values[ 0 ][ USER ], output_values[ 0 ][ USER ] ] )
-	output_values[ 0 ][ TIME ] = time_stamp
-
-func set_time_window( value ):
-	output_values[ 1 ][ TIME ] = value * 1000
 
 func set_max_effort( value ):
 	max_effort = value / 100.0
 
 func _notification( what ):
 	if what == NOTIFICATION_PREDELETE: 
-		output_status = 0
-		send_data()
-		connection.disconnect_from_host()
+		connection.close()
