@@ -37,6 +37,8 @@ anti_aliasing_size = 1
 [sub_resource type="DynamicFont" id=2]
 
 size = 80
+outline_size = 0
+outline_color = Color( 1, 1, 1, 1 )
 use_mipmaps = true
 use_filter = true
 extra_spacing_top = 20
@@ -97,8 +99,7 @@ func _on_index_pressed( index ):
 	get_tree().change_scene( GAMES_PATH + \"/\" + game_name + GAME_EXT )
 "
 
-[node name="InitScreen" type="Panel" index="0"]
-
+[node name="InitScreen" type="Panel"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -111,8 +112,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_styles" ]
 
-[node name="TitlePanel" type="Panel" parent="." index="0"]
-
+[node name="TitlePanel" type="Panel" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -130,8 +130,7 @@ size_flags_vertical = 1
 custom_styles/panel = SubResource( 1 )
 _sections_unfolded = [ "Margin", "custom_styles" ]
 
-[node name="EESCLogo" type="TextureRect" parent="TitlePanel" index="0"]
-
+[node name="EESCLogo" type="TextureRect" parent="TitlePanel"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -152,8 +151,7 @@ expand = true
 stretch_mode = 0
 _sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
 
-[node name="ReRobLogo" type="TextureRect" parent="TitlePanel" index="1"]
-
+[node name="ReRobLogo" type="TextureRect" parent="TitlePanel"]
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -174,8 +172,7 @@ expand = true
 stretch_mode = 0
 _sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
 
-[node name="TitleLabel" type="Label" parent="TitlePanel" index="2"]
-
+[node name="TitleLabel" type="Label" parent="TitlePanel"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -201,8 +198,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "custom_colors", "custom_fonts" ]
 
-[node name="ControlsPanel" type="Panel" parent="." index="1"]
-
+[node name="ControlsPanel" type="Panel" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -221,8 +217,7 @@ custom_styles/panel = SubResource( 3 )
 script = ExtResource( 4 )
 _sections_unfolded = [ "Margin", "custom_styles" ]
 
-[node name="UserInput" type="LineEdit" parent="ControlsPanel" index="0"]
-
+[node name="UserInput" type="LineEdit" parent="ControlsPanel"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -243,6 +238,7 @@ custom_fonts/font = ExtResource( 5 )
 text = "User"
 align = 1
 max_length = 4
+secret_character = "*"
 focus_mode = 2
 context_menu_enabled = true
 placeholder_alpha = 0.6
@@ -251,8 +247,7 @@ caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
 
-[node name="UserLabel" type="Label" parent="ControlsPanel/UserInput" index="2"]
-
+[node name="UserLabel" type="Label" parent="ControlsPanel/UserInput"]
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
@@ -277,15 +272,14 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="DeviceSelectionButton" type="Panel" parent="ControlsPanel" index="1"]
-
+[node name="DeviceSelectionButton" type="Panel" parent="ControlsPanel"]
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 214.0
 margin_top = -150.0
-margin_right = -686.0
+margin_right = -646.0
 margin_bottom = -90.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -295,8 +289,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Theme", "custom_colors", "custom_constants", "custom_fonts" ]
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/DeviceSelectionButton" index="0"]
-
+[node name="SelectionList" type="MenuButton" parent="ControlsPanel/DeviceSelectionButton"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -320,8 +313,7 @@ align = 1
 items = [  ]
 _sections_unfolded = [ "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[node name="Label" type="Label" parent="ControlsPanel/DeviceSelectionButton" index="1"]
-
+[node name="Label" type="Label" parent="ControlsPanel/DeviceSelectionButton"]
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
@@ -346,15 +338,14 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="AxisSelectionButton" type="Panel" parent="ControlsPanel" index="2"]
-
+[node name="AxisSelectionButton" type="Panel" parent="ControlsPanel"]
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = 785.0
+margin_left = 760.0
 margin_top = -150.0
-margin_right = -115.0
+margin_right = -100.0
 margin_bottom = -90.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -364,8 +355,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Theme", "custom_colors", "custom_constants", "custom_fonts" ]
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/AxisSelectionButton" index="0"]
-
+[node name="SelectionList" type="MenuButton" parent="ControlsPanel/AxisSelectionButton"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -389,8 +379,7 @@ align = 1
 items = [  ]
 _sections_unfolded = [ "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[node name="Label" type="Label" parent="ControlsPanel/AxisSelectionButton" index="1"]
-
+[node name="Label" type="Label" parent="ControlsPanel/AxisSelectionButton"]
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
@@ -415,8 +404,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="AddressInput" type="LineEdit" parent="ControlsPanel" index="3"]
-
+[node name="AddressInput" type="LineEdit" parent="ControlsPanel"]
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -435,6 +423,7 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 5 )
 text = "127.0.0.1"
 align = 1
+secret_character = "*"
 focus_mode = 2
 context_menu_enabled = true
 placeholder_alpha = 0.6
@@ -443,8 +432,7 @@ caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="AddressLabel" type="Label" parent="ControlsPanel/AddressInput" index="2"]
-
+[node name="AddressLabel" type="Label" parent="ControlsPanel/AddressInput"]
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
@@ -469,8 +457,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="ConnectButton" type="Button" parent="ControlsPanel" index="4"]
-
+[node name="ConnectButton" type="Button" parent="ControlsPanel"]
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -496,8 +483,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[node name="GameSelectionButton" type="Panel" parent="ControlsPanel" index="5"]
-
+[node name="GameSelectionButton" type="Panel" parent="ControlsPanel"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -514,8 +500,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Theme", "custom_colors", "custom_constants", "custom_fonts" ]
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/GameSelectionButton" index="0"]
-
+[node name="SelectionList" type="MenuButton" parent="ControlsPanel/GameSelectionButton"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -540,8 +525,7 @@ items = [  ]
 script = SubResource( 4 )
 _sections_unfolded = [ "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[node name="PositionSlider" type="HSlider" parent="ControlsPanel" index="6"]
-
+[node name="PositionSlider" type="HSlider" parent="ControlsPanel"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -564,14 +548,16 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = false
+allow_greater = false
+allow_lesser = false
 editable = false
+scrollable = true
 tick_count = 0
 ticks_on_borders = false
 focus_mode = 0
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
 
-[node name="NumericDisplay" type="Label" parent="ControlsPanel/PositionSlider" index="0"]
-
+[node name="NumericDisplay" type="Label" parent="ControlsPanel/PositionSlider"]
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -596,8 +582,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="SetpointSlider" type="HSlider" parent="ControlsPanel" index="7"]
-
+[node name="SetpointSlider" type="HSlider" parent="ControlsPanel"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -621,14 +606,16 @@ page = 0.0
 value = 0.0
 exp_edit = false
 rounded = false
+allow_greater = false
+allow_lesser = false
 editable = true
+scrollable = true
 tick_count = 0
 ticks_on_borders = false
 focus_mode = 2
 _sections_unfolded = [ "Margin", "Rect", "Size Flags" ]
 
-[node name="CalibrationToggle" type="CheckButton" parent="ControlsPanel" index="8"]
-
+[node name="CalibrationToggle" type="CheckButton" parent="ControlsPanel"]
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
@@ -658,8 +645,7 @@ flat = false
 align = 0
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="OffsetToggle" type="CheckButton" parent="ControlsPanel" index="9"]
-
+[node name="OffsetToggle" type="CheckButton" parent="ControlsPanel"]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -690,13 +676,7 @@ align = 0
 _sections_unfolded = [ "Margin", "Rect", "custom_colors", "custom_constants", "custom_fonts", "custom_icons", "custom_styles" ]
 
 [connection signal="text_changed" from="ControlsPanel/AddressInput" to="ControlsPanel" method="_on_AddressInput_text_changed"]
-
 [connection signal="pressed" from="ControlsPanel/ConnectButton" to="ControlsPanel" method="_on_ConnectButton_pressed"]
-
 [connection signal="value_changed" from="ControlsPanel/SetpointSlider" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]
-
 [connection signal="toggled" from="ControlsPanel/CalibrationToggle" to="ControlsPanel" method="_on_CalibrationToggle_toggled"]
-
 [connection signal="toggled" from="ControlsPanel/OffsetToggle" to="ControlsPanel" method="_on_DirectionSelector_toggled"]
-
-

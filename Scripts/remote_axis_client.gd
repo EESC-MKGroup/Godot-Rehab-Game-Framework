@@ -32,13 +32,12 @@ func _ready():
 	#connection.set_no_delay( true )
 	set_calibration( true )
 	set_process( false )
+	_reset_limits()
 	input_buffer.resize( BUFFER_SIZE )
 	output_buffer.resize( BUFFER_SIZE )
 	for axis_index in range( Variable.TOTAL_NUMBER ):
 		input_values.append( 0 )
 		output_values.append( 0 )
-		input_limits.append( null )
-		output_limits.append( null )
 
 func receive_data():
 	is_receiving = true
@@ -98,12 +97,16 @@ func _denormalize( value, limits ):
 	var value_range = limits[ 1 ] - limits[ 0 ]
 	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
 
-func set_calibration( value ):
-	if value: 
-		for axis_index in range( Variable.TOTAL_NUMBER ):
-			input_limits[ axis_index ] = null
-			output_limits[ axis_index ] = null
-	is_calibrating = value
+func _reset_limits():
+	input_limits = []
+	output_limits = []
+	for axis_index in range( Variable.TOTAL_NUMBER ):
+		input_limits.append( null )
+		output_limits.append( null )
+
+func set_calibration( enabled ):
+	if enabled: _reset_limits()
+	is_calibrating = enabled
 
 func get_calibration():
 	return is_calibrating
