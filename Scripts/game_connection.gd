@@ -3,16 +3,11 @@ extends Node
 const SERVER_PORT = 50004
 
 const PACKET_SIZE = 512
-const PACKET_HEADER_LENGTH = 4
 
 const TYPE_VALUES_NUMBER = 4
-const VALUE_HEADER_SIZE = 2
-const VALUE_DATA_SIZE = TYPE_VALUES_NUMBER * 4
-const VALUE_BLOCK_SIZE = VALUE_HEADER_SIZE + VALUE_DATA_SIZE
-const VALUE_OID_OFFSET = 0
-const VALUE_INDEX_OFFSET = 1
 
 var peer = NetworkedMultiplayerENet.new()
+var peed_id = -1
 
 var networkDelay = 0.0
 
@@ -22,112 +17,91 @@ var output_buffer = StreamPeerBuffer.new()
 var remote_values = {}
 var local_values = {}
 
-var updated_local_keys = []
+var receive_thread = Thread.new()
+var is_receiving = false
 
 var input_delays = {}
 
 func _ready():
-	input_buffer.resize( BUFFER_SIZE )
-	output_buffer.resize( BUFFER_SIZE )
+	input_buffer.resize( PACKET_SIZE )
+	output_buffer.resize( PACKET_SIZE )
+	get_tree().connect( "network_peer_connected", self, "_on_peer_connected" )
+	get_tree().connect( "network_peer_disconnected", self, "_on_peer_disconnected" )
+	get_tree().connect( "connected_to_server", self, "_on_connected_to_server" )
+	get_tree().connect( "connection_failed", self, "_on_connection_failed" )
+	get_tree().connect( "server_disconnected", self, "_on_server_disconnected" )
+
+func connect_client( host ):
+	peer.create_client( host, SERVER_PORT )
+	peer.set_target_peer( NetworkedMultiplayerPeer.TARGET_PEER_SERVER )
+	get_tree().set_network_peer( peer )
+
+func connect_server( max_clients=2 ):
+	peer.create_server( SERVER_PORT, max_clients )
+	peer.set_target_peer( NetworkedMultiplayerPeer.TARGET_PEER_BROADCAST )
+	get_tree().set_network_peer( peer )
 
 func shutdown():
+	set_process( false )
+	if is_receiving:
+		is_receiving = false
+		receive_thread.wait_to_finish()
 	peer.disconnect()
 
-	public abstract void Connect();
+func set_local_value( object_id, value_type, value_index, value ):
+	var local_key = object_id << 8 | value_type
+	
+	if not local_values.has( local_key ): local_values[ local_key ] = [].resize( TYPE_VALUES_NUMBER )
+	
+	print( "updating value [" + str(local_key) + "," + str(value_index) + "]: " + local_values[ local_key ][ value_index ].ToString() + " -> " + value.ToString() );
+	local_values[ local_key ][ value_index ] = value;
 
-	public void SetLocalValue( byte objectID, byte valueType, int valueIndex, float value ) 
-	{
-		KeyValuePair<byte,byte> localKey = new KeyValuePair<byte,byte>( objectID, valueType );
+func get_remote_value( object_id, value_type, value_index ):
+	var remote_key = object_id << 8 | value_type
+	
+	if remote_values.has( remote_key ): return remote_values[ remote_key ][ value_index ] 
+	
+	return 0.0;
 
-		if( !localValues.ContainsKey( localKey ) ) localValues[ localKey ] = new float[ TYPE_VALUES_NUMBER ];
+func receive_data():
+	is_receiving = true
+	while( is_receiving ):
+		input_buffer.set_position( 0 )
+		input_buffer.put_data( peer.get_packet() )
+		var inputs_number = input_buffer.get_u8()
+		for input_index in range( inputs_number ):
+			var object_id = input_buffer.get_u8()
+			var value_type = input_buffer.get_u8()
+			for value_index in range( TYPE_VALUES_NUMBER ):
+				remote_values[ object_id << 8 | value_type ][ value_index ] = input_buffer.get_float()
 
-		bool isLocalKeyUpdated = false;
-		if( Mathf.Approximately( localValues[ localKey ][ valueIndex ], 0.0f ) ) isLocalKeyUpdated = true;
-		else if( Mathf.Abs( ( localValues[ localKey ][ valueIndex ] - value ) / localValues[ localKey ][ valueIndex ] ) > 0.01f ) isLocalKeyUpdated = true;
-		
-		if( isLocalKeyUpdated )
-		{
-			//Debug.Log( "updating value [" + localKey.ToString() + "," + valueIndex.ToString() + "]: " + localValues[ localKey ][ valueIndex ].ToString() + " -> " + value.ToString() );
-			localValues[ localKey ][ valueIndex ] = value;
-			updatedLocalKeys.Add( localKey );
-		}
-	}
+func _process( delta ):
+	output_buffer.seek( 0 )
+	var axes_number = InfoStateClient.remote_axis_list.size()
+	var feedbacks_list = InputAxis.get_feedbacks()
+	output_buffer.put_u8( axes_number )
+	for axis_index in range( axes_number ):
+		output_buffer.put_u8( axis_index )
+		for variable in range( Variable.TOTAL_NUMBER ):
+			var output = feedbacks_list[ axis_index ] if variable == Variable.POSITION else 0
+			output_buffer.put_float( output )
+	peer.put_data( output_buffer.data_array )
 
-	public float GetRemoteValue( byte objectID, byte valueType, int valueIndex )
-	{
-		KeyValuePair<byte,byte> remoteKey = new KeyValuePair<byte,byte>( objectID, valueType );
+func _on_peer_connected():
+	pass
 
-		float remoteValue = 0.0f;
+func _on_peer_disconnected():
+	pass
 
-		if( remoteValues.ContainsKey( remoteKey ) ) 
-		{
-			remoteValue = remoteValues[ remoteKey ][ valueIndex ];
-			remoteValues[ remoteKey ][ valueIndex ] = 0.0f;
-		}
+func _on_connected_to_server():
+	pass
 
-		return remoteValue;
-	}
+func _on_connection_failed():
+	pass
 
-	public void UpdateData( float updateTime )
-	{
-		int outputMessageLength = PACKET_HEADER_LENGTH;
+func _on_server_disconnected():
+	pass
 
-		if( socketID == -1 ) return;
-
-		foreach( KeyValuePair<byte,byte> localKey in updatedLocalKeys ) 
-		{
-			outputBuffer[ outputMessageLength + VALUE_OID_OFFSET ] = localKey.Key;
-			outputBuffer[ outputMessageLength + VALUE_INDEX_OFFSET ] = localKey.Value;
-			outputMessageLength += VALUE_HEADER_SIZE;
-
-			for( int valueIndex = 0; valueIndex < TYPE_VALUES_NUMBER; valueIndex++ ) 
-			{
-				int dataOffset = outputMessageLength + valueIndex * sizeof(float);
-				Buffer.BlockCopy( BitConverter.GetBytes( localValues[ localKey ][ valueIndex ] ), 0, outputBuffer, dataOffset, sizeof(float) );
-			}
-
-			outputMessageLength += VALUE_DATA_SIZE;
-		}
-			
-		if( updatedLocalKeys.Count > 0 ) 
-		{
-			Buffer.BlockCopy( BitConverter.GetBytes( outputMessageLength ), 0, outputBuffer, 0, PACKET_HEADER_LENGTH );
-			//Debug.Log( "sending " + updatedLocalKeys.Count.ToString() + " blocks (" + BitConverter.ToInt32( outputBuffer, 0 ).ToString() + " bytes)" );
-			SendUpdateMessage();
-		}
-
-		updatedLocalKeys.Clear();
-
-		if( ReceiveUpdateMessage() )
-		{
-			int inputMessageLength = Math.Min( BitConverter.ToInt32( inputBuffer, 0 ), PACKET_SIZE - VALUE_BLOCK_SIZE );
-			Debug.Log( "receiving " + inputMessageLength.ToString() + " bytes" );
-			for( int blockOffset = PACKET_HEADER_LENGTH; blockOffset < inputMessageLength; blockOffset += VALUE_BLOCK_SIZE )
-			{
-				byte objectID = inputBuffer[ blockOffset + VALUE_OID_OFFSET ];
-				byte axisIndex = inputBuffer[ blockOffset + VALUE_INDEX_OFFSET ];
-				KeyValuePair<byte,byte> remoteKey = new KeyValuePair<byte,byte>( objectID, axisIndex );
-				Debug.Log( "Received values for key " + remoteKey.ToString() );
-				if( !remoteValues.ContainsKey( remoteKey ) ) remoteValues[ remoteKey ] = new float[ TYPE_VALUES_NUMBER ];
-
-				for( int valueIndex = 0; valueIndex < TYPE_VALUES_NUMBER; valueIndex++ ) 
-				{
-					int dataOffset = blockOffset + VALUE_HEADER_SIZE + valueIndex * sizeof(float);
-					remoteValues[ remoteKey ][ valueIndex ] = BitConverter.ToSingle( inputBuffer, dataOffset );
-				}
-
-				inputDelays[ objectID ] = networkDelay;
-			}
-		}
-	}
-
-	protected abstract void SendUpdateMessage();
-
-	protected abstract bool ReceiveUpdateMessage();
-
-	public float GetNetworkDelay( byte objectID ) 
-	{ 
-		if( inputDelays.ContainsKey( objectID ) ) return inputDelays[ objectID ];
-
-		return 0.0f; 
-	}
+#public float GetNetworkDelay( byte objectID ) 
+#	if( inputDelays.ContainsKey( objectID ) ) return inputDelays[ objectID ]
+#	return 0.0 
