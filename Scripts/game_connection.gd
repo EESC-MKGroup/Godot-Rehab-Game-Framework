@@ -6,8 +6,9 @@ const PACKET_SIZE = 512
 
 const TYPE_VALUES_NUMBER = 4
 
+signal clients_connected
+
 var peer = NetworkedMultiplayerENet.new()
-var peed_id = -1
 
 var networkDelay = 0.0
 
@@ -73,34 +74,37 @@ func receive_data():
 			var object_id = input_buffer.get_u8()
 			var value_type = input_buffer.get_u8()
 			for value_index in range( TYPE_VALUES_NUMBER ):
-				remote_values[ object_id << 8 | value_type ][ value_index ] = input_buffer.get_float()
+				var remote_key = object_id << 8 | value_type
+				remote_values[ remote_key ][ value_index ] = input_buffer.get_float()
 
 func _process( delta ):
 	output_buffer.seek( 0 )
-	var axes_number = InfoStateClient.remote_axis_list.size()
-	var feedbacks_list = InputAxis.get_feedbacks()
-	output_buffer.put_u8( axes_number )
-	for axis_index in range( axes_number ):
-		output_buffer.put_u8( axis_index )
-		for variable in range( Variable.TOTAL_NUMBER ):
-			var output = feedbacks_list[ axis_index ] if variable == Variable.POSITION else 0
-			output_buffer.put_float( output )
+	var outputs_number = local_values.size()
+	output_buffer.put_u8( outputs_number )
+	for local_key in local_values.keys():
+		var object_id = local_key >> 8 & 0xFF
+		var value_type = local_key & 0xFF
+		output_buffer.put_u8( object_id )
+		output_buffer.put_u8( object_id )
+		for value_index in range( TYPE_VALUES_NUMBER ):
+			output_buffer.put_float( local_values[ local_key ][ value_index ] )
 	peer.put_data( output_buffer.data_array )
 
-func _on_peer_connected():
-	pass
+func _on_peer_connected( peer_id ):
+	print( "new peer connected: " + str(peer_id) )
 
-func _on_peer_disconnected():
-	pass
+func _on_peer_disconnected( peer_id ):
+	print( "peer disconnected: " + str(peer_id) )
 
 func _on_connected_to_server():
-	pass
+	var peer_id = peer.get_unique_id()
+	print( "peer new unique id: " + str(peer_id) )
 
 func _on_connection_failed():
-	pass
+	print( "connection failed!")
 
 func _on_server_disconnected():
-	pass
+	print( "server disconnected!" )
 
 #public float GetNetworkDelay( byte objectID ) 
 #	if( inputDelays.ContainsKey( objectID ) ) return inputDelays[ objectID ]
