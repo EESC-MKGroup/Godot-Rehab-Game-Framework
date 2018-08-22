@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/spring.obj-12607caedb1183f33e257de30a5d6e3b.mesh"
+
+[deps]
+
+files=[ "res://.import/spring.obj-12607caedb1183f33e257de30a5d6e3b.mesh" ]
+
+source_file="res://Meshes/spring.obj"
+dest_files=[ "res://.import/spring.obj-12607caedb1183f33e257de30a5d6e3b.mesh", "res://.import/spring.obj-12607caedb1183f33e257de30a5d6e3b.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true
