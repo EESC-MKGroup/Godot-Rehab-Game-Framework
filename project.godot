@@ -25,6 +25,7 @@ config/icon="res://icon.png"
 InfoStateClient="*res://Scripts/info_state_client.gd"
 RemoteDeviceClient="*res://Scripts/remote_axis_client.gd"
 InputAxis="*res://Scripts/input_axis.gd"
+GameConnection="*res://Scripts/game_connection.gd"
 Configuration="*res://Scripts/persistent_configuration.gd"
 DataLog="*res://Scripts/data_log.gd"
 

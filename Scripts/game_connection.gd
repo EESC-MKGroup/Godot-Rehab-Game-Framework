@@ -6,7 +6,7 @@ const PACKET_SIZE = 512
 
 const TYPE_VALUES_NUMBER = 4
 
-signal clients_connected
+signal players_connected
 
 var peer = NetworkedMultiplayerENet.new()
 
@@ -92,6 +92,7 @@ func _process( delta ):
 
 func _on_peer_connected( peer_id ):
 	print( "new peer connected: " + str(peer_id) )
+	if peer.refuse_new_connections: emit_signal( "players_connected" )
 
 func _on_peer_disconnected( peer_id ):
 	print( "peer disconnected: " + str(peer_id) )

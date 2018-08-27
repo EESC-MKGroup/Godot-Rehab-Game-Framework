@@ -29,7 +29,6 @@ var receive_thread = Thread.new()
 var is_receiving = false
 
 func _ready():
-	#connection.set_no_delay( true )
 	set_calibration( true )
 	set_process( false )
 	_reset_limits()
