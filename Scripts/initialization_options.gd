@@ -4,6 +4,9 @@ onready var position_slider = get_node( "PositionSlider" )
 onready var position_display = get_node( "PositionSlider/NumericDisplay" )
 
 func _ready():
+	if OS.get_cmdline_args()[ 0 ] == "-server":
+		GameConnection.is_server = true
+		GameManager.select( OS.get_cmdline_args()[ 1 ] )
 	$AddressInput.text = Configuration.get_parameter( "server_address" )
 	$UserInput.text = Configuration.get_parameter( "user_name" )
 	$CalibrationToggle.pressed = RemoteDeviceClient.is_calibrating
@@ -12,8 +15,6 @@ func _ready():
 	$AxisSelectionButton/SelectionList.get_popup().add_font_override( "font", font )
 	$DeviceSelectionButton/SelectionList.get_popup().connect( "index_pressed", self, "_on_Device_index_pressed" )
 	$AxisSelectionButton/SelectionList.get_popup().connect( "index_pressed", self, "_on_Axis_index_pressed" )
-#	for variable_name in [ "Position", "Velocity", "Acceleration", "Force", "Inertia", "Stiffness", "Damping" ]:
-#		$VariableSelectionButton/AxisSelectionList.get_popup().add_item( variable_name )
 	InfoStateClient.connect( "reply_received", self, "_on_reply_received" )
 	InfoStateClient.connect( "client_connected", self, "_on_client_connected" )
 	_refresh_devices_list()

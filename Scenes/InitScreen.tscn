@@ -77,26 +77,16 @@ anti_aliasing_size = 1
 
 script/source = "extends MenuButton
 
-const GAMES_PATH = \"res://Scenes/Games\"
-const GAME_EXT = \".tscn\"
-
 func _ready():
 	get_popup().add_font_override( \"font\", get_font( \"font\" ) )
-	var games_dir = Directory.new()
-	games_dir.open( GAMES_PATH )
-	games_dir.list_dir_begin()
-	while true:
-		var file = games_dir.get_next()
-		if file == \"\": break
-		elif file.ends_with( GAME_EXT ):
-			get_popup().add_item( file.get_basename() )
-	games_dir.list_dir_end()
-	
+	var games_list = GameManager.list_games()
+	for game_name in games_list:
+		get_popup().add_item( game_name )	
 	get_popup().connect( \"index_pressed\", self, \"_on_index_pressed\" )
 
 func _on_index_pressed( index ):
 	var game_name = get_popup().get_item_text( index )
-	get_tree().change_scene( GAMES_PATH + \"/\" + game_name + GAME_EXT )
+	GameManager.select( game_name )
 "
 
 [node name="InitScreen" type="Panel"]

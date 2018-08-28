@@ -10,6 +10,7 @@ signal players_connected
 signal client_connected
 
 var peer = NetworkedMultiplayerENet.new()
+var is_server = false
 
 #var networkDelay = 0.0
 

@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+GameManager="*res://Scripts/game_manager.gd"
 InfoStateClient="*res://Scripts/info_state_client.gd"
 RemoteDeviceClient="*res://Scripts/remote_axis_client.gd"
 InputAxis="*res://Scripts/input_axis.gd"
