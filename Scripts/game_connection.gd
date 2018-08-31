@@ -53,6 +53,9 @@ func shutdown():
 	peer.disconnect()
 	get_tree().set_network_peer( null )
 
+func set_as_master( node ):
+	node.set_network_master( get_tree().get_network_unique_id() )
+
 #func set_local_value( object_id, value_type, value_index, value ):
 #	var local_key = object_id << 8 | value_type
 #

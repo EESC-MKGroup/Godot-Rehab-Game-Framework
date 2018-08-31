@@ -3,10 +3,17 @@ extends "res://Scripts/network_controller.gd"
 # Wave variables control algorithm with wave filtering
 # Please refer to section 7 of 2004 paper by Niemeyer and Slotline for more details
 
+onready var game = get_tree().get_root()
+
 var wave_impedance = 1.0
+
+var external_force = Vector3.ZERO setget set_external_force
 
 sync func set_wave_impedance( value ):
 	if value > 0.1: wave_impedance = value
+
+func set_external_force( value ):
+	external_force = value
 
 # Receive delayed u_in (u_in_old) and U_in (U_in_old)
 func process_input_wave( wave, wave_integral ): 	
@@ -37,17 +44,13 @@ remote func update_server( wave, wave_integral, last_server_time, client_time ):
 	
 	#remote_force[ 0 ] = filter_delayed_input( remote_force[ 0 ], remote_force[ 1 ], last_server_time )
 	# Apply resulting force F_m to rigid body
-	add_central_force( remote_force[ 0 ] )
-	# Lock local body if no messages are being received
-	#if( inputWaveVariable == 0.0 ) body.constraints |= RigidbodyConstraints.FreezePositionZ;
-	#else body.constraints &= (~RigidbodyConstraints.FreezePositionZ);
-	#if( inputWaveVariable != 0.0f ) body.constraints &= (~RigidbodyConstraints.FreezePositionZ);
+	add_central_force( remote_force[ 0 ] + game.get_environment_force( self ) )
 	# Encode and send output wave variable (velocity data): u_m = ( b * xdot_m + (-F_m) ) / sqrt( 2 * b )
 	# Encode and send output wave integral (position data): U_m = ( b * x_m + (-p_m) ) / sqrt( 2 * b )
 	var output_wave = process_output_wave( remote_force[ 0 ], remote_force[ 1 ] )
-	# Send position and velocity values directly
 	var server_time = OS.get_ticks_msec()
 	rpc_unreliable( "update_player", output_wave[ 0 ], output_wave[ 1 ], client_time, server_time )
+	# Send position and velocity values directly
 	rpc_unreliable( "update_slave", translation, linear_velocity, client_time, server_time )
 
 master func update_player( wave, wave_integral, last_client_time, server_time ):
@@ -56,17 +59,13 @@ master func update_player( wave, wave_integral, last_client_time, server_time ):
 	var remote_force = process_input_wave( wave, wave_integral )
 	
 	#remote_force[ 0 ] = filter_delayed_input( remote_force[ 0 ], remote_force[ 1 ], last_client_time )
-	# Read scaled player position (x_s) and velocity (xdot_s)
-	var player_force = InputAxis.get_value() #* rangeLimits.z;
-	remote_force[ 0 ] += Vector3.FORWARD * player_force
-	# Apply resulting force to user device
-	add_central_force( remote_force[ 0 ] )
-	#float feedbackScalingFactor = 1.0f;//0.005f;// controlAxis.GetValue( AxisVariable.INERTIA ) / body.mass;
-	#controlAxis.SetValue( AxisVariable.FORCE, transform.forward.z * remoteForce * feedbackScalingFactor );
+	# Apply player input force F_h to rigid body
+	add_central_force( remote_force[ 0 ] + game.get_player_force( self ) )
 	# Encode and send output wave variable (velocity data): v_s = ( b * xdot_s - F_s ) / sqrt( 2 * b )
 	# Encode and send output wave integral (position data): V_s = ( b * x_s - p_s ) / sqrt( 2 * b )
 	var output_wave = process_output_wave( remote_force[ 0 ], remote_force[ 1 ] )
-	rpc_unreliable( "update_server", output_wave[ 0 ], output_wave[ 1 ], wave_impedance )
+	var client_time = OS.get_ticks_msec()
+	rpc_unreliable( "update_server", output_wave[ 0 ], output_wave[ 1 ], server_time, client_time )
 
 slave func update_slave( master_position, master_velocity, last_client_time, server_time ):
 	var delay = ( OS.get_ticks_msec() - last_client_time ) / 2000

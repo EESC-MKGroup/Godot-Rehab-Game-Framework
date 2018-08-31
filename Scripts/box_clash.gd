@@ -1,5 +1,9 @@
 extends Spatial
 
+onready var boundary_1 = $Ground/Platform/Boundaries/CollisionShape1
+onready var boundary_2 = $Ground/Platform/Boundaries/CollisionShape2
+onready var movement_range = abs( boundary_1.translation.z - boundary_2.translation.z )
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if GameConnection.is_server:
@@ -10,11 +14,17 @@ func _ready():
 		GameConnection.connect( "client_connected", self, "_on_client_connected" )
 
 func _on_client_connected( client_id ):
-	if client_id == 0: $Box1.set_network_master( get_tree().get_network_unique_id() )
-	elif client_id == 1: $Box2.set_network_master( get_tree().get_network_unique_id() )
+	if client_id == 0: GameConnection.set_as_master( $Box1 )
+	elif client_id == 1: GameConnection.set_as_master( $Box2 )
 
 func _on_players_connected():
 	$Box1.rpc( "enable" )
 	$Box2.rpc( "enable" )
 	$Box1.rpc( "update_server", 0.0, 0.0, OS.get_ticks_msec(), OS.get_ticks_msec() )
 	$Box2.rpc( "update_server", 0.0, 0.0, OS.get_ticks_msec(), OS.get_ticks_msec() )
+
+func get_player_force( body ):
+	return body.transform.basis * InputAxis.get_value() * movement_range
+
+func get_environment_force( body ):
+	return body.transform.basis * $Spring.get_force()
