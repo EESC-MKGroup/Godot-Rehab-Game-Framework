@@ -27,20 +27,19 @@ var score_animation = preload( "res://Actors/ScorePing.tscn" )
 
 func _ready():
 	$GUI.set_timeouts( PLAY_TIMEOUT, REST_TIMEOUT )
-	if Controller.is_calibrating: $GUI.set_max_effort( 100.0 )
+	if RemoteDeviceClient.is_calibrating: $GUI.set_max_effort( 100.0 )
 	else: $GUI.set_max_effort( 70.0 )
-	if Controller.direction_axis == Controller.HORIZONTAL:
-		$Camera.rotate_z( PI / 2 )
-	Controller.set_axis_values( 0.0, 0 )
+#	if Controller.direction_axis == Controller.HORIZONTAL:
+#		$Camera.rotate_z( PI / 2 )
+	RemoteDeviceClient.set_axis_values( 0.0 )
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
-	var controller_values = Controller.get_axis_values()
-	var new_position = controller_values[ Controller.POSITION ] * max_position
+	var new_position = InputAxis.get_value() * max_position
 	new_position = clamp( new_position, -max_position, max_position )
 	player.translation.y = new_position
 	
-	if not Controller.is_calibrating:
+	if not RemoteDeviceClient.is_calibrating:
 		var measure_value = player.translation.y / max_position
 		DataLog.register_values( [ direction, measure_value, score_state ] )
 		score_state = 0
@@ -57,7 +56,7 @@ func _change_display():
 		balloon.hide()
 	var target_position = direction * max_position
 	target.translation.y = target_position
-	Controller.set_axis_values( direction, 1 )
+	RemoteDeviceClient.set_value( direction )
 	$GUI.display_setpoint( direction )
 
 func _on_GUI_game_timeout( timeouts_count ):
@@ -82,8 +81,5 @@ func _on_GUI_game_timeout( timeouts_count ):
 		_change_display()
 
 func _on_GUI_game_toggle( started ):
-	if Controller.is_calibrating: Controller.set_status( 1 )
-	elif Controller.direction_axis == Controller.VERTICAL: Controller.set_status( 4 )
-	else: Controller.set_status( 8 )
-	Controller.set_axis_values( 0.0, 1 )
+	RemoteDeviceClient.set_axis_values( 0.0 )
 	_change_display()

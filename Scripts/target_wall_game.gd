@@ -38,13 +38,12 @@ func _ready():
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
-	var controller_values = Controller.get_axis_values()
-	var new_position = controller_values[ Controller.POSITION ] * boundary_extents.y
+	var new_position = InputAxis.get_value() * boundary_extents.y
 	new_position = clamp( new_position, -boundary_extents.y, boundary_extents.y )
 	var position_delta = new_position - player.translation.y
 	player.translation.y = new_position
 	
-	if not Controller.is_calibrating:
+	if not RemoteDeviceClient.is_calibrating:
 		var measure_position = player.translation.y / boundary_extents.y
 		DataLog.register_values( [ setpoint_position, player.translation.y, score_state ] )
 		score_state = 0
@@ -53,7 +52,7 @@ func _set_setpoint():
 	if setpoint_positions.size() > 0:
 		setpoint_position = setpoint_positions.front()
 		var stiffness_phase = int( waves_count / PHASE_WAVES_NUMBER ) % PHASES_STIFFNESS.size()
-		Controller.set_axis_values( setpoint_position, PHASES_STIFFNESS[ stiffness_phase ] )
+		InputAxis.set_value( setpoint_position )
 		$GUI.display_setpoint( setpoint_position )
 
 func _on_GUI_game_timeout( timeouts_count ):
@@ -86,7 +85,4 @@ func _on_ScoreArea_collider_reached( collider ):
 	player.interact( collider )
 
 func _on_GUI_game_toggle( started ):
-	Controller.set_axis_values( 0.0, 1.0 )
-	if Controller.is_calibrating: Controller.set_status( 3 )
-	elif Controller.direction_axis == Controller.VERTICAL: Controller.set_status( 2 )
-	else: Controller.set_status( 6 )
+	RemoteDeviceClient.set_value( 0.0 )

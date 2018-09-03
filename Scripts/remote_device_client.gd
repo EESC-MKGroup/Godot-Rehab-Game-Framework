@@ -14,17 +14,12 @@ var MAX_AXES_NUMBER = int( BUFFER_SIZE / AXIS_DATA_SIZE )
 var input_buffer = StreamPeerBuffer.new()
 var output_buffer = StreamPeerBuffer.new()
 
-var input_variable = Variable.FORCE setget _set_input_variable
-var output_variable = Variable.POSITION setget _set_output_variable
-
 var input_limits = []
 var output_limits = []
-var input_values = []
-var output_values = []
 
-var is_calibrating = false
+var is_calibrating = false setget _set_calibration, _get_calibration
 
-var max_effort = 1.0
+var max_effort = 1.0 setget _set_max_effort
 
 var connection = PacketPeerUDP.new()
 
@@ -32,14 +27,11 @@ var receive_thread = Thread.new()
 var is_receiving = false
 
 func _ready():
-	set_calibration( true )
+	_set_calibration( true )
 	set_process( false )
 	_reset_limits()
 	input_buffer.resize( BUFFER_SIZE )
 	output_buffer.resize( BUFFER_SIZE )
-	for axis_index in range( Variable.TOTAL_NUMBER ):
-		input_values.append( 0 )
-		output_values.append( 0 )
 
 func receive_data():
 	is_receiving = true
@@ -106,14 +98,14 @@ func _reset_limits():
 		input_limits.append( null )
 		output_limits.append( null )
 
-func set_calibration( enabled ):
+func _set_calibration( enabled ):
 	if enabled: _reset_limits()
 	is_calibrating = enabled
 
-func get_calibration():
+func _get_calibration():
 	return is_calibrating
 
-func set_max_effort( value ):
+func _set_max_effort( value ):
 	max_effort = value / 100.0
 
 func _notification( what ):
