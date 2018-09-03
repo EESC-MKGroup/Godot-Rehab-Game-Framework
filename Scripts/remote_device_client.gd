@@ -14,6 +14,9 @@ var MAX_AXES_NUMBER = int( BUFFER_SIZE / AXIS_DATA_SIZE )
 var input_buffer = StreamPeerBuffer.new()
 var output_buffer = StreamPeerBuffer.new()
 
+var input_variable = Variable.FORCE setget _set_input_variable
+var output_variable = Variable.POSITION setget _set_output_variable
+
 var input_limits = []
 var output_limits = []
 var input_values = []

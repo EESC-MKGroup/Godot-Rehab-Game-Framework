@@ -24,7 +24,7 @@ config/icon="res://icon.png"
 
 GameManager="*res://Scripts/game_manager.gd"
 InfoStateClient="*res://Scripts/info_state_client.gd"
-RemoteDeviceClient="*res://Scripts/remote_axis_client.gd"
+RemoteDeviceClient="*res://Scripts/remote_device_client.gd"
 InputAxis="*res://Scripts/input_axis.gd"
 GameConnection="*res://Scripts/game_connection.gd"
 Configuration="*res://Scripts/persistent_configuration.gd"

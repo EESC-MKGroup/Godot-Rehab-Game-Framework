@@ -26,15 +26,15 @@ onready var collider_top = -boundary_extents.y + collider_width / 2
 
 func _ready():
 	$GUI.set_timeouts( 3.0, 0.0 )
-	if Controller.is_calibrating: $GUI.set_max_effort( 100.0 )
+	if RemoteDeviceClient.is_calibrating: $GUI.set_max_effort( 100.0 )
 	else: $GUI.set_max_effort( 80.0 )
-	if Controller.direction_axis == Controller.HORIZONTAL:
-		$Camera.rotate_z( PI / 2 )
-		$Camera.translation.x = -3.7
-		$Background.translation.x = $Camera.translation.x
-		var background_size = $Background.region_rect.size
-		background_size = Vector2( background_size.y, background_size.x )
-		$Background.region_rect = Rect2( Vector2( 0, 0 ), background_size )
+#	if Controller.direction_axis == Controller.HORIZONTAL:
+#		$Camera.rotate_z( PI / 2 )
+#		$Camera.translation.x = -3.7
+#		$Background.translation.x = $Camera.translation.x
+#		var background_size = $Background.region_rect.size
+#		background_size = Vector2( background_size.y, background_size.x )
+#		$Background.region_rect = Rect2( Vector2( 0, 0 ), background_size )
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
