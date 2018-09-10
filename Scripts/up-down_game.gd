@@ -32,16 +32,18 @@ func _ready():
 	else: $GUI.set_max_effort( 70.0 )
 #	if Controller.direction_axis == Controller.HORIZONTAL:
 #		$Camera.rotate_z( PI / 2 )
-	RemoteDevice.set_axis_values( 0.0 )
+	InputAxis.set_feedback( 0.0 )
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
 	var player_force = InputAxis.get_value() * space_scale
 	player.add_central_force( Vector3.UP * player_force )
 	
+	var player_position = player.translation.y / space_scale
+	InputAxis.set_feedback( player_position )
+	
 	if not RemoteDevice.is_calibrating:
-		var measure_value = player.translation.y / space_scale
-		DataLog.register_values( [ direction, measure_value, score_state ] )
+		DataLog.register_values( [ direction, player_force, player_position, score_state ] )
 		score_state = 0
 
 func _change_display():
@@ -56,7 +58,7 @@ func _change_display():
 		balloon.hide()
 	var target_position = direction * space_scale
 	target.translation.y = target_position
-	RemoteDevice.set_value( direction )
+	InputAxis.set_feedback( direction )
 	$GUI.display_setpoint( direction )
 
 func _on_GUI_game_timeout( timeouts_count ):

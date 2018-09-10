@@ -36,122 +36,97 @@ anti_aliasing_size = 1
 
 script/source = "extends Control
 
-onready var setpoint_display = get_node( \"SetpointDisplay\" )
-onready var measure_display = get_node( \"MeasureDisplay\" )
-
-onready var play_timeout_slider = get_node( \"PlayTimeoutSlider\" )
-onready var play_timeout_display = play_timeout_slider.get_node( \"Label\" )
-onready var play_timer = get_node( \"PlayTimer\" )
-
-onready var rest_timeout_slider = get_node( \"RestTimeoutSlider\" )
-onready var rest_timeout_display = rest_timeout_slider.get_node( \"Label\" )
-onready var rest_timer = get_node( \"RestTimer\" )
-
-onready var time_left_display_1 = get_node( \"TimeLeftDisplay1\" )
-onready var time_left_display_2 = get_node( \"TimeLeftDisplay2\" )
-
-onready var effort_slider = get_node( \"EffortSlider\" )
-onready var effort_display = effort_slider.get_node( \"Label\" )
-
-onready var start_button = get_node( \"StartButton\" )
-
-onready var pause_menu = get_node( \"PauseMenu\" )
-onready var end_menu = get_node( \"EndMenu\" )
-onready var score_display = end_menu.get_node( \"ScoreDisplay\" )
-
 signal game_timeout
 signal game_toggle
 
 var timeouts_count = 0
 
 func _ready():
-	_on_PlayTimeoutSlider_value_changed( play_timeout_slider.value )
-	_on_RestTimeoutSlider_value_changed( rest_timeout_slider.value )
-	_on_EffortSlider_value_changed( effort_slider.value )
-	play_timer.paused = true
-	rest_timer.paused = true
+	_on_PlayTimeoutSlider_value_changed( $PlayTimeoutSlider.value )
+	_on_RestTimeoutSlider_value_changed( $RestTimeoutSlider.value )
+	_on_EffortSlider_value_changed( $EffortSlider.value )
+	$PlayTimer.paused = true
+	$RestTimer.paused = true
 
 func _process( delta ):
-	var input_values = Controller.get_axis_values()
-	measure_display.text = ( \"%+.3f\" % input_values[ Controller.POSITION ] )
+	$MeasureDisplay.text = ( \"%+.3f\" % InputAxis.get_value() )
 	
-	time_left_display_1.text = ( \"%d\" % ceil( rest_timer.time_left ) )
-	time_left_display_2.text = time_left_display_1.text
+	$TimeLeftDisplay1.text = ( \"%d\" % ceil( $RestTimer.time_left ) )
+	$TimeLeftDisplay2.text = $TimeLeftDisplay1.text
 
 func display_setpoint( setpoint_value ):
-	setpoint_display.text = ( \"%+.3f\" % setpoint_value )
+	$SetpointDisplay.text = ( \"%+.3f\" % setpoint_value )
 
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	print( \"setting timeouts: %f %f\" % [ play_timeout_value, rest_timeout_value ] )
-	play_timeout_slider.value = play_timeout_value
-	rest_timeout_slider.value = rest_timeout_value
+	$PlayTimeoutSlider.value = play_timeout_value
+	$RestTimeoutSlider.value = rest_timeout_value
 
 func get_event_time_left():
-	if not play_timer.paused: return play_timer.time_left
-	elif not rest_timer.paused: return rest_timer.time_left
+	if not $PlayTimer.paused: return $PlayTimer.time_left
+	elif not $RestTimer.paused: return $RestTimer.time_left
 	return 0.0
 
 func set_max_effort( max_effort ):
-	effort_slider.value = max_effort
+	$EffortSlider.value = max_effort
 
 func wait_rest():
-	play_timer.paused = true
-	rest_timer.paused = false
-	rest_timer.start()
-	time_left_display_1.show()
-	time_left_display_2.show()
+	$PlayTimer.paused = true
+	$RestTimer.paused = false
+	$RestTimer.start()
+	$TimeLeftDisplay1.show()
+	$TimeLeftDisplay2.show()
 
 func end_game( targets_number, score ):
-	play_timer.paused = true
-	rest_timer.paused = true
+	$PlayTimer.paused = true
+	$RestTimer.paused = true
 	#get_tree().paused = true
 	#start_button.pressed = false
-	score_display.text = ( \"Targets: %d\\nScore: %d (%.1f%s)\" % [ targets_number, score, 100 * score / targets_number, \"%\" ] )
-	end_menu.show()
+	$EndMenu/ScoreDisplay.text = ( \"Targets: %d\\nScore: %d (%.1f%s)\" % [ targets_number, score, 100 * score / targets_number, \"%\" ] )
+	$EndMenu.show()
 
 func _on_PlayTimeoutSlider_value_changed( value ):
-	Controller.set_time_window( value )
-	play_timer.wait_time = value
-	play_timeout_display.text = \"Play: \" + str(value) + \"s\"
+	$PlayTimer.wait_time = value
+	$PlayTimeoutSlider/Label.text = \"Play: \" + str(value) + \"s\"
 
 func _on_RestTimeoutSlider_value_changed( value ):
-	rest_timer.wait_time = value
-	rest_timeout_display.text = \"Rest: \" + str(value) + \"s\"
+	$RestTimer.wait_time = value
+	$RestTimeoutSlider/Label.text = \"Rest: \" + str(value) + \"s\"
 
 func _on_EffortSlider_value_changed( value ):
-	Controller.set_max_effort( value )
-	effort_display.text = \"Effort: \" + str(value) + \"%\"
+	RemoteDevice.max_effort = value
+	$EffortSlider/Label.text = \"Effort: \" + str(value) + \"%\"
 
 func _on_PlayTimer_timeout():
 	emit_signal( \"game_timeout\", timeouts_count )
 	timeouts_count += 1
 
 func _on_RestTimer_timeout():
-	time_left_display_1.hide()
-	time_left_display_2.hide()
+	$TimeLeftDisplay1.hide()
+	$TimeLeftDisplay2.hide()
 	timeouts_count = 0
-	play_timer.paused = false
-	play_timer.start()
+	$PlayTimer.paused = false
+	$PlayTimer.start()
 	_on_PlayTimer_timeout()
 
 func _on_StartButton_toggled( button_pressed ):
 	if button_pressed: 
-		play_timer.paused = false
-		play_timer.start()
-		start_button.text = \"Stop\"
+		$PlayTimer.paused = false
+		$PlayTimer.start()
+		$StartButton.text = \"Stop\"
 		_on_PlayTimer_timeout()
 	else: 
-		play_timer.paused = true
-		start_button.text = \"Start\"
-		pause_menu.show()
+		$PlayTimer.paused = true
+		$StartButton.text = \"Start\"
+		$PauseMenu.show()
 		get_tree().paused = true
-	rest_timer.paused = true
+	$RestTimer.paused = true
 	emit_signal( \"game_toggle\", button_pressed )
 
 func _on_ResumeButton_pressed():
-	pause_menu.hide()
+	$PauseMenu.hide()
 	get_tree().paused = false
-	start_button.pressed = false
+	$StartButton.pressed = false
 
 func _on_ExitButton_pressed():
 	get_tree().paused = false
@@ -161,6 +136,8 @@ func _on_ExitButton_pressed():
 [sub_resource type="DynamicFont" id=3]
 
 size = 90
+outline_size = 0
+outline_color = Color( 1, 1, 1, 1 )
 use_mipmaps = true
 use_filter = true
 extra_spacing_top = 20
@@ -168,7 +145,6 @@ font_data = ExtResource( 3 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [node name="GUI" type="Panel"]
-
 self_modulate = Color( 1, 1, 1, 0.498039 )
 anchor_left = 0.0
 anchor_top = 0.0
@@ -185,22 +161,19 @@ custom_styles/panel = SubResource( 1 )
 script = SubResource( 2 )
 _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_styles" ]
 
-[node name="PlayTimer" type="Timer" parent="." index="0"]
-
+[node name="PlayTimer" type="Timer" parent="."]
 process_mode = 1
 wait_time = 1.0
 one_shot = false
 autostart = false
 
-[node name="RestTimer" type="Timer" parent="." index="1"]
-
+[node name="RestTimer" type="Timer" parent="."]
 process_mode = 1
 wait_time = 1.0
 one_shot = true
 autostart = false
 
-[node name="StartButton" type="Button" parent="." index="2"]
-
+[node name="StartButton" type="Button" parent="."]
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -227,8 +200,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Margin", "Rect", "custom_fonts" ]
 
-[node name="VariableLabel" type="Label" parent="." index="3"]
-
+[node name="VariableLabel" type="Label" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -253,8 +225,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="SetpointDisplay" type="LineEdit" parent="." index="4"]
-
+[node name="SetpointDisplay" type="LineEdit" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -272,16 +243,17 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 1 )
 text = "+0.000"
 align = 1
+secret_character = "*"
 focus_mode = 0
 context_menu_enabled = true
+clear_button_enabled = false
 placeholder_alpha = 0.6
 caret_blink = false
 caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
 
-[node name="MeasureDisplay" type="LineEdit" parent="." index="5"]
-
+[node name="MeasureDisplay" type="LineEdit" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -299,16 +271,17 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 1 )
 text = "+0.000"
 align = 1
+secret_character = "*"
 focus_mode = 0
 context_menu_enabled = true
+clear_button_enabled = false
 placeholder_alpha = 0.6
 caret_blink = false
 caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
 
-[node name="PauseMenu" type="Panel" parent="." index="6"]
-
+[node name="PauseMenu" type="Panel" parent="."]
 pause_mode = 2
 visible = false
 anchor_left = 0.0
@@ -327,8 +300,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Margin", "Pause" ]
 
-[node name="Label" type="Label" parent="PauseMenu" index="0"]
-
+[node name="Label" type="Label" parent="PauseMenu"]
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -352,8 +324,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
 
-[node name="ResumeButton" type="Button" parent="PauseMenu" index="1"]
-
+[node name="ResumeButton" type="Button" parent="PauseMenu"]
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -379,8 +350,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
 
-[node name="ExitButton" type="Button" parent="PauseMenu" index="2"]
-
+[node name="ExitButton" type="Button" parent="PauseMenu"]
 anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -406,8 +376,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
 
-[node name="EndMenu" type="Panel" parent="." index="7"]
-
+[node name="EndMenu" type="Panel" parent="."]
 pause_mode = 2
 visible = false
 anchor_left = 0.0
@@ -426,8 +395,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Margin", "Pause" ]
 
-[node name="Label" type="Label" parent="EndMenu" index="0"]
-
+[node name="Label" type="Label" parent="EndMenu"]
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -451,8 +419,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
 
-[node name="ScoreDisplay" type="Label" parent="EndMenu" index="1"]
-
+[node name="ScoreDisplay" type="Label" parent="EndMenu"]
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 1.0
@@ -477,8 +444,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
 
-[node name="ExitButton" type="Button" parent="EndMenu" index="2"]
-
+[node name="ExitButton" type="Button" parent="EndMenu"]
 anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -504,8 +470,7 @@ flat = false
 align = 1
 _sections_unfolded = [ "Margin", "Rect", "custom_fonts" ]
 
-[node name="PlayTimeoutSlider" type="HSlider" parent="." index="8"]
-
+[node name="PlayTimeoutSlider" type="HSlider" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -528,14 +493,16 @@ page = 0.0
 value = 3.0
 exp_edit = false
 rounded = true
+allow_greater = false
+allow_lesser = false
 editable = true
+scrollable = true
 tick_count = 5
 ticks_on_borders = true
 focus_mode = 2
 _sections_unfolded = [ "Margin", "Rect" ]
 
-[node name="Label" type="Label" parent="PlayTimeoutSlider" index="0"]
-
+[node name="Label" type="Label" parent="PlayTimeoutSlider"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -558,8 +525,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
-[node name="RestTimeoutSlider" type="HSlider" parent="." index="9"]
-
+[node name="RestTimeoutSlider" type="HSlider" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -582,14 +548,16 @@ page = 0.0
 value = 60.0
 exp_edit = false
 rounded = true
+allow_greater = false
+allow_lesser = false
 editable = true
+scrollable = true
 tick_count = 11
 ticks_on_borders = true
 focus_mode = 2
 _sections_unfolded = [ "Margin", "Rect" ]
 
-[node name="Label" type="Label" parent="RestTimeoutSlider" index="0"]
-
+[node name="Label" type="Label" parent="RestTimeoutSlider"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -612,8 +580,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
-[node name="EffortSlider" type="HSlider" parent="." index="10"]
-
+[node name="EffortSlider" type="HSlider" parent="."]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -636,14 +603,16 @@ page = 0.0
 value = 50.0
 exp_edit = false
 rounded = true
+allow_greater = false
+allow_lesser = false
 editable = true
+scrollable = true
 tick_count = 11
 ticks_on_borders = true
 focus_mode = 2
 _sections_unfolded = [ "Margin", "Rect" ]
 
-[node name="Label" type="Label" parent="EffortSlider" index="0"]
-
+[node name="Label" type="Label" parent="EffortSlider"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -666,8 +635,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "custom_colors", "custom_fonts" ]
 
-[node name="TimeLeftDisplay1" type="Label" parent="." index="11"]
-
+[node name="TimeLeftDisplay1" type="Label" parent="."]
 visible = false
 anchor_left = 0.0
 anchor_top = 0.5
@@ -694,8 +662,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
-[node name="TimeLeftDisplay2" type="Label" parent="." index="12"]
-
+[node name="TimeLeftDisplay2" type="Label" parent="."]
 visible = false
 anchor_left = 1.0
 anchor_top = 0.5
@@ -723,21 +690,11 @@ max_lines_visible = -1
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_fonts" ]
 
 [connection signal="timeout" from="PlayTimer" to="." method="_on_PlayTimer_timeout"]
-
 [connection signal="timeout" from="RestTimer" to="." method="_on_RestTimer_timeout"]
-
 [connection signal="toggled" from="StartButton" to="." method="_on_StartButton_toggled"]
-
 [connection signal="pressed" from="PauseMenu/ResumeButton" to="." method="_on_ResumeButton_pressed"]
-
 [connection signal="pressed" from="PauseMenu/ExitButton" to="." method="_on_ExitButton_pressed"]
-
 [connection signal="pressed" from="EndMenu/ExitButton" to="." method="_on_ExitButton_pressed"]
-
 [connection signal="value_changed" from="PlayTimeoutSlider" to="." method="_on_PlayTimeoutSlider_value_changed"]
-
 [connection signal="value_changed" from="RestTimeoutSlider" to="." method="_on_RestTimeoutSlider_value_changed"]
-
 [connection signal="value_changed" from="EffortSlider" to="." method="_on_EffortSlider_value_changed"]
-
-

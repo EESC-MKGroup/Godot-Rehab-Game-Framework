@@ -36,10 +36,10 @@ func set_value( value ):
 func set_feedback( setpoint_value ):
 	var device_setpoints = [ 0, 0, 0, 0, 0, 0, 0, 0 ]
 	device_setpoints[ axis_index ] = setpoint_value 
-	var x_feedback = device_setpoints[ 0 ] | ( device_setpoints[ 1 ] << 16 )
-	var y_feedback = device_setpoints[ 2 ] | ( device_setpoints[ 3 ] << 16 )
-	var z_feedback = device_setpoints[ 4 ] | ( device_setpoints[ 5 ] << 16 )
-	z_feedback += device_setpoints[ 6 ] | ( device_setpoints[ 7 ] << 16 )
+	var x_feedback = 0#device_setpoints[ 0 ] | ( device_setpoints[ 1 ] << 16 )
+	var y_feedback = 0#device_setpoints[ 2 ] | ( device_setpoints[ 3 ] << 16 )
+	var z_feedback = 0#device_setpoints[ 4 ] | ( device_setpoints[ 5 ] << 16 )
+	#z_feedback += device_setpoints[ 6 ] | ( device_setpoints[ 7 ] << 16 )
 	Input.start_joy_vibration( device_index, x_feedback, y_feedback, z_feedback )
 
 func get_feedbacks():

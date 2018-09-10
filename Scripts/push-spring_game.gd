@@ -8,18 +8,18 @@ const HOLD_TIMEOUT = 15.0
 const HOLD_CYCLES = 5
 const REST_TIMEOUT = 60.0
 
-var cycles_number = 0
-var cycles_count = 0
-var direction = NONE
-
 onready var effector = $SpringBase/Effector
 onready var spring = $SpringBase/Spring
 
 onready var force_display = $ForcePanel/MeasureDisplay
 
-onready var initial_position = effector.translation.y
-onready var initial_scale = spring.scale.y
-onready var max_displacement = 0.8 * abs( effector.translation.y )
+onready var space_scale = abs( effector.translation.y )
+
+var cycles_number = 0
+var cycles_count = 0
+var direction = NONE
+
+var score_state = 0
 
 func _ready():
 #	if Controller.direction_axis == Controller.HORIZONTAL:
@@ -37,17 +37,18 @@ func _ready():
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
-	var player_force = abs( RemoteDevice.get_value() * max_displacement )
+	var player_force = abs( InputAxis.get_value() * space_scale )
 	var spring_force = abs( spring.get_force() )
 	
 	effector.add_central_force( Vector3.UP * ( player_force - spring_force ) )
 	
 	force_display.text = ( "%+4.1fN" % player_force )
 	
+	var player_position = effector.translation.y / space_scale
+	InputAxis.set_feedback( player_position )
+	
 	if not RemoteDevice.is_calibrating:
-		var score_state = 0
-		if direction != NONE: score_state = 1 if displacement == max_displacement else -1
-		DataLog.register_values( [ direction, player_force, score_state ] )
+		DataLog.register_values( [ direction, player_force, player_position, score_state ] )
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if direction == NONE: direction = UP
@@ -70,4 +71,10 @@ func _on_GUI_game_timeout( timeouts_count ):
 		$GUI.display_setpoint( 0.0 )
 
 func _on_GUI_game_toggle( started ):
-	if not Controller.is_calibrating: $SpringBase/Target.show()
+	if not RemoteDevice.is_calibrating: $SpringBase/Target.show()
+
+func _on_Target_body_entered( body ):
+	if direction != NONE: score_state = 1
+
+func _on_Target_body_exited(body):
+	score_state = 0

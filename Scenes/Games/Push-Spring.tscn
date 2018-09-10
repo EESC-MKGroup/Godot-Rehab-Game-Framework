@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Scripts/push-spring_game.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Wall.png" type="Texture" id=2]
@@ -417,7 +417,13 @@ height = 0.3
 radial_segments = 16
 rings = 4
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="CylinderShape" id=13]
+
+margin = 0.04
+radius = 1.07912
+height = 0.0422766
+
+[sub_resource type="SpatialMaterial" id=14]
 
 render_priority = 0
 flags_transparent = false
@@ -477,7 +483,7 @@ proximity_fade_enable = false
 distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Emission" ]
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=15]
 
 render_priority = 0
 flags_transparent = false
@@ -537,7 +543,7 @@ proximity_fade_enable = false
 distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Emission" ]
 
-[sub_resource type="StyleBoxFlat" id=15]
+[sub_resource type="StyleBoxFlat" id=16]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
@@ -714,9 +720,33 @@ _sections_unfolded = [ "Geometry", "Transform", "material" ]
 shape = SubResource( 10 )
 disabled = false
 
-[node name="Target" type="MeshInstance" parent="SpringBase"]
-transform = Transform( 1.1, 0, 0, 0, 0.2, 0, 0, 0, 1.1, 0, -1.72824, 0 )
+[node name="Target" type="Area" parent="SpringBase"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.72824, 0 )
 visible = false
+input_ray_pickable = false
+input_capture_on_drag = false
+space_override = 0
+gravity_point = false
+gravity_distance_scale = 0.0
+gravity_vec = Vector3( 0, -1, 0 )
+gravity = 9.8
+linear_damp = 0.1
+angular_damp = 1.0
+priority = 0.0
+monitoring = true
+monitorable = true
+collision_layer = 1
+collision_mask = 1
+audio_bus_override = false
+audio_bus_name = "Master"
+reverb_bus_enable = false
+reverb_bus_name = "Master"
+reverb_bus_amount = 0.0
+reverb_bus_uniformity = 0.0
+_sections_unfolded = [ "Geometry", "Transform", "material" ]
+
+[node name="Mesh" type="MeshInstance" parent="SpringBase/Target"]
+transform = Transform( 1.1, 0, 0, 0, 0.2, 0, 0, 0, 1.1, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -730,6 +760,10 @@ mesh = SubResource( 12 )
 skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Geometry", "Transform", "material" ]
+
+[node name="CollisionShape" type="CollisionShape" parent="SpringBase/Target"]
+shape = SubResource( 13 )
+disabled = false
 
 [node name="Arrow" type="Spatial" parent="SpringBase"]
 visible = false
@@ -747,7 +781,7 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = ExtResource( 11 )
 skeleton = NodePath("..")
-material/0 = SubResource( 13 )
+material/0 = SubResource( 14 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Arrow2" type="MeshInstance" parent="SpringBase/Arrow"]
@@ -763,7 +797,7 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = ExtResource( 11 )
 skeleton = NodePath("..")
-material/0 = SubResource( 14 )
+material/0 = SubResource( 15 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="SpotLight" type="OmniLight" parent="."]
@@ -806,7 +840,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 15 )
+custom_styles/panel = SubResource( 16 )
 _sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Hint", "Margin", "Material", "Mouse", "Rect", "Size Flags", "Theme", "Visibility", "custom_styles" ]
 
 [node name="VariableLabel" type="Label" parent="ForcePanel"]
@@ -862,3 +896,5 @@ caret_blink_speed = 0.65
 caret_position = 0
 _sections_unfolded = [ "Anchor", "Grow Direction", "Margin", "Rect", "Size Flags", "custom_fonts" ]
 
+[connection signal="body_entered" from="SpringBase/Target" to="." method="_on_Target_body_entered"]
+[connection signal="body_exited" from="SpringBase/Target" to="." method="_on_Target_body_exited"]

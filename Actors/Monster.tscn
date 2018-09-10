@@ -35,6 +35,7 @@ func _on_AnimationPlayer_animation_finished( anim_name ):
 
 [sub_resource type="SphereShape" id=2]
 
+margin = 0.04
 radius = 1.99443
 
 [sub_resource type="ArrayMesh" id=3]
@@ -198,36 +199,29 @@ tracks/2/imported = true
 tracks/2/enabled = true
 tracks/2/keys = PoolRealArray( 0, 1, -4.07898e-14, 5.68423e-08, 7.51714e-08, 1.49012e-08, -1.70419e-14, -9.10383e-15, 1, 1, 1, 1, 0.0833333, 1, -4.07898e-14, 5.68423e-08, 7.51714e-08, 1.49012e-08, -1.70419e-14, -9.10383e-15, 1, 1, 1, 1 )
 
-[node name="Character" type="KinematicBody" index="0"]
-
+[node name="Character" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0 )
 input_ray_pickable = true
 input_capture_on_drag = false
 collision_layer = 1
 collision_mask = 1
-axis_lock_linear_x = false
-axis_lock_linear_y = false
-axis_lock_linear_z = false
-axis_lock_angular_x = false
-axis_lock_angular_y = false
-axis_lock_angular_z = false
+move_lock_x = false
+move_lock_y = false
+move_lock_z = false
 collision/safe_margin = 0.001
 script = SubResource( 1 )
 _sections_unfolded = [ "Axis Lock", "Transform" ]
 
-[node name="CollisionShape" type="CollisionShape" parent="." index="0"]
-
+[node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.164896, -0.141277, 0 )
 shape = SubResource( 2 )
 disabled = false
 
-[node name="Armature" type="Spatial" parent="." index="1"]
-
+[node name="Armature" type="Spatial" parent="."]
 transform = Transform( 0.760966, 0.648792, 0, -0.648792, 0.760966, 0, 0, 0, 1, 0, 0, 0 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Skeleton" type="Skeleton" parent="Armature" index="0"]
-
+[node name="Skeleton" type="Skeleton" parent="Armature"]
 bones/0/name = "Head"
 bones/0/parent = -1
 bones/0/rest = Transform( 0.954549, 3.20957e-07, -0.298054, -0.298054, -1.49012e-08, -0.954549, -2.79397e-07, 1, -1.42109e-14, -1.46633, -0.9918, -2.84217e-14 )
@@ -239,8 +233,7 @@ bones/1/rest = Transform( -2.67033e-07, -0.31996, -0.947431, 1, -9.2129e-08, -2.
 bones/1/enabled = true
 bones/1/bound_children = [  ]
 
-[node name="Body" type="MeshInstance" parent="Armature/Skeleton" index="0"]
-
+[node name="Body" type="MeshInstance" parent="Armature/Skeleton"]
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -255,8 +248,7 @@ skeleton = NodePath("..")
 material/0 = null
 material/1 = null
 
-[node name="Eyes" type="MeshInstance" parent="Armature/Skeleton" index="1"]
-
+[node name="Eyes" type="MeshInstance" parent="Armature/Skeleton"]
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -271,8 +263,7 @@ skeleton = NodePath("..")
 material/0 = null
 material/1 = null
 
-[node name="Tooth" type="MeshInstance" parent="Armature/Skeleton" index="2"]
-
+[node name="Tooth" type="MeshInstance" parent="Armature/Skeleton"]
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -286,8 +277,7 @@ mesh = SubResource( 5 )
 skeleton = NodePath("..")
 material/0 = null
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
-
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("..")
 autoplay = "Idle"
 playback_process_mode = 1
@@ -298,8 +288,7 @@ anims/Idle = SubResource( 7 )
 anims/SETUP = SubResource( 8 )
 blend_times = [  ]
 
-[node name="Tween" type="Tween" parent="." index="3"]
-
+[node name="Tween" type="Tween" parent="."]
 repeat = false
 playback_process_mode = 1
 playback_speed = 1.0
@@ -307,14 +296,13 @@ playback/active = false
 playback/repeat = false
 playback/speed = 1.0
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="4"]
-
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 6 )
 volume_db = 3.0
+pitch_scale = 1.0
 autoplay = false
+stream_paused = false
 mix_target = 0
 bus = "Master"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
-
-
