@@ -8,39 +8,39 @@ const REST_TIMEOUT = 120.0
 const PLAY_CYCLES = 3
 const PLAY_TIMEOUTS = 8
 
+onready var space_scale = $GameSpace/Boundaries.shape.extents.y
+
+onready var player = $GameSpace/Boundaries/Player
+onready var target = $GameSpace/Boundaries/Target
+onready var watermelon = $GameSpace/Boundaries/Player/Watermelon
+onready var balloon = $GameSpace/Boundaries/Player/Balloon
+onready var ray = $GameSpace/Boundaries/Player/RayCast
+
+var score_animation = preload( "res://Actors/ScorePing.tscn" )
+
 var cycles_count = 0
 var direction = NONE 
 
 var score = 0
 var score_state = 0
 
-onready var boundaries = get_node( "GameSpace/Boundaries" )
-onready var max_position = boundaries.shape.extents.y
-
-onready var player = boundaries.get_node( "Player" )
-onready var target = boundaries.get_node( "Target" )
-onready var watermelon = player.get_node( "Watermelon" )
-onready var balloon = player.get_node( "Balloon" )
-onready var ray = player.get_node( "RayCast" )
-
-var score_animation = preload( "res://Actors/ScorePing.tscn" )
+var target_reached = false
 
 func _ready():
 	$GUI.set_timeouts( PLAY_TIMEOUT, REST_TIMEOUT )
-	if RemoteDeviceClient.is_calibrating: $GUI.set_max_effort( 100.0 )
+	if RemoteDevice.is_calibrating: $GUI.set_max_effort( 100.0 )
 	else: $GUI.set_max_effort( 70.0 )
 #	if Controller.direction_axis == Controller.HORIZONTAL:
 #		$Camera.rotate_z( PI / 2 )
-	RemoteDeviceClient.set_axis_values( 0.0 )
+	RemoteDevice.set_axis_values( 0.0 )
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
-	var new_position = InputAxis.get_value() * max_position
-	new_position = clamp( new_position, -max_position, max_position )
-	player.translation.y = new_position
+	var player_force = InputAxis.get_value() * space_scale
+	player.add_central_force( Vector3.UP * player_force )
 	
-	if not RemoteDeviceClient.is_calibrating:
-		var measure_value = player.translation.y / max_position
+	if not RemoteDevice.is_calibrating:
+		var measure_value = player.translation.y / space_scale
 		DataLog.register_values( [ direction, measure_value, score_state ] )
 		score_state = 0
 
@@ -54,16 +54,16 @@ func _change_display():
 	elif direction == UP:
 		watermelon.show()
 		balloon.hide()
-	var target_position = direction * max_position
+	var target_position = direction * space_scale
 	target.translation.y = target_position
-	RemoteDeviceClient.set_value( direction )
+	RemoteDevice.set_value( direction )
 	$GUI.display_setpoint( direction )
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if direction == NONE:
 		direction = UP if ( cycles_count % 2 == 0 ) else DOWN
 	else:
-		if ray.is_colliding():
+		if target_reached:
 			score += 1
 			score_state = 1
 			var score_up = score_animation.instance()
@@ -79,7 +79,14 @@ func _on_GUI_game_timeout( timeouts_count ):
 			$GUI.wait_rest()
 			if cycles_count >= PLAY_CYCLES: $GUI.end_game( PLAY_TIMEOUTS * PLAY_CYCLES, score )
 		_change_display()
+	player.gravity_scale = direction
 
 func _on_GUI_game_toggle( started ):
-	RemoteDeviceClient.set_axis_values( 0.0 )
+	RemoteDevice.set_axis_values( 0.0 )
 	_change_display()
+
+func _on_Target_body_entered( body ):
+	target_reached = true
+
+func _on_Target_body_exited( body ):
+	target_reached = false

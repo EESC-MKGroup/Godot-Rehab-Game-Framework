@@ -16,8 +16,8 @@ func get_devices_list():
 
 func get_axes_list():
 	axes_list = []
-	if device_index == InfoStateClient.remote_device_id:
-		axes_list = InfoStateClient.remote_axes_list
+	if device_index == RemoteInfoState.remote_device_id:
+		axes_list = RemoteInfoState.remote_axes_list
 	else:
 		for axis_index in [ 0, 1, 2, 3 ]:
 			axes_list.append( Input.get_joy_axis_string( axis_index ) )
@@ -52,10 +52,10 @@ func get_feedbacks():
 
 func _set_device_index( index ):
 	if index < devices_list.size(): device_index = device_ids_list[ index ]
-	if device_index == InfoStateClient.remote_device_id:
-		RemoteDeviceClient.start_processing()
+	if device_index == RemoteInfoState.remote_device_id:
+		RemoteDevice.start_processing()
 	else:
-		RemoteDeviceClient.stop_processing()
+		RemoteDevice.stop_processing()
 
 func _set_axis_index( index ):
 	if index < axes_list.size(): axis_index = index

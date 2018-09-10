@@ -53,7 +53,7 @@ func receive_data():
 
 func _process( delta ):
 	output_buffer.seek( 0 )
-	var axes_number = InfoStateClient.remote_axis_list.size()
+	var axes_number = RemoteInfoState.remote_axis_list.size()
 	var feedbacks_list = InputAxis.get_feedbacks()
 	output_buffer.put_u8( axes_number )
 	for axis_index in range( axes_number ):

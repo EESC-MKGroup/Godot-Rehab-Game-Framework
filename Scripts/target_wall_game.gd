@@ -15,18 +15,16 @@ var waves_count = 0
 var score = 0
 var score_state = 0
 
-onready var boundary_area = get_node( "BoundaryArea" )
-onready var boundaries = boundary_area.get_node( "Boundaries" )
-onready var boundary_extents = boundaries.shape.extents
+onready var boundary_extents = $BoundaryArea/Boundaries.shape.extents
 
-onready var player = boundaries.get_node( "Player" )
+onready var player = $BoundaryArea/Boundaries/Player
 
 onready var collider_width = 2 * boundary_extents.y / COLLIDER_SLOTS_NUMBER
 onready var collider_top = -boundary_extents.y + collider_width / 2
 
 func _ready():
 	$GUI.set_timeouts( 3.0, 0.0 )
-	if RemoteDeviceClient.is_calibrating: $GUI.set_max_effort( 100.0 )
+	if RemoteDevice.is_calibrating: $GUI.set_max_effort( 100.0 )
 	else: $GUI.set_max_effort( 80.0 )
 #	if Controller.direction_axis == Controller.HORIZONTAL:
 #		$Camera.rotate_z( PI / 2 )
@@ -38,12 +36,10 @@ func _ready():
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
-	var new_position = InputAxis.get_value() * boundary_extents.y
-	new_position = clamp( new_position, -boundary_extents.y, boundary_extents.y )
-	var position_delta = new_position - player.translation.y
-	player.translation.y = new_position
+	var new_velocity = InputAxis.get_value() * boundary_extents.y
+	player.move_and_slide( Vector3.FORWARD * new_velocity )
 	
-	if not RemoteDeviceClient.is_calibrating:
+	if not RemoteDevice.is_calibrating:
 		var measure_position = player.translation.y / boundary_extents.y
 		DataLog.register_values( [ setpoint_position, player.translation.y, score_state ] )
 		score_state = 0
@@ -61,7 +57,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 		score_area.translation.x = boundary_extents.x + timeouts_count * 2 * score_area.get_width().x
 		score_area.connect( "wall_passed", self, "_on_ScoreArea_wall_passed" )
 		score_area.connect( "collider_reached", self, "_on_ScoreArea_collider_reached" )
-		boundaries.add_child( score_area )
+		$BoundaryArea/Boundaries.add_child( score_area )
 		var target_position = score_area.spawn_colliders( COLLIDER_SLOTS_NUMBER )
 		setpoint_positions.push_back( target_position / boundary_extents.y )
 		_set_setpoint()
@@ -85,4 +81,4 @@ func _on_ScoreArea_collider_reached( collider ):
 	player.interact( collider )
 
 func _on_GUI_game_toggle( started ):
-	RemoteDeviceClient.set_value( 0.0 )
+	RemoteDevice.set_value( 0.0 )

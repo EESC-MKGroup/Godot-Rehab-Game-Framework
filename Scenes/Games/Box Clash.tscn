@@ -14,6 +14,7 @@
 [ext_resource path="res://Textures/planks_old_normal.jpg" type="Texture" id=12]
 [ext_resource path="res://Textures/Brushed_Metal.jpg" type="Texture" id=13]
 [ext_resource path="res://Meshes/spring.obj" type="ArrayMesh" id=14]
+[ext_resource path="res://Scripts/spring.gd" type="Script" id=15]
 
 [sub_resource type="ImageTexture" id=1]
 
@@ -612,32 +613,6 @@ proximity_fade_enable = false
 distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Metallic" ]
 
-[sub_resource type="GDScript" id=18]
-
-script/source = "extends MeshInstance
-
-const STIFFNESS = 10.0
-
-onready var box_1 = get_owner().get_node( \"Box1\" )
-onready var box_2 = get_owner().get_node( \"Box2\" )
-onready var connector_1 = box_1.get_node( \"Connector\" )
-onready var connector_2 = box_2.get_node( \"Connector\" )
-
-onready var initial_length = _get_length()
-onready var initial_scale = scale
-
-func _get_length():
-	return abs( connector_1.translation.z - connector_2.translation.z )
-
-func _process( delta ):
-	print( get_owner().get_name() )
-	var relative_length = _get_length() / initial_length
-	scale.z = initial_scale.z * relative_length
-	var spring_force = STIFFNESS * ( _get_length() - initial_length )
-
-func get_force():
-	return STIFFNESS * ( _get_length() - initial_length )"
-
 [node name="Game" type="Spatial"]
 script = ExtResource( 1 )
 __meta__ = {
@@ -745,7 +720,6 @@ input_ray_pickable = true
 input_capture_on_drag = false
 collision_layer = 1
 collision_mask = 1
-physics_material_override = null
 constant_linear_velocity = Vector3( 0, 0, 0 )
 constant_angular_velocity = Vector3( 0, 0, 0 )
 
@@ -769,7 +743,6 @@ collision_layer = 1
 collision_mask = 1
 mode = 0
 mass = 1.0
-physics_material_override = null
 gravity_scale = 0.0
 custom_integrator = false
 continuous_cd = false
@@ -836,7 +809,6 @@ collision_layer = 1
 collision_mask = 1
 mode = 0
 mass = 1.0
-physics_material_override = null
 gravity_scale = 0.0
 custom_integrator = false
 continuous_cd = false
@@ -909,8 +881,11 @@ lod_max_hysteresis = 0.0
 mesh = ExtResource( 14 )
 skeleton = NodePath("..")
 material/0 = SubResource( 17 )
-script = SubResource( 18 )
+script = ExtResource( 15 )
 _sections_unfolded = [ "Transform", "material" ]
+stiffness = 10.0
+connector_1 = NodePath("../Box1/Connector")
+connector_2 = NodePath("../Box2/Connector")
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.49247, 0 )

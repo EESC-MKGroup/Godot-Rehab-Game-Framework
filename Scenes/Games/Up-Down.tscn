@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scripts/up-down_game.gd" type="Script" id=1]
 [ext_resource path="res://Meshes/Watermelon.obj" type="ArrayMesh" id=2]
@@ -11,7 +11,14 @@
 
 [sub_resource type="BoxShape" id=1]
 
+margin = 0.04
 extents = Vector3( 3, 5, 1.5 )
+
+[sub_resource type="RayShape" id=8]
+
+margin = 0.04
+length = 1.0
+slips_on_slope = false
 
 [sub_resource type="SpatialMaterial" id=2]
 
@@ -24,6 +31,9 @@ flags_use_point_size = false
 flags_world_triplanar = false
 flags_fixed_size = false
 flags_albedo_tex_force_srgb = false
+flags_do_not_receive_shadows = false
+flags_disable_ambient_light = false
+flags_ensure_correct_normals = false
 vertex_color_use_as_albedo = true
 vertex_color_is_srgb = true
 params_diffuse_mode = 0
@@ -34,6 +44,7 @@ params_depth_draw_mode = 0
 params_line_width = 1.0
 params_point_size = 1.0
 params_billboard_mode = 0
+params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
@@ -63,7 +74,7 @@ uv2_offset = Vector3( 0, 0, 0 )
 uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
-distance_fade_enable = false
+distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Vertex Color" ]
 
 [sub_resource type="SpatialMaterial" id=3]
@@ -77,6 +88,9 @@ flags_use_point_size = false
 flags_world_triplanar = false
 flags_fixed_size = false
 flags_albedo_tex_force_srgb = false
+flags_do_not_receive_shadows = false
+flags_disable_ambient_light = false
+flags_ensure_correct_normals = false
 vertex_color_use_as_albedo = true
 vertex_color_is_srgb = true
 params_diffuse_mode = 0
@@ -87,6 +101,7 @@ params_depth_draw_mode = 0
 params_line_width = 1.0
 params_point_size = 1.0
 params_billboard_mode = 0
+params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
@@ -116,11 +131,13 @@ uv2_offset = Vector3( 0, 0, 0 )
 uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
-distance_fade_enable = false
+distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Vertex Color" ]
 
 [sub_resource type="PlaneMesh" id=4]
 
+custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+flip_faces = false
 size = Vector2( 2, 2 )
 subdivide_width = 0
 subdivide_depth = 0
@@ -136,6 +153,9 @@ flags_use_point_size = false
 flags_world_triplanar = false
 flags_fixed_size = false
 flags_albedo_tex_force_srgb = false
+flags_do_not_receive_shadows = false
+flags_disable_ambient_light = false
+flags_ensure_correct_normals = false
 vertex_color_use_as_albedo = false
 vertex_color_is_srgb = false
 params_diffuse_mode = 0
@@ -146,6 +166,7 @@ params_depth_draw_mode = 0
 params_line_width = 1.0
 params_point_size = 1.0
 params_billboard_mode = 0
+params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 0.726562, 0.720886, 0.720886, 1 )
@@ -174,7 +195,7 @@ uv2_offset = Vector3( 0, 0, 0 )
 uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
-distance_fade_enable = false
+distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Metallic" ]
 
 [sub_resource type="ProceduralSky" id=6]
@@ -243,6 +264,7 @@ ssao_radius2 = 0.0
 ssao_intensity2 = 1.0
 ssao_bias = 0.01
 ssao_light_affect = 0.0
+ssao_ao_channel_affect = 0.0
 ssao_color = Color( 0, 0, 0, 1 )
 ssao_quality = 0
 ssao_blur = 3
@@ -278,12 +300,10 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Ambient Light", "Background" ]
 
-[node name="Game" type="Spatial" index="0"]
-
+[node name="Game" type="Spatial"]
 script = ExtResource( 1 )
 
-[node name="GameSpace" type="Area" parent="." index="0"]
-
+[node name="GameSpace" type="Area" parent="."]
 input_ray_pickable = false
 input_capture_on_drag = false
 space_override = 0
@@ -306,30 +326,56 @@ reverb_bus_amount = 0.0
 reverb_bus_uniformity = 0.0
 _sections_unfolded = [ "Collision" ]
 
-[node name="Boundaries" type="CollisionShape" parent="GameSpace" index="0"]
-
+[node name="Boundaries" type="CollisionShape" parent="GameSpace"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.14329, 0 )
 shape = SubResource( 1 )
 disabled = false
 
-[node name="Player" type="Spatial" parent="GameSpace/Boundaries" index="0"]
-
-transform = Transform( -8.89898e-09, 0.0315421, 0.197497, -0.2, -5.6426e-08, 0, 5.57199e-08, -0.197497, 0.0315421, -8.47033e-22, 0, 0 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="RayCast" type="RayCast" parent="GameSpace/Boundaries/Player" index="0"]
-
-transform = Transform( -5, 2.2076e-06, -2.22475e-07, -2.21506e-06, -4.93743, 0.788554, 1.28472e-07, 0.788554, 4.93743, 0, 0.468246, -0.0747832 )
-enabled = true
+[node name="RayCast" type="RayCast" parent="GameSpace/Boundaries"]
+transform = Transform( 3.37508e-14, 1.63913e-07, 1, 1, -1.62921e-07, 9.90028e-14, 1.62921e-07, 1, -1.63913e-07, 3.72529e-09, 0, -0.094836 )
+enabled = false
 exclude_parent = true
 cast_to = Vector3( 0, -3, 0 )
 collision_mask = 2
-_sections_unfolded = [ "Transform", "Visibility" ]
+collide_with_areas = false
+collide_with_bodies = true
+_sections_unfolded = [ "Collide With", "Transform", "Visibility" ]
 
-[node name="Watermelon" type="MeshInstance" parent="GameSpace/Boundaries/Player" index="1"]
+[node name="Player" type="RigidBody" parent="GameSpace/Boundaries"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.47033e-22, 0, 0 )
+input_ray_pickable = true
+input_capture_on_drag = false
+collision_layer = 1
+collision_mask = 2
+mode = 0
+mass = 1.0
+gravity_scale = 0.0
+custom_integrator = false
+continuous_cd = false
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+axis_lock_linear_x = false
+axis_lock_linear_y = false
+axis_lock_linear_z = false
+axis_lock_angular_x = false
+axis_lock_angular_y = false
+axis_lock_angular_z = false
+linear_velocity = Vector3( 0, 0, 0 )
+linear_damp = -1.0
+angular_velocity = Vector3( 0, 0, 0 )
+angular_damp = -1.0
+_sections_unfolded = [ "Collision", "Transform" ]
 
-transform = Transform( -1.77177, -0.625576, 4.63352, -4.57653, -0.782347, -1.85561, 0.957168, -4.89863, -0.295366, 0, 0, 0 )
-visible = false
+[node name="RayCast" type="CollisionShape" parent="GameSpace/Boundaries/Player"]
+transform = Transform( -1, 2.84217e-14, -8.74228e-08, 2.84217e-14, 1, 0, 8.74228e-08, -2.4847e-21, -1, 0, 0, 0 )
+shape = SubResource( 8 )
+disabled = false
+_sections_unfolded = [ "shape" ]
+
+[node name="Watermelon" type="MeshInstance" parent="GameSpace/Boundaries/Player"]
+transform = Transform( 0.0446845, -0.992142, -0.116864, 0.354354, 0.125115, -0.926704, 0.934042, -1.87755e-06, 0.357161, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -345,8 +391,7 @@ material/0 = SubResource( 2 )
 material/1 = SubResource( 3 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="Hand" type="MeshInstance" parent="GameSpace/Boundaries/Player/Watermelon" index="0"]
-
+[node name="Hand" type="MeshInstance" parent="GameSpace/Boundaries/Player/Watermelon"]
 transform = Transform( 0.136928, -0.0560146, -0.0247599, -0.0317031, -0.0129459, -0.146039, 0.0523985, 0.138545, -0.0236567, -0.283619, -0.586759, 0.798378 )
 layers = 1
 material_override = null
@@ -362,10 +407,8 @@ skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
 
-[node name="Balloon" type="MeshInstance" parent="GameSpace/Boundaries/Player" index="2"]
-
-transform = Transform( -1.33485e-06, -30, 8.35798e-06, 4.73132, -8.46391e-06, -29.6245, 29.6245, -1.91495e-12, 4.73132, 0, 0, 0 )
-visible = false
+[node name="Balloon" type="MeshInstance" parent="GameSpace/Boundaries/Player"]
+transform = Transform( 5.99999, -7.93259e-13, 2.6226e-06, 8.71128e-13, 6, -4.51729e-12, -2.6226e-06, 1.41479e-12, 5.99999, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -380,8 +423,7 @@ skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
 
-[node name="Hand" type="MeshInstance" parent="GameSpace/Boundaries/Player/Balloon" index="0"]
-
+[node name="Hand" type="MeshInstance" parent="GameSpace/Boundaries/Player/Balloon"]
 transform = Transform( -0.00892681, -0.000559555, 0.0233453, 0.00339139, 0.0246968, 0.00188875, -0.0231044, 0.00384134, -0.00874264, 0.0494228, 0.153074, -0.0263583 )
 layers = 1
 material_override = null
@@ -397,14 +439,12 @@ skeleton = NodePath("..")
 material/0 = null
 _sections_unfolded = [ "Transform" ]
 
-[node name="Target" parent="GameSpace/Boundaries" index="1" instance=ExtResource( 7 )]
-
+[node name="Target" parent="GameSpace/Boundaries" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, -1.2 )
 collision_layer = 2
 _sections_unfolded = [ "Collision", "Transform" ]
 
-[node name="SpotLight" type="SpotLight" parent="." index="1"]
-
+[node name="SpotLight" type="SpotLight" parent="."]
 transform = Transform( 0.950943, 0.0849509, -0.297473, 0, 0.961559, 0.274598, 0.309365, -0.261127, 0.914388, -4.87967, 9.413, 13.3031 )
 layers = 1
 light_color = Color( 1, 1, 1, 1 )
@@ -426,8 +466,7 @@ spot_angle = 37.5642
 spot_angle_attenuation = 1.0
 _sections_unfolded = [ "Light" ]
 
-[node name="Camera" type="Camera" parent="." index="2"]
-
+[node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.83886, 10.1476 )
 keep_aspect = 1
 cull_mask = 1048575
@@ -442,10 +481,9 @@ size = 16.852
 near = 0.05
 far = 100.0
 
-[node name="GUI" parent="." index="3" instance=ExtResource( 8 )]
+[node name="GUI" parent="." instance=ExtResource( 8 )]
 
-[node name="Floor" type="MeshInstance" parent="." index="4"]
-
+[node name="Floor" type="MeshInstance" parent="."]
 transform = Transform( 50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0 )
 layers = 1
 material_override = null
@@ -461,12 +499,8 @@ skeleton = NodePath("..")
 material/0 = SubResource( 5 )
 _sections_unfolded = [ "Transform", "material" ]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="5"]
-
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 7 )
 
-[connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
-
-[connection signal="game_toggle" from="GUI" to="." method="_on_GUI_game_toggle"]
-
-
+[connection signal="body_entered" from="GameSpace/Boundaries/Target" to="." method="_on_Target_body_entered"]
+[connection signal="body_exited" from="GameSpace/Boundaries/Target" to="." method="_on_Target_body_exited"]
