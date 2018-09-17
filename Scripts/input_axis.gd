@@ -7,6 +7,8 @@ var device_ids_list = []
 var devices_list = [ 0 ]
 var axes_list = [ "Dummy" ]
 
+#var max_effort = 1.0 setget _set_max_effort
+
 func get_devices_list():
 	devices_list = []
 	device_ids_list = Input.get_connected_joypads()
@@ -19,8 +21,9 @@ func get_axes_list():
 	if device_index == RemoteInfoState.remote_device_id:
 		axes_list = RemoteInfoState.remote_axes_list
 	else:
-		for axis_index in [ 0, 1, 2, 3 ]:
-			axes_list.append( Input.get_joy_axis_string( axis_index ) )
+		for axis_index in [ 0, 1, 2, 3, 4, 5 ]:
+			#axes_list.append( Input.get_joy_axis_string( axis_index ) )
+			axes_list.append( str( axis_index ) )
 	return axes_list
 
 func get_value():
@@ -60,3 +63,6 @@ func _set_device_index( index ):
 func _set_axis_index( index ):
 	if index < axes_list.size(): axis_index = index
 	print( "axis index " + str(axis_index) + " set" )
+
+#func _set_max_effort( value ):
+#	max_effort = value / 100.0

@@ -1,0 +1,3 @@
+[submodule "Plugins/gdnative"]
+	path = Plugins/gdnative
+	url = https://github.com/GodotNativeTools/godot_headers.git
