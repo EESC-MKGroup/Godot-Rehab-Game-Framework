@@ -7,45 +7,54 @@ var output_limits = null
 
 var is_calibrating = false setget _set_calibration,_get_calibration
 
-#var max_effort = 1.0 setget _set_max_effort
+var max_effort = 1.0 setget _set_max_effort
 
 func get_value():
-	
-	return InputDevice.get_axis_value( axis_index )
+	var position = InputDevice.get_axis_position( axis_index )
+	var force = InputDevice.get_axis_force( axis_index )
+	if is_calibrating:
+		input_limits = _check_limits( input_limits, force )
+		output_limits = _check_limits( output_limits, position )
+	elif input_limits != null:
+		force = _normalize( force, input_limits[ axis_index ] )
+	return force * max_effort
 
-func set_feedback( value ):
-	var device_setpoints = [ 0, 0, 0, 0, 0, 0, 0, 0 ]
-	device_setpoints[ axis_index ] = setpoint_value 
-	var x_feedback = 0#device_setpoints[ 0 ] | ( device_setpoints[ 1 ] << 16 )
-	var y_feedback = 0#device_setpoints[ 2 ] | ( device_setpoints[ 3 ] << 16 )
-	var z_feedback = 0#device_setpoints[ 4 ] | ( device_setpoints[ 5 ] << 16 )
-	#z_feedback += device_setpoints[ 6 ] | ( device_setpoints[ 7 ] << 16 )
-	Input.start_joy_vibration( device_index, x_feedback, y_feedback, z_feedback )
-
-func get_feedbacks():
-	var xy_feedback = Input.get_joy_vibration_strength( device_index )
-	var z_feedback = Input.get_joy_vibration_duration( device_index )
-	var feedback_values = [ xy_feedback.x & 0xFFFF, xy_feedback.x >> 16 & 0xFFFF,
-							xy_feedback.y & 0xFFFF, xy_feedback.y >> 16 & 0xFFFF,
-							z_feedback & 0xFFFF, z_feedback >> 16 & 0xFFFF ]
-	return feedback_values
-
-func _set_device_index( index ):
-	if index < devices_list.size(): device_index = device_ids_list[ index ]
-	if device_index == RemoteInfoState.remote_device_id:
-		RemoteDevice.start_processing()
-	else:
-		RemoteDevice.stop_processing()
+func set_feedback( setpoint ):
+	setpoint = _denormalize( setpoint, output_limits )
+	InputDevice.set_axis_setpoint( axis_index, setpoint / max_effort )
 
 func _set_axis( index ):
-	if index < axes_list.size(): axis_index = index
+	if index < InputDevice.axes_list.size(): axis_index = index
 	print( "axis index " + str(axis_index) + " set" )
 
 func _set_calibration( enabled ):
+	if enabled: _reset_limits()
+	InputDevice.state = InputDevice.CALIBRATION if enabled else InputDevice.OPERATION
 	is_calibrating = enabled
 
 func _get_calibration():
 	return is_calibrating
 
-#func _set_max_effort( value ):
-#	max_effort = value / 100.0
+func _set_max_effort( value ):
+	if value > 100.0: value = 100.0
+	elif value < 0.1: value = 0.1
+	max_effort = value / 100.0
+
+func _check_limits( limits, value ):
+	if limits == null: limits = [ value - 0.001, value + 0.001 ]
+	limits[ 0 ] = min( value, limits[ 0 ] )
+	limits[ 1 ] = max( value, limits[ 1 ] )
+	return limits
+
+func _normalize( value, limits ):
+	var value_range = limits[ 1 ] - limits[ 0 ]
+	return ( 2 * ( value - limits[ 0 ] ) / value_range ) - 1.0
+
+func _denormalize( value, limits ):
+	if limits == null: return value
+	var value_range = limits[ 1 ] - limits[ 0 ]
+	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
+
+func _reset_limits():
+	input_limits = null
+	output_limits = null

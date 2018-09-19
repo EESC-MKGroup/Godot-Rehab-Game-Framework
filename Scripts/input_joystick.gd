@@ -3,8 +3,6 @@ extends Node
 var device_id = 0
 var state = 0
 
-var device_setpoints = [ 0, 0, 0, 0, 0, 0 ]
-
 func _ready():
 	pass
 
@@ -40,10 +38,9 @@ func get_axis_position( axis ):
 func get_axis_force( axis ):
 	return Input.get_joy_axis( device_id, axis )
 
-func set_axis_position( axis, value ):
-	device_setpoints[ axis ] = value 
-	var x_feedback = device_setpoints[ 0 ] | ( device_setpoints[ 1 ] << 16 )
-	var y_feedback = device_setpoints[ 2 ] | ( device_setpoints[ 3 ] << 16 )
-	var z_feedback = device_setpoints[ 4 ] | ( device_setpoints[ 5 ] << 16 )
+func set_setpoints( setpoints ):
+	var x_feedback = setpoints[ 0 ] | ( setpoints[ 1 ] << 16 )
+	var y_feedback = setpoints[ 2 ] | ( setpoints[ 3 ] << 16 )
+	var z_feedback = setpoints[ 4 ] | ( setpoints[ 5 ] << 16 )
 	#z_feedback += device_setpoints[ 6 ] | ( device_setpoints[ 7 ] << 16 )
 	Input.start_joy_vibration( device_id, x_feedback, y_feedback, z_feedback )

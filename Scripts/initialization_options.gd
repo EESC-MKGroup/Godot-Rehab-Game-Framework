@@ -16,8 +16,8 @@ func _ready():
 	$AxisSelectionButton/SelectionList.get_popup().add_font_override( "font", font )
 	$DeviceSelectionButton/SelectionList.get_popup().connect( "index_pressed", self, "_on_Device_index_pressed" )
 	$AxisSelectionButton/SelectionList.get_popup().connect( "index_pressed", self, "_on_Axis_index_pressed" )
-	RemoteInfoState.connect( "reply_received", self, "_on_reply_received" )
-	RemoteInfoState.connect( "client_connected", self, "_on_client_connected" )
+	InputDevice.connect( "reply_received", self, "_on_reply_received" )
+	InputDevice.connect( "socket_connected", self, "_on_socket_connected" )
 	_refresh_devices_list()
 
 func _input( event ):
@@ -30,57 +30,56 @@ func _process( delta ):
 
 func _on_ConnectButton_pressed():
 	print( "_on_ConnectButton_pressed" )
-	RemoteDevice.connect_client( $AddressInput.text )
-	RemoteInfoState.connect_client( $AddressInput.text )
-	RemoteInfoState.send_request( RemoteInfoState.Request.GET_INFO )
+	InputDevice.connect_socket( $AddressInput.text )
+	InputDevice.state = InputDevice.GET_INFO
 #	DataLog.create_new_log( user_name, time_stamp )
 
 func _refresh_devices_list():
 	$DeviceSelectionButton/SelectionList.get_popup().clear()
-	var devices = InputAxis.get_devices_list()
-	for device_name in devices:
-		$DeviceSelectionButton/SelectionList.get_popup().add_item( device_name )
+	for interface_name in InputDevice.interfaces_list:
+		$DeviceSelectionButton/SelectionList.get_popup().add_item( interface_name )
 	_on_Device_index_pressed( 0 )
+
+func _refresh_axes_list():
+	$AxisSelectionButton/SelectionList.get_popup().clear()
+	var device_name = InputDevice.string_id
+	for axis_name in InputDevice.axes_list:
+		$AxisSelectionButton/SelectionList.get_popup().add_item( device_name + "-" + axis_name )
+	_on_Axis_index_pressed( 0 )
 
 func _on_reply_received( reply_code ):
 	match reply_code:
-		RemoteInfoState.Reply.GOT_INFO:
+		InputDevice.GET_INFO:
 			_refresh_devices_list()
-		RemoteInfoState.Reply.OFFSETTING:
+		InputDevice.OFFSET:
 			$OffsetToggle.pressed = true
 			$CalibrationToggle.pressed = false
-		RemoteInfoState.Reply.CALIBRATING:
+		InputDevice.CALIBRATION:
 			$OffsetToggle.pressed = false
 			$CalibrationToggle.pressed = true
 		_:
-#		RemoteInfoState.Reply.PASSIVATING:
+#		InputDevice.PASSIVE:
 			$OffsetToggle.pressed = false
 			$CalibrationToggle.pressed = false
 
 func _on_Device_index_pressed( index ):
 	print( "_on_Device_index_pressed" )
-	InputAxis.device_index = index
-	$DeviceSelectionButton/SelectionList.text = $DeviceSelectionButton/SelectionList.get_popup().get_item_text( InputAxis.device_index )
-	$AxisSelectionButton/SelectionList.get_popup().clear()
-	var axes_list = InputAxis.get_axes_list()
-	for axis_name in axes_list:
-		$AxisSelectionButton/SelectionList.get_popup().add_item( axis_name )
-	$AxisSelectionButton/SelectionList.text = $AxisSelectionButton/SelectionList.get_popup().get_item_text( 0 )
+	InputDevice.set_interface( index )
+	$DeviceSelectionButton/SelectionList.text = $DeviceSelectionButton/SelectionList.get_popup().get_item_text( index )
 
 func _on_Axis_index_pressed( index ):
 	print( "_on_Axis_index_pressed" )
 	InputAxis.axis_index = index
 	$AxisSelectionButton/SelectionList.text = $AxisSelectionButton/SelectionList.get_popup().get_item_text( InputAxis.axis_index )
 
-func _on_client_connected():
-	print( "_on_client_connected" )
-	$ConnectButton.text = "Refresh"
+func _on_socket_connected():
+	print( "_on_socket_connected" )
 	Configuration.set_parameter( "server_address", $AddressInput.text )
 	Configuration.set_parameter( "user_name", $UserInput.text )
+	_refresh_axes_list()
 
 func _on_AddressInput_text_changed( new_text ):
 	print( "_on_AddressInput_text_changed" )
-	$ConnectButton.text = "Connect"
 
 func _on_SetpointSlider_value_changed( value ):
 	print( "_on_SetpointSlider_value_changed" )
@@ -88,11 +87,9 @@ func _on_SetpointSlider_value_changed( value ):
 
 func _on_CalibrationToggle_toggled( button_pressed ):
 	print( "_on_CalibrationToggle_toggled" )
-	var request = RemoteInfoState.Request.CALIBRATE if button_pressed else RemoteInfoState.Request.PASSIVATE
-	RemoteInfoState.send_request( request )
-	RemoteDevice.is_calibrating = button_pressed
+	InputDevice.state = InputDevice.CALIBRATION if button_pressed else InputDevice.PASSIVE
+	InputAxis.is_calibrating = button_pressed
 
 func _on_OffsetToggle_toggled( button_pressed ):
 	print( "_on_OffsetToggle_toggled" )
-	var request = RemoteInfoState.Request.OFFSET if button_pressed else RemoteInfoState.Request.PASSIVATE
-	RemoteInfoState.send_request( request )
+	InputDevice.state = InputDevice.OFFSET if button_pressed else InputDevice.PASSIVE
