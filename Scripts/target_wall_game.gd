@@ -22,7 +22,7 @@ onready var collider_top = -boundary_extents.y + collider_width / 2
 
 func _ready():
 	$GUI.set_timeouts( 3.0, 0.0 )
-	if RemoteDevice.is_calibrating: $GUI.set_max_effort( 100.0 )
+	if InputAxis.is_calibrating: $GUI.set_max_effort( 100.0 )
 	else: $GUI.set_max_effort( 80.0 )
 	#if Controller.direction_axis == Controller.HORIZONTAL:
 	#	$Camera.rotate_z( PI / 2 )

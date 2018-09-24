@@ -10,12 +10,12 @@ func _ready():
 			GameManager.select( OS.get_cmdline_args()[ 1 ] )
 	$AddressInput.text = Configuration.get_parameter( "server_address" )
 	$UserInput.text = Configuration.get_parameter( "user_name" )
-	$CalibrationToggle.pressed = RemoteDevice.is_calibrating
-	var font = $DeviceSelectionButton/SelectionList.get_font( "font" )
-	$DeviceSelectionButton/SelectionList.get_popup().add_font_override( "font", font )
-	$AxisSelectionButton/SelectionList.get_popup().add_font_override( "font", font )
-	$DeviceSelectionButton/SelectionList.get_popup().connect( "index_pressed", self, "_on_Device_index_pressed" )
-	$AxisSelectionButton/SelectionList.get_popup().connect( "index_pressed", self, "_on_Axis_index_pressed" )
+	$CalibrationToggle.pressed = InputAxis.is_calibrating
+	var font = $InterfaceSelector/SelectionList.get_font( "font" )
+	$InterfaceSelector/SelectionList.get_popup().add_font_override( "font", font )
+	$AxisSelector/SelectionList.get_popup().add_font_override( "font", font )
+	$InterfaceSelector/SelectionList.get_popup().connect( "index_pressed", self, "_on_Device_index_pressed" )
+	$AxisSelector/SelectionList.get_popup().connect( "index_pressed", self, "_on_Axis_index_pressed" )
 	InputDevice.connect( "reply_received", self, "_on_reply_received" )
 	InputDevice.connect( "socket_connected", self, "_on_socket_connected" )
 	_refresh_devices_list()
@@ -35,16 +35,16 @@ func _on_ConnectButton_pressed():
 #	DataLog.create_new_log( user_name, time_stamp )
 
 func _refresh_devices_list():
-	$DeviceSelectionButton/SelectionList.get_popup().clear()
+	$InterfaceSelector/SelectionList.get_popup().clear()
 	for interface_name in InputDevice.interfaces_list:
-		$DeviceSelectionButton/SelectionList.get_popup().add_item( interface_name )
+		$InterfaceSelector/SelectionList.get_popup().add_item( interface_name )
 	_on_Device_index_pressed( 0 )
 
 func _refresh_axes_list():
-	$AxisSelectionButton/SelectionList.get_popup().clear()
+	$AxisSelector/SelectionList.get_popup().clear()
 	var device_name = InputDevice.string_id
 	for axis_name in InputDevice.axes_list:
-		$AxisSelectionButton/SelectionList.get_popup().add_item( device_name + "-" + axis_name )
+		$AxisSelector/SelectionList.get_popup().add_item( device_name + "-" + axis_name )
 	_on_Axis_index_pressed( 0 )
 
 func _on_reply_received( reply_code ):
@@ -64,13 +64,15 @@ func _on_reply_received( reply_code ):
 
 func _on_Device_index_pressed( index ):
 	print( "_on_Device_index_pressed" )
-	InputDevice.set_interface( index )
-	$DeviceSelectionButton/SelectionList.text = $DeviceSelectionButton/SelectionList.get_popup().get_item_text( index )
+	InputDevice.interface_index = index
+	var interface_name = $InterfaceSelector/SelectionList.get_popup().get_item_text( InputDevice.interface_index )
+	$InterfaceSelector/SelectionList.text = interface_name
 
 func _on_Axis_index_pressed( index ):
 	print( "_on_Axis_index_pressed" )
 	InputAxis.axis_index = index
-	$AxisSelectionButton/SelectionList.text = $AxisSelectionButton/SelectionList.get_popup().get_item_text( InputAxis.axis_index )
+	var axis_name = $AxisSelector/SelectionList.get_popup().get_item_text( InputAxis.axis_index )
+	$AxisSelector/SelectionList.text = axis_name
 
 func _on_socket_connected():
 	print( "_on_socket_connected" )

@@ -29,7 +29,7 @@ func _set_axis( index ):
 
 func _set_calibration( enabled ):
 	if enabled: _reset_limits()
-	InputDevice.state = InputDevice.CALIBRATION if enabled else InputDevice.OPERATION
+	#InputDevice.state = InputDevice.CALIBRATION if enabled else InputDevice.OPERATION
 	is_calibrating = enabled
 
 func _get_calibration():
