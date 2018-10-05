@@ -16,7 +16,7 @@ func _ready():
 	$AxisSelector/SelectionList.get_popup().add_font_override( "font", font )
 	$InterfaceSelector/SelectionList.get_popup().connect( "index_pressed", self, "_on_Device_index_pressed" )
 	$AxisSelector/SelectionList.get_popup().connect( "index_pressed", self, "_on_Axis_index_pressed" )
-	InputDevice.connect( "reply_received", self, "_on_reply_received" )
+	InputDevice.connect( "state_changed", self, "_on_state_changed" )
 	InputDevice.connect( "socket_connected", self, "_on_socket_connected" )
 	_refresh_devices_list()
 
@@ -43,12 +43,13 @@ func _refresh_devices_list():
 func _refresh_axes_list():
 	$AxisSelector/SelectionList.get_popup().clear()
 	var device_name = InputDevice.string_id
+	print( InputDevice.axes_list )
 	for axis_name in InputDevice.axes_list:
-		$AxisSelector/SelectionList.get_popup().add_item( device_name + "-" + axis_name )
+		$AxisSelector/SelectionList.get_popup().add_item( device_name + " - " + axis_name )
 	_on_Axis_index_pressed( 0 )
 
-func _on_reply_received( reply_code ):
-	match reply_code:
+func _on_state_changed( new_state ):
+	match new_state:
 		InputDevice.GET_INFO:
 			_refresh_devices_list()
 		InputDevice.OFFSET:
@@ -67,6 +68,7 @@ func _on_Device_index_pressed( index ):
 	InputDevice.interface_index = index
 	var interface_name = $InterfaceSelector/SelectionList.get_popup().get_item_text( InputDevice.interface_index )
 	$InterfaceSelector/SelectionList.text = interface_name
+	_refresh_axes_list()
 
 func _on_Axis_index_pressed( index ):
 	print( "_on_Axis_index_pressed" )

@@ -60,6 +60,15 @@ func get_axis_force( axis ):
 func set_axis_setpoint( axis, value ):
 	setpoints[ axis ] = value
 
+func _reset_axes():
+	positions = []
+	forces = []
+	setpoints = []
+	for axis in axes_list:
+		positions.append( 0.0 )
+		forces.append( 0.0 )
+		setpoints.append( 0.0 )
+
 func _get_device_state():
 	var reply_code = interface.get_state()
 	if state != reply_code:
@@ -67,10 +76,10 @@ func _get_device_state():
 			var device_info = interface.get_info()
 			string_id = device_info[ "id" ]
 			axes_list = device_info[ "axes" ]
-			positions = [].resize( axes_list.size() )
-			forces = [].resize( axes_list.size() )
-			setpoints = [].resize( axes_list.size() )
+			_reset_axes()
+		print( "new state " + str(reply_code) )
 		emit_signal( "state_changed", reply_code )
+		print( "state changed " + str(reply_code) )
 	state = reply_code
 
 func _get_device_data():
@@ -78,7 +87,8 @@ func _get_device_data():
 		positions[ axis ] = interface.get_axis_position( axis )
 		forces[ axis ] = interface.get_axis_force( axis )
 
-func _run_read_loop():
+func _run_read_loop( user_data ):
+	print( "is reading? " + str(is_reading) )
 	is_reading = true
 	while( is_reading ):
 		interface.read_device()
@@ -91,7 +101,8 @@ func _process( delta ):
 func connect_socket( host ):
 	if interface != null:
 		if interface.connect_socket( host ):
-			if not is_reading: read_thread.start( self, "_run_read_loop" )
+			if not is_reading: read_thread.start( self, "_run_read_loop", null )
+			print( "connected to " + host )
 			set_process( true )
 			emit_signal( "socket_connected" )
 
@@ -104,6 +115,7 @@ func disconnect_socket():
 
 func _set_state( new_state ):
 	interface.set_state( new_state )
+	print( "set state " + str(new_state) )
 
 func _get_state():
 	return state
