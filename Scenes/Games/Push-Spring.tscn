@@ -421,7 +421,7 @@ rings = 4
 
 margin = 0.04
 radius = 1.07912
-height = 0.0422766
+height = 0.1
 
 [sub_resource type="SpatialMaterial" id=14]
 
@@ -722,7 +722,6 @@ disabled = false
 
 [node name="Target" type="Area" parent="SpringBase"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.72824, 0 )
-visible = false
 input_ray_pickable = false
 input_capture_on_drag = false
 space_override = 0
@@ -746,7 +745,7 @@ reverb_bus_uniformity = 0.0
 _sections_unfolded = [ "Geometry", "Transform", "material" ]
 
 [node name="Mesh" type="MeshInstance" parent="SpringBase/Target"]
-transform = Transform( 1.1, 0, 0, 0, 0.2, 0, 0, 0, 1.1, 0, 0, 0 )
+transform = Transform( 1.1, 0, 0, 0, 0.5, 0, 0, 0, 1.1, 0, 0, 0 )
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -764,6 +763,7 @@ _sections_unfolded = [ "Geometry", "Transform", "material" ]
 [node name="CollisionShape" type="CollisionShape" parent="SpringBase/Target"]
 shape = SubResource( 13 )
 disabled = false
+_sections_unfolded = [ "shape" ]
 
 [node name="Arrow" type="Spatial" parent="SpringBase"]
 visible = false
