@@ -9,15 +9,15 @@
 
 script/source = "extends KinematicBody
 
-var old_velocity = 0.0
+var old_position = 0.0
 
 func interact( collider ):
 	pass
 
 func _physics_process( delta ):
-	var new_velocity = get_floor_velocity().y
-	rotation.x = 0.75 * rotation.x + 0.25 * 0.15 * new_velocity
-	old_velocity = new_velocity"
+	var position_delta = translation.y - old_position
+	rotation.x = 0.75 * rotation.x + 0.25 * 0.15 * position_delta / delta
+	old_position = translation.y"
 
 [sub_resource type="ConvexPolygonShape" id=2]
 

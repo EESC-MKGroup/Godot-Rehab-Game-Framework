@@ -78,4 +78,7 @@ func _on_ScoreArea_collider_reached( collider ):
 	player.interact( collider )
 
 func _on_GUI_game_toggle( started ):
-	InputAxis.set_value( 0.0 )
+	InputAxis.set_feedback( 0.0 )
+
+func _on_BoundaryArea_body_entered(body):
+	print( "body entered" )
