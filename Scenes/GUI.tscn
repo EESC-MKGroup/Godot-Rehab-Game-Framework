@@ -49,7 +49,7 @@ func _ready():
 	$RestTimer.paused = true
 
 func _process( delta ):
-	$MeasureDisplay.text = ( \"%+.3f\" % InputAxis.get_value() )
+	#$MeasureDisplay.text = ( \"%+.3f\" % InputAxis.get_value() )
 	
 	$TimeLeftDisplay1.text = ( \"%d\" % ceil( $RestTimer.time_left ) )
 	$TimeLeftDisplay2.text = $TimeLeftDisplay1.text

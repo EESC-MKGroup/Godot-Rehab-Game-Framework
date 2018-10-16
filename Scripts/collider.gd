@@ -23,7 +23,8 @@ func _physics_process( delta ):
 func _on_body_entered( body ):
 	var effect = destroy_effect.instance()
 	effect.translation = translation
-	get_parent().add_child( effect )
+	#get_parent().add_child( effect )
+	get_parent().call_deferred( "add_child", effect )
 	queue_free()
 
 func get_width():

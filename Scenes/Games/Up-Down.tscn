@@ -14,13 +14,13 @@
 margin = 0.04
 extents = Vector3( 3, 5, 1.5 )
 
-[sub_resource type="RayShape" id=8]
+[sub_resource type="RayShape" id=2]
 
 margin = 0.04
 length = 1.0
 slips_on_slope = false
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=3]
 
 render_priority = 0
 flags_transparent = false
@@ -77,7 +77,7 @@ proximity_fade_enable = false
 distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Vertex Color" ]
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=4]
 
 render_priority = 0
 flags_transparent = false
@@ -134,7 +134,7 @@ proximity_fade_enable = false
 distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Vertex Color" ]
 
-[sub_resource type="PlaneMesh" id=4]
+[sub_resource type="PlaneMesh" id=5]
 
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
 flip_faces = false
@@ -142,7 +142,7 @@ size = Vector2( 2, 2 )
 subdivide_width = 0
 subdivide_depth = 0
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="SpatialMaterial" id=6]
 
 render_priority = 0
 flags_transparent = false
@@ -198,7 +198,7 @@ proximity_fade_enable = false
 distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Metallic" ]
 
-[sub_resource type="ProceduralSky" id=6]
+[sub_resource type="ProceduralSky" id=7]
 
 radiance_size = 4
 sky_top_color = Color( 0.339844, 1, 0.969055, 1 )
@@ -219,10 +219,10 @@ sun_energy = 16.0
 texture_size = 2
 _sections_unfolded = [ "Sky" ]
 
-[sub_resource type="Environment" id=7]
+[sub_resource type="Environment" id=8]
 
 background_mode = 3
-background_sky = SubResource( 6 )
+background_sky = SubResource( 7 )
 background_sky_custom_fov = 0.0
 background_color = Color( 0.771286, 0.958497, 0.972656, 1 )
 background_energy = 1.0
@@ -370,12 +370,13 @@ _sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="RayCast" type="CollisionShape" parent="GameSpace/Boundaries/Player"]
 transform = Transform( -1, 2.84217e-14, -8.74228e-08, 2.84217e-14, 1, 0, 8.74228e-08, -2.4847e-21, -1, 0, 0, 0 )
-shape = SubResource( 8 )
+shape = SubResource( 2 )
 disabled = false
 _sections_unfolded = [ "shape" ]
 
 [node name="Watermelon" type="MeshInstance" parent="GameSpace/Boundaries/Player"]
 transform = Transform( 0.0446845, -0.992142, -0.116864, 0.354354, 0.125115, -0.926704, 0.934042, -1.87755e-06, 0.357161, 0, 0, 0 )
+visible = false
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -387,8 +388,8 @@ lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
 mesh = ExtResource( 2 )
 skeleton = NodePath("..")
-material/0 = SubResource( 2 )
-material/1 = SubResource( 3 )
+material/0 = SubResource( 3 )
+material/1 = SubResource( 4 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="Hand" type="MeshInstance" parent="GameSpace/Boundaries/Player/Watermelon"]
@@ -409,6 +410,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Balloon" type="MeshInstance" parent="GameSpace/Boundaries/Player"]
 transform = Transform( 5.99999, -7.93259e-13, 2.6226e-06, 8.71128e-13, 6, -4.51729e-12, -2.6226e-06, 1.41479e-12, 5.99999, 0, 0, 0 )
+visible = false
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -494,13 +496,13 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 skeleton = NodePath("..")
-material/0 = SubResource( 5 )
+material/0 = SubResource( 6 )
 _sections_unfolded = [ "Transform", "material" ]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 7 )
+environment = SubResource( 8 )
 
 [connection signal="body_entered" from="GameSpace/Boundaries/Target" to="." method="_on_Target_body_entered"]
 [connection signal="body_exited" from="GameSpace/Boundaries/Target" to="." method="_on_Target_body_exited"]

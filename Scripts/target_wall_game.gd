@@ -35,7 +35,7 @@ func _ready():
 
 func _physics_process( delta ):
 	var new_velocity = InputAxis.get_value() * boundary_extents.y
-	player.move_and_slide( Vector3.FORWARD * new_velocity )
+	player.move_and_slide( Vector3.BACK * new_velocity )
 	
 	if not RemoteDevice.is_calibrating:
 		var measure_position = player.translation.y / boundary_extents.y
@@ -68,7 +68,8 @@ func _on_ScoreArea_wall_passed( has_passed_ok ):
 		score += 1
 		score_state = 1
 		var score_up = score_animation.instance()
-		player.add_child( score_up )
+		#player.add_child( score_up )
+		player.call_deferred( "add_child", score_up )
 	setpoint_positions.pop_front()
 	waves_count += 1
 	if waves_count >= TOTAL_WAVES_NUMBER: $GUI.end_game( waves_count, score )
@@ -79,6 +80,3 @@ func _on_ScoreArea_collider_reached( collider ):
 
 func _on_GUI_game_toggle( started ):
 	InputAxis.set_feedback( 0.0 )
-
-func _on_BoundaryArea_body_entered(body):
-	print( "body entered" )

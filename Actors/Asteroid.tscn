@@ -28,6 +28,9 @@ flags_use_point_size = false
 flags_world_triplanar = false
 flags_fixed_size = false
 flags_albedo_tex_force_srgb = false
+flags_do_not_receive_shadows = false
+flags_disable_ambient_light = false
+flags_ensure_correct_normals = false
 vertex_color_use_as_albedo = false
 vertex_color_is_srgb = false
 params_diffuse_mode = 0
@@ -38,6 +41,7 @@ params_depth_draw_mode = 0
 params_line_width = 1.0
 params_point_size = 1.0
 params_billboard_mode = 0
+params_billboard_keep_scale = false
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
@@ -69,18 +73,15 @@ uv2_offset = Vector3( 0, 0, 0 )
 uv2_triplanar = false
 uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
-distance_fade_enable = false
+distance_fade_mode = 0
 _sections_unfolded = [ "Albedo", "Metallic", "NormalMap" ]
 
 [node name="Collider" instance=ExtResource( 1 )]
-
 script = SubResource( 1 )
 angular_speed = 2.0
 destroy_effect = ExtResource( 2 )
 
 [node name="MeshInstance" parent="." index="0"]
-
 mesh = ExtResource( 3 )
 material/0 = SubResource( 2 )
-
 

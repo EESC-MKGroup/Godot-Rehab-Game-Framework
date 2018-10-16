@@ -44,6 +44,7 @@ func _on_body_exited( body ):
 	var has_passed_ok = false
 	if has_collided and spawn_mode == 0: has_passed_ok = true
 	elif not has_collided and spawn_mode == 1: has_passed_ok = true
+	print( \"wall \" + str(get_instance_id()) + \" passed: \" + str(has_passed_ok) )
 	emit_signal( \"wall_passed\", has_passed_ok )
 
 func get_colliders_number():

@@ -8,19 +8,19 @@
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Audios/Music/background_ambience.ogg" type="AudioStream" id=7]
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape" id=1]
 
 margin = 0.04
 extents = Vector3( 10, 0.5, 2 )
 _sections_unfolded = [ "Resource" ]
 
-[sub_resource type="BoxShape" id=1]
+[sub_resource type="BoxShape" id=2]
 
 margin = 0.04
 extents = Vector3( 10, 4.5, 1.32514 )
 _sections_unfolded = [ "Resource" ]
 
-[sub_resource type="GDScript" id=4]
+[sub_resource type="GDScript" id=3]
 
 script/source = "extends CollisionShape
 
@@ -49,13 +49,13 @@ constant_angular_velocity = Vector3( 0, 0, 0 )
 
 [node name="TopWall" type="CollisionShape" parent="BoundaryWall"]
 transform = Transform( 1, -1.7053e-13, 3.82961e-17, -6.77626e-21, 1, 0, 2.87529e-18, 0, 1, 7.50285e-13, -4.5, -1.63066 )
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 disabled = false
 _sections_unfolded = [ "Transform", "shape" ]
 
 [node name="BottomWall" type="CollisionShape" parent="BoundaryWall"]
 transform = Transform( 1, -1.7053e-13, 3.82961e-17, -6.77626e-21, 1, 0, 2.87529e-18, 0, 1, -9.55016e-13, 5.5, -1.63066 )
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 disabled = false
 _sections_unfolded = [ "Transform", "shape" ]
 
@@ -85,9 +85,9 @@ _sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="Boundaries" type="CollisionShape" parent="BoundaryArea"]
 transform = Transform( 1, -8.74228e-08, 1.50996e-07, -8.74228e-08, -1, 0, 1.50996e-07, -1.32005e-14, -1, -1.05714e-13, 0.631391, -0.77693 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 disabled = false
-script = SubResource( 4 )
+script = SubResource( 3 )
 _sections_unfolded = [ "Transform", "Visibility", "shape" ]
 
 [node name="Player" parent="BoundaryArea/Boundaries" instance=ExtResource( 5 )]
