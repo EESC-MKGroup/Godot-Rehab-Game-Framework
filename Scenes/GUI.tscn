@@ -126,7 +126,9 @@ func _on_StartButton_toggled( button_pressed ):
 func _on_ResumeButton_pressed():
 	$PauseMenu.hide()
 	get_tree().paused = false
-	$StartButton.pressed = false
+	$StartButton.pressed = true
+	$StartButton.text = \"Stop\"
+	$PlayTimer.paused = false
 
 func _on_ExitButton_pressed():
 	get_tree().paused = false
@@ -192,13 +194,14 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 1 )
 toggle_mode = true
+action_mode = 0
 enabled_focus_mode = 2
 shortcut = null
 group = null
 text = "Start"
 flat = false
 align = 1
-_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Margin", "Rect", "custom_fonts" ]
+_sections_unfolded = [ "Anchor", "Focus", "Grow Direction", "Margin", "Pause", "Rect", "custom_fonts" ]
 
 [node name="VariableLabel" type="Label" parent="."]
 anchor_left = 0.0
