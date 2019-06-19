@@ -17,7 +17,7 @@ font_data = ExtResource( 3 )
 
 [sub_resource type="StyleBoxFlat" id=3]
 
-[sub_resource type="GDScript" id=9]
+[sub_resource type="GDScript" id=4]
 script/source = "extends MenuButton
 
 func _ready():
@@ -199,7 +199,7 @@ text = "Axis:"
 align = 1
 valign = 1
 
-[node name="GameSelector2" type="Panel" parent="ControlsPanel"]
+[node name="GameSelector" type="Panel" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -208,15 +208,15 @@ margin_top = 121.0
 margin_right = -720.0
 margin_bottom = 171.0
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/GameSelector2"]
+[node name="SelectionList" type="MenuButton" parent="ControlsPanel/GameSelector"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
 text = "<Select>"
-script = SubResource( 9 )
+script = SubResource( 4 )
 
-[node name="Label" type="Label" parent="ControlsPanel/GameSelector2"]
+[node name="Label" type="Label" parent="ControlsPanel/GameSelector"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = -120.0
@@ -229,7 +229,7 @@ text = "Game:"
 align = 1
 valign = 1
 
-[node name="VariableSelector2" type="Panel" parent="ControlsPanel"]
+[node name="VariableSelector" type="Panel" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -238,14 +238,14 @@ margin_top = 119.0
 margin_right = -36.0
 margin_bottom = 171.0
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/VariableSelector2"]
+[node name="SelectionList" type="MenuButton" parent="ControlsPanel/VariableSelector"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
 text = "<Select>"
 
-[node name="Label" type="Label" parent="ControlsPanel/VariableSelector2"]
+[node name="Label" type="Label" parent="ControlsPanel/VariableSelector"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = -160.0
@@ -333,7 +333,7 @@ text = "Position: 0"
 align = 1
 valign = 1
 
-[node name="SetpointSlider2" type="HSlider" parent="ControlsPanel"]
+[node name="PositionSetpointSlider" type="HSlider" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -347,7 +347,7 @@ min_value = -1.0
 max_value = 1.0
 step = 0.001
 
-[node name="NumericDisplay2" type="Label" parent="ControlsPanel/SetpointSlider2"]
+[node name="NumericDisplay" type="Label" parent="ControlsPanel/PositionSetpointSlider"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -186.5
@@ -360,7 +360,7 @@ text = "Position setpoint: 0"
 align = 1
 valign = 1
 
-[node name="PositionSlider2" type="HSlider" parent="ControlsPanel"]
+[node name="ForceSlider" type="HSlider" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -375,9 +375,10 @@ min_value = -1.0
 max_value = 1.0
 step = 0.001
 editable = false
+ticks_on_borders = true
 focus_mode = 0
 
-[node name="NumericDisplay" type="Label" parent="ControlsPanel/PositionSlider2"]
+[node name="NumericDisplay" type="Label" parent="ControlsPanel/ForceSlider"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -189.0
@@ -390,7 +391,7 @@ text = "Force: 0"
 align = 1
 valign = 1
 
-[node name="SetpointSlider" type="HSlider" parent="ControlsPanel"]
+[node name="ForceSetpointSlider" type="HSlider" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -404,7 +405,7 @@ min_value = -1.0
 max_value = 1.0
 step = 0.001
 
-[node name="NumericDisplay2" type="Label" parent="ControlsPanel/SetpointSlider"]
+[node name="NumericDisplay" type="Label" parent="ControlsPanel/ForceSetpointSlider"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -185.5
@@ -464,8 +465,8 @@ custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "Operation:"
 [connection signal="text_changed" from="ControlsPanel/AddressInput" to="ControlsPanel" method="_on_AddressInput_text_changed"]
 [connection signal="pressed" from="ControlsPanel/ConnectButton" to="ControlsPanel" method="_on_ConnectButton_pressed"]
-[connection signal="value_changed" from="ControlsPanel/SetpointSlider2" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]
-[connection signal="value_changed" from="ControlsPanel/SetpointSlider" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]
+[connection signal="value_changed" from="ControlsPanel/PositionSetpointSlider" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]
+[connection signal="value_changed" from="ControlsPanel/ForceSetpointSlider" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]
 [connection signal="toggled" from="ControlsPanel/CalibrationToggle" to="ControlsPanel" method="_on_CalibrationToggle_toggled"]
 [connection signal="toggled" from="ControlsPanel/OffsetToggle" to="ControlsPanel" method="_on_DirectionSelector_toggled"]
 [connection signal="toggled" from="ControlsPanel/OperationToggle" to="ControlsPanel" method="_on_CalibrationToggle_toggled"]
