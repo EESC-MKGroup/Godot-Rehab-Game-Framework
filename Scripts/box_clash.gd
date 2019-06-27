@@ -1,8 +1,11 @@
-extends Spatial
+extends "res://Scripts/game.gd"
 
 onready var boundary_1 = $Ground/Platform/Boundaries/CollisionShape1
 onready var boundary_2 = $Ground/Platform/Boundaries/CollisionShape2
 onready var movement_range = abs( boundary_1.translation.z - boundary_2.translation.z )
+
+static func get_player_variables():
+	return [ "Box1", "Box2" ]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

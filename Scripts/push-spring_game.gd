@@ -1,6 +1,6 @@
-extends Spatial
+extends "res://Scripts/game.gd"
 
-enum DIRECTION { NONE = 0, UP = 1, DOWN = -1 }
+enum Direction { NONE = 0, UP = 1, DOWN = -1 }
 
 const MAX_TIMEOUT = 6.0
 const MAX_CYCLES = 3
@@ -17,9 +17,12 @@ onready var space_scale = abs( effector.translation.y )
 
 var cycles_number = 0
 var cycles_count = 0
-var direction = NONE
+var direction = Direction.NONE
 
 var score_state = 0
+
+static func get_player_variables():
+	return [ "Hand" ]
 
 func _ready():
 #	if Controller.direction_axis == Controller.HORIZONTAL:
@@ -51,22 +54,22 @@ func _physics_process( delta ):
 		DataLog.register_values( [ direction, player_force, player_position, score_state ] )
 
 func _on_GUI_game_timeout( timeouts_count ):
-	if direction == NONE: direction = UP
+	if direction == Direction.NONE: direction = Direction.UP
 	if timeouts_count == 0: 
 		$SpringBase/Arrow.show()
 		if cycles_count >= cycles_number:
-			if direction == UP: 
+			if direction == Direction.UP: 
 				$Camera.rotate_z( PI )
-				direction = DOWN
+				direction = Direction.DOWN
 			cycles_count = 0
 		$GUI.display_setpoint( direction )
 	if timeouts_count == 1:
 		$SpringBase/Arrow.hide()
 		cycles_count += 1
 		$GUI.wait_rest()
-		if cycles_count >= cycles_number and direction == DOWN:
+		if cycles_count >= cycles_number and direction == Direction.DOWN:
 			$SpringBase/Target.hide()
-			direction = NONE
+			direction = Direction.NONE
 			$GUI.end_game( 2 * cycles_number, 0 )
 		$GUI.display_setpoint( 0.0 )
 
@@ -74,7 +77,7 @@ func _on_GUI_game_toggle( started ):
 	if not RemoteDevice.is_calibrating: $SpringBase/Target.show()
 
 func _on_Target_body_entered( body ):
-	if direction != NONE: score_state = 1
+	if direction != Direction.NONE: score_state = 1
 
 func _on_Target_body_exited(body):
 	score_state = 0

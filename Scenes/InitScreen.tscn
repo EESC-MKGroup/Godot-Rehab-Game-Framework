@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Textures/logo_eesc.png" type="Texture" id=1]
 [ext_resource path="res://Textures/rerob_logo.png" type="Texture" id=2]
@@ -17,19 +17,34 @@ font_data = ExtResource( 3 )
 
 [sub_resource type="StyleBoxFlat" id=3]
 
+[sub_resource type="GDScript" id=10]
+script/source = "extends \"res://Scripts/selection_list.gd\"
+
+func list_devices():
+	entries_list = InputDevice.interfaces_list
+	refresh_list()"
+
+[sub_resource type="GDScript" id=11]
+script/source = "extends \"res://Scripts/selection_list.gd\"
+
+func list_axes():
+	entries_list = InputDevice.axes_list
+	refresh_list()"
+
 [sub_resource type="GDScript" id=4]
-script/source = "extends MenuButton
+script/source = "extends \"res://Scripts/selection_list.gd\"
 
 func _ready():
-	get_popup().add_font_override( \"font\", get_font( \"font\" ) )
-	var games_list = GameManager.list_games()
-	for game_name in games_list:
-		get_popup().add_item( game_name )	
-	get_popup().connect( \"index_pressed\", self, \"_on_index_pressed\" )
+	var entries_list = GameManager.list_games()
+	refresh_list()"
 
-func _on_index_pressed( index ):
-	var game_name = get_popup().get_item_text( index )
-	GameManager.select( game_name )"
+[sub_resource type="GDScript" id=9]
+script/source = "extends \"res://Scripts/selection_list.gd\"
+
+func set_game( game_name ):
+	entries_list = GameManager.list_game_variables( game_name )
+	refresh_list()
+"
 
 [sub_resource type="DynamicFont" id=5]
 size = 22
@@ -158,6 +173,7 @@ anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
 text = "<Select>"
+script = SubResource( 10 )
 
 [node name="Label" type="Label" parent="ControlsPanel/DeviceSelector"]
 anchor_top = 0.5
@@ -185,6 +201,7 @@ anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
 text = "<Select>"
+script = SubResource( 11 )
 
 [node name="Label" type="Label" parent="ControlsPanel/AxisSelector"]
 anchor_top = 0.5
@@ -244,6 +261,7 @@ anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
 text = "<Select>"
+script = SubResource( 9 )
 
 [node name="Label" type="Label" parent="ControlsPanel/VariableSelector"]
 anchor_top = 0.5

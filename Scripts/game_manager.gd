@@ -3,6 +3,8 @@ extends Node
 const GAMES_PATH = "res://Scenes/Games"
 const GAME_EXT = ".tscn"
 
+var player_controls = {}
+
 func list_games():
 	var games_list = []
 	var games_dir = Directory.new()
@@ -16,5 +18,8 @@ func list_games():
 	games_dir.list_dir_end()
 	return games_list
 
-func select( game_name ):
+func load_game( game_name ):
 	get_tree().change_scene( GAMES_PATH + "/" + game_name + GAME_EXT )
+
+func list_game_variables( game_name ):
+	return load( GAMES_PATH + "/" + game_name + GAME_EXT ).get_player_variables()

@@ -1,4 +1,4 @@
-extends Node
+extends "res://Scripts/game.gd"
 
 const COLLIDER_SLOTS_NUMBER = 5
 const TOTAL_WAVES_NUMBER = 100
@@ -19,6 +19,9 @@ onready var player = $BoundaryArea/Boundaries/Player
 
 onready var collider_width = 2 * boundary_extents.y / COLLIDER_SLOTS_NUMBER
 onready var collider_top = -boundary_extents.y + collider_width / 2
+
+static func get_player_variables():
+	return [ "Player" ]
 
 func _ready():
 	$GUI.set_timeouts( 3.0, 0.0 )
