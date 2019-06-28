@@ -21,7 +21,7 @@ func disconnect_socket():
 func read_device():
 	pass
 
-func set_state( new_state ):
+func set_state( new_state, info = "" ):
 	state = new_state
 	print( "set state " + str(state) )
 
@@ -32,8 +32,6 @@ func get_info():
 	var device_info = {}
 	device_info[ "id" ] = Input.get_joy_name( device_id )
 	device_info[ "axes" ] = JOY_AXES
-	#for axis in [ 0, 1, 2, 3, 4, 5 ]:
-	#	device_info[ "axes" ].append( Input.get_joy_axis_string( axis ) )
 	return device_info
 
 func get_axis_position( axis ):
@@ -42,10 +40,10 @@ func get_axis_position( axis ):
 func get_axis_force( axis ):
 	return Input.get_joy_axis( device_id, axis )
 
-func set_setpoints( setpoints ):
-	if setpoints.size() > 6:
-		var x_feedback = setpoints[ 0 ] | ( setpoints[ 1 ] << 16 )
-		var y_feedback = setpoints[ 2 ] | ( setpoints[ 3 ] << 16 )
-		var z_feedback = setpoints[ 4 ] | ( setpoints[ 5 ] << 16 )
+func set_setpoints( position_setpoints, force_setpoints ):
+	if force_setpoints.size() > 6:
+		var x_feedback = force_setpoints[ 0 ] | ( force_setpoints[ 1 ] << 16 )
+		var y_feedback = force_setpoints[ 2 ] | ( force_setpoints[ 3 ] << 16 )
+		var z_feedback = force_setpoints[ 4 ] | ( force_setpoints[ 5 ] << 16 )
 		#z_feedback += device_setpoints[ 6 ] | ( device_setpoints[ 7 ] << 16 )
 		Input.start_joy_vibration( device_id, x_feedback, y_feedback, z_feedback )

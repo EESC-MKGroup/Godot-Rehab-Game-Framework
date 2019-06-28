@@ -1,27 +1,38 @@
 extends Node
 
+var input_device = null
 var axis_index = 0 setget _set_axis
 
-var input_limits = null
-var output_limits = null
+var force_limits = null
+var position_limits = null
 
 var is_calibrating = false setget _set_calibration,_get_calibration
 
 var max_effort = 1.0 setget _set_max_effort
 
-func get_value():
-	var position = InputDevice.get_axis_position( axis_index )
-	var force = InputDevice.get_axis_force( axis_index )
-	if is_calibrating:
-		input_limits = _check_limits( input_limits, force )
-		output_limits = _check_limits( output_limits, position )
-	elif input_limits != null:
-		force = _normalize( force, input_limits[ axis_index ] )
+func _init( device, index ):
+	input_device = device
+	axis_index = index
+
+func get_position():
+	var position = input_device.get_axis_position( axis_index )
+	if is_calibrating: position_limits = _check_limits( position_limits, position )
+	elif position_limits != null: position = _normalize( position, position_limits )
+	return position * max_effort
+
+func set_position( setpoint ):
+	setpoint = _denormalize( setpoint, position_limits )
+	input_device.set_axis_setpoint( axis_index, setpoint / max_effort )
+
+func get_force():
+	var force = input_device.get_axis_force( axis_index )
+	if is_calibrating: force_limits = _check_limits( force_limits, force )
+	elif force_limits != null: force = _normalize( force, force_limits )
 	return force * max_effort
 
-func set_feedback( setpoint ):
-	setpoint = _denormalize( setpoint, output_limits )
-	InputDevice.set_axis_setpoint( axis_index, setpoint / max_effort )
+func set_force( setpoint ):
+	setpoint = _denormalize( setpoint, force_limits )
+	input_device.set_axis_setpoint( axis_index, setpoint / max_effort )
 
 func _set_axis( index ):
 	if index < InputDevice.axes_list.size(): axis_index = index
@@ -56,5 +67,5 @@ func _denormalize( value, limits ):
 	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
 
 func _reset_limits():
-	input_limits = null
-	output_limits = null
+	force_limits = null
+	position_limits = null

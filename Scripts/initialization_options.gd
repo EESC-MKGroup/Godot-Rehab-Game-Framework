@@ -1,6 +1,12 @@
 extends Panel
 
+onready var input_device_class = preload( "res://Scripts/input_device.gd" )
+onready var input_axis_class = preload( "res://Scripts/input_axis.gd" )
+
 var game_name = ""
+
+var input_device = null
+var input_axis = null
 
 func _ready():
 	if OS.get_cmdline_args().size() > 1:
@@ -37,6 +43,8 @@ func _on_state_changed( new_state ):
 	match new_state:
 		InputDevice.LIST_CONFIGS:
 			$DeviceSelector/SelectionList.list_devices()
+		InputDevice.GET_CONFIG:
+			$AxisSelector/SelectionList.list_axes()
 		InputDevice.OFFSET:
 			$OffsetToggle.pressed = true
 			$CalibrationToggle.pressed = false
@@ -50,6 +58,7 @@ func _on_state_changed( new_state ):
 
 func _on_Device_entry_selected( index, entry_name ):
 	print( "_on_Device_entry_selected" )
+	input_device = input_device_class.new( interface )
 	InputDevice.interface_index = index
 	InputDevice.state = InputDevice.SET_CONFIG
 	$AxisSelector/SelectionList.list_axes()
@@ -88,3 +97,6 @@ func _on_CalibrationToggle_toggled( button_pressed ):
 func _on_OffsetToggle_toggled( button_pressed ):
 	print( "_on_OffsetToggle_toggled" )
 	InputDevice.state = InputDevice.OFFSET if button_pressed else InputDevice.PASSIVE
+
+func _on_PlayButton_pressed():
+	GameManager.load_game( game_name )
