@@ -21,14 +21,19 @@ func disconnect_socket():
 func read_device():
 	pass
 
-func set_state( new_state, info = "" ):
+func set_request( new_state, info = "" ):
 	state = new_state
 	print( "set state " + str(state) )
 
-func get_state():
+func get_reply():
 	return state
 
-func get_info():
+func get_available_devices():
+	var available_devices = []
+	available_devices.append( Input.get_joy_name( device_id ) )
+	return available_devices
+
+func get_device_info():
 	var device_info = {}
 	device_info[ "id" ] = Input.get_joy_name( device_id )
 	device_info[ "axes" ] = JOY_AXES

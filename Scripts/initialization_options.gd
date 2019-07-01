@@ -1,10 +1,8 @@
 extends Panel
 
-onready var input_device_class = preload( "res://Scripts/input_device.gd" )
-onready var input_axis_class = preload( "res://Scripts/input_axis.gd" )
-
 var game_name = ""
 
+var interface = null
 var input_device = null
 var input_axis = null
 
@@ -15,62 +13,64 @@ func _ready():
 			GameManager.select( OS.get_cmdline_args()[ 1 ] )
 	$AddressInput.text = Configuration.get_parameter( "server_address" )
 	$UserInput.text = Configuration.get_parameter( "user_name" )
-	$CalibrationToggle.pressed = InputAxis.is_calibrating
-	$DeviceSelector/SelectionList.get_popup().connect( "entry_selected", self, "_on_Device_entry_selected" )
-	$AxisSelector/SelectionList.get_popup().connect( "entry_selected", self, "_on_Axis_entry_selected" )
-	$GameSelector/SelectionList.get_popup().connect( "entry_selected", self, "_on_Game_entry_selected" )
-	$VariableSelectorSelector/SelectionList.get_popup().connect( "entry_selected", self, "_on_Variable_entry_selected" )
-	InputDevice.connect( "state_changed", self, "_on_state_changed" )
-	InputDevice.connect( "socket_connected", self, "_on_socket_connected" )
-	$DeviceSelector/SelectionList.list_devices()
+	#$CalibrationToggle.pressed = InputAxis.is_calibrating
+	$GameSelector/SelectionList.list_entries( GameManager.list_games() )
+	$AddressInput/InterfaceSelector/SelectionList.list_entries( InputManager.interfaces_list )
+	for interface_name in InputManager.interfaces_list:
+		var device = InputManager.get_interface_device( interface_name )
+		device.connect( "state_changed", self, "_on_state_changed" )
+		device.connect( "socket_connected", self, "_on_socket_connected" )
+	set_process( false )
 
 func _input( event ):
 	if event is InputEventKey:
 		if event.scancode == KEY_ESCAPE: get_tree().quit()
 
 func _process( delta ):
-	$PositionSlider.value = InputAxis.get_value()
+	$PositionSlider.value = input_axis.get_value()
 	$PositionSlider/NumericDisplay.text = ( "%+.3f" % $PositionSlider.value )
-	$ForceSlider.value = InputAxis.get_value()
+	$ForceSlider.value = input_axis.get_value()
 	$ForceSlider/NumericDisplay.text = ( "%+.3f" % $ForceSlider.value )
 
 func _on_ConnectButton_pressed():
 	print( "_on_ConnectButton_pressed" )
-	InputDevice.connect_socket( $AddressInput.text )
+	input_device.connect_socket( $AddressInput.text )
 #	DataLog.create_new_log( user_name, time_stamp )
 
 func _on_state_changed( new_state ):
 	match new_state:
-		InputDevice.LIST_CONFIGS:
-			$DeviceSelector/SelectionList.list_devices()
-		InputDevice.GET_CONFIG:
-			$AxisSelector/SelectionList.list_axes()
-		InputDevice.OFFSET:
+		State.LIST_CONFIGS:
+			$DeviceSelector/SelectionList.list_entries( input_device.available_configurations )
+		State.GET_CONFIG:
+			$AxisSelector/SelectionList.list_entries( input_device.axes_list )
+		State.OFFSET:
 			$OffsetToggle.pressed = true
 			$CalibrationToggle.pressed = false
-		InputDevice.CALIBRATION:
+		State.CALIBRATION:
 			$OffsetToggle.pressed = false
 			$CalibrationToggle.pressed = true
 		_:
-#		InputDevice.PASSIVE:
+#		State.PASSIVE:
 			$OffsetToggle.pressed = false
 			$CalibrationToggle.pressed = false
 
+func _on_Interface_entry_selected( index, entry_name ):
+	print( "_on_Interface_entry_selected" )
+	input_device = InputManager.get_interface_device( entry_name )
+
 func _on_Device_entry_selected( index, entry_name ):
 	print( "_on_Device_entry_selected" )
-	input_device = input_device_class.new( interface )
-	InputDevice.interface_index = index
-	InputDevice.state = InputDevice.SET_CONFIG
-	$AxisSelector/SelectionList.list_axes()
+	input_device.configuration = entry_name
 
 func _on_Axis_entry_selected( index, entry_name ):
 	print( "_on_Axis_entry_selected" )
-	InputAxis.axis_index = index
+	input_axis = InputManager.get_device_axis( input_device, index )
+	set_process( true )
 
 func _on_Game_entry_selected( index, entry_name ):
 	print( "_on_Game_entry_selected" )
 	game_name = entry_name
-	$VariableSelectorSelector/SelectionList.set_game( entry_name )
+	$VariableSelector/SelectionList.list_entries( GameManager.list_game_variables( game_name ) )
 
 func _on_Variable_entry_selected( index, entry_name ):
 	print( "_on_Variable_entry_selected" )
@@ -80,7 +80,7 @@ func _on_socket_connected():
 	print( "_on_socket_connected" )
 	Configuration.set_parameter( "server_address", $AddressInput.text )
 	Configuration.set_parameter( "user_name", $UserInput.text )
-	InputDevice.state = InputDevice.LIST_CONFIGS
+	InputDevice.state = State.LIST_CONFIGS
 
 func _on_AddressInput_text_changed( new_text ):
 	print( "_on_AddressInput_text_changed" )

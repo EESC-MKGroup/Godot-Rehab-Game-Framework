@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Textures/logo_eesc.png" type="Texture" id=1]
 [ext_resource path="res://Textures/rerob_logo.png" type="Texture" id=2]
 [ext_resource path="res://Fonts/LuckiestGuy.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Scripts/initialization_options.gd" type="Script" id=4]
 [ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Scripts/selection_list.gd" type="Script" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -16,49 +17,6 @@ extra_spacing_top = 20
 font_data = ExtResource( 3 )
 
 [sub_resource type="StyleBoxFlat" id=3]
-
-[sub_resource type="GDScript" id=4]
-script/source = "extends \"res://Scripts/selection_list.gd\"
-
-func list_devices():
-	entries_list = InputDevice.interfaces_list
-	refresh_list()"
-
-[sub_resource type="GDScript" id=5]
-script/source = "extends \"res://Scripts/selection_list.gd\"
-
-func list_axes():
-	entries_list = InputDevice.axes_list
-	refresh_list()"
-
-[sub_resource type="GDScript" id=6]
-script/source = "extends \"res://Scripts/selection_list.gd\"
-
-func _ready():
-	var entries_list = GameManager.list_games()
-	refresh_list()"
-
-[sub_resource type="GDScript" id=7]
-script/source = "extends \"res://Scripts/selection_list.gd\"
-
-func set_game( game_name ):
-	entries_list = GameManager.list_game_variables( game_name )
-	refresh_list()
-"
-
-[sub_resource type="GDScript" id=12]
-script/source = "extends \"res://Scripts/selection_list.gd\"
-
-func list_devices():
-	entries_list = InputManager.interfaces_list
-	refresh_list()"
-
-[sub_resource type="DynamicFont" id=8]
-size = 22
-use_mipmaps = true
-use_filter = true
-extra_spacing_top = 8
-font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=9]
 size = 22
@@ -75,6 +33,13 @@ extra_spacing_top = 8
 font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=11]
+size = 22
+use_mipmaps = true
+use_filter = true
+extra_spacing_top = 8
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=12]
 size = 22
 use_mipmaps = true
 use_filter = true
@@ -143,23 +108,22 @@ script = ExtResource( 4 )
 
 [node name="UserInput" type="LineEdit" parent="ControlsPanel"]
 anchor_right = 1.0
-margin_left = 130.0
+margin_left = 129.0
 margin_top = 18.0
-margin_right = -888.0
+margin_right = -951.0
 margin_bottom = 69.0
 grow_horizontal = 0
 custom_fonts/font = ExtResource( 5 )
-text = "User"
+text = "user"
 align = 1
-max_length = 4
 caret_blink = true
 
 [node name="UserLabel" type="Label" parent="ControlsPanel/UserInput"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = -107.0
+margin_left = -105.0
 margin_top = -24.5
-margin_right = -7.0
+margin_right = -5.0
 margin_bottom = 25.5
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -171,7 +135,7 @@ valign = 1
 anchor_right = 1.0
 margin_left = 156.0
 margin_top = 86.0
-margin_right = -680.0
+margin_right = -560.0
 margin_bottom = 138.0
 
 [node name="SelectionList" type="MenuButton" parent="ControlsPanel/DeviceSelector"]
@@ -180,7 +144,7 @@ anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
 text = "<Select>"
-script = SubResource( 4 )
+script = ExtResource( 6 )
 
 [node name="Label" type="Label" parent="ControlsPanel/DeviceSelector"]
 anchor_top = 0.5
@@ -197,7 +161,7 @@ valign = 1
 
 [node name="AxisSelector" type="Panel" parent="ControlsPanel"]
 anchor_right = 1.0
-margin_left = 700.0
+margin_left = 820.0
 margin_top = 86.0
 margin_right = -36.0
 margin_bottom = 138.0
@@ -208,7 +172,7 @@ anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
 text = "<Select>"
-script = SubResource( 5 )
+script = ExtResource( 6 )
 
 [node name="Label" type="Label" parent="ControlsPanel/AxisSelector"]
 anchor_top = 0.5
@@ -238,7 +202,7 @@ anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
 text = "<Select>"
-script = SubResource( 6 )
+script = ExtResource( 6 )
 
 [node name="Label" type="Label" parent="ControlsPanel/GameSelector"]
 anchor_top = 0.5
@@ -268,7 +232,7 @@ anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
 text = "<Select>"
-script = SubResource( 7 )
+script = ExtResource( 6 )
 
 [node name="Label" type="Label" parent="ControlsPanel/VariableSelector"]
 anchor_top = 0.5
@@ -285,9 +249,9 @@ valign = 1
 
 [node name="AddressInput" type="LineEdit" parent="ControlsPanel"]
 anchor_right = 1.0
-margin_left = 685.0
+margin_left = 713.0
 margin_top = 18.0
-margin_right = -255.0
+margin_right = -227.0
 margin_bottom = 69.0
 custom_fonts/font = ExtResource( 5 )
 text = "127.0.0.1:50000"
@@ -297,9 +261,9 @@ caret_blink = true
 [node name="AddressLabel" type="Label" parent="ControlsPanel/AddressInput"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = -285.0
+margin_left = -366.0
 margin_top = -25.0
-margin_right = -135.0
+margin_right = -216.0
 margin_bottom = 25.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -309,7 +273,7 @@ valign = 1
 
 [node name="InterfaceSelector" type="Panel" parent="ControlsPanel/AddressInput"]
 anchor_right = 1.0
-margin_left = -125.0
+margin_left = -210.0
 margin_top = -1.0
 margin_right = -332.0
 margin_bottom = 51.0
@@ -319,14 +283,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
 custom_fonts/font = ExtResource( 5 )
-text = "ip"
-script = SubResource( 12 )
+text = "joystick"
+script = ExtResource( 6 )
 
 [node name="ConnectButton" type="Button" parent="ControlsPanel"]
 anchor_right = 1.0
-margin_left = 1042.0
+margin_left = 1064.0
 margin_top = 18.0
-margin_right = -38.0
+margin_right = -36.0
 margin_bottom = 68.0
 custom_fonts/font = ExtResource( 5 )
 text = "Connect"
@@ -367,7 +331,7 @@ margin_left = -188.5
 margin_top = -28.3333
 margin_right = 184.5
 margin_bottom = 6.66669
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Position: 0"
 align = 1
@@ -394,7 +358,7 @@ margin_left = -186.5
 margin_top = -29.6667
 margin_right = 186.5
 margin_bottom = 5.33331
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 10 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Position setpoint: 0"
 align = 1
@@ -425,7 +389,7 @@ margin_left = -189.0
 margin_top = -28.3333
 margin_right = 184.0
 margin_bottom = 6.66669
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 11 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Force: 0"
 align = 1
@@ -452,7 +416,7 @@ margin_left = -185.5
 margin_top = -29.6667
 margin_right = 187.5
 margin_bottom = 5.33331
-custom_fonts/font = SubResource( 11 )
+custom_fonts/font = SubResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Force setpoint: 0"
 align = 1
@@ -503,7 +467,12 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 text = "Operation:"
+[connection signal="entry_selected" from="ControlsPanel/DeviceSelector/SelectionList" to="ControlsPanel" method="_on_Device_entry_selected"]
+[connection signal="entry_selected" from="ControlsPanel/AxisSelector/SelectionList" to="ControlsPanel" method="_on_Axis_entry_selected"]
+[connection signal="entry_selected" from="ControlsPanel/GameSelector/SelectionList" to="ControlsPanel" method="_on_Game_entry_selected"]
+[connection signal="entry_selected" from="ControlsPanel/VariableSelector/SelectionList" to="ControlsPanel" method="_on_Variable_entry_selected"]
 [connection signal="text_changed" from="ControlsPanel/AddressInput" to="ControlsPanel" method="_on_AddressInput_text_changed"]
+[connection signal="entry_selected" from="ControlsPanel/AddressInput/InterfaceSelector/SelectionList" to="ControlsPanel" method="_on_Interface_entry_selected"]
 [connection signal="pressed" from="ControlsPanel/ConnectButton" to="ControlsPanel" method="_on_ConnectButton_pressed"]
 [connection signal="pressed" from="ControlsPanel/PlayButton" to="ControlsPanel" method="_on_PlayButton_pressed"]
 [connection signal="value_changed" from="ControlsPanel/PositionSetpointSlider" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]

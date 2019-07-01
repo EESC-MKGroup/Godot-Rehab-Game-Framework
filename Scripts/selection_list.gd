@@ -16,6 +16,10 @@ func refresh_list():
 		get_popup().add_item( entry_name )
 	_on_index_pressed( 0 )
 
+func list_entries( entries ):
+	entries_list = entries
+	refresh_list()
+
 func _on_index_pressed( index ):
 	print( "_on_index_pressed" )
 	var entry_name = get_popup().get_item_text( index )

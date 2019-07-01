@@ -1,7 +1,7 @@
 extends Node
 
 var input_device = null
-var axis_index = 0 setget _set_axis
+var axis_index = 0
 
 var force_limits = null
 var position_limits = null
@@ -34,13 +34,9 @@ func set_force( setpoint ):
 	setpoint = _denormalize( setpoint, force_limits )
 	input_device.set_axis_setpoint( axis_index, setpoint / max_effort )
 
-func _set_axis( index ):
-	if index < InputDevice.axes_list.size(): axis_index = index
-	print( "axis index " + str(axis_index) + " set" )
-
 func _set_calibration( enabled ):
 	if enabled: _reset_limits()
-	#InputDevice.state = InputDevice.CALIBRATION if enabled else InputDevice.OPERATION
+	#input_device.state = State.CALIBRATION if enabled else State.OPERATION
 	is_calibrating = enabled
 
 func _get_calibration():
@@ -48,7 +44,7 @@ func _get_calibration():
 
 func _set_max_effort( value ):
 	if value > 100.0: value = 100.0
-	elif value < 0.1: value = 0.1
+	elif value < 10.0: value = 10.0
 	max_effort = value / 100.0
 
 func _check_limits( limits, value ):

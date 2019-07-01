@@ -1,7 +1,10 @@
 extends Node
 
-enum State { LIST_CONFIGS = 1, GET_CONFIG, SET_CONFIG, SET_USER, DISABLED, ENABLED, RESET, PASSIVE, OPERATION, OFFSET, CALIBRATION }
+enum Request { LIST_CONFIGS = 1, GET_CONFIG, SET_CONFIG, SET_USER, DISABLE, ENABLE, OFFSET, CALIBRATE, OPERATE }
+enum Reply { CONFIGS_LISTED = 1, GOT_CONFIG, CONFIG_SET, USER_SET, DISABLED, ENABLED, OFFSETTING, CALIBRATING, OPERATING }
 
+signal configs_listed
+signal config_received
 signal state_changed
 signal socket_connected
 
@@ -12,9 +15,11 @@ var forces = [ 0 ]
 var position_setpoints = [ 0 ]
 var force_setpoints = [ 0 ]
 
+var state = 0
+var previous_reply = 0
+
 var configuration = "" setget _set_configuration
 var user_name = "" setget _set_user
-var state = State.DISABLED setget _set_state,_get_state
 
 var string_id = "" setget ,_get_string_id
 var axes_list = [] setget ,_get_axes_list
@@ -25,22 +30,34 @@ func _init( input_interface ):
 	set_process( false )
 
 func request_available_configurations():
-	interface.set_state( State.LIST_CONFIGS )
+	interface.set_state( InputManager.Request.LIST_CONFIGS )
 
 func _get_available_configurations():
 	return available_configurations
 
 func _set_configuration( value ):
-	interface.set_state( State.SET_CONFIG, value )
+	interface.set_state( InputManager.Request.SET_CONFIG, value )
 
 func _set_user( value ):
-	interface.set_state( State.SET_USER, value )
+	interface.set_state( InputManager.Request.SET_USER, value )
 
 func _get_string_id():
 	return string_id
 
 func _get_axes_list():
 	return axes_list
+
+func set_state( new_state ):
+	var request_code = 0
+	if new_state != state:
+		match new_state:
+			InputManager.State.DISABLED: request_code = Request.DISABLE
+			InputManager.State.ENABLED: request_code = Request.ENABLE
+			InputManager.State.OFFSET: request_code = Request.OFFSET
+			InputManager.State.CALIBRATION: request_code = Request.CALIBRATE
+			InputManager.State.OPERATION: request_code = Request.OPERATE
+		interface.set_state( request_code )
+	state = new_state
 
 func get_axis_position( axis_index ):
 	return positions[ axis_index ] if axis_index < positions.size() else 0.0
@@ -64,22 +81,27 @@ func _reset_axes():
 		position_setpoints.append( 0.0 )
 		force_setpoints.append( 0.0 )
 
-func _get_device_state():
+func _get_state_reply():
 	var reply_code = interface.get_state()
-	if state != reply_code:
-		if reply_code == State.GET_CONFIG:
-			var device_info = interface.get_info()
-			string_id = device_info[ "id" ]
-			axes_list = device_info[ "axes" ]
-			_reset_axes()
-		elif reply_code == State.LIST_CONFIGS:
-			available_configurations = interface.list_configurations()
-		print( "new state " + str(reply_code) )
-		emit_signal( "state_changed", reply_code )
-		print( "state changed " + str(reply_code) )
-	state = reply_code
+	if reply_code != previous_reply:
+		match reply_code:
+			Reply.CONFIGS_LISTED:
+				available_configurations = interface.list_configurations()
+				emit_signal( "configs_listed" )
+			Reply.GOT_CONFIG:
+				var device_info = interface.get_info()
+				string_id = device_info[ "id" ]
+				axes_list = device_info[ "axes" ]
+				_reset_axes()
+				emit_signal( "config_received" )
+			Reply.OFFSETING: emit_signal( "state_changed", InputManager.State.OFFSET )
+			Reply.CALIBRATING: emit_signal( "state_changed", InputManager.State.CALIBRATION )
+			Reply.OPERATING: emit_signal( "state_changed", InputManager.State.OPERATION )
+			Reply.OFFSETING: emit_signal( "state_changed", InputManager.State.OFFSET )
+		print( "reply received: " + str(reply_code) )
+	previous_reply = reply_code
 
-func _get_device_data():
+func _get_axis_data():
 	for axis_index in range( axes_list.size() ):
 		positions[ axis_index ] = interface.get_axis_position( axis_index )
 		forces[ axis_index ] = interface.get_axis_force( axis_index )
@@ -88,8 +110,8 @@ func _process( delta ):
 	interface.set_setpoints( position_setpoints, force_setpoints )
 	#hack
 	interface.read_device()
-	_get_device_state()
-	_get_device_data()
+	_get_state_reply()
+	_get_axis_data()
 
 func connect_socket( host ):
 	if interface != null:
@@ -101,13 +123,6 @@ func connect_socket( host ):
 func disconnect_socket():
 	set_process( false )
 	interface.disconnect_socket()
-
-func _set_state( new_state ):
-	interface.set_state( new_state )
-	print( "set state " + str(new_state) )
-
-func _get_state():
-	return state
 
 func _notification( what ):
 	if what == NOTIFICATION_PREDELETE: 
