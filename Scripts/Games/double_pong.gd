@@ -3,6 +3,11 @@ extends Spatial
 onready var paddles_1 = $Ground/Platform/Paddles1
 onready var paddles_2 = $Ground/Platform/Paddles2
 
+onready var input_axis = GameManager.player_controls[ get_player_variables()[ 0 ] ]
+
+static func get_player_variables():
+	return [ "Player Paddle" ]
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if GameConnection.is_server:

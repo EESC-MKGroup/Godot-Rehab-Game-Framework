@@ -3,23 +3,34 @@ extends Node
 const GAMES_PATH = "res://Scenes/Games"
 const GAME_EXT = ".tscn"
 
+var game_instace = null
+
 var player_controls = {}
 
-func list_games():
-	var games_list = []
-	var games_dir = Directory.new()
-	games_dir.open( GAMES_PATH )
-	games_dir.list_dir_begin()
+func list_files( dir_path, file_ext ):
+	var files_list = []
+	var files_dir = Directory.new()
+	files_dir.open( dir_path )
+	files_dir.list_dir_begin()
 	while true:
-		var file = games_dir.get_next()
+		var file = files_dir.get_next()
 		if file == "": break
-		elif file.ends_with( GAME_EXT ):
-			games_list.append( file.get_basename() )
-	games_dir.list_dir_end()
-	return games_list
+		elif file.ends_with( file_ext ):
+			files_list.append( file.get_basename() )
+	files_dir.list_dir_end()
+	return files_list
+
+func list_games():
+	return list_files( GAMES_PATH, GAME_EXT )
+
+func _get_game_path( game_name ):
+	return GAMES_PATH + "/" + game_name + GAME_EXT
 
 func load_game( game_name ):
-	get_tree().change_scene( GAMES_PATH + "/" + game_name + GAME_EXT )
+	get_tree().change_scene( _get_game_path( game_name ) )
 
 func list_game_variables( game_name ):
-	return load( GAMES_PATH + "/" + game_name + GAME_EXT ).get_player_variables()
+	if game_instace != null: game_instace.free()
+	game_instace = load( _get_game_path( game_name ) ).instance()
+	print( game_instace.get_player_variables() )
+	return game_instace.get_player_variables()

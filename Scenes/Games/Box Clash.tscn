@@ -1,6 +1,6 @@
 [gd_scene load_steps=33 format=2]
 
-[ext_resource path="res://Scripts/box_clash.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Games/box_clash.gd" type="Script" id=1]
 [ext_resource path="res://Textures/grass.png" type="Texture" id=2]
 [ext_resource path="res://Textures/grass_normal.png" type="Texture" id=3]
 [ext_resource path="res://Textures/bare_earth.jpg" type="Texture" id=4]
@@ -17,424 +17,83 @@
 [ext_resource path="res://Scripts/spring.gd" type="Script" id=15]
 
 [sub_resource type="ImageTexture" id=1]
-
 flags = 0
-storage = 0
-lossy_quality = 0.7
 flags = 0
 size = Vector2( 16, 16 )
 
 [sub_resource type="PlaneMesh" id=2]
-
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
-flip_faces = false
 size = Vector2( 3, 3 )
-subdivide_width = 0
-subdivide_depth = 0
 
 [sub_resource type="SpatialMaterial" id=3]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
 albedo_texture = ExtResource( 2 )
 metallic = 0.44
 metallic_specular = 0.15
-metallic_texture_channel = 0
-roughness = 1.0
-roughness_texture_channel = 0
-emission_enabled = false
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 3 )
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Metallic", "NormalMap" ]
 
 [sub_resource type="SpatialMaterial" id=4]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
 albedo_texture = ExtResource( 4 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 1.0
-roughness_texture_channel = 0
-emission_enabled = false
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 5 )
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
 uv1_scale = Vector3( 1, 4, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "NormalMap", "UV1" ]
 
 [sub_resource type="PlaneMesh" id=5]
-
 material = SubResource( 4 )
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
-flip_faces = false
 size = Vector2( 0.5, 1.75 )
-subdivide_width = 0
-subdivide_depth = 0
 
 [sub_resource type="CubeMesh" id=6]
-
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
-flip_faces = false
 size = Vector3( 0.02, 0.1, 1.75 )
-subdivide_width = 0
-subdivide_height = 0
-subdivide_depth = 0
 
 [sub_resource type="SpatialMaterial" id=7]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
 albedo_texture = ExtResource( 6 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 1.0
-roughness_texture_channel = 0
-emission_enabled = false
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 8 )
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
 ao_enabled = true
 ao_light_affect = 0.0
 ao_texture = ExtResource( 7 )
 ao_on_uv2 = false
 ao_texture_channel = 0
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
 uv1_scale = Vector3( 4, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Ambient Occlusion", "NormalMap", "UV1" ]
 
 [sub_resource type="CubeMesh" id=8]
-
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
-flip_faces = false
 size = Vector3( 0.02, 0.1, 0.5 )
-subdivide_width = 0
-subdivide_height = 0
-subdivide_depth = 0
 
 [sub_resource type="SpatialMaterial" id=9]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
 albedo_texture = ExtResource( 6 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 1.0
-roughness_texture_channel = 0
-emission_enabled = false
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 8 )
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
 ao_enabled = true
 ao_light_affect = 0.0
 ao_texture = ExtResource( 7 )
 ao_on_uv2 = false
 ao_texture_channel = 0
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
 uv1_scale = Vector3( 3, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Ambient Occlusion", "NormalMap", "UV1" ]
 
 [sub_resource type="BoxShape" id=10]
-
-margin = 0.04
 extents = Vector3( 0.3, 0.05, 0.01 )
 
 [sub_resource type="BoxShape" id=11]
-
-margin = 0.04
 extents = Vector3( 0.254812, 0.256285, 0.25459 )
 
 [sub_resource type="SpatialMaterial" id=12]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
 albedo_color = Color( 1, 0.870588, 0.482353, 1 )
 albedo_texture = ExtResource( 11 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 1.0
-roughness_texture_channel = 0
-emission_enabled = false
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 12 )
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "NormalMap", "albedo_texture" ]
 
 [sub_resource type="SpatialMaterial" id=13]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
 albedo_color = Color( 1, 0, 0, 1 )
 albedo_texture = ExtResource( 11 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 1.0
-roughness_texture_channel = 0
-emission_enabled = false
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 12 )
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "NormalMap" ]
 
 [sub_resource type="CylinderMesh" id=14]
-
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
-flip_faces = false
 top_radius = 0.175
 bottom_radius = 0.175
 height = 0.1
@@ -442,176 +101,20 @@ radial_segments = 32
 rings = 1
 
 [sub_resource type="SpatialMaterial" id=15]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
 albedo_texture = ExtResource( 13 )
 metallic = 0.3
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 1.0
-roughness_texture_channel = 0
-emission_enabled = false
-normal_enabled = false
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Metallic" ]
 
 [sub_resource type="SpatialMaterial" id=16]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
 albedo_color = Color( 0, 0, 1, 1 )
 albedo_texture = ExtResource( 11 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 1.0
-roughness_texture_channel = 0
-emission_enabled = false
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 12 )
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "NormalMap", "albedo_texture" ]
 
 [sub_resource type="SpatialMaterial" id=17]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
 albedo_color = Color( 0.862745, 0.756863, 0.121569, 1 )
 metallic = 0.3
 metallic_specular = 0.7
-metallic_texture_channel = 0
-roughness = 1.0
-roughness_texture_channel = 0
-emission_enabled = false
-normal_enabled = false
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Metallic" ]
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 1 )
@@ -621,307 +124,104 @@ __meta__ = {
 
 [node name="Ground" type="MeshInstance" parent="."]
 transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -0.015, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = SubResource( 2 )
-skeleton = NodePath("..")
 material/0 = SubResource( 3 )
-_sections_unfolded = [ "Transform", "material", "mesh" ]
 
 [node name="Platform" type="MeshInstance" parent="Ground"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.001, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = SubResource( 5 )
-skeleton = NodePath("..")
 material/0 = null
-_sections_unfolded = [ "Transform", "material", "mesh" ]
 
 [node name="Wall1" type="MeshInstance" parent="Ground/Platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0.05, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = SubResource( 6 )
-skeleton = NodePath("..")
 material/0 = SubResource( 7 )
-_sections_unfolded = [ "Transform", "material", "mesh", "multimesh" ]
 
 [node name="Wall2" type="MeshInstance" parent="Ground/Platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.05, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = SubResource( 6 )
-skeleton = NodePath("..")
 material/0 = SubResource( 7 )
-_sections_unfolded = [ "Geometry", "Transform", "material", "multimesh" ]
 
 [node name="Wall3" type="MeshInstance" parent="Ground/Platform"]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.05, -0.88 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = SubResource( 8 )
-skeleton = NodePath("..")
 material/0 = SubResource( 9 )
-_sections_unfolded = [ "Geometry", "Transform", "material", "mesh", "multimesh" ]
 
 [node name="Wall4" type="MeshInstance" parent="Ground/Platform"]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.05, 0.88 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = SubResource( 8 )
-skeleton = NodePath("..")
 material/0 = SubResource( 9 )
-_sections_unfolded = [ "Geometry", "Transform", "material", "mesh", "multimesh" ]
 
 [node name="Boundaries" type="StaticBody" parent="Ground/Platform"]
-input_ray_pickable = true
-input_capture_on_drag = false
-collision_layer = 1
-collision_mask = 1
-constant_linear_velocity = Vector3( 0, 0, 0 )
-constant_angular_velocity = Vector3( 0, 0, 0 )
 
 [node name="CollisionShape1" type="CollisionShape" parent="Ground/Platform/Boundaries"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0503521, 0.88 )
 shape = SubResource( 10 )
-disabled = false
-_sections_unfolded = [ "Transform", "shape" ]
 
 [node name="CollisionShape2" type="CollisionShape" parent="Ground/Platform/Boundaries"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0503521, -0.88 )
 shape = SubResource( 10 )
-disabled = false
-_sections_unfolded = [ "Transform", "shape" ]
 
 [node name="Box1" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.6 )
-input_ray_pickable = true
-input_capture_on_drag = false
-collision_layer = 1
-collision_mask = 1
-mode = 0
-mass = 1.0
 gravity_scale = 0.0
-custom_integrator = false
-continuous_cd = false
-contacts_reported = 0
-contact_monitor = false
-sleeping = false
-can_sleep = true
 axis_lock_linear_x = true
 axis_lock_linear_y = true
-axis_lock_linear_z = false
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-linear_velocity = Vector3( 0, 0, 0 )
-linear_damp = -1.0
-angular_velocity = Vector3( 0, 0, 0 )
-angular_damp = -1.0
 script = ExtResource( 9 )
-_sections_unfolded = [ "Axis Lock", "Script", "Transform" ]
 
 [node name="Collider" type="CollisionShape" parent="Box1"]
 shape = SubResource( 11 )
-disabled = false
-_sections_unfolded = [ "shape" ]
 
 [node name="Mesh" type="MeshInstance" parent="Box1"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.25, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = ExtResource( 10 )
-skeleton = NodePath("..")
 material/0 = SubResource( 12 )
 material/1 = SubResource( 13 )
-_sections_unfolded = [ "Transform", "material" ]
 
 [node name="Connector" type="MeshInstance" parent="Box1"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.23 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = SubResource( 14 )
-skeleton = NodePath("..")
 material/0 = SubResource( 15 )
-_sections_unfolded = [ "Transform", "material", "mesh" ]
 
 [node name="Box2" type="RigidBody" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.25, -0.6 )
-input_ray_pickable = true
-input_capture_on_drag = false
-collision_layer = 1
-collision_mask = 1
-mode = 0
-mass = 1.0
 gravity_scale = 0.0
-custom_integrator = false
-continuous_cd = false
-contacts_reported = 0
-contact_monitor = false
-sleeping = false
-can_sleep = true
 axis_lock_linear_x = true
 axis_lock_linear_y = true
-axis_lock_linear_z = false
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-linear_velocity = Vector3( 0, 0, 0 )
-linear_damp = -1.0
-angular_velocity = Vector3( 0, 0, 0 )
-angular_damp = -1.0
 script = ExtResource( 9 )
-_sections_unfolded = [ "Axis Lock", "Script", "Transform" ]
 
 [node name="Collider" type="CollisionShape" parent="Box2"]
 shape = SubResource( 11 )
-disabled = false
-_sections_unfolded = [ "shape" ]
 
 [node name="Mesh" type="MeshInstance" parent="Box2"]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.25, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = ExtResource( 10 )
-skeleton = NodePath("..")
 material/0 = SubResource( 12 )
 material/1 = SubResource( 16 )
-_sections_unfolded = [ "Transform", "material" ]
 
 [node name="Connector" type="MeshInstance" parent="Box2"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.23 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = SubResource( 14 )
-skeleton = NodePath("..")
 material/0 = SubResource( 15 )
-_sections_unfolded = [ "Transform", "material" ]
 
 [node name="Spring" type="MeshInstance" parent="."]
 transform = Transform( 0.06, 0, 0, 0, -3.0598e-09, -0.06, 0, 0.07, -2.62268e-09, 0, 0.25, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = ExtResource( 14 )
-skeleton = NodePath("..")
 material/0 = SubResource( 17 )
 script = ExtResource( 15 )
-_sections_unfolded = [ "Transform", "material" ]
-stiffness = 10.0
 connector_1 = NodePath("../Box1/Connector")
 connector_2 = NodePath("../Box2/Connector")
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.49247, 0 )
-keep_aspect = 1
-cull_mask = 1048575
-environment = null
-h_offset = 0.0
-v_offset = 0.0
-doppler_tracking = 0
-projection = 0
-current = false
 fov = 41.9581
-size = 1.0
-near = 0.05
-far = 100.0
-_sections_unfolded = [ "Transform" ]
 
 [node name="Light" type="SpotLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.32246, 0 )
-layers = 1
-light_color = Color( 1, 1, 1, 1 )
-light_energy = 1.0
-light_indirect_energy = 1.0
-light_negative = false
-light_specular = 0.5
-light_bake_mode = 1
-light_cull_mask = -1
 shadow_enabled = true
-shadow_color = Color( 0, 0, 0, 1 )
-shadow_bias = 0.15
-shadow_contact = 0.0
-shadow_reverse_cull_face = false
-editor_only = false
-spot_range = 5.0
-spot_attenuation = 1.0
-spot_angle = 45.0
-spot_angle_attenuation = 1.0
-_sections_unfolded = [ "Shadow", "Transform" ]
-

@@ -23,8 +23,6 @@ config/icon="res://icon.png"
 [autoload]
 
 GameManager="*res://Scripts/game_manager.gd"
-RemoteInfoState="*res://Scripts/info_state_client.gd"
-RemoteDevice="*res://Scripts/remote_device_client.gd"
 InputManager="*res://Scripts/input_manager.gd"
 GameConnection="*res://Scripts/game_connection.gd"
 Configuration="*res://Scripts/persistent_configuration.gd"

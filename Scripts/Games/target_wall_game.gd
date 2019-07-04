@@ -1,17 +1,10 @@
-extends "res://Scripts/game.gd"
+extends Spatial
 
 const COLLIDER_SLOTS_NUMBER = 5
 const TOTAL_WAVES_NUMBER = 100
 
 export(PackedScene) var target_wall = null
 export(PackedScene) var score_animation = null
-
-var setpoint_positions = []
-var setpoint_position = 0
-
-var waves_count = 0
-var score = 0
-var score_state = 0
 
 onready var boundary_extents = $BoundaryArea/Boundaries.shape.extents
 
@@ -20,12 +13,21 @@ onready var player = $BoundaryArea/Boundaries/Player
 onready var collider_width = 2 * boundary_extents.y / COLLIDER_SLOTS_NUMBER
 onready var collider_top = -boundary_extents.y + collider_width / 2
 
+var setpoint_positions = []
+var setpoint_position = 0
+
+var waves_count = 0
+var score = 0
+var score_state = 0
+
+onready var input_axis = GameManager.player_controls[ get_player_variables()[ 0 ] ]
+
 static func get_player_variables():
 	return [ "Player" ]
 
 func _ready():
 	$GUI.set_timeouts( 3.0, 0.0 )
-	if InputAxis.is_calibrating: $GUI.set_max_effort( 100.0 )
+	if input_axis.is_calibrating: $GUI.set_max_effort( 100.0 )
 	else: $GUI.set_max_effort( 80.0 )
 	#if Controller.direction_axis == Controller.HORIZONTAL:
 	#	$Camera.rotate_z( PI / 2 )
@@ -37,10 +39,10 @@ func _ready():
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
-	var new_velocity = InputAxis.get_value() * boundary_extents.y
+	var new_velocity = input_axis.get_force() * boundary_extents.y
 	player.move_and_slide( Vector3.BACK * new_velocity )
 	
-	if not RemoteDevice.is_calibrating:
+	if not input_axis.is_calibrating:
 		var measure_position = player.translation.y / boundary_extents.y
 		DataLog.register_values( [ setpoint_position, player.translation.y, score_state ] )
 		score_state = 0
@@ -48,7 +50,7 @@ func _physics_process( delta ):
 func _set_setpoint():
 	if setpoint_positions.size() > 0:
 		setpoint_position = setpoint_positions.front()
-		InputAxis.set_feedback( setpoint_position )
+		input_axis.set_position( setpoint_position )
 		$GUI.display_setpoint( setpoint_position )
 
 func _on_GUI_game_timeout( timeouts_count ):
@@ -82,4 +84,4 @@ func _on_ScoreArea_collider_reached( collider ):
 	player.interact( collider )
 
 func _on_GUI_game_toggle( started ):
-	InputAxis.set_feedback( 0.0 )
+	input_axis.set_position( 0.0 )

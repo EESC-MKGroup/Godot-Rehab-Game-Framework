@@ -15,10 +15,12 @@ func _ready():
 	$UserInput.text = Configuration.get_parameter( "user_name" )
 	#$CalibrationToggle.pressed = InputAxis.is_calibrating
 	$GameSelector/SelectionList.list_entries( GameManager.list_games() )
-	$AddressInput/InterfaceSelector/SelectionList.list_entries( InputManager.interfaces_list )
-	for interface_name in InputManager.interfaces_list:
+	$AddressInput/InterfaceSelector/SelectionList.list_entries( InputManager.interface_names )
+	for interface_name in InputManager.interface_names:
 		var device = InputManager.get_interface_device( interface_name )
 		device.connect( "state_changed", self, "_on_state_changed" )
+		device.connect( "configs_listed", self, "_on_configs_listed" )
+		device.connect( "config_received", self, "_on_config_received" )
 		device.connect( "socket_connected", self, "_on_socket_connected" )
 	set_process( false )
 
@@ -37,20 +39,23 @@ func _on_ConnectButton_pressed():
 	input_device.connect_socket( $AddressInput.text )
 #	DataLog.create_new_log( user_name, time_stamp )
 
-func _on_state_changed( new_state ):
-	match new_state:
-		State.LIST_CONFIGS:
-			$DeviceSelector/SelectionList.list_entries( input_device.available_configurations )
-		State.GET_CONFIG:
-			$AxisSelector/SelectionList.list_entries( input_device.axes_list )
-		State.OFFSET:
+func _on_configs_listed( available_configurations ):
+	print( "_on_configs_listed" )
+	$DeviceSelector/SelectionList.list_entries( available_configurations )
+
+func _on_config_received( device_id, axes_list ):
+	print( "_on_config_received" )
+	$AxisSelector/SelectionList.list_entries( axes_list )
+
+func _on_state_changed( state_reply ):
+	match state_reply:
+		InputManager.Reply.OFFSETING:
 			$OffsetToggle.pressed = true
 			$CalibrationToggle.pressed = false
-		State.CALIBRATION:
+		InputManager.Reply.CALIBRATING:
 			$OffsetToggle.pressed = false
 			$CalibrationToggle.pressed = true
 		_:
-#		State.PASSIVE:
 			$OffsetToggle.pressed = false
 			$CalibrationToggle.pressed = false
 
@@ -74,29 +79,31 @@ func _on_Game_entry_selected( index, entry_name ):
 
 func _on_Variable_entry_selected( index, entry_name ):
 	print( "_on_Variable_entry_selected" )
-	#GameManager.player_controls[ game_name + "_" + entry_name ] = InputAxis.new( InputDevice.interface_index, InputAxis.axis_index )
+	GameManager.player_controls[ game_name + "_" + entry_name ] = input_axis
 
 func _on_socket_connected():
 	print( "_on_socket_connected" )
 	Configuration.set_parameter( "server_address", $AddressInput.text )
 	Configuration.set_parameter( "user_name", $UserInput.text )
-	InputDevice.state = State.LIST_CONFIGS
+	input_device.request_available_configurations()
 
 func _on_AddressInput_text_changed( new_text ):
 	print( "_on_AddressInput_text_changed" )
 
 func _on_SetpointSlider_value_changed( value ):
 	print( "_on_SetpointSlider_value_changed" )
-	InputAxis.set_feedback( value )
+	input_axis.set_feedback( value )
 
 func _on_CalibrationToggle_toggled( button_pressed ):
 	print( "_on_CalibrationToggle_toggled" )
-	InputDevice.state = InputDevice.CALIBRATION if button_pressed else InputDevice.PASSIVE
-	InputAxis.is_calibrating = button_pressed
+	if button_pressed: input_device.request_state_change( InputManager.Request.CALIBRATE )
+	else: input_device.request_state_change( InputManager.Request.OPERATE )
+	input_axis.is_calibrating = button_pressed
 
 func _on_OffsetToggle_toggled( button_pressed ):
 	print( "_on_OffsetToggle_toggled" )
-	InputDevice.state = InputDevice.OFFSET if button_pressed else InputDevice.PASSIVE
+	if button_pressed: input_device.request_state_change( InputManager.Request.OFFSET )
+	else: input_device.request_state_change( InputManager.Request.OPERATE )
 
 func _on_PlayButton_pressed():
 	GameManager.load_game( game_name )

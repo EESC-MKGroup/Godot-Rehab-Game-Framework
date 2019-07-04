@@ -1,4 +1,4 @@
-extends "res://Scripts/game.gd"
+extends Spatial
 
 enum Direction { NONE = 0, UP = 1, DOWN = -1 }
 
@@ -21,13 +21,15 @@ var direction = Direction.NONE
 
 var score_state = 0
 
+onready var input_axis = GameManager.player_controls[ get_player_variables()[ 0 ] ]
+
 static func get_player_variables():
 	return [ "Hand" ]
 
 func _ready():
 #	if Controller.direction_axis == Controller.HORIZONTAL:
 #		$Camera.rotate_z( PI / 2 )
-	if RemoteDevice.is_calibrating: 
+	if input_axis.is_calibrating: 
 		cycles_number = MAX_CYCLES
 		$GUI.set_timeouts( MAX_TIMEOUT, REST_TIMEOUT )
 		$GUI.set_max_effort( 100.0 )
@@ -36,11 +38,11 @@ func _ready():
 		cycles_number = HOLD_CYCLES
 		$GUI.set_timeouts( HOLD_TIMEOUT, REST_TIMEOUT )
 		$GUI.set_max_effort( 20.0 )
-	RemoteDevice.set_axis_values( 0.0 )
+	input_axis.set_axis_values( 0.0 )
 	$GUI.display_setpoint( 0.0 )
 
 func _physics_process( delta ):
-	var player_force = abs( InputAxis.get_value() * space_scale )
+	var player_force = abs( input_axis.get_force() * space_scale )
 	var spring_force = abs( spring.get_force() )
 	
 	effector.add_central_force( Vector3.UP * ( player_force - spring_force ) )
@@ -48,9 +50,9 @@ func _physics_process( delta ):
 	force_display.text = ( "%+4.1fN" % player_force )
 	
 	var player_position = effector.translation.y / space_scale
-	InputAxis.set_feedback( player_position )
+	input_axis.set_position( player_position )
 	
-	if not RemoteDevice.is_calibrating:
+	if not input_axis.is_calibrating:
 		DataLog.register_values( [ direction, player_force, player_position, score_state ] )
 
 func _on_GUI_game_timeout( timeouts_count ):
@@ -74,7 +76,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 		$GUI.display_setpoint( 0.0 )
 
 func _on_GUI_game_toggle( started ):
-	if not RemoteDevice.is_calibrating: $SpringBase/Target.show()
+	if not input_axis.is_calibrating: $SpringBase/Target.show()
 
 func _on_Target_body_entered( body ):
 	if direction != Direction.NONE: score_state = 1

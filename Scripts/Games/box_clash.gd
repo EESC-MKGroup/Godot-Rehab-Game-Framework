@@ -1,11 +1,13 @@
-extends "res://Scripts/game.gd"
+extends Spatial
 
 onready var boundary_1 = $Ground/Platform/Boundaries/CollisionShape1
 onready var boundary_2 = $Ground/Platform/Boundaries/CollisionShape2
 onready var movement_range = abs( boundary_1.translation.z - boundary_2.translation.z )
 
+onready var input_axis = GameManager.player_controls[ get_player_variables()[ 0 ] ]
+
 static func get_player_variables():
-	return [ "Box1", "Box2" ]
+	return [ "Player Box" ]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,7 +29,7 @@ func _on_players_connected():
 	$Box2.rpc( "update_server", 0.0, 0.0, OS.get_ticks_msec(), OS.get_ticks_msec() )
 
 func get_player_force( body ):
-	return body.transform.basis * InputAxis.get_value() * movement_range
+	return body.transform.basis * input_axis.get_value() * movement_range
 
 func get_environment_force( body ):
 	return body.transform.basis * $Spring.get_force()
