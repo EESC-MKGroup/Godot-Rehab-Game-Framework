@@ -22,9 +22,6 @@ var user_name = "" setget _set_user
 func _init( input_interface ):
 	interface = input_interface
 
-func _ready():
-	set_physics_process( false )
-
 func request_available_configurations():
 	print( "requesting configurations" )
 	interface.set_request( InputManager.Request.LIST_CONFIGS )
@@ -67,6 +64,7 @@ func _get_state_reply():
 	if reply_code != previous_reply:
 		print( "got reply " + str(reply_code) )
 		match reply_code:
+			0: print( "invalid code" )
 			InputManager.Reply.CONFIGS_LISTED:
 				var available_configurations = interface.get_available_devices()
 				emit_signal( "configs_listed", available_configurations )
@@ -78,13 +76,13 @@ func _get_state_reply():
 				var axes_list = device_info[ "axes" ]
 				_reset_axes( axes_list )
 				emit_signal( "config_received", string_id, axes_list )
-			InputManager.Reply.USER_SET: pass
+			InputManager.Reply.USER_SET: continue
 			_: emit_signal( "state_changed", reply_code )
-		print( "reply received: " + str(reply_code) )
 	previous_reply = reply_code
 
 func update():
 	interface.set_axis_setpoints( position_setpoints, force_setpoints )
+	interface.update_data()
 	positions = interface.get_axis_positions()
 	forces = interface.get_axis_forces()
 	_get_state_reply()
@@ -93,7 +91,6 @@ func connect_socket( host ):
 	if interface != null:
 		if interface.connect_socket( host ):
 			print( "connected to " + host )
-			set_physics_process( true )
 			emit_signal( "socket_connected" )
 
 func disconnect_socket():

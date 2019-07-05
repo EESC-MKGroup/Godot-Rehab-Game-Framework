@@ -433,6 +433,7 @@ custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+disabled = true
 text = "Enabled: "
 
 [node name="OffsetToggle" type="CheckButton" parent="ControlsPanel"]
@@ -447,6 +448,7 @@ custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+disabled = true
 text = "Offset: "
 
 [node name="CalibrationToggle" type="CheckButton" parent="ControlsPanel"]
@@ -463,6 +465,7 @@ custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+disabled = true
 text = "Calibration: "
 
 [node name="OperationToggle" type="CheckButton" parent="ControlsPanel"]
@@ -479,6 +482,7 @@ custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+disabled = true
 text = "Operation: "
 [connection signal="entry_selected" from="ControlsPanel/DeviceSelector/SelectionList" to="ControlsPanel" method="_on_Device_entry_selected"]
 [connection signal="entry_selected" from="ControlsPanel/AxisSelector/SelectionList" to="ControlsPanel" method="_on_Axis_entry_selected"]

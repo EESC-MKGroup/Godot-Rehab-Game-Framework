@@ -20,6 +20,9 @@ func connect_socket( string_id ):
 func disconnect_socket():
 	pass
 
+func update_data():
+	pass
+
 func set_request( new_state, info = "" ):
 	state = new_state
 	if state == InputManager.Request.SET_CONFIG:
