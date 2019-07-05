@@ -22,7 +22,7 @@ func get_position():
 
 func set_position( setpoint ):
 	setpoint = _denormalize( setpoint, position_limits )
-	input_device.set_axis_setpoint( axis_index, setpoint / max_effort )
+	input_device.set_axis_position( axis_index, setpoint / max_effort )
 
 func get_force():
 	var force = input_device.get_axis_force( axis_index )
@@ -32,7 +32,7 @@ func get_force():
 
 func set_force( setpoint ):
 	setpoint = _denormalize( setpoint, force_limits )
-	input_device.set_axis_setpoint( axis_index, setpoint / max_effort )
+	input_device.set_axis_force( axis_index, setpoint / max_effort )
 
 func _set_calibration( enabled ):
 	if enabled: _reset_limits()

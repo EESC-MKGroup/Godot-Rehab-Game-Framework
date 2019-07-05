@@ -121,9 +121,9 @@ caret_blink = true
 [node name="UserLabel" type="Label" parent="ControlsPanel/UserInput"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = -105.0
+margin_left = -102.0
 margin_top = -24.5
-margin_right = -5.0
+margin_right = -2.0
 margin_bottom = 25.5
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -133,9 +133,9 @@ valign = 1
 
 [node name="DeviceSelector" type="Panel" parent="ControlsPanel"]
 anchor_right = 1.0
-margin_left = 156.0
+margin_left = 151.0
 margin_top = 86.0
-margin_right = -560.0
+margin_right = -571.0
 margin_bottom = 138.0
 
 [node name="SelectionList" type="MenuButton" parent="ControlsPanel/DeviceSelector"]
@@ -149,9 +149,9 @@ script = ExtResource( 6 )
 [node name="Label" type="Label" parent="ControlsPanel/DeviceSelector"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = -130.0
+margin_left = -125.0
 margin_top = -25.0
-margin_right = -7.0
+margin_right = -2.0
 margin_bottom = 25.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -161,9 +161,9 @@ valign = 1
 
 [node name="AxisSelector" type="Panel" parent="ControlsPanel"]
 anchor_right = 1.0
-margin_left = 820.0
+margin_left = 809.0
 margin_top = 86.0
-margin_right = -36.0
+margin_right = -33.0
 margin_bottom = 138.0
 
 [node name="SelectionList" type="MenuButton" parent="ControlsPanel/AxisSelector"]
@@ -177,9 +177,9 @@ script = ExtResource( 6 )
 [node name="Label" type="Label" parent="ControlsPanel/AxisSelector"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = -90.0
+margin_left = -87.0
 margin_top = -25.0
-margin_right = -10.0
+margin_right = -7.0
 margin_bottom = 25.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -261,19 +261,19 @@ caret_blink = true
 [node name="AddressLabel" type="Label" parent="ControlsPanel/AddressInput"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = -300.0
+margin_left = -295.0
 margin_top = -25.0
-margin_right = -150.0
+margin_right = -132.0
 margin_bottom = 25.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Address:"
+text = "Interface:"
 align = 1
 valign = 1
 
 [node name="InterfaceSelector" type="Panel" parent="ControlsPanel/AddressInput"]
 anchor_right = 1.0
-margin_left = -144.0
+margin_left = -122.0
 margin_top = -1.0
 margin_right = -375.0
 margin_bottom = 51.0
@@ -311,9 +311,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 34.0
-margin_top = -58.0
+margin_top = -60.0
 margin_right = -841.0
-margin_bottom = -40.0
+margin_bottom = -42.0
 rect_scale = Vector2( 1.5, 1.5 )
 focus_mode = 0
 size_flags_vertical = 1
@@ -341,9 +341,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 33.0
-margin_top = 11.0
+margin_top = 9.0
 margin_right = -842.0
-margin_bottom = 27.0
+margin_bottom = 25.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 1
 min_value = -1.0
@@ -368,9 +368,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 648.0
-margin_top = -58.0
+margin_top = -60.0
 margin_right = -230.0
-margin_bottom = -40.0
+margin_bottom = -42.0
 rect_scale = Vector2( 1.5, 1.5 )
 focus_mode = 0
 size_flags_vertical = 1
@@ -399,9 +399,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 648.0
-margin_top = 11.0
+margin_top = 9.0
 margin_right = -229.0
-margin_bottom = 27.0
+margin_bottom = 25.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 1
 min_value = -1.0
@@ -421,51 +421,65 @@ text = "Force setpoint: 0"
 align = 1
 valign = 1
 
+[node name="EnabledToggle" type="CheckButton" parent="ControlsPanel"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 52.0
+margin_top = 46.0
+margin_right = 272.0
+margin_bottom = 96.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "Enabled: "
+
+[node name="OffsetToggle" type="CheckButton" parent="ControlsPanel"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 327.0
+margin_top = 46.0
+margin_right = 537.0
+margin_bottom = 96.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "Offset: "
+
 [node name="CalibrationToggle" type="CheckButton" parent="ControlsPanel"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -145.0
-margin_top = 48.0
-margin_right = 147.0
-margin_bottom = 98.0
+margin_left = -39.0
+margin_top = 46.0
+margin_right = 253.0
+margin_bottom = 96.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
-text = "Calibration:  "
-
-[node name="OffsetToggle" type="CheckButton" parent="ControlsPanel"]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 117.0
-margin_top = 48.0
-margin_right = 327.0
-margin_bottom = 98.0
-custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
-custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
-text = "Offset:   "
+text = "Calibration: "
 
 [node name="OperationToggle" type="CheckButton" parent="ControlsPanel"]
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -371.0
-margin_top = 48.0
-margin_right = -102.0
-margin_bottom = 98.0
+margin_left = -325.0
+margin_top = 46.0
+margin_right = -56.0
+margin_bottom = 96.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
-text = "Operation:"
+text = "Operation: "
 [connection signal="entry_selected" from="ControlsPanel/DeviceSelector/SelectionList" to="ControlsPanel" method="_on_Device_entry_selected"]
 [connection signal="entry_selected" from="ControlsPanel/AxisSelector/SelectionList" to="ControlsPanel" method="_on_Axis_entry_selected"]
 [connection signal="entry_selected" from="ControlsPanel/GameSelector/SelectionList" to="ControlsPanel" method="_on_Game_entry_selected"]
@@ -474,8 +488,9 @@ text = "Operation:"
 [connection signal="entry_selected" from="ControlsPanel/AddressInput/InterfaceSelector/SelectionList" to="ControlsPanel" method="_on_Interface_entry_selected"]
 [connection signal="pressed" from="ControlsPanel/ConnectButton" to="ControlsPanel" method="_on_ConnectButton_pressed"]
 [connection signal="pressed" from="ControlsPanel/PlayButton" to="ControlsPanel" method="_on_PlayButton_pressed"]
-[connection signal="value_changed" from="ControlsPanel/PositionSetpointSlider" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]
-[connection signal="value_changed" from="ControlsPanel/ForceSetpointSlider" to="ControlsPanel" method="_on_SetpointSlider_value_changed"]
-[connection signal="toggled" from="ControlsPanel/CalibrationToggle" to="ControlsPanel" method="_on_CalibrationToggle_toggled"]
+[connection signal="value_changed" from="ControlsPanel/PositionSetpointSlider" to="ControlsPanel" method="_on_PositionSetpointSlider_value_changed"]
+[connection signal="value_changed" from="ControlsPanel/ForceSetpointSlider" to="ControlsPanel" method="_on_ForceSetpointSlider_value_changed"]
+[connection signal="toggled" from="ControlsPanel/EnabledToggle" to="ControlsPanel" method="_on_EnabledToggle_toggled"]
 [connection signal="toggled" from="ControlsPanel/OffsetToggle" to="ControlsPanel" method="_on_DirectionSelector_toggled"]
-[connection signal="toggled" from="ControlsPanel/OperationToggle" to="ControlsPanel" method="_on_CalibrationToggle_toggled"]
+[connection signal="toggled" from="ControlsPanel/CalibrationToggle" to="ControlsPanel" method="_on_CalibrationToggle_toggled"]
+[connection signal="toggled" from="ControlsPanel/OperationToggle" to="ControlsPanel" method="_on_OperationToggle_toggled"]

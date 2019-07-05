@@ -101,4 +101,4 @@ func set_axis_setpoints( position_setpoints, force_setpoints ):
 			if variable == Variable.POSITION: output = position_setpoints[ axis_index ]
 			elif variable == Variable.FORCE: output = force_setpoints[ axis_index ]
 			output_buffer.put_float( output )
-	data_connection.put_data( output_buffer.data_array )
+	data_connection.put_packet( output_buffer.data_array )

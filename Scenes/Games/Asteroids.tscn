@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Games/target_wall_game.gd" type="Script" id=1]
-[ext_resource path="res://Actors/Background.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Actors/SpaceShip1.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Audios/Music/background_ambience.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Actors/AsteroidWall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Actors/ScoreWarpout.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Actors/Background.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Actors/SpaceShip1.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Audios/Music/background_ambience.ogg" type="AudioStream" id=7]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 10, 0.5, 2 )
@@ -22,8 +24,10 @@ var old_target_index = 0
 [node name="Game" type="Spatial"]
 transform = Transform( 1, -2.84217e-14, -1.12515e-10, -1.12515e-10, -0.000345306, -1, -2.84217e-14, 1, -0.000345306, 0, 0, 0 )
 script = ExtResource( 1 )
+target_wall = ExtResource( 2 )
+score_animation = ExtResource( 3 )
 
-[node name="Background" parent="." instance=ExtResource( 2 )]
+[node name="Background" parent="." instance=ExtResource( 4 )]
 modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
 
 [node name="BoundaryWall" type="StaticBody" parent="."]
@@ -46,7 +50,7 @@ transform = Transform( 1, -8.74228e-08, 1.50996e-07, -8.74228e-08, -1, 0, 1.5099
 shape = SubResource( 2 )
 script = SubResource( 3 )
 
-[node name="Player" parent="BoundaryArea/Boundaries" instance=ExtResource( 3 )]
+[node name="Player" parent="BoundaryArea/Boundaries" instance=ExtResource( 5 )]
 transform = Transform( -1.62921e-07, 1, -6.67522e-15, 1, 1.62921e-07, 3.25846e-07, 3.25846e-07, 6.68909e-14, -1, -7.89499, 5.76256e-09, 0.349952 )
 collision_layer = 3
 
@@ -60,10 +64,10 @@ size = 10.5
 transform = Transform( 1, 8.95487e-07, 6.04247e-07, 8.95278e-07, -0.373954, -0.927447, -6.04556e-07, 0.927447, -0.373954, 6.80916e-06, -10.4496, -6.15625 )
 light_energy = 3.0
 
-[node name="GUI" parent="." instance=ExtResource( 4 )]
+[node name="GUI" parent="." instance=ExtResource( 6 )]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 5 )
+stream = ExtResource( 7 )
 autoplay = true
 [connection signal="area_exited" from="BoundaryArea" to="." method="_on_BoundaryArea_area_exited"]
 [connection signal="body_entered" from="BoundaryArea" to="." method="_on_BoundaryArea_body_entered"]

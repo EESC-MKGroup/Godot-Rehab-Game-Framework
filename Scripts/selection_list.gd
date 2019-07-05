@@ -21,7 +21,6 @@ func list_entries( entries ):
 	refresh_list()
 
 func _on_index_pressed( index ):
-	print( "_on_index_pressed" )
 	var entry_name = get_popup().get_item_text( index )
 	text = entry_name
 	emit_signal( "entry_selected", index, entry_name )

@@ -31,8 +31,10 @@ func get_reply():
 
 func get_available_devices():
 	var device_ids_list = Input.get_connected_joypads()
+	print( device_ids_list.size() )
 	for device_id in device_ids_list:
 		available_devices[ Input.get_joy_name( device_id ) ] = device_id
+		print( Input.get_joy_name( device_id ) )
 	print( available_devices )
 	return available_devices.keys()
 

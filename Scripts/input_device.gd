@@ -21,9 +21,12 @@ var user_name = "" setget _set_user
 
 func _init( input_interface ):
 	interface = input_interface
-	set_process( false )
+
+func _ready():
+	set_physics_process( false )
 
 func request_available_configurations():
+	print( "requesting configurations" )
 	interface.set_request( InputManager.Request.LIST_CONFIGS )
 
 func _set_configuration( value ):
@@ -38,14 +41,17 @@ func request_state_change( state_request ):
 	previous_request = state_request
 
 func get_axis_position( axis_index ):
-	return interface.get_axis_position( axis_index ) if axis_index < axes_number else 0.0
+	return positions[ axis_index ] if axis_index < positions.size() else 0.0
 
 func get_axis_force( axis_index ):
-	return interface.get_axis_force( axis_index ) if axis_index < axes_number else 0.0
+	return forces[ axis_index ] if axis_index < forces.size() else 0.0
 
-func set_axis_setpoint( axis_index, position, force ):
+func set_axis_position( axis_index, position ):
 	if axis_index >= position_setpoints.size(): return
 	position_setpoints[ axis_index ] = position
+
+func set_axis_force( axis_index, force ):
+	if axis_index >= position_setpoints.size(): return
 	force_setpoints[ axis_index ] = force
 
 func _reset_axes( axes_list ):
@@ -59,6 +65,7 @@ func _reset_axes( axes_list ):
 func _get_state_reply():
 	var reply_code = interface.get_reply()
 	if reply_code != previous_reply:
+		print( "got reply " + str(reply_code) )
 		match reply_code:
 			InputManager.Reply.CONFIGS_LISTED:
 				var available_configurations = interface.get_available_devices()
@@ -76,7 +83,7 @@ func _get_state_reply():
 		print( "reply received: " + str(reply_code) )
 	previous_reply = reply_code
 
-func _physics_process( delta ):
+func update():
 	interface.set_axis_setpoints( position_setpoints, force_setpoints )
 	positions = interface.get_axis_positions()
 	forces = interface.get_axis_forces()
@@ -86,7 +93,7 @@ func connect_socket( host ):
 	if interface != null:
 		if interface.connect_socket( host ):
 			print( "connected to " + host )
-			set_process( true )
+			set_physics_process( true )
 			emit_signal( "socket_connected" )
 
 func disconnect_socket():
