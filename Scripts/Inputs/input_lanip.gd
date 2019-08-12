@@ -54,25 +54,26 @@ func set_request( request_code, info_string = "" ):
 		state_buffer.put_u8( request_code )
 		state_buffer.put_data( info_string.to_ascii() )
 		state_connection.put_data( state_buffer.data_array )
-	print( "set request " + str(request_code) + "[" + info_string + "]" )
+	print( "set request " + str(request_code) + "|" + info_string )
 
 func update_data():
 	if state_connection.is_connected_to_host():
 		if state_connection.get_available_bytes() > 0:
 			reply_code = state_connection.get_u8()
-			var reply_info = state_connection.get_data( state_connection.get_available_bytes() - 1 )
-			print( reply_info[ 1 ].get_string_from_ascii() )
+			var reply_info_string = ""
+			if state_connection.get_available_bytes() > 0:
+				var reply_info = state_connection.get_data( state_connection.get_available_bytes() - 1 )
+				reply_info_string = reply_info[ 1 ].get_string_from_ascii()
+			print( "got reply " + str(reply_code) + "|" + reply_info_string )
 			match reply_code:
 				InputManager.Reply.CONFIGS_LISTED:
 					print( "configs listed" )
-					var devices_info_string = reply_info[ 1 ].get_string_from_ascii()
-					available_devices = parse_json( devices_info_string )[ "robots" ]
-				InputManager.Reply.GOT_CONFIG:
+					available_devices = parse_json( reply_info_string )[ "robots" ]
+				InputManager.Reply.GOT_CONFIG, InputManager.Reply.CONFIG_SET:
 					print( "got listed" )
-					var device_info_string = reply_info[ 1 ].get_string_from_ascii()
-					device_info = parse_json( device_info_string )
+					device_info = parse_json( reply_info_string )
 		if data_connection.get_available_packet_count() > 0:
-			input_buffer.set_position( 0 )
+			input_buffer.seek( 0 )
 			input_buffer.put_data( data_connection.get_packet() )
 			var inputs_number = input_buffer.get_u8()
 			for input_index in range( inputs_number ):
@@ -97,7 +98,8 @@ func get_axis_forces():
 	return forces
 
 func set_axis_setpoints( position_setpoints, force_setpoints ):
-	if state_connection.is_connected_to_host():
+	if state_connection.is_connected_to_host() and reply_code == InputManager.Reply.OPERATING:
+		output_buffer.clear()
 		output_buffer.seek( 0 )
 		var axes_number = position_setpoints.size()
 		output_buffer.put_u8( axes_number )
@@ -108,4 +110,5 @@ func set_axis_setpoints( position_setpoints, force_setpoints ):
 				if variable == Variable.POSITION: output = position_setpoints[ axis_index ]
 				elif variable == Variable.FORCE: output = force_setpoints[ axis_index ]
 				output_buffer.put_float( output )
+			print( "set axis ", axis_index, " position=", position_setpoints[ axis_index ],", force=", force_setpoints[ axis_index ] )
 		data_connection.put_packet( output_buffer.data_array )

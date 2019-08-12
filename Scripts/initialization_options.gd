@@ -42,7 +42,7 @@ func _on_ConnectButton_pressed():
 
 func _on_configs_listed( available_configurations ):
 	$DeviceSelector/SelectionList.list_entries( available_configurations )
-	$DeviceSelector/SelectionList.select_entry_name( Configuration.get_parameter( "device" ) )
+	#$DeviceSelector/SelectionList.select_entry_name( Configuration.get_parameter( "device" ) )
 
 func _on_config_received( device_id, axes_list ):
 	$AxisSelector/SelectionList.list_entries( axes_list )

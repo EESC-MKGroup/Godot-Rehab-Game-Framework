@@ -7,14 +7,14 @@ signal socket_connected
 
 var interface = null
 
+var previous_request = 0
+var previous_reply = 0
+
 var axes_number = 0
 var positions = [ 0 ]
 var forces = [ 0 ]
 var position_setpoints = [ 0 ]
 var force_setpoints = [ 0 ]
-
-var previous_request = 0
-var previous_reply = 0
 
 var configuration = "" setget _set_configuration
 var user_name = "" setget _set_user
@@ -62,15 +62,12 @@ func _reset_axes( axes_list ):
 func _get_state_reply():
 	var reply_code = interface.get_reply()
 	if reply_code != previous_reply:
-		print( "got reply " + str(reply_code) )
 		match reply_code:
 			0: print( "invalid code" )
 			InputManager.Reply.CONFIGS_LISTED:
 				var available_configurations = interface.get_available_devices()
 				emit_signal( "configs_listed", available_configurations )
-			InputManager.Reply.CONFIG_SET:
-				interface.set_request( InputManager.Request.GET_CONFIG )
-			InputManager.Reply.GOT_CONFIG:
+			InputManager.Reply.CONFIG_SET, InputManager.Reply.GOT_CONFIG:
 				var device_info = interface.get_device_info()
 				var string_id = device_info[ "id" ]
 				var axes_list = device_info[ "axes" ]
@@ -94,7 +91,6 @@ func connect_socket( host ):
 			emit_signal( "socket_connected" )
 
 func disconnect_socket():
-	set_process( false )
 	interface.disconnect_socket()
 
 func _notification( what ):
