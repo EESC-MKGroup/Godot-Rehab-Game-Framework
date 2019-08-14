@@ -20,17 +20,17 @@ func connect_socket( string_id ):
 func disconnect_socket():
 	pass
 
-func update_data():
-	pass
+func get_update( positions, forces, impedances ):
+	for axis_index in range( JOY_AXES.size() ):
+		positions[ axis_index ][ 0 ] = Input.get_joy_axis( device_id, axis_index )
+		forces[ axis_index ][ 0 ] = Input.get_joy_axis( device_id, axis_index )
+	return state
 
 func set_request( new_state, info = "" ):
 	state = new_state
 	if state == InputManager.Request.SET_CONFIG:
 		device_id = available_devices.get( info )
 	print( "set state " + str(state) )
-
-func get_reply():
-	return state
 
 func get_available_devices():
 	var device_ids_list = Input.get_connected_joypads()
@@ -47,19 +47,7 @@ func get_device_info():
 	device_info[ "axes" ] = JOY_AXES
 	return device_info
 
-func get_axis_positions():
-	var positions = []
-	for axis_index in range( JOY_AXES.size() ):
-		positions.append( Input.get_joy_axis( device_id, axis_index ) )
-	return positions
-
-func get_axis_forces():
-	var forces = []
-	for axis_index in range( JOY_AXES.size() ):
-		forces.append( Input.get_joy_axis( device_id, axis_index ) )
-	return forces
-
-func set_axis_setpoints( position_setpoints, force_setpoints ):
+func set_setpoints( position_setpoints, force_setpoints ):
 	if force_setpoints.size() > 6:
 		var x_feedback = force_setpoints[ 0 ] | ( force_setpoints[ 1 ] << 16 )
 		var y_feedback = force_setpoints[ 2 ] | ( force_setpoints[ 3 ] << 16 )

@@ -16,8 +16,11 @@ func _init( device, index ):
 
 func get_position():
 	var position = input_device.get_axis_position( axis_index )
-	if is_calibrating: position_limits = _check_limits( position_limits, position )
-	elif position_limits != null: position = _normalize( position, position_limits )
+	if is_calibrating: position_limits = _check_limits( position_limits, position[ 0 ] )
+	elif position_limits != null: 
+		position[ 0 ] = _normalize( position[ 0 ], position_limits )
+		position[ 1 ] = _normalize( position[ 1 ], position_limits )
+		position[ 2 ] = _normalize( position[ 2 ], position_limits )
 	return position * max_effort
 
 func set_position( setpoint ):
@@ -33,6 +36,9 @@ func get_force():
 func set_force( setpoint ):
 	setpoint = _denormalize( setpoint, force_limits )
 	input_device.set_axis_force( axis_index, setpoint / max_effort )
+
+func get_impedance(): 
+	return input_device.get_axis_impedance( axis_index )
 
 func _set_calibration( enabled ):
 	if enabled: _reset_limits()

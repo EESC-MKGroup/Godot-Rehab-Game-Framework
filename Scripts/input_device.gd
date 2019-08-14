@@ -11,8 +11,9 @@ var previous_request = 0
 var previous_reply = 0
 
 var axes_number = 0
-var positions = [ 0 ]
+var positions = [ [ 0.0, 0.0, 0.0 ] ]
 var forces = [ 0 ]
+var impedances = [ [ 0.1, 0.1, 0.1 ] ]
 var position_setpoints = [ 0 ]
 var force_setpoints = [ 0 ]
 
@@ -42,24 +43,32 @@ func get_axis_position( axis_index ):
 func get_axis_force( axis_index ):
 	return forces[ axis_index ] if axis_index < forces.size() else 0.0
 
-func set_axis_position( axis_index, position ):
-	if axis_index >= position_setpoints.size(): return
-	position_setpoints[ axis_index ] = position
+func get_axis_impedance( axis_index ):
+	return impedances[ axis_index ] if axis_index < impedances.size() else 0.0
 
-func set_axis_force( axis_index, force ):
+func set_axis_position( axis_index, value ):
 	if axis_index >= position_setpoints.size(): return
-	force_setpoints[ axis_index ] = force
+	position_setpoints[ axis_index ] = value
+
+func set_axis_force( axis_index, value ):
+	if axis_index >= position_setpoints.size(): return
+	force_setpoints[ axis_index ] = value
 
 func _reset_axes( axes_list ):
+	positions = []
+	forces = []
+	impedances = []
 	position_setpoints = []
 	force_setpoints = []
 	axes_number = axes_list.size()
 	for axis_index in range( axes_number ):
+		positions.append( [ 0.0, 0.0, 0.0 ] )
+		forces.append( 0.0 )
+		impedances.append( [ 0.1, 0.1, 0.1 ] )
 		position_setpoints.append( 0.0 )
 		force_setpoints.append( 0.0 )
 
-func _get_state_reply():
-	var reply_code = interface.get_reply()
+func _handle_state_reply( reply_code ):
 	if reply_code != previous_reply:
 		match reply_code:
 			InputManager.Reply.CONFIGS_LISTED:
@@ -76,11 +85,9 @@ func _get_state_reply():
 	previous_reply = reply_code
 
 func update():
-	interface.set_axis_setpoints( position_setpoints, force_setpoints )
-	interface.update_data()
-	positions = interface.get_axis_positions()
-	forces = interface.get_axis_forces()
-	_get_state_reply()
+	interface.set_setpoints( position_setpoints, force_setpoints )
+	var reply_code = interface.get_update( positions, forces, impedances )
+	_handle_state_reply( reply_code )
 
 func connect_socket( host ):
 	if interface != null:

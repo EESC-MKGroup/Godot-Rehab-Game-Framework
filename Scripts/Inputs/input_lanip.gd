@@ -1,7 +1,5 @@
 extends Node
 
-enum Variable { POSITION, VELOCITY, ACCELERATION, FORCE, INERTIA, STIFFNESS, DAMPING, TOTAL_NUMBER }
-
 const BUFFER_SIZE = 512
 
 var state_connection = StreamPeerTCP.new()
@@ -16,9 +14,6 @@ var device_info = {}
 
 var device_id = 0
 var reply_code = 0
-
-var positions = [ 0 ]
-var forces = [ 0 ]
 
 static func get_id():
 	return "IP"
@@ -54,10 +49,9 @@ func set_request( request_code, info_string = "" ):
 		state_buffer.put_u8( request_code )
 		state_buffer.put_data( info_string.to_ascii() )
 		state_connection.put_data( state_buffer.data_array )
-		data_connection.put_packet( output_buffer.data_array )
 	print( "set request " + str(request_code) + "|" + info_string )
 
-func update_data():
+func get_update( positions, forces, impedances ):
 	if state_connection.is_connected_to_host():
 		if state_connection.get_available_bytes() > 0:
 			var first_byte = state_connection.get_u8()
@@ -78,12 +72,14 @@ func update_data():
 			var inputs_number = input_buffer.get_u8()
 			for input_index in range( inputs_number ):
 				var axis_index = input_buffer.get_u8()
-				for variable in range( Variable.TOTAL_NUMBER ):
-					if variable == Variable.POSITION: positions[ axis_index ] = input_buffer.get_float()
-					elif variable == Variable.FORCE: forces[ axis_index ] = input_buffer.get_float()
+				positions[ axis_index ][ 0 ] = input_buffer.get_float()
+				positions[ axis_index ][ 1 ] = input_buffer.get_float()
+				positions[ axis_index ][ 2 ] = input_buffer.get_float()
+				forces[ axis_index ] = input_buffer.get_float()
+				impedances[ axis_index ][ 0 ] = input_buffer.get_float()
+				impedances[ axis_index ][ 1 ] = input_buffer.get_float()
+				impedances[ axis_index ][ 2 ] = input_buffer.get_float()
 				#print( "got axis ", axis_index, " position=", positions[ axis_index ],", force=", forces[ axis_index ] )
-
-func get_reply():
 	return reply_code
 
 func get_available_devices():
@@ -92,22 +88,18 @@ func get_available_devices():
 func get_device_info():
 	return device_info
 
-func get_axis_positions():
-	return positions
-
-func get_axis_forces():
-	return forces
-
-func set_axis_setpoints( position_setpoints, force_setpoints ):
+func set_setpoints( position_setpoints, force_setpoints ):
 	if state_connection.is_connected_to_host() and reply_code == InputManager.Reply.OPERATING:
 		output_buffer.clear()
 		var axes_number = position_setpoints.size()
 		output_buffer.put_u8( axes_number )
 		for axis_index in range( axes_number ):
 			output_buffer.put_u8( axis_index )
-			for variable in range( Variable.TOTAL_NUMBER ):
-				var output = 0.0
-				if variable == Variable.POSITION: output = position_setpoints[ axis_index ]
-				elif variable == Variable.FORCE: output = force_setpoints[ axis_index ]
-				output_buffer.put_float( output )
+			output_buffer.put_float( position_setpoints[ axis_index ] )
+			output_buffer.put_float( 0.0 )
+			output_buffer.put_float( 0.0 )
+			output_buffer.put_float( force_setpoints[ axis_index ] )
+			output_buffer.put_float( 0.0 )
+			output_buffer.put_float( 0.0 )
+			output_buffer.put_float( 0.0 )
 		data_connection.put_packet( output_buffer.data_array )
