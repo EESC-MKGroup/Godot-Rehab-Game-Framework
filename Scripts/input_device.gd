@@ -23,7 +23,6 @@ func _init( input_interface ):
 	interface = input_interface
 
 func request_available_configurations():
-	print( "requesting configurations" )
 	interface.set_request( InputManager.Request.LIST_CONFIGS )
 
 func _set_configuration( value ):
@@ -63,7 +62,6 @@ func _get_state_reply():
 	var reply_code = interface.get_reply()
 	if reply_code != previous_reply:
 		match reply_code:
-			0: print( "invalid code" )
 			InputManager.Reply.CONFIGS_LISTED:
 				var available_configurations = interface.get_available_devices()
 				emit_signal( "configs_listed", available_configurations )

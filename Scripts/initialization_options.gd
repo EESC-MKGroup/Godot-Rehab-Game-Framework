@@ -54,7 +54,6 @@ func _on_config_received( device_id, axes_list ):
 
 func _on_state_changed( state_reply ):
 	var toggle_states = [ false, false, false, false ]
-	print( "state reply: " + str(state_reply) )
 	match state_reply:
 		InputManager.Reply.ENABLED: toggle_states = [ true, true, false, false ]
 		InputManager.Reply.OFFSETTING: toggle_states = [ true, true, false, false ]
