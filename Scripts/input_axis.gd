@@ -3,12 +3,14 @@ extends Node
 var input_device = null
 var axis_index = 0
 
-var force_limits = null
-var position_limits = null
+var force_limits = [ -0.5, 0.5 ]
+var force_range = 1.0
+var position_limits = [ -0.5, 0.5 ]
+var position_range = 1.0
 
 var is_calibrating = false setget _set_calibration,_get_calibration
 
-var max_effort = 1.0 setget _set_max_effort
+var scale = 1.0 setget _set_scale
 
 func _init( device, index ):
 	input_device = device
@@ -17,57 +19,62 @@ func _init( device, index ):
 func get_position():
 	var position = input_device.get_axis_position( axis_index )
 	if is_calibrating: position_limits = _check_limits( position_limits, position[ 0 ] )
-	elif position_limits != null: 
-		position[ 0 ] = _normalize( position[ 0 ], position_limits )
-		position[ 1 ] = _normalize( position[ 1 ], position_limits )
-		position[ 2 ] = _normalize( position[ 2 ], position_limits )
-	return position * max_effort
+	else:
+		position[ 0 ] = _normalize( position[ 0 ], position_range, position_limits[ 0 ] )
+		position[ 1 ] = position[ 1 ] / position_range
+		position[ 2 ] = position[ 2 ] / position_range
+	return [ position[ 0 ] * scale, position[ 1 ] * scale, position[ 2 ] * scale ]
 
 func set_position( setpoint ):
-	setpoint = _denormalize( setpoint, position_limits )
-	input_device.set_axis_position( axis_index, setpoint / max_effort )
+	setpoint = _denormalize( setpoint, position_range, position_limits[ 0 ] )
+	input_device.set_axis_position( axis_index, setpoint / scale )
 
 func get_force():
 	var force = input_device.get_axis_force( axis_index )
 	if is_calibrating: force_limits = _check_limits( force_limits, force )
-	elif force_limits != null: force = _normalize( force, force_limits )
-	return force * max_effort
+	else: force = _normalize( force, force_range, force_limits[ 0 ] )
+	return force * scale
 
 func set_force( setpoint ):
-	setpoint = _denormalize( setpoint, force_limits )
-	input_device.set_axis_force( axis_index, setpoint / max_effort )
+	setpoint = _denormalize( setpoint, force_range, force_limits[ 0 ] )
+	input_device.set_axis_force( axis_index, setpoint / scale )
 
 func get_impedance(): 
-	return input_device.get_axis_impedance( axis_index )
+	var impedance = input_device.get_axis_impedance( axis_index )
+	if not is_calibrating:
+		impedance[ 0 ] = impedance[ 0 ] * position_range / force_range
+		impedance[ 1 ] = impedance[ 1 ] * position_range / force_range
+		impedance[ 2 ] = impedance[ 2 ] * position_range / force_range
+	return impedance
 
 func _set_calibration( enabled ):
-	if enabled: _reset_limits()
-	#input_device.state = State.CALIBRATION if enabled else State.OPERATION
+	if enabled:
+		var force = input_device.get_axis_force( axis_index )
+		force_limits = [ force - 0.001, force + 0.001 ]
+		force_range = 1.0
+		var position = input_device.get_axis_position( axis_index )
+		position_limits = [ position - 0.001, position + 0.001 ]
+		position_range = 1.0
+	else:
+		force_range = force_limits[ 1 ] - force_limits[ 0 ]
+		position_range = position_limits[ 1 ] - position_limits[ 0 ]
 	is_calibrating = enabled
 
 func _get_calibration():
 	return is_calibrating
 
-func _set_max_effort( value ):
+func _set_scale( value ):
 	if value > 100.0: value = 100.0
 	elif value < 10.0: value = 10.0
-	max_effort = value / 100.0
+	scale = value / 100.0
 
 func _check_limits( limits, value ):
-	if limits == null: limits = [ value - 0.001, value + 0.001 ]
 	limits[ 0 ] = min( value, limits[ 0 ] )
 	limits[ 1 ] = max( value, limits[ 1 ] )
 	return limits
 
-func _normalize( value, limits ):
-	var value_range = limits[ 1 ] - limits[ 0 ]
-	return ( 2 * ( value - limits[ 0 ] ) / value_range ) - 1.0
+func _normalize( value, value_range, value_min ):
+	return ( 2 * ( value - value_min ) / value_range ) - 1.0
 
-func _denormalize( value, limits ):
-	if limits == null: return value
-	var value_range = limits[ 1 ] - limits[ 0 ]
-	return ( ( value + 1.0 ) * value_range / 2 ) + limits[ 0 ]
-
-func _reset_limits():
-	force_limits = null
-	position_limits = null
+func _denormalize( value, value_range, value_min ):
+	return ( ( value + 1.0 ) * value_range / 2 ) + value_min

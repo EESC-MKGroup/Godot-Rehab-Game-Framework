@@ -21,9 +21,11 @@ func disconnect_socket():
 	pass
 
 func get_update( positions, forces, impedances ):
-	for axis_index in range( JOY_AXES.size() ):
+	for axis_index in range( min( positions.size(), JOY_AXES.size() ) ):
 		positions[ axis_index ][ 0 ] = Input.get_joy_axis( device_id, axis_index )
-		forces[ axis_index ][ 0 ] = Input.get_joy_axis( device_id, axis_index )
+		positions[ axis_index ][ 1 ] = Input.get_joy_axis( device_id, axis_index )
+		positions[ axis_index ][ 2 ] = Input.get_joy_axis( device_id, axis_index )
+		forces[ axis_index ] = Input.get_joy_axis( device_id, axis_index )
 	return state
 
 func set_request( new_state, info = "" ):

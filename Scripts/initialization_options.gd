@@ -31,7 +31,7 @@ func _input( event ):
 		if event.scancode == KEY_ESCAPE: get_tree().quit()
 
 func _process( delta ):
-	$PositionSlider.value = input_axis.get_position()
+	$PositionSlider.value = input_axis.get_position()[ 0 ]
 	$PositionSlider/NumericDisplay.text = ( "%+.3f" % $PositionSlider.value )
 	$ForceSlider.value = input_axis.get_force()
 	$ForceSlider/NumericDisplay.text = ( "%+.3f" % $ForceSlider.value )

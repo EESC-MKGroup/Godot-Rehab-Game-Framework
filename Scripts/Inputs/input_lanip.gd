@@ -49,6 +49,7 @@ func set_request( request_code, info_string = "" ):
 		state_buffer.put_u8( request_code )
 		state_buffer.put_data( info_string.to_ascii() )
 		state_connection.put_data( state_buffer.data_array )
+		data_connection.put_packet( output_buffer.data_array )
 	print( "set request " + str(request_code) + "|" + info_string )
 
 func get_update( positions, forces, impedances ):
