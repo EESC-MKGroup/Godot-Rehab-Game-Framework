@@ -25,6 +25,13 @@ func _ready():
 	$GameSelector/SelectionList.list_entries( GameManager.list_games() )
 	$GameSelector/SelectionList.select_entry_name( Configuration.get_parameter( "game" ) )
 	set_process( false )
+	
+	var basis = Basis( Vector3( 1.0, 0, 0 ), 0.0 )
+	var vector = Vector3( 1.0, 2.0, 3.0 )
+	var result = basis * vector
+	print( basis, " ", vector, " ", result )
+	var matrix = Basis( Vector3( 1, 2, 3 ), Vector3( 4, 5, 6 ), Vector3( 7, 8, 9 ) )
+	print( matrix, " ", matrix.x, " ", matrix[ 0 ] )
 
 func _input( event ):
 	if event is InputEventKey:

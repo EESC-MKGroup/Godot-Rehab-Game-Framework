@@ -29,7 +29,7 @@ func _on_players_connected():
 	$Box2.rpc( "update_server", 0.0, 0.0, OS.get_ticks_msec(), OS.get_ticks_msec() )
 
 func get_player_force( body ):
-	return body.transform.basis * input_axis.get_value() * movement_range
+	return body.transform.basis * input_axis.get_force() * movement_range
 
 func get_environment_force( body ):
 	return body.transform.basis * $Spring.get_force()
