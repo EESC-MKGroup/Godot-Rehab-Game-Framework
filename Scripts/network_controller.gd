@@ -1,51 +1,56 @@
 extends RigidBody
 
-#enum Coordinate { X, Y, Z }
-#enum Variable { POSITION, IMPEDANCE = POSITION,
-#				VELOCITY, FILTER = VELOCITY,
-#				ACCELERATION, FORCE = ACCELERATION, WAVE = FORCE,
-#				MOMENTUM, WAVE_INTEGRAL = MOMENTUM }
-#
-#var element_id = -1
+const LAMBDA = 0.5
 
 var initial_position = Vector3.ZERO
+var feedback_force = Vector3.ZERO
+var external_force = Vector3.ZERO setget _set_external_force
 
-var last_input = Vector3.ZERO
-var last_delayed_input = Vector3.ZERO
-var last_time_step = 0
+var local_position = Vector3.ZERO
+var local_velocity = Vector3.ZERO
+
+var last_filtered_velocity = Vector3.ZERO
+var last_input_velocity = Vector3.ZERO
+
+var was_reset = false
+
+func _set_external_force( value ):
+	external_force = value
 
 sync func enable():
-	linear_velocity = Vector3()
-	angular_velocity = Vector3()
-	
-	#var extents = $Collider.shape.extents;
-	#//rangeLimits = boundaries.bounds.extents - Vector3.one * GetComponent<Collider>().bounds.extents.magnitude;
-	#Vector3 bodyExtents = transform.rotation * GetComponent<Collider>().bounds.extents;
-	#rangeLimits = new Vector3( boundaries.bounds.extents.x - Mathf.Abs( bodyExtents.x ), 
-	#	                       boundaries.bounds.extents.y - Mathf.Abs( bodyExtents.y ), 
-	#	                       boundaries.bounds.extents.z - Mathf.Abs( bodyExtents.z ) );
-	
-	initial_position = get_position_in_parent()
-	last_time_step = OS.get_ticks_msec()
+	rpc( "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec(), OS.get_ticks_msec() )
+	was_reset = true
 
 sync func reset():
-	translation = initial_position
-	linear_velocity = Vector3()
-	angular_velocity = Vector3()
+	local_position = initial_position
+	local_velocity = Vector3.ZERO
+	was_reset = false
+
+remote func update_server( remote_position, remote_velocity, remote_force, last_server_time, client_time ):
+	var server_time = OS.get_ticks_msec()
+	rpc_unreliable( "update_player", local_position, local_velocity, external_force, client_time, server_time )
+	# Send position and velocity values directly
+	rpc_unreliable( "update_slave", local_position, local_velocity, client_time, server_time )
+
+master func update_player( remote_position, remote_velocity, remote_force, last_client_time, server_time ):
+	var client_time = OS.get_ticks_msec()
+	rpc_unreliable( "update_server", local_position, local_velocity, external_force, server_time, client_time )
+
+slave func update_slave( master_position, master_velocity, last_client_time, server_time ):
+	var delay = calculate_delay( last_client_time )
+	master_position += master_velocity * delay
+	local_velocity = filter_tracking_velocity( master_velocity, master_position, local_position )
 
 # Half round-trip time calculation
-#func calculate_delay( dispatch_time, arrival_time ): 
+func calculate_delay( dispatch_time_ms ):
+	 return ( OS.get_ticks_msec() - dispatch_time_ms ) / 2000
 
-func filter_delayed_input( delayed_input, error_integral, last_input_time ):
-	delayed_input += error_integral
-	
+func filter_tracking_velocity( input_velocity, tracked_position, current_position ):
+	input_velocity += ( tracked_position - current_position )
 	# Filter delayed input to ensure stability: x_out / x_in = l / ( s + l ) => discrete form (s = 2/T * (z-1)/(z+1))
-	# x_out = ( (2-lT) * x_out_old + lT * (x_in+u_in_old) ) / (2+lT), where l = 1/delay
-	var delay = ( OS.get_ticks_msec() - last_input_time ) / 2 if last_input_time > 0 else 0.01
-	var step = ( OS.get_ticks_msec() - last_time_step ) / delay
-	var result = ( ( 2 - step ) * last_input + step * ( delayed_input + last_delayed_input ) ) / ( 2 + step )
-	last_input = result
-	last_delayed_input = delayed_input
-	last_time_step = OS.get_ticks_msec()
+	# x_out = ( (2-lambda) * x_out_old + lambda * (x_in+u_in_old) ) / (2+lambda), where lambda is fiter's bandwidth
+	var result = ( ( 2 - LAMBDA ) * last_filtered_velocity + LAMBDA * ( input_velocity + last_input_velocity ) ) / ( 2 + LAMBDA )
+	last_filtered_velocity = result
+	last_input_velocity = input_velocity
 	
 	return result

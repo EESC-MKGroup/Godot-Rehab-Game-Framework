@@ -7,13 +7,8 @@ onready var game = get_tree().get_root()
 
 var wave_impedance = 1.0
 
-var external_force = Vector3.ZERO setget set_external_force
-
 sync func set_wave_impedance( value ):
 	if value > 0.1: wave_impedance = value
-
-func set_external_force( value ):
-	external_force = value
 
 # Receive delayed u_in (u_in_old) and U_in (U_in_old)
 func process_input_wave( wave, wave_integral ): 	
@@ -37,7 +32,7 @@ func process_output_wave( force, momentum ):
 	# Send u_out and U_out
 	return [ wave, wave_integral ]
 
-remote func update_server( wave, wave_integral, last_server_time, client_time ):
+remote func update_server( wave, wave_integral, dummy, last_server_time, client_time ):
 	# Extract remote force from received wave variable: -F_m = b * xdot_m - sqrt( 2 * b ) * v_m
 	# Extract remote moment from received wave integral: -p_m = b * x_m - sqrt( 2 * b ) * V_m
 	var remote_force = process_input_wave( wave, wave_integral )
@@ -53,7 +48,7 @@ remote func update_server( wave, wave_integral, last_server_time, client_time ):
 	# Send position and velocity values directly
 	rpc_unreliable( "update_slave", translation, linear_velocity, client_time, server_time )
 
-master func update_player( wave, wave_integral, last_client_time, server_time ):
+master func update_player( wave, wave_integral, dummy, last_client_time, server_time ):
 	# Extract remote force from wave variable: F_s = -b * xdot_s + sqrt( 2 * b ) * u_s
 	# Extract remote moment from received wave integral: p_m = -b * x_s + sqrt( 2 * b ) * U_s
 	var remote_force = process_input_wave( wave, wave_integral )
