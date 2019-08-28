@@ -13,8 +13,7 @@ func _physics_process( delta ):
 
 func _integrate_forces( state ):
 	if was_reset:
-		state.translation = initial_position
-		state.linear_velocity = Vector3.ZERO
-		state.angular_velocity = Vector3.ZERO
-		angular_velocity = linear_velocity.rotated( Vector3.UP, 90 ) / $Collider.shape.margin / 2
+		state.translation = target_position
+		state.linear_velocity = target_velocity
+		#state.angular_velocity = linear_velocity.rotated( Vector3.UP, 90 ) / $Collider.shape.margin / 2
 		was_reset = false

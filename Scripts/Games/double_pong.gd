@@ -24,5 +24,9 @@ func _on_client_connected( client_id ):
 func _on_players_connected():
 	paddles_1.rpc( "enable" )
 	paddles_2.rpc( "enable" )
-	paddles_1.rpc( "update_server", 0.0, 0.0, OS.get_ticks_msec(), OS.get_ticks_msec() )
-	paddles_2.rpc( "update_server", 0.0, 0.0, OS.get_ticks_msec(), OS.get_ticks_msec() )
+
+func get_player_force( body ):
+	return body.transform.basis * input_axis.get_force()# * movement_range
+
+func get_environment_force( body ):
+	return 0
