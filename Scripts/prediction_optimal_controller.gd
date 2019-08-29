@@ -22,12 +22,12 @@ func _ready():
 	position_observer.state_predictor[ 1 ][ 2 ] = time_step
 	position_observer.state_predictor[ 2 ][ 2 ] = 0.0
 	
-	force_state.prediction_covariance_noise[ 0 ] = 4.0
-	force_state.prediction_covariance_noise[ 1 ] = 2.0
-	force_state.prediction_covariance_noise[ 2 ] = 1.0
-	force_state.state_predictor[ 0 ][ 1 ] = time_step
-	force_state.state_predictor[ 0 ][ 2 ] = pow( time_step, 2 ) / 2
-	force_state.state_predictor[ 1 ][ 2 ] = time_step
+	force_observer.prediction_covariance_noise[ 0 ] = 4.0
+	force_observer.prediction_covariance_noise[ 1 ] = 2.0
+	force_observer.prediction_covariance_noise[ 2 ] = 1.0
+	force_observer.state_predictor[ 0 ][ 1 ] = time_step
+	force_observer.state_predictor[ 0 ][ 2 ] = pow( time_step, 2 ) / 2
+	force_observer.state_predictor[ 1 ][ 2 ] = time_step
 	
 	cost_2_go = _calculate_optimal_cost_2_go( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
 	feedback_gain = _calculate_feedback_gain( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
@@ -50,7 +50,7 @@ remote func update_server( remote_position, remote_velocity, remote_force, last_
 	remote_position = remote_state[ 0 ]
 	remote_force = remote_state[ 1 ]
 	
-	feedback_force = -( remote_state * feedback_gain )
+	feedback_force = -( remote_state * feedback_gain ) + remote_force
 	
 	.update_server( remote_position, remote_velocity, remote_force, client_time )
 

@@ -215,8 +215,6 @@ transform = Transform( 0.06, 0, 0, 0, -3.0598e-09, -0.06, 0, 0.07, -2.62268e-09,
 mesh = ExtResource( 14 )
 material/0 = SubResource( 17 )
 script = ExtResource( 15 )
-connector_1 = NodePath("../Box1/Connector")
-connector_2 = NodePath("../Box2/Connector")
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.49247, 0 )

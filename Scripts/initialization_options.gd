@@ -25,23 +25,6 @@ func _ready():
 	$GameSelector/SelectionList.list_entries( GameManager.list_games() )
 	$GameSelector/SelectionList.select_entry_name( Configuration.get_parameter( "game" ) )
 	set_process( false )
-	
-	var ro = 0.0001
-	var A = Basis( Vector3( 1, 0.5, 0.25 ), Vector3( 0, 1, 0.5 ), Vector3( 0, 0, 1 ) ).transposed()
-	var B = Vector3( 0.0, 0.0, 0.5 )
-	var X = Basis( Vector3( 1.0, 0, 0 ), 0.0 )
-	var X_old = Basis( Vector3( 0.0, 0, 0 ), 0.0 )
-	var iterations = 0
-	while abs( X.determinant() - X_old.determinant() ) > 0.001:
-		X_old = X
-		X = A.transposed() * X_old * A
-		for index in range( 3 ): X[ index ][ index ] += 1.0
-		var aux = B.dot( X_old * B ) + ro
-		aux = ( A.transposed() * X_old * B ).outer( (1/aux) * B ) * X_old * A
-		for line in range( 3 ): for col in range( 3 ): X[ line ][ col ] -= aux[ line ][ col ]
-		iterations += 1
-	var G = ( 1 / ( B.dot( X * B ) + ro ) ) * ( ( X * A ).transposed() * B )
-	print( G, " ", X, " ", iterations )
 
 func _input( event ):
 	if event is InputEventKey:

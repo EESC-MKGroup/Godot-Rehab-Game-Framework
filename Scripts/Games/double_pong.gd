@@ -29,4 +29,4 @@ func get_player_force( body ):
 	return body.transform.basis * input_axis.get_force()# * movement_range
 
 func get_environment_force( body ):
-	return 0
+	return Vector3.ZERO

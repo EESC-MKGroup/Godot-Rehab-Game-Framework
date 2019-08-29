@@ -1,7 +1,7 @@
-#extends "res://Scripts/force_wave_controller.gd"
-extends "res://Scripts/prediction_optimal_controller.gd"
+extends "res://Scripts/force_wave_controller.gd"
+#extends "res://Scripts/prediction_optimal_controller.gd"
 
-sync func enable():
+remotesync func enable():
 	.enable()
 	initial_position = get_position_in_parent()
 

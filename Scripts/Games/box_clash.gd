@@ -31,7 +31,7 @@ func _on_players_connected():
 	$Box2.rpc( "enable" )
 
 func get_player_force( body ):
-	return body.transform.basis * input_axis.get_force() * movement_range
+	return body.transform.basis * Vector3.FORWARD * input_axis.get_force() * movement_range
 
 func get_environment_force( body ):
-	return body.transform.basis * $Spring.get_force()
+	return body.transform.basis * Vector3.FORWARD * $Spring.get_force()
