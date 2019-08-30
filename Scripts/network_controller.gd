@@ -14,7 +14,7 @@ var target_velocity = Vector3.ZERO
 
 var was_reset = false
 
-onready var game = get_tree().get_root().get_node( "Game" )
+onready var game = $"/root/Game"
 
 remotesync func enable():
 	rpc( "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec(), OS.get_ticks_msec() )
