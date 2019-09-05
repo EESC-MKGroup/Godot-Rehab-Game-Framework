@@ -2,8 +2,8 @@ extends Node
 
 const SERVER_PORT = 50004
 
-signal players_connected
-signal client_connected
+signal players_connected()
+signal client_connected( client_id )
 
 var peer = NetworkedMultiplayerENet.new()
 var is_server = false

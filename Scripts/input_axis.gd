@@ -73,8 +73,8 @@ func _check_limits( limits, value ):
 	limits[ 1 ] = max( value, limits[ 1 ] )
 	return limits
 
-func _normalize( value, value_range, value_min ):
-	return ( 2 * ( value - value_min ) / value_range ) - 1.0
+func _normalize( value, value_range, value_offset ):
+	return ( 2 * ( value - value_offset ) / value_range ) - 1.0
 
-func _denormalize( value, value_range, value_min ):
-	return ( ( value + 1.0 ) * value_range / 2 ) + value_min
+func _denormalize( value, value_range, value_offset ):
+	return ( ( value + 1.0 ) * value_range / 2 ) + value_offset

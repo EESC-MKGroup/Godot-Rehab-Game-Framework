@@ -75,7 +75,7 @@ func set_system( inertia, damping, stiffness ):
 
 func _calculate_optimal_cost_2_go( A, B, X0 ):
 	var X = X0
-	var X_old = Basis( Vector3( 0.0, 0, 0 ), 0.0 )
+	var X_old = Basis( Vector3( 0.0, 0.0, 0.0 ), 0.0 )
 	while abs( X.determinant() - X_old.determinant() ) > 0.001:#not X.is_equal_approx( X_old ):
 		X_old = X
 		X = A.transposed() * X_old * A

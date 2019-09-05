@@ -9,8 +9,8 @@
 [sub_resource type="GDScript" id=2]
 script/source = "extends Control
 
-signal game_timeout
-signal game_toggle
+signal game_timeout( timeouts_count )
+signal game_toggle( started )
 
 var timeouts_count = 0
 

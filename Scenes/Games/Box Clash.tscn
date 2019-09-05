@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://Scripts/Games/box_clash.gd" type="Script" id=1]
 [ext_resource path="res://Textures/grass.png" type="Texture" id=2]
@@ -13,8 +13,11 @@
 [ext_resource path="res://Textures/planks_old.jpg" type="Texture" id=11]
 [ext_resource path="res://Textures/planks_old_normal.jpg" type="Texture" id=12]
 [ext_resource path="res://Textures/Brushed_Metal.jpg" type="Texture" id=13]
-[ext_resource path="res://Meshes/spring.obj" type="ArrayMesh" id=14]
-[ext_resource path="res://Scripts/spring.gd" type="Script" id=15]
+[ext_resource path="res://Meshes/force_arrow.obj" type="ArrayMesh" id=14]
+[ext_resource path="res://Scripts/vector_display.gd" type="Script" id=15]
+[ext_resource path="res://Meshes/spring.obj" type="ArrayMesh" id=16]
+[ext_resource path="res://Scripts/spring.gd" type="Script" id=17]
+[ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=18]
 
 [sub_resource type="ImageTexture" id=1]
 flags = 0
@@ -105,13 +108,34 @@ albedo_texture = ExtResource( 13 )
 metallic = 0.3
 
 [sub_resource type="SpatialMaterial" id=16]
+albedo_color = Color( 0.952941, 1, 0, 1 )
+emission_enabled = true
+emission = Color( 1, 0.996078, 0, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="SpatialMaterial" id=17]
 albedo_color = Color( 0, 0, 1, 1 )
 albedo_texture = ExtResource( 11 )
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 12 )
 
-[sub_resource type="SpatialMaterial" id=17]
+[sub_resource type="SpatialMaterial" id=19]
+flags_transparent = true
+albedo_color = Color( 0.498039, 1, 0.498039, 0.156863 )
+emission_enabled = true
+emission = Color( 0.498039, 1, 0.498039, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="CubeMesh" id=20]
+material = SubResource( 19 )
+size = Vector3( 0.5, 0.5, 0.5 )
+
+[sub_resource type="SpatialMaterial" id=18]
 albedo_color = Color( 0.862745, 0.756863, 0.121569, 1 )
 metallic = 0.3
 metallic_specular = 0.7
@@ -186,6 +210,12 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -
 mesh = SubResource( 14 )
 material/0 = SubResource( 15 )
 
+[node name="Arrow" type="MeshInstance" parent="Box1"]
+transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, 0.1, 0, -0.5, -4.37114e-09, 0, 0.009, 0.8 )
+mesh = ExtResource( 14 )
+material/0 = SubResource( 16 )
+script = ExtResource( 15 )
+
 [node name="Box2" type="RigidBody" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.25, -0.6 )
 gravity_scale = 0.0
@@ -203,23 +233,42 @@ shape = SubResource( 11 )
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, -0.25, 0 )
 mesh = ExtResource( 10 )
 material/0 = SubResource( 12 )
-material/1 = SubResource( 16 )
+material/1 = SubResource( 17 )
 
 [node name="Connector" type="MeshInstance" parent="Box2"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.23 )
 mesh = SubResource( 14 )
 material/0 = SubResource( 15 )
 
-[node name="Spring" type="MeshInstance" parent="."]
-transform = Transform( 0.06, 0, 0, 0, -3.0598e-09, -0.06, 0, 0.07, -2.62268e-09, 0, 0.25, 0 )
+[node name="Arrow" type="MeshInstance" parent="Box2"]
+transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, 0.1, 0, -0.5, -4.37114e-09, 0, 0.009, 0.8 )
 mesh = ExtResource( 14 )
-material/0 = SubResource( 17 )
+material/0 = SubResource( 16 )
 script = ExtResource( 15 )
 
+[node name="BoxTarget" type="Area" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.25, 0 )
+
+[node name="Collider" type="CollisionShape" parent="BoxTarget"]
+shape = SubResource( 11 )
+
+[node name="Mesh" type="MeshInstance" parent="BoxTarget"]
+mesh = SubResource( 20 )
+material/0 = null
+
+[node name="Spring" type="MeshInstance" parent="."]
+transform = Transform( 0.06, 0, 0, 0, -3.0598e-09, -0.06, 0, 0.07, -2.62268e-09, 0, 0.25, 0 )
+mesh = ExtResource( 16 )
+material/0 = SubResource( 18 )
+script = ExtResource( 17 )
+
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.49247, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5.5, -0.2 )
 fov = 41.9581
 
 [node name="Light" type="SpotLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.32246, 0 )
 shadow_enabled = true
+
+[node name="GUI" parent="." instance=ExtResource( 18 )]
+[connection signal="game_toggle" from="GUI" to="." method="_on_GUI_game_toggle"]

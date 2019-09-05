@@ -138,8 +138,6 @@ transform = Transform( 0.85, -3.31002e-07, -3.31002e-07, -3.31002e-07, -0.85, -9
 mesh = ExtResource( 8 )
 material/0 = null
 script = ExtResource( 9 )
-connector_1 = NodePath("..")
-connector_2 = NodePath("../Effector")
 
 [node name="Effector" type="RigidBody" parent="SpringBase"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.45647, 0 )

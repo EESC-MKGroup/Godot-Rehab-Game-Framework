@@ -1,25 +1,26 @@
 extends MeshInstance
 
 export(float, 0.0, 20.0) var stiffness = 10.0
+export(float, 0.0, 5.0) var damping = 0.0
 
-#export(NodePath) var connector_1
-#export(NodePath) var connector_2
+#export(NodePath) var body_1
+#export(NodePath) var body_2
 
-onready var connector_1 = $"../Box1/Connector"
-onready var connector_2 = $"../Box2/Connector"
+onready var body_1 = $"../Box1"
+onready var body_2 = $"../Box2"
 
 onready var initial_length = _get_length()
 onready var initial_scale = scale
 
 func _get_length():
-	var connector_position_1 = connector_1.global_transform.origin
-	var connector_position_2 = connector_2.global_transform.origin
-	return abs( connector_position_1.z - connector_position_2.z )
+	return ( body_1.translation - body_2.translation ).length()
+
+func _get_relative_velocity():
+	return body_1.linear_velocity.length() - body_2.linear_velocity.length()
 
 func _process( delta ):
 	var relative_length = _get_length() / initial_length
 	scale.z = initial_scale.z * relative_length
-	var spring_force = stiffness * ( _get_length() - initial_length )
 
 func get_force():
-	return stiffness * ( _get_length() - initial_length )
+	return stiffness * ( _get_length() - initial_length ) + damping * _get_relative_velocity()
