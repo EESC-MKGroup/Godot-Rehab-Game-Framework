@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scripts/Games/push-spring_game.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Wall.png" type="Texture" id=2]
@@ -12,8 +12,6 @@
 [ext_resource path="res://Meshes/toon_hand_point.obj" type="ArrayMesh" id=10]
 [ext_resource path="res://Meshes/arrow.obj" type="ArrayMesh" id=11]
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Fonts/LuckiestGuyGame.tres" type="DynamicFont" id=13]
-[ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=14]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.634949, 0.745013, 0.804688, 1 )
@@ -109,8 +107,6 @@ emission_energy = 1.0
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="StyleBoxFlat" id=16]
-
 [node name="Game" type="Spatial"]
 script = ExtResource( 1 )
 
@@ -187,40 +183,9 @@ omni_range = 31.0665
 
 [node name="GUI" parent="." instance=ExtResource( 12 )]
 
-[node name="ForcePanel" type="Panel" parent="."]
-self_modulate = Color( 1, 1, 1, 0.498039 )
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 555.0
-margin_top = -140.0
-margin_right = -555.0
-margin_bottom = -20.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 16 )
-
-[node name="VariableLabel" type="Label" parent="ForcePanel"]
-margin_left = 12.0
-margin_top = 10.0
-margin_right = 162.0
-margin_bottom = 50.0
-custom_fonts/font = ExtResource( 13 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Force"
-align = 1
-valign = 1
-
-[node name="MeasureDisplay" type="LineEdit" parent="ForcePanel"]
-margin_left = 20.0
-margin_top = 60.0
-margin_right = 150.0
-margin_bottom = 111.0
-focus_mode = 0
-mouse_default_cursor_shape = 0
-custom_fonts/font = ExtResource( 14 )
-text = "+00.0N"
-align = 1
-focus_mode = 0
+[node name="ConnectionMenu" parent="GUI/RightPanel" index="1"]
+visible = false
 [connection signal="body_entered" from="SpringBase/Target" to="." method="_on_Target_body_entered"]
 [connection signal="body_exited" from="SpringBase/Target" to="." method="_on_Target_body_exited"]
+
+[editable path="GUI"]

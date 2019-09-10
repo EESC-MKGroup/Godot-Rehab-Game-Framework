@@ -13,12 +13,14 @@ static func get_player_variables():
 func _ready():
 	$GUI.set_timeouts( 10.0, 1.0 )
 	$GUI.set_max_effort( 100.0 )
-	if GameConnection.is_server:
-		GameConnection.connect_server( 2 ) 
-		GameConnection.connect( "players_connected", self, "_on_players_connected" )
-	else: 
-		GameConnection.connect_client( Configuration.get_parameter( "server_address" ) )
-		GameConnection.connect( "client_connected", self, "_on_client_connected" )
+
+func connect_server():
+	GameConnection.connect_server( 2 ) 
+	GameConnection.connect( "players_connected", self, "_on_players_connected" )
+
+func connect_client( address ):
+	GameConnection.connect_client( address )
+	GameConnection.connect( "client_connected", self, "_on_client_connected" )
 
 func _on_client_connected( client_id ):
 	if client_id == 0: 
@@ -31,6 +33,8 @@ func _on_client_connected( client_id ):
 func _on_players_connected():
 	$Box1.rpc( "enable" )
 	$Box2.rpc( "enable" )
+	GameConnection.set_as_master( self )
+	GameConnection.connect( "game_timeout", $GUI, "_on_GUI_game_timeout" )
 
 func get_player_force( body ):
 	return body.transform.basis * Vector3.FORWARD * input_axis.get_force() * movement_range
@@ -41,12 +45,20 @@ func get_environment_force( body ):
 func set_feedback_force( force ):
 	input_axis.set_force( force.lenght() )
 
+func set_resulting_position( position ):
+	$GUI.display_measure( position.length() )
+
+puppet func set_target( new_position, is_active ):
+	$BoxTarget.translation.z = new_position
+	$GUI.display_setpoint( $BoxTarget.translation.z )
+	input_axis.set_position( $BoxTarget.translation.z / movement_range )
+	if is_active: $BoxTarget.show()
+	else: $BoxTarget.hide()
+
 func _on_GUI_game_toggle( started ):
 	input_axis.set_position( 0.0 )
-	GameConnection.connect_client( Configuration.get_parameter( "server_address" ) )
 
 func _on_GUI_game_timeout( timeouts_count ):
 	print( "timeout: ", timeouts_count )
 	$BoxTarget.translation.z = ( randf() - 0.5 ) * movement_range
-	if timeouts_count % 2 == 0: $BoxTarget.show()
-	else: $BoxTarget.hide()
+	rpc( "set_target", $BoxTarget.translation.z, ( timeouts_count % 2 == 0 ) )

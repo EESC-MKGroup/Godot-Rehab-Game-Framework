@@ -11,7 +11,7 @@ func _ready():
 		if OS.get_cmdline_args()[ 0 ] == "--server":
 			GameConnection.is_server = true
 			GameManager.load_game( OS.get_cmdline_args()[ 1 ] )
-	$AddressInput.text = Configuration.get_parameter( "server_address" )
+	$AddressInput.text = Configuration.get_parameter( "device_address" )
 	$UserInput.text = Configuration.get_parameter( "user_name" )
 	var interface_names = InputManager.interface_names
 	$AddressInput/InterfaceSelector/SelectionList.list_entries( interface_names )
@@ -91,7 +91,7 @@ func _on_Variable_entry_selected( index, entry_name ):
 	Configuration.set_parameter( "game_variable", entry_name )
 
 func _on_socket_connected():
-	Configuration.set_parameter( "server_address", $AddressInput.text )
+	Configuration.set_parameter( "device_address", $AddressInput.text )
 	Configuration.set_parameter( "user_name", $UserInput.text )
 	input_device.request_available_configurations()
 	input_device.user_name = $UserInput.text

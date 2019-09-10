@@ -131,12 +131,13 @@ text = "User:"
 align = 1
 valign = 1
 
-[node name="DeviceSelector" type="Panel" parent="ControlsPanel"]
+[node name="DeviceSelector" type="Button" parent="ControlsPanel"]
 anchor_right = 1.0
 margin_left = 151.0
 margin_top = 86.0
 margin_right = -571.0
 margin_bottom = 138.0
+disabled = true
 
 [node name="SelectionList" type="MenuButton" parent="ControlsPanel/DeviceSelector"]
 anchor_right = 1.0
@@ -159,12 +160,13 @@ text = "Device:"
 align = 1
 valign = 1
 
-[node name="AxisSelector" type="Panel" parent="ControlsPanel"]
+[node name="AxisSelector" type="Button" parent="ControlsPanel"]
 anchor_right = 1.0
 margin_left = 809.0
 margin_top = 86.0
 margin_right = -33.0
 margin_bottom = 138.0
+disabled = true
 
 [node name="SelectionList" type="MenuButton" parent="ControlsPanel/AxisSelector"]
 anchor_right = 1.0
@@ -187,7 +189,7 @@ text = "Axis:"
 align = 1
 valign = 1
 
-[node name="GameSelector" type="Panel" parent="ControlsPanel"]
+[node name="GameSelector" type="Button" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -195,6 +197,7 @@ margin_left = 143.0
 margin_top = 121.0
 margin_right = -720.0
 margin_bottom = 171.0
+disabled = true
 
 [node name="SelectionList" type="MenuButton" parent="ControlsPanel/GameSelector"]
 anchor_right = 1.0
@@ -217,7 +220,7 @@ text = "Game:"
 align = 1
 valign = 1
 
-[node name="VariableSelector" type="Panel" parent="ControlsPanel"]
+[node name="VariableSelector" type="Button" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -225,6 +228,7 @@ margin_left = 740.0
 margin_top = 119.0
 margin_right = -36.0
 margin_bottom = 171.0
+disabled = true
 
 [node name="SelectionList" type="MenuButton" parent="ControlsPanel/VariableSelector"]
 anchor_right = 1.0
@@ -271,12 +275,13 @@ text = "Interface:"
 align = 1
 valign = 1
 
-[node name="InterfaceSelector" type="Panel" parent="ControlsPanel/AddressInput"]
+[node name="InterfaceSelector" type="Button" parent="ControlsPanel/AddressInput"]
 anchor_right = 1.0
 margin_left = -122.0
 margin_top = -1.0
 margin_right = -375.0
 margin_bottom = 51.0
+disabled = true
 
 [node name="SelectionList" type="MenuButton" parent="ControlsPanel/AddressInput/InterfaceSelector"]
 anchor_right = 1.0

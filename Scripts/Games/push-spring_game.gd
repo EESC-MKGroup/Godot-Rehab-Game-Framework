@@ -47,7 +47,7 @@ func _physics_process( delta ):
 	
 	effector.add_central_force( Vector3.UP * ( player_force - spring_force ) )
 	
-	force_display.text = ( "%+4.1fN" % player_force )
+	force_display.text = ( "%+4.3fN" % player_force )
 	
 	var player_position = effector.translation.y / space_scale
 	input_axis.set_position( player_position )

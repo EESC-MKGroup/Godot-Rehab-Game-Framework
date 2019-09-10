@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://Scripts/Games/double_pong.gd" type="Script" id=1]
 [ext_resource path="res://Textures/grass.png" type="Texture" id=2]
@@ -41,7 +41,7 @@ ao_on_uv2 = false
 ao_texture_channel = 0
 uv1_scale = Vector3( 6, 4, 1 )
 
-[sub_resource type="GDScript" id=16]
+[sub_resource type="GDScript" id=5]
 script/source = "extends \"res://Scripts/network_controller.gd\"
 
 func reset():
@@ -56,22 +56,22 @@ func _integrate_forces( state ):
 		state.angular_velocity = target_velocity.rotated( Vector3.UP, 90 ) / $Collider.mesh.radius
 		was_reset = false"
 
-[sub_resource type="SphereShape" id=5]
+[sub_resource type="SphereShape" id=6]
 radius = 0.163054
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=7]
 albedo_texture = ExtResource( 8 )
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 9 )
 
-[sub_resource type="BoxShape" id=7]
+[sub_resource type="BoxShape" id=8]
 extents = Vector3( 0.0754569, 0.467383, 0.0768527 )
 
-[sub_resource type="CubeMesh" id=8]
+[sub_resource type="CubeMesh" id=9]
 size = Vector3( 0.5, 0.15, 0.15 )
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=10]
 albedo_color = Color( 1, 0.870588, 0.560784, 1 )
 albedo_texture = ExtResource( 10 )
 normal_enabled = true
@@ -85,10 +85,10 @@ ao_texture_channel = 0
 uv1_scale = Vector3( 1, 0.25, 1 )
 uv1_offset = Vector3( 0, -0.015, 0 )
 
-[sub_resource type="BoxShape" id=10]
+[sub_resource type="BoxShape" id=11]
 extents = Vector3( 0.08, 0.3, 0.5 )
 
-[sub_resource type="SpatialMaterial" id=18]
+[sub_resource type="SpatialMaterial" id=12]
 resource_name = "Inner.001"
 albedo_color = Color( 1, 0.921569, 0.607843, 1 )
 albedo_texture = ExtResource( 14 )
@@ -97,7 +97,7 @@ normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 15 )
 
-[sub_resource type="SpatialMaterial" id=19]
+[sub_resource type="SpatialMaterial" id=13]
 resource_name = "Outer.001"
 albedo_color = Color( 0, 0.505882, 1, 1 )
 albedo_texture = ExtResource( 14 )
@@ -106,7 +106,7 @@ normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 15 )
 
-[sub_resource type="ArrayMesh" id=20]
+[sub_resource type="ArrayMesh" id=14]
 surfaces/0 = {
 "aabb": AABB( -2.275, 0.225, -2.275, 4.55, 4.55, 4.55001 ),
 "array_data": PoolByteArray( 0, 0, 240, 191, 0, 0, 32, 63, 154, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 210, 48, 210, 48, 248, 255, 239, 63, 0, 0, 140, 64, 158, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 203, 58, 203, 58, 0, 0, 240, 63, 0, 0, 32, 63, 154, 153, 17, 64, 0, 0, 127, 0, 0, 126, 0, 129, 210, 48, 203, 58, 154, 153, 17, 64, 0, 0, 32, 63, 0, 0, 240, 63, 127, 0, 0, 0, 0, 127, 0, 129, 210, 48, 210, 48, 158, 153, 17, 64, 0, 0, 140, 64, 248, 255, 239, 191, 127, 0, 0, 0, 0, 127, 0, 129, 203, 58, 203, 58, 154, 153, 17, 64, 0, 0, 32, 63, 0, 0, 240, 191, 127, 0, 0, 0, 0, 126, 0, 129, 210, 48, 203, 58, 0, 0, 240, 191, 0, 0, 140, 64, 154, 153, 17, 192, 0, 0, 129, 0, 0, 129, 0, 129, 210, 48, 210, 48, 0, 0, 240, 63, 0, 0, 32, 63, 154, 153, 17, 192, 0, 0, 129, 0, 0, 129, 0, 129, 203, 58, 203, 58, 8, 0, 240, 63, 0, 0, 140, 64, 149, 153, 17, 192, 0, 0, 129, 0, 0, 130, 0, 129, 210, 48, 203, 58, 149, 153, 17, 192, 0, 0, 32, 63, 8, 0, 240, 191, 129, 0, 0, 0, 0, 127, 0, 129, 210, 48, 210, 48, 154, 153, 17, 192, 0, 0, 140, 64, 248, 255, 239, 63, 129, 0, 0, 0, 0, 127, 0, 129, 203, 58, 203, 58, 154, 153, 17, 192, 0, 0, 32, 63, 0, 0, 240, 63, 129, 0, 0, 0, 0, 126, 0, 129, 210, 48, 203, 58, 248, 255, 239, 63, 205, 204, 152, 64, 8, 0, 240, 63, 0, 127, 0, 0, 129, 0, 0, 129, 210, 48, 210, 48, 0, 0, 240, 191, 205, 204, 152, 64, 0, 0, 240, 191, 0, 127, 0, 0, 129, 0, 0, 129, 203, 58, 203, 58, 8, 0, 240, 63, 205, 204, 152, 64, 248, 255, 239, 191, 0, 127, 0, 0, 130, 0, 0, 129, 210, 48, 203, 58, 248, 255, 239, 191, 102, 102, 102, 62, 8, 0, 240, 191, 0, 129, 0, 0, 0, 0, 127, 129, 210, 48, 210, 48, 0, 0, 240, 63, 102, 102, 102, 62, 0, 0, 240, 63, 0, 129, 0, 0, 0, 0, 127, 129, 203, 58, 203, 58, 0, 0, 240, 63, 102, 102, 102, 62, 0, 0, 240, 191, 0, 129, 0, 0, 0, 0, 127, 129, 210, 48, 203, 58, 8, 0, 240, 191, 0, 0, 140, 64, 149, 153, 17, 64, 0, 0, 127, 0, 0, 126, 0, 129, 203, 58, 210, 48, 149, 153, 17, 64, 0, 0, 140, 64, 8, 0, 240, 63, 127, 0, 0, 0, 0, 126, 0, 129, 203, 58, 210, 48, 248, 255, 239, 191, 0, 0, 32, 63, 158, 153, 17, 192, 0, 0, 129, 0, 0, 129, 0, 129, 203, 58, 210, 48, 154, 153, 17, 192, 0, 0, 140, 64, 0, 0, 240, 191, 129, 0, 0, 0, 0, 127, 0, 129, 203, 58, 210, 48, 8, 0, 240, 191, 205, 204, 152, 64, 248, 255, 239, 63, 0, 127, 0, 0, 129, 0, 0, 129, 203, 58, 210, 48, 0, 0, 240, 191, 102, 102, 102, 62, 0, 0, 240, 63, 0, 129, 0, 0, 0, 0, 126, 129, 203, 58, 210, 48 ),
@@ -114,7 +114,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 18 ),
+"material": SubResource( 12 ),
 "name": "Inner",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -127,14 +127,14 @@ surfaces/1 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 288,
-"material": SubResource( 19 ),
+"material": SubResource( 13 ),
 "name": "Outer",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 192
 }
 
-[sub_resource type="ArrayMesh" id=21]
+[sub_resource type="ArrayMesh" id=15]
 surfaces/0 = {
 "aabb": AABB( -2.275, 0.225, -2.275, 4.55, 4.55, 4.55001 ),
 "array_data": PoolByteArray( 0, 0, 240, 191, 0, 0, 32, 63, 154, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 210, 48, 210, 48, 248, 255, 239, 63, 0, 0, 140, 64, 158, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 203, 58, 203, 58, 0, 0, 240, 63, 0, 0, 32, 63, 154, 153, 17, 64, 0, 0, 127, 0, 0, 126, 0, 129, 210, 48, 203, 58, 154, 153, 17, 64, 0, 0, 32, 63, 0, 0, 240, 63, 127, 0, 0, 0, 0, 127, 0, 129, 210, 48, 210, 48, 158, 153, 17, 64, 0, 0, 140, 64, 248, 255, 239, 191, 127, 0, 0, 0, 0, 127, 0, 129, 203, 58, 203, 58, 154, 153, 17, 64, 0, 0, 32, 63, 0, 0, 240, 191, 127, 0, 0, 0, 0, 126, 0, 129, 210, 48, 203, 58, 0, 0, 240, 191, 0, 0, 140, 64, 154, 153, 17, 192, 0, 0, 129, 0, 0, 129, 0, 129, 210, 48, 210, 48, 0, 0, 240, 63, 0, 0, 32, 63, 154, 153, 17, 192, 0, 0, 129, 0, 0, 129, 0, 129, 203, 58, 203, 58, 8, 0, 240, 63, 0, 0, 140, 64, 149, 153, 17, 192, 0, 0, 129, 0, 0, 130, 0, 129, 210, 48, 203, 58, 149, 153, 17, 192, 0, 0, 32, 63, 8, 0, 240, 191, 129, 0, 0, 0, 0, 127, 0, 129, 210, 48, 210, 48, 154, 153, 17, 192, 0, 0, 140, 64, 248, 255, 239, 63, 129, 0, 0, 0, 0, 127, 0, 129, 203, 58, 203, 58, 154, 153, 17, 192, 0, 0, 32, 63, 0, 0, 240, 63, 129, 0, 0, 0, 0, 126, 0, 129, 210, 48, 203, 58, 248, 255, 239, 63, 205, 204, 152, 64, 8, 0, 240, 63, 0, 127, 0, 0, 129, 0, 0, 129, 210, 48, 210, 48, 0, 0, 240, 191, 205, 204, 152, 64, 0, 0, 240, 191, 0, 127, 0, 0, 129, 0, 0, 129, 203, 58, 203, 58, 8, 0, 240, 63, 205, 204, 152, 64, 248, 255, 239, 191, 0, 127, 0, 0, 130, 0, 0, 129, 210, 48, 203, 58, 248, 255, 239, 191, 102, 102, 102, 62, 8, 0, 240, 191, 0, 129, 0, 0, 0, 0, 127, 129, 210, 48, 210, 48, 0, 0, 240, 63, 102, 102, 102, 62, 0, 0, 240, 63, 0, 129, 0, 0, 0, 0, 127, 129, 203, 58, 203, 58, 0, 0, 240, 63, 102, 102, 102, 62, 0, 0, 240, 191, 0, 129, 0, 0, 0, 0, 127, 129, 210, 48, 203, 58, 8, 0, 240, 191, 0, 0, 140, 64, 149, 153, 17, 64, 0, 0, 127, 0, 0, 126, 0, 129, 203, 58, 210, 48, 149, 153, 17, 64, 0, 0, 140, 64, 8, 0, 240, 63, 127, 0, 0, 0, 0, 126, 0, 129, 203, 58, 210, 48, 248, 255, 239, 191, 0, 0, 32, 63, 158, 153, 17, 192, 0, 0, 129, 0, 0, 129, 0, 129, 203, 58, 210, 48, 154, 153, 17, 192, 0, 0, 140, 64, 0, 0, 240, 191, 129, 0, 0, 0, 0, 127, 0, 129, 203, 58, 210, 48, 8, 0, 240, 191, 205, 204, 152, 64, 248, 255, 239, 63, 0, 127, 0, 0, 129, 0, 0, 129, 203, 58, 210, 48, 0, 0, 240, 191, 102, 102, 102, 62, 0, 0, 240, 63, 0, 129, 0, 0, 0, 0, 126, 129, 203, 58, 210, 48 ),
@@ -142,7 +142,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 18 ),
+"material": SubResource( 12 ),
 "name": "Inner",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -155,14 +155,14 @@ surfaces/1 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 288,
-"material": SubResource( 19 ),
+"material": SubResource( 13 ),
 "name": "Outer",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 192
 }
 
-[sub_resource type="SpatialMaterial" id=11]
+[sub_resource type="SpatialMaterial" id=16]
 albedo_color = Color( 1, 0.92549, 0.580392, 1 )
 albedo_texture = ExtResource( 14 )
 metallic = 0.5
@@ -170,14 +170,14 @@ normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 15 )
 
-[sub_resource type="SpatialMaterial" id=12]
+[sub_resource type="SpatialMaterial" id=17]
 albedo_color = Color( 1, 0, 0, 1 )
 albedo_texture = ExtResource( 14 )
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 15 )
 
-[sub_resource type="ArrayMesh" id=13]
+[sub_resource type="ArrayMesh" id=18]
 surfaces/0 = {
 "aabb": AABB( -2.275, 0.225, -2.275, 4.55, 4.55, 4.55001 ),
 "array_data": PoolByteArray( 0, 0, 240, 191, 0, 0, 32, 63, 154, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 210, 48, 210, 48, 248, 255, 239, 63, 0, 0, 140, 64, 158, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 203, 58, 203, 58, 0, 0, 240, 63, 0, 0, 32, 63, 154, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 210, 48, 203, 58, 154, 153, 17, 64, 0, 0, 32, 63, 0, 0, 240, 63, 127, 0, 0, 0, 0, 127, 0, 129, 210, 48, 210, 48, 158, 153, 17, 64, 0, 0, 140, 64, 248, 255, 239, 191, 127, 0, 0, 0, 0, 127, 0, 129, 203, 58, 203, 58, 154, 153, 17, 64, 0, 0, 32, 63, 0, 0, 240, 191, 127, 0, 0, 0, 0, 127, 0, 129, 210, 48, 203, 58, 0, 0, 240, 191, 0, 0, 140, 64, 154, 153, 17, 192, 0, 0, 129, 0, 0, 130, 0, 129, 210, 48, 210, 48, 0, 0, 240, 63, 0, 0, 32, 63, 154, 153, 17, 192, 0, 0, 129, 0, 0, 130, 0, 129, 203, 58, 203, 58, 8, 0, 240, 63, 0, 0, 140, 64, 149, 153, 17, 192, 0, 0, 129, 0, 0, 129, 0, 129, 210, 48, 203, 58, 149, 153, 17, 192, 0, 0, 32, 63, 8, 0, 240, 191, 129, 0, 0, 0, 0, 126, 0, 129, 210, 48, 210, 48, 154, 153, 17, 192, 0, 0, 140, 64, 248, 255, 239, 63, 129, 0, 0, 0, 0, 126, 0, 129, 203, 58, 203, 58, 154, 153, 17, 192, 0, 0, 32, 63, 0, 0, 240, 63, 129, 0, 0, 0, 0, 127, 0, 129, 210, 48, 203, 58, 248, 255, 239, 63, 205, 204, 152, 64, 8, 0, 240, 63, 0, 127, 0, 0, 129, 0, 0, 129, 210, 48, 210, 48, 0, 0, 240, 191, 205, 204, 152, 64, 0, 0, 240, 191, 0, 127, 0, 0, 129, 0, 0, 129, 203, 58, 203, 58, 8, 0, 240, 63, 205, 204, 152, 64, 248, 255, 239, 191, 0, 127, 0, 0, 129, 0, 0, 129, 210, 48, 203, 58, 248, 255, 239, 191, 102, 102, 102, 62, 8, 0, 240, 191, 0, 129, 0, 0, 0, 0, 127, 129, 210, 48, 210, 48, 0, 0, 240, 63, 102, 102, 102, 62, 0, 0, 240, 63, 0, 129, 0, 0, 0, 0, 127, 129, 203, 58, 203, 58, 0, 0, 240, 63, 102, 102, 102, 62, 0, 0, 240, 191, 0, 129, 0, 0, 0, 0, 126, 129, 210, 48, 203, 58, 8, 0, 240, 191, 0, 0, 140, 64, 149, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 203, 58, 210, 48, 149, 153, 17, 64, 0, 0, 140, 64, 8, 0, 240, 63, 127, 0, 0, 0, 0, 127, 0, 129, 203, 58, 210, 48, 248, 255, 239, 191, 0, 0, 32, 63, 158, 153, 17, 192, 0, 0, 129, 0, 0, 130, 0, 129, 203, 58, 210, 48, 154, 153, 17, 192, 0, 0, 140, 64, 0, 0, 240, 191, 129, 0, 0, 0, 0, 126, 0, 129, 203, 58, 210, 48, 8, 0, 240, 191, 205, 204, 152, 64, 248, 255, 239, 63, 0, 127, 0, 0, 130, 0, 0, 129, 203, 58, 210, 48, 0, 0, 240, 191, 102, 102, 102, 62, 0, 0, 240, 63, 0, 129, 0, 0, 0, 0, 127, 129, 203, 58, 210, 48 ),
@@ -185,7 +185,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 11 ),
+"material": SubResource( 16 ),
 "name": "Inner",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -198,21 +198,21 @@ surfaces/1 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 288,
-"material": SubResource( 12 ),
+"material": SubResource( 17 ),
 "name": "Outer",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 192
 }
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=19]
 albedo_color = Color( 1, 0, 0, 1 )
 albedo_texture = ExtResource( 14 )
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 15 )
 
-[sub_resource type="ArrayMesh" id=15]
+[sub_resource type="ArrayMesh" id=20]
 surfaces/0 = {
 "aabb": AABB( -2.275, 0.225, -2.275, 4.55, 4.55, 4.55001 ),
 "array_data": PoolByteArray( 0, 0, 240, 191, 0, 0, 32, 63, 154, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 210, 48, 210, 48, 248, 255, 239, 63, 0, 0, 140, 64, 158, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 203, 58, 203, 58, 0, 0, 240, 63, 0, 0, 32, 63, 154, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 210, 48, 203, 58, 154, 153, 17, 64, 0, 0, 32, 63, 0, 0, 240, 63, 127, 0, 0, 0, 0, 127, 0, 129, 210, 48, 210, 48, 158, 153, 17, 64, 0, 0, 140, 64, 248, 255, 239, 191, 127, 0, 0, 0, 0, 127, 0, 129, 203, 58, 203, 58, 154, 153, 17, 64, 0, 0, 32, 63, 0, 0, 240, 191, 127, 0, 0, 0, 0, 127, 0, 129, 210, 48, 203, 58, 0, 0, 240, 191, 0, 0, 140, 64, 154, 153, 17, 192, 0, 0, 129, 0, 0, 130, 0, 129, 210, 48, 210, 48, 0, 0, 240, 63, 0, 0, 32, 63, 154, 153, 17, 192, 0, 0, 129, 0, 0, 130, 0, 129, 203, 58, 203, 58, 8, 0, 240, 63, 0, 0, 140, 64, 149, 153, 17, 192, 0, 0, 129, 0, 0, 129, 0, 129, 210, 48, 203, 58, 149, 153, 17, 192, 0, 0, 32, 63, 8, 0, 240, 191, 129, 0, 0, 0, 0, 126, 0, 129, 210, 48, 210, 48, 154, 153, 17, 192, 0, 0, 140, 64, 248, 255, 239, 63, 129, 0, 0, 0, 0, 126, 0, 129, 203, 58, 203, 58, 154, 153, 17, 192, 0, 0, 32, 63, 0, 0, 240, 63, 129, 0, 0, 0, 0, 127, 0, 129, 210, 48, 203, 58, 248, 255, 239, 63, 205, 204, 152, 64, 8, 0, 240, 63, 0, 127, 0, 0, 129, 0, 0, 129, 210, 48, 210, 48, 0, 0, 240, 191, 205, 204, 152, 64, 0, 0, 240, 191, 0, 127, 0, 0, 129, 0, 0, 129, 203, 58, 203, 58, 8, 0, 240, 63, 205, 204, 152, 64, 248, 255, 239, 191, 0, 127, 0, 0, 129, 0, 0, 129, 210, 48, 203, 58, 248, 255, 239, 191, 102, 102, 102, 62, 8, 0, 240, 191, 0, 129, 0, 0, 0, 0, 127, 129, 210, 48, 210, 48, 0, 0, 240, 63, 102, 102, 102, 62, 0, 0, 240, 63, 0, 129, 0, 0, 0, 0, 127, 129, 203, 58, 203, 58, 0, 0, 240, 63, 102, 102, 102, 62, 0, 0, 240, 191, 0, 129, 0, 0, 0, 0, 126, 129, 210, 48, 203, 58, 8, 0, 240, 191, 0, 0, 140, 64, 149, 153, 17, 64, 0, 0, 127, 0, 0, 127, 0, 129, 203, 58, 210, 48, 149, 153, 17, 64, 0, 0, 140, 64, 8, 0, 240, 63, 127, 0, 0, 0, 0, 127, 0, 129, 203, 58, 210, 48, 248, 255, 239, 191, 0, 0, 32, 63, 158, 153, 17, 192, 0, 0, 129, 0, 0, 130, 0, 129, 203, 58, 210, 48, 154, 153, 17, 192, 0, 0, 140, 64, 0, 0, 240, 191, 129, 0, 0, 0, 0, 126, 0, 129, 203, 58, 210, 48, 8, 0, 240, 191, 205, 204, 152, 64, 248, 255, 239, 63, 0, 127, 0, 0, 130, 0, 0, 129, 203, 58, 210, 48, 0, 0, 240, 191, 102, 102, 102, 62, 0, 0, 240, 63, 0, 129, 0, 0, 0, 0, 127, 129, 203, 58, 210, 48 ),
@@ -220,7 +220,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 11 ),
+"material": SubResource( 16 ),
 "name": "Inner",
 "primitive": 4,
 "skeleton_aabb": [  ],
@@ -233,30 +233,22 @@ surfaces/1 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 288,
-"material": SubResource( 14 ),
+"material": SubResource( 19 ),
 "name": "Outer",
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 192
 }
 
-[sub_resource type="SpatialMaterial" id=22]
+[sub_resource type="SpatialMaterial" id=21]
 flags_transparent = true
 albedo_color = Color( 0.498039, 1, 0.498039, 0.196078 )
 
-[sub_resource type="CubeMesh" id=23]
-material = SubResource( 22 )
+[sub_resource type="CubeMesh" id=22]
+material = SubResource( 21 )
 size = Vector3( 5.1, 5.1, 5.1 )
 
-[sub_resource type="SpatialMaterial" id=24]
-flags_transparent = true
-albedo_color = Color( 0.498039, 1, 0.498039, 0.196078 )
-
-[sub_resource type="CubeMesh" id=25]
-material = SubResource( 24 )
-size = Vector3( 5.1, 5.1, 5.1 )
-
-[sub_resource type="BoxShape" id=17]
+[sub_resource type="BoxShape" id=23]
 extents = Vector3( 2, 0.5, 2 )
 
 [node name="Game" type="Spatial"]
@@ -273,67 +265,76 @@ material/0 = SubResource( 4 )
 
 [node name="Ball" type="RigidBody" parent="Ground/Platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.267397, 0 )
+collision_layer = 2
+collision_mask = 2
 mode = 3
 gravity_scale = 0.0
 linear_damp = 0.0
 angular_damp = 0.0
-script = SubResource( 16 )
+script = SubResource( 5 )
 
 [node name="Shape" type="CollisionShape" parent="Ground/Platform/Ball"]
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="Mesh" type="MeshInstance" parent="Ground/Platform/Ball"]
 transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0 )
 mesh = ExtResource( 7 )
-material/0 = SubResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="RayCast" type="RayCast" parent="Ground/Platform/Ball"]
+enabled = true
+cast_to = Vector3( 2.1, 0, 2.1 )
+collision_mask = 2
+collide_with_areas = true
+collide_with_bodies = false
 
 [node name="Corner1" type="StaticBody" parent="Ground/Platform"]
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.95, 0, -1.95 )
 
 [node name="Shape" type="CollisionShape" parent="Ground/Platform/Corner1"]
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
 [node name="Mesh" type="MeshInstance" parent="Ground/Platform/Corner1"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.215511, 0 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 9 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="Corner2" type="StaticBody" parent="Ground/Platform"]
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.95, 0, -1.95 )
 
 [node name="Shape" type="CollisionShape" parent="Ground/Platform/Corner2"]
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
 [node name="Mesh" type="MeshInstance" parent="Ground/Platform/Corner2"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.215511, 0 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 9 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="Corner3" type="StaticBody" parent="Ground/Platform"]
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.95, 0, 1.95 )
 
 [node name="Shape" type="CollisionShape" parent="Ground/Platform/Corner3"]
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
 [node name="Mesh" type="MeshInstance" parent="Ground/Platform/Corner3"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.215511, 0 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 9 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="Corner4" type="StaticBody" parent="Ground/Platform"]
 editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.95, 0, 1.95 )
 
 [node name="Shape" type="CollisionShape" parent="Ground/Platform/Corner4"]
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
 [node name="Mesh" type="MeshInstance" parent="Ground/Platform/Corner4"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.215511, 0 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 9 )
+mesh = SubResource( 9 )
+material/0 = SubResource( 10 )
 
 [node name="Paddles1" type="RigidBody" parent="Ground/Platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0 )
@@ -347,21 +348,21 @@ script = ExtResource( 13 )
 
 [node name="Shape1" type="CollisionShape" parent="Ground/Platform/Paddles1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.92, 0, 0 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="Shape2" type="CollisionShape" parent="Ground/Platform/Paddles1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.92, 0, 0 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="Mesh1" type="MeshInstance" parent="Ground/Platform/Paddles1"]
 transform = Transform( 0.03, 0, 0, 0, 0.12, 0, 0, 0, 0.2, -1.92, -0.3, 0 )
-mesh = SubResource( 20 )
+mesh = SubResource( 14 )
 material/0 = null
 material/1 = null
 
 [node name="Mesh2" type="MeshInstance" parent="Ground/Platform/Paddles1"]
 transform = Transform( 0.03, 0, 0, 0, 0.12, 0, 0, 0, 0.2, 1.92, -0.3, 0 )
-mesh = SubResource( 21 )
+mesh = SubResource( 15 )
 material/0 = null
 material/1 = null
 
@@ -377,49 +378,42 @@ script = ExtResource( 13 )
 
 [node name="Shape1" type="CollisionShape" parent="Ground/Platform/Paddles2"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.92, 0, 0 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="Shape2" type="CollisionShape" parent="Ground/Platform/Paddles2"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.92, 0, 0 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="Mesh1" type="MeshInstance" parent="Ground/Platform/Paddles2"]
 transform = Transform( 0.03, 0, 0, 0, 0.12, 0, 0, 0, 0.2, -1.92, -0.3, 0 )
-mesh = SubResource( 13 )
+mesh = SubResource( 18 )
 material/0 = null
 material/1 = null
 
 [node name="Mesh2" type="MeshInstance" parent="Ground/Platform/Paddles2"]
 transform = Transform( 0.03, 0, 0, 0, 0.12, 0, 0, 0, 0.2, 1.92, -0.3, 0 )
-mesh = SubResource( 15 )
+mesh = SubResource( 20 )
 material/0 = null
 material/1 = null
 
-[node name="Paddles3" type="Area" parent="Ground/Platform"]
+[node name="PaddlesTarget" type="Area" parent="Ground/Platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0 )
 
-[node name="Shape1" type="CollisionShape" parent="Ground/Platform/Paddles3"]
+[node name="Shape" type="CollisionShape" parent="Ground/Platform/PaddlesTarget"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.92, 0, 0 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
-[node name="Shape2" type="CollisionShape" parent="Ground/Platform/Paddles3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.92, 0, 0 )
-shape = SubResource( 10 )
-
-[node name="Mesh1" type="MeshInstance" parent="Ground/Platform/Paddles3"]
+[node name="Mesh" type="MeshInstance" parent="Ground/Platform/PaddlesTarget"]
 transform = Transform( 0.03, 0, 0, 0, 0.12, 0, 0, 0, 0.2, -1.92, -0.00304466, 0 )
-mesh = SubResource( 23 )
-material/0 = null
-
-[node name="Mesh2" type="MeshInstance" parent="Ground/Platform/Paddles3"]
-transform = Transform( 0.03, 0, 0, 0, 0.12, 0, 0, 0, 0.2, 1.92, -0.00304466, 0 )
-mesh = SubResource( 25 )
+mesh = SubResource( 22 )
 material/0 = null
 
 [node name="Boundaries" type="Area" parent="Ground/Platform"]
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="Ground/Platform/Boundaries"]
-shape = SubResource( 17 )
+shape = SubResource( 23 )
 
 [node name="Light" type="SpotLight" parent="."]
 transform = Transform( 0.918284, -0.174718, 0.355287, -0.395923, -0.405231, 0.824034, 0, -0.897364, -0.441292, 3.57096, 7.75351, -3.93894 )
@@ -433,3 +427,5 @@ fov = 50.0
 
 [node name="GUI" parent="." instance=ExtResource( 16 )]
 [connection signal="body_exited" from="Ground/Platform/Boundaries" to="." method="_on_Boundaries_body_exited"]
+
+[editable path="GUI"]
