@@ -84,7 +84,10 @@ func _on_GUI_game_timeout( timeouts_count ):
 			direction = Direction.NONE
 			cycles_count += 1
 			$GUI.wait_rest()
-			if cycles_count >= PLAY_CYCLES: $GUI.end_game( PLAY_TIMEOUTS * PLAY_CYCLES, score )
+			if cycles_count >= PLAY_CYCLES: 
+				DataLog.register_values( [ PLAY_TIMEOUTS * PLAY_CYCLES, score ] )
+				$GUI.end_game( PLAY_TIMEOUTS * PLAY_CYCLES, score )
+				DataLog.end_log()
 		_change_display()
 	player.gravity_scale = direction
 

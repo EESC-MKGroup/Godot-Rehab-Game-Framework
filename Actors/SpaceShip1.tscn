@@ -6,7 +6,6 @@
 [ext_resource path="res://Textures/vehicle_playerShip_orange_nrm.png" type="Texture" id=4]
 
 [sub_resource type="GDScript" id=1]
-
 script/source = "extends KinematicBody
 
 var old_position = 0.0
@@ -20,44 +19,13 @@ func _physics_process( delta ):
 	old_position = translation.y"
 
 [sub_resource type="ConvexPolygonShape" id=2]
-
-margin = 0.04
 points = PoolVector3Array( 0.0947266, -0.0939941, 0.833984, -0.0903931, -0.0629883, 0.830566, 0.0903931, -0.0629883, 0.830566, -0.0947266, -0.0939941, 0.833984, 0, -0.170654, -0.566895, -0.0947266, -0.0939941, 0.833984, 0.0947266, -0.0939941, 0.833984, 0.563477, -0.0695801, -0.649414, 0, -0.170654, -0.566895, 0.564453, -0.0919189, -0.647949, -0.563477, -0.0695801, -0.649414, -0.564453, -0.0919189, -0.647949, 0, -0.170654, -0.566895, 0.564453, -0.0919189, -0.647949, 0, -0.170654, -0.566895, 0.0947266, -0.0939941, 0.833984, 0, -0.170654, -0.566895, -0.564453, -0.0919189, -0.647949, -0.0947266, -0.0939941, 0.833984, 0, -0.170654, -0.566895, 0, 0.1604, -0.638184, -0.563477, -0.0695801, -0.649414, 0.563477, -0.0695801, -0.649414, 0, 0.1604, -0.638184, 0, -0.170654, -0.566895, -0.0947266, -0.0939941, 0.833984, -0.563477, -0.0695801, -0.649414, -0.0903931, -0.0629883, 0.830566, -0.0903931, -0.0629883, 0.830566, -0.563477, -0.0695801, -0.649414, 0, 0.1604, -0.638184, 0, 0.1604, -0.638184, 0.0903931, -0.0629883, 0.830566, -0.0903931, -0.0629883, 0.830566, 0, 0.1604, -0.638184, 0.563477, -0.0695801, -0.649414, 0.0903931, -0.0629883, 0.830566, 0.564453, -0.0919189, -0.647949, 0.0903931, -0.0629883, 0.830566, 0.563477, -0.0695801, -0.649414, 0.0903931, -0.0629883, 0.830566, 0.564453, -0.0919189, -0.647949, 0.0947266, -0.0939941, 0.833984, -0.0947266, -0.0939941, 0.833984, -0.564453, -0.0919189, -0.647949, -0.563477, -0.0695801, -0.649414 )
 
 [sub_resource type="SpatialMaterial" id=3]
-
-render_priority = 0
-flags_transparent = false
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
-albedo_color = Color( 1, 1, 1, 1 )
 albedo_texture = ExtResource( 2 )
-metallic = 0.0
 metallic_specular = 0.1
 metallic_texture_channel = 4
 roughness = 0.0
-roughness_texture_channel = 0
 emission_enabled = true
 emission = Color( 0, 0, 0, 1 )
 emission_energy = 1.0
@@ -67,456 +35,104 @@ emission_texture = ExtResource( 3 )
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 4 )
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Ambient Occlusion", "Anisotropy", "Clearcoat", "Depth", "Detail", "Emission", "Flags", "Metallic", "NormalMap", "Parameters", "Refraction", "Rim", "Roughness", "Subsurf Scatter", "Vertex Color" ]
 
 [sub_resource type="SpatialMaterial" id=4]
-
-render_priority = 0
 flags_transparent = true
-flags_unshaded = false
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
 albedo_color = Color( 0.796875, 0.796875, 0.796875, 1 )
 albedo_texture = ExtResource( 2 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
 roughness = 0.0
-roughness_texture_channel = 0
-emission_enabled = false
-normal_enabled = false
 rim_enabled = true
 rim = 1.0
 rim_tint = 0.8
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
 refraction_enabled = true
 refraction_scale = 0.05
 refraction_texture_channel = 0
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Anisotropy", "Emission", "Flags", "Metallic", "Refraction", "Rim" ]
 
 [sub_resource type="Gradient" id=5]
-
 offsets = PoolRealArray( 0.13913, 1 )
 colors = PoolColorArray( 1, 0.613685, 0.0664062, 0.558, 1, 0.632812, 0, 1 )
 
 [sub_resource type="GradientTexture" id=6]
-
-flags = 4
 gradient = SubResource( 5 )
-width = 2048
-_sections_unfolded = [ "gradient" ]
 
 [sub_resource type="Curve" id=7]
-
-min_value = 0.0
-max_value = 1.0
-bake_resolution = 100
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.00585938 ), -1.6271, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=8]
-
-flags = 4
-width = 2048
 curve = SubResource( 7 )
 
 [sub_resource type="ParticlesMaterial" id=9]
-
-render_priority = 0
-trail_divisor = 1
-emission_shape = 0
-flag_align_y = false
-flag_rotate_y = false
-flag_disable_z = false
 spread = 1.0
-flatness = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 1.0
-initial_velocity_random = 0.0
-angular_velocity = 0.0
-angular_velocity_random = 0.0
-linear_accel = 0.0
-linear_accel_random = 0.0
-radial_accel = 0.0
-radial_accel_random = 0.0
-tangential_accel = 0.0
-tangential_accel_random = 0.0
-damping = 0.0
-damping_random = 0.0
-angle = 0.0
-angle_random = 0.0
-scale = 1.0
-scale_random = 0.0
 scale_curve = SubResource( 8 )
 color_ramp = SubResource( 6 )
-hue_variation = 0.0
-hue_variation_random = 0.0
-anim_speed = 0.0
-anim_speed_random = 0.0
-anim_offset = 0.0
-anim_offset_random = 0.0
-anim_loop = false
-_sections_unfolded = [ "Color", "Emission Shape", "Gravity", "Initial Velocity", "Scale", "Spread", "color_ramp" ]
 
 [sub_resource type="SpatialMaterial" id=10]
-
-render_priority = 0
-flags_transparent = false
 flags_unshaded = true
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
 albedo_color = Color( 1, 0.976807, 0.628906, 1 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 0.0
-roughness_texture_channel = 0
-emission_enabled = true
-emission = Color( 0.991455, 1, 0.726562, 1 )
-emission_energy = 8.0
-emission_operator = 0
-emission_on_uv2 = false
-normal_enabled = false
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Distance Fade", "Emission", "Flags", "Vertex Color" ]
 
 [sub_resource type="SphereMesh" id=11]
-
 material = SubResource( 10 )
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
-flip_faces = false
 radius = 0.04
 height = 0.08
 radial_segments = 8
 rings = 8
-is_hemisphere = false
 
 [sub_resource type="Curve" id=12]
-
-min_value = 0.0
-max_value = 1.0
-bake_resolution = 100
 _data = [ Vector2( 0, 0.779297 ), 0.0, 1.3896, 0, 0, Vector2( 0.248126, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.177734 ), -1.57724, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=13]
-
-flags = 4
-width = 2048
 curve = SubResource( 12 )
 
 [sub_resource type="ParticlesMaterial" id=14]
-
-render_priority = 0
-trail_divisor = 1
-emission_shape = 0
-flag_align_y = false
-flag_rotate_y = false
-flag_disable_z = false
 spread = 2.0
-flatness = 0.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 1.0
-initial_velocity_random = 0.0
-angular_velocity = 0.0
-angular_velocity_random = 0.0
-linear_accel = 0.0
-linear_accel_random = 0.0
-radial_accel = 0.0
-radial_accel_random = 0.0
-tangential_accel = 0.0
-tangential_accel_random = 0.0
-damping = 0.0
-damping_random = 0.0
-angle = 0.0
-angle_random = 0.0
-scale = 1.0
-scale_random = 0.0
 scale_curve = SubResource( 13 )
 color_ramp = SubResource( 6 )
-hue_variation = 0.0
-hue_variation_random = 0.0
-anim_speed = 0.0
-anim_speed_random = 0.0
-anim_offset = 0.0
-anim_offset_random = 0.0
-anim_loop = false
-_sections_unfolded = [ "Emission Shape", "Gravity", "Initial Velocity", "Scale", "Spread", "color_ramp" ]
 
 [sub_resource type="SpatialMaterial" id=15]
-
-render_priority = 0
-flags_transparent = false
+flags_transparent = true
 flags_unshaded = true
-flags_vertex_lighting = false
-flags_no_depth_test = false
-flags_use_point_size = false
-flags_world_triplanar = false
-flags_fixed_size = false
-flags_albedo_tex_force_srgb = false
-flags_do_not_receive_shadows = false
-flags_disable_ambient_light = false
-flags_ensure_correct_normals = false
-vertex_color_use_as_albedo = false
-vertex_color_is_srgb = false
-params_diffuse_mode = 0
-params_specular_mode = 0
-params_blend_mode = 0
-params_cull_mode = 0
-params_depth_draw_mode = 0
-params_line_width = 1.0
-params_point_size = 1.0
-params_billboard_mode = 0
-params_billboard_keep_scale = false
-params_grow = false
-params_use_alpha_scissor = false
 albedo_color = Color( 1, 0.670588, 0.407843, 0.498039 )
-metallic = 0.0
-metallic_specular = 0.5
-metallic_texture_channel = 0
-roughness = 0.0
-roughness_texture_channel = 0
-emission_enabled = true
-emission = Color( 1, 0.767273, 0.519531, 1 )
-emission_energy = 2.0
-emission_operator = 0
-emission_on_uv2 = false
-normal_enabled = false
-rim_enabled = false
-clearcoat_enabled = false
-anisotropy_enabled = false
-ao_enabled = false
-depth_enabled = false
-subsurf_scatter_enabled = false
-transmission_enabled = false
-refraction_enabled = false
-detail_enabled = false
-uv1_scale = Vector3( 1, 1, 1 )
-uv1_offset = Vector3( 0, 0, 0 )
-uv1_triplanar = false
-uv1_triplanar_sharpness = 1.0
-uv2_scale = Vector3( 1, 1, 1 )
-uv2_offset = Vector3( 0, 0, 0 )
-uv2_triplanar = false
-uv2_triplanar_sharpness = 1.0
-proximity_fade_enable = false
-distance_fade_mode = 0
-_sections_unfolded = [ "Albedo", "Distance Fade", "Emission", "Flags", "Vertex Color" ]
 
 [sub_resource type="SphereMesh" id=16]
-
 material = SubResource( 15 )
-custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
-flip_faces = false
 radius = 0.08
 height = 0.16
 radial_segments = 8
 rings = 8
-is_hemisphere = false
 
 [node name="SpaceShip1" type="KinematicBody"]
-input_ray_pickable = true
-input_capture_on_drag = false
-collision_layer = 1
-collision_mask = 1
-move_lock_x = false
-move_lock_y = false
-move_lock_z = false
-collision/safe_margin = 0.001
 script = SubResource( 1 )
-_sections_unfolded = [ "Collision", "Transform" ]
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.000345306, 1, 0, -1, 0.000345306, 0, 0.0208571, -0.0839378 )
 shape = SubResource( 2 )
-disabled = false
-_sections_unfolded = [ "Transform" ]
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -2.8213e-07, 1, 0, -1, -2.8213e-07, 0, 0, 0 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
 mesh = ExtResource( 1 )
-skeleton = NodePath("..")
 material/0 = SubResource( 3 )
 material/1 = SubResource( 4 )
-_sections_unfolded = [ "Transform", "material" ]
 
 [node name="JetFire" type="Particles" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.769266, -0.0856008 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-emitting = true
 amount = 16
-lifetime = 1.0
-one_shot = false
-preprocess = 0.0
-speed_scale = 1.0
-explosiveness = 0.0
-randomness = 0.0
-fixed_fps = 0
-fract_delta = true
 visibility_aabb = AABB( -0.890485, -0.577304, -1.54776, 1.78097, 1.13117, 3.0877 )
-local_coords = true
-draw_order = 0
 process_material = SubResource( 9 )
-draw_passes = 1
 draw_pass_1 = SubResource( 11 )
-_sections_unfolded = [ "Draw Passes", "Drawing", "Geometry", "Process Material", "Time", "Transform", "process_material" ]
 
 [node name="JetFire2" type="Particles" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.769266, -0.0856008 )
-layers = 1
-material_override = null
-cast_shadow = 1
-extra_cull_margin = 0.0
-use_in_baked_light = false
-lod_min_distance = 0.0
-lod_min_hysteresis = 0.0
-lod_max_distance = 0.0
-lod_max_hysteresis = 0.0
-emitting = true
 amount = 12
-lifetime = 1.0
-one_shot = false
-preprocess = 0.0
-speed_scale = 1.0
-explosiveness = 0.0
 randomness = 0.1
-fixed_fps = 0
-fract_delta = true
 visibility_aabb = AABB( -0.890485, -0.577304, -1.54776, 1.78097, 1.13117, 3.0877 )
-local_coords = true
-draw_order = 0
 process_material = SubResource( 14 )
-draw_passes = 1
 draw_pass_1 = SubResource( 16 )
-_sections_unfolded = [ "Drawing", "Geometry", "Time", "Transform", "draw_pass_1", "process_material" ]
 
 [node name="OmniLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.995544, -0.0817919 )
-layers = 1
 light_color = Color( 1, 0.8526, 0.460938, 1 )
 light_energy = 2.0
-light_indirect_energy = 1.0
-light_negative = false
-light_specular = 0.5
-light_bake_mode = 1
-light_cull_mask = -1
-shadow_enabled = false
-shadow_color = Color( 0, 0, 0, 1 )
-shadow_bias = 0.15
-shadow_contact = 0.0
-shadow_reverse_cull_face = false
-editor_only = false
-omni_range = 5.0
-omni_attenuation = 1.0
-omni_shadow_mode = 1
-omni_shadow_detail = 1
-_sections_unfolded = [ "Light", "Shadow" ]
-

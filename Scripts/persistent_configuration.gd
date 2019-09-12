@@ -4,8 +4,9 @@ const CONFIG_FILE_PATH = "user://config.json"
 var config_file = File.new()
 
 var parameters = { 
-                     "server_address": "127.0.0.1",
-                     "user_name": "User"
+                     "device_address": "127.0.0.1",
+                     "game_address": "127.0.0.1",
+                     "user": "User"
                  }
 
 func _ready():

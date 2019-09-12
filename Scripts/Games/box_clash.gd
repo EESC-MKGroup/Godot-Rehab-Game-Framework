@@ -29,15 +29,19 @@ func _on_client_connected( client_id ):
 	elif client_id == 1: 
 		GameConnection.set_as_master( $Box2 )
 		$Box1.mode = RigidBody.MODE_KINEMATIC
+	$BoxTarget.show()
 
 func _on_players_connected():
 	$Box1.rpc( "enable" )
 	$Box2.rpc( "enable" )
 	GameConnection.set_as_master( self )
 	GameConnection.connect( "game_timeout", $GUI, "_on_GUI_game_timeout" )
+	$BoxTarget.show()
 
 func get_player_force( body ):
-	return body.transform.basis * Vector3.FORWARD * input_axis.get_force() * movement_range
+	var player_force = input_axis.get_force() * movement_range
+	$GUI.display_force( player_force )
+	return body.transform.basis * Vector3.FORWARD * player_force
 
 func get_environment_force( body ):
 	return body.transform.basis * Vector3.FORWARD * $Spring.get_force()
@@ -46,7 +50,7 @@ func set_feedback_force( force ):
 	input_axis.set_force( force.lenght() )
 
 func set_resulting_position( position ):
-	$GUI.display_measure( position.length() )
+	$GUI.display_position( position.length() )
 
 puppet func set_target( new_position, is_active ):
 	$BoxTarget.translation.z = new_position

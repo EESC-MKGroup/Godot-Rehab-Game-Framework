@@ -9,6 +9,7 @@ var peer = NetworkedMultiplayerENet.new()
 var is_server = false
 
 var clients_count = 0
+var max_clients_number = 0
 
 func _ready():
 	get_tree().connect( "network_peer_connected", self, "_on_peer_connected" )
@@ -26,6 +27,7 @@ func connect_server( max_clients=2 ):
 	peer.create_server( SERVER_PORT, max_clients )
 	peer.set_target_peer( NetworkedMultiplayerPeer.TARGET_PEER_BROADCAST )
 	get_tree().set_network_peer( peer )
+	max_clients_number = max_clients
 
 func shutdown():
 	set_process( false )
@@ -37,7 +39,10 @@ func set_as_master( node ):
 
 func _on_peer_connected( peer_id ):
 	print( "new peer connected: " + str(peer_id) )
-	if peer.refuse_new_connections: emit_signal( "players_connected" )
+	clients_count += 1
+	if clients_count >= max_clients_number:
+		peer.refuse_new_connections = true
+		emit_signal( "players_connected" )
 
 func _on_peer_disconnected( peer_id ):
 	print( "peer disconnected: " + str(peer_id) )

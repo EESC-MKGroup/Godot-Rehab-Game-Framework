@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Scripts/Games/up-down_game.gd" type="Script" id=1]
 [ext_resource path="res://Meshes/Watermelon.obj" type="ArrayMesh" id=2]
@@ -8,6 +8,9 @@
 [ext_resource path="res://Meshes/balloon_scene.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://Actors/Target.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Textures/wood.jpg" type="Texture" id=9]
+[ext_resource path="res://Textures/wood_height.jpg" type="Texture" id=10]
+[ext_resource path="res://Textures/wood_normal.png" type="Texture" id=11]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 3, 5, 1.5 )
@@ -29,9 +32,21 @@ roughness = 0.0
 [sub_resource type="PlaneMesh" id=5]
 
 [sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.726562, 0.720886, 0.720886, 1 )
+albedo_color = Color( 0.745098, 0.6, 0.321569, 1 )
+albedo_texture = ExtResource( 9 )
 metallic_specular = 0.0
-roughness = 0.0
+metallic_texture = ExtResource( 10 )
+roughness = 0.7
+roughness_texture = ExtResource( 10 )
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 11 )
+ao_enabled = true
+ao_light_affect = 0.0
+ao_texture = ExtResource( 10 )
+ao_on_uv2 = false
+ao_texture_channel = 0
+uv1_scale = Vector3( 8, 8, 8 )
 
 [sub_resource type="ProceduralSky" id=7]
 sky_top_color = Color( 0.339844, 1, 0.969055, 1 )
@@ -57,7 +72,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="Boundaries" type="CollisionShape" parent="GameSpace"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.14329, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5, 0 )
 shape = SubResource( 1 )
 
 [node name="RayCast" type="RayCast" parent="GameSpace/Boundaries"]
@@ -108,7 +123,7 @@ spot_range = 26.8617
 spot_angle = 37.5642
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.83886, 10.1476 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5, 10.148 )
 size = 16.852
 
 [node name="GUI" parent="." instance=ExtResource( 8 )]

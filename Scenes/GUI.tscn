@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Fonts/LuckiestGuyGame.tres" type="DynamicFont" id=1]
-[ext_resource path="res://Fonts/LuckiestGuy.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Fonts/LuckiestGuy.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Fonts/LuckiestGuy.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Scripts/selection_list.gd" type="Script" id=4]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
@@ -20,10 +21,8 @@ func _ready():
 	_on_EffortSlider_value_changed( $RightPanel/EffortSlider.value )
 	$PlayTimer.paused = true
 	$RestTimer.paused = true
-	var connection_dropdown = $RightPanel/ConnectionMenu/ConnectSelector/SelectionList.get_popup()
-	connection_dropdown.add_item( \"Client\" )
-	connection_dropdown.add_item( \"Server\" )
-	connection_dropdown.connect( \"index_pressed\", self, \"_on_Connection_index_pressed\" )
+	$RightPanel/ConnectionMenu/TypeSelector/SelectionList.list_entries( [ \"Client\", \"Server\" ] )
+	$RightPanel/ConnectionMenu/TypeSelector/SelectionList.connect( \"entry_selected\", self, \"_on_ConnectionList_entry_selected\" )
 	$RightPanel/ConnectionMenu/AddressEntry.text = Configuration.get_parameter( \"game_address\" )
 
 func _process( delta ):	
@@ -33,7 +32,7 @@ func display_setpoint( setpoint_value ):
 	$LeftPanel/SetpointDisplay/Label.text = ( \"%+.3f\" % setpoint_value )
 
 func display_measure( measure_value ):
-	$LeftPanel/MeasureDisplay/Label.text = ( \"%+.3f\" % measure_value )
+	$LeftPanel/PositionDisplay/Label.text = ( \"%+.3f\" % measure_value )
 
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	print( \"setting timeouts: %f %f\" % [ play_timeout_value, rest_timeout_value ] )
@@ -99,10 +98,16 @@ func _on_StartButton_toggled( button_pressed ):
 	$RestTimer.paused = true
 	emit_signal( \"game_toggle\", button_pressed )
 
-func _on_Connection_index_pressed( connection_index ):
-	if connection_index == 0: game.connect_client( Configuration.get_parameter( \"game_address\" ) )
-	elif connection_index == 1: game.connect_server() 
-	$RightPanel/ConnectionMenu/ConnectSelector/SelectionList.disabled = true
+func _on_ConnectionList_entry_selected( index, entry_name ):
+	if index == 0: 
+		game.connect_client( Configuration.get_parameter( \"game_address\" ) )
+	elif index == 1: 
+		game.connect_server() 
+		$LeftPanel/SetpointDisplay.editable = false
+		$LeftPanel/PositionDisplay.editable = false
+		$LeftPanel/ForceDisplay.editable = false
+	$RightPanel/ConnectionMenu/AddressEntry.editable = false
+	$RightPanel/ConnectionMenu/TypeSelector/SelectionList.disabled = true
 
 func _on_ResumeButton_pressed():
 	$PauseMenu.hide()
@@ -116,8 +121,7 @@ func _on_ExitButton_pressed():
 	get_tree().change_scene( \"res://Scenes/InitScreen.tscn\" )
 
 func _on_AddressEntry_text_entered( new_text ):
-	Configuration.set_parameter( \"game_address\", new_text )
-"
+	Configuration.set_parameter( \"game_address\", new_text )"
 
 [sub_resource type="StyleBoxFlat" id=2]
 
@@ -126,14 +130,14 @@ size = 90
 use_mipmaps = true
 use_filter = true
 extra_spacing_top = 20
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 36
 use_mipmaps = true
 use_filter = true
 extra_spacing_top = 8
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 
 [node name="GUI" type="Control"]
 margin_right = 40.0
@@ -175,7 +179,7 @@ text = "Setpoint"
 align = 1
 valign = 1
 
-[node name="MeasureDisplay" type="LineEdit" parent="LeftPanel"]
+[node name="PositionDisplay" type="LineEdit" parent="LeftPanel"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
@@ -186,7 +190,7 @@ custom_fonts/font = ExtResource( 1 )
 text = "+0.000"
 align = 1
 
-[node name="Label" type="Label" parent="LeftPanel/MeasureDisplay"]
+[node name="Label" type="Label" parent="LeftPanel/PositionDisplay"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -111.0
@@ -199,6 +203,32 @@ text = "Measurement"
 align = 1
 valign = 1
 
+[node name="ForceDisplay" type="LineEdit" parent="LeftPanel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -25.0
+margin_right = 100.0
+margin_bottom = 26.0
+custom_fonts/font = ExtResource( 1 )
+text = "+0.000N"
+align = 1
+
+[node name="Label" type="Label" parent="LeftPanel/ForceDisplay"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -44.5
+margin_top = -65.0
+margin_right = 44.5
+margin_bottom = -24.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Force"
+
 [node name="TimeLeftPanel" type="Panel" parent="LeftPanel"]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -210,6 +240,7 @@ margin_right = 100.0
 margin_bottom = -30.0
 
 [node name="Display" type="Label" parent="LeftPanel/TimeLeftPanel"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -224,32 +255,6 @@ custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "10"
 align = 1
 valign = 1
-
-[node name="ForceDisplay" type="LineEdit" parent="LeftPanel"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -100.0
-margin_top = -25.0
-margin_right = 100.0
-margin_bottom = 25.0
-custom_fonts/font = ExtResource( 1 )
-text = "+0.000N"
-align = 1
-
-[node name="Label" type="Label" parent="LeftPanel/ForceDisplay"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -44.5
-margin_top = -65.0
-margin_right = 44.5
-margin_bottom = -24.0
-custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Force"
 
 [node name="RightPanel" type="Panel" parent="."]
 self_modulate = Color( 1, 1, 1, 0.498039 )
@@ -308,11 +313,11 @@ margin_left = -125.0
 margin_top = -65.0
 margin_right = 125.0
 margin_bottom = -24.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Server Address"
 
-[node name="ConnectSelector" type="Button" parent="RightPanel/ConnectionMenu"]
+[node name="TypeSelector" type="Button" parent="RightPanel/ConnectionMenu"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -326,7 +331,7 @@ custom_fonts/font = SubResource( 4 )
 disabled = true
 toggle_mode = true
 
-[node name="SelectionList" type="MenuButton" parent="RightPanel/ConnectionMenu/ConnectSelector"]
+[node name="SelectionList" type="MenuButton" parent="RightPanel/ConnectionMenu/TypeSelector"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -340,6 +345,7 @@ custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 text = "Connect"
 switch_on_hover = true
+script = ExtResource( 4 )
 
 [node name="PlayTimeoutSlider" type="HSlider" parent="RightPanel"]
 editor/display_folded = true
@@ -434,7 +440,7 @@ margin_left = -92.0
 margin_top = 30.0
 margin_right = 92.0
 margin_bottom = 71.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 text = "Pause Menu"
 align = 1
 valign = 1
@@ -447,7 +453,7 @@ margin_left = 50.0
 margin_top = -45.0
 margin_right = -50.0
 margin_bottom = 15.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 text = "Resume"
 
 [node name="ExitButton" type="Button" parent="PauseMenu"]
@@ -458,7 +464,7 @@ margin_left = 50.0
 margin_top = -110.0
 margin_right = -50.0
 margin_bottom = -50.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 text = "Initial Screen"
 
 [node name="EndMenu" type="Panel" parent="."]
@@ -481,7 +487,7 @@ margin_left = -92.0
 margin_top = 30.0
 margin_right = 92.0
 margin_bottom = 71.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 text = "Game Over"
 align = 1
 valign = 1
@@ -497,7 +503,7 @@ margin_bottom = 20.0
 focus_mode = 2
 mouse_filter = 0
 size_flags_vertical = 1
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 text = "Targets: 0
 Points: 0"
 align = 1
@@ -510,10 +516,11 @@ margin_left = 50.0
 margin_top = -100.0
 margin_right = -50.0
 margin_bottom = -40.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 text = "Initial Screen"
 [connection signal="toggled" from="RightPanel/StartButton" to="RightPanel" method="_on_StartButton_toggled"]
 [connection signal="text_entered" from="RightPanel/ConnectionMenu/AddressEntry" to="." method="_on_AddressEntry_text_entered"]
+[connection signal="entry_selected" from="RightPanel/ConnectionMenu/TypeSelector/SelectionList" to="." method="_on_ConnectionList_entry_selected"]
 [connection signal="value_changed" from="RightPanel/PlayTimeoutSlider" to="RightPanel" method="_on_PlayTimeoutSlider_value_changed"]
 [connection signal="value_changed" from="RightPanel/RestTimeoutSlider" to="RightPanel" method="_on_RestTimeoutSlider_value_changed"]
 [connection signal="value_changed" from="RightPanel/EffortSlider" to="RightPanel" method="_on_EffortSlider_value_changed"]

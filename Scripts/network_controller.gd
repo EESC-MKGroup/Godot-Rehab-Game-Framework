@@ -33,18 +33,19 @@ remote func update_server( remote_position, remote_velocity, remote_force, last_
 	var server_time = OS.get_ticks_msec()
 	rpc_unreliable( "update_player", local_position, local_velocity, external_force, client_time, server_time )
 	# Send position and velocity values directly
-	rpc_unreliable( "update_slave", local_position, local_velocity, client_time, server_time )
+	rpc_unreliable( "update_puppet", local_position, local_velocity, client_time, server_time )
 
 master func update_player( remote_position, remote_velocity, remote_force, last_client_time, server_time=0.0 ):
 	print( "called update player on ", get_tree().get_network_unique_id() )
 	external_force = game.get_environment_force( self ) + game.get_player_force( self )
 	
 	game.set_feedback_force( feedback_force )
+	game.set_resulting_position( local_position )
 	
 	var client_time = OS.get_ticks_msec()
 	rpc_unreliable( "update_server", local_position, local_velocity, external_force, server_time, client_time )
 
-puppet func update_slave( master_position, master_velocity, last_client_time, server_time ):
+puppet func update_puppet( master_position, master_velocity, last_client_time, server_time ):
 	print( "called update slave on ", get_tree().get_network_unique_id() )
 	var time_delay = calculate_delay( last_client_time )
 	var last_target_velocity = target_velocity

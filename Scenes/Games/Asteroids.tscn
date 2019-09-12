@@ -34,24 +34,24 @@ modulate = Color( 0.648438, 0.648438, 0.648438, 1 )
 transform = Transform( 1, -2.5411e-21, -3.33721e-18, 0, 1, 0, 2.87529e-18, 0, 1, 0, 0, 0 )
 
 [node name="TopWall" type="CollisionShape" parent="BoundaryWall"]
-transform = Transform( 1, -1.7053e-13, 3.82961e-17, -6.77626e-21, 1, 0, 2.87529e-18, 0, 1, 7.50285e-13, -4.5, -1.63066 )
+transform = Transform( 1, -1.7053e-13, 3.82961e-17, -6.77626e-21, 1, 0, 2.87529e-18, 0, 1, 0, -5, -1.631 )
 shape = SubResource( 1 )
 
 [node name="BottomWall" type="CollisionShape" parent="BoundaryWall"]
-transform = Transform( 1, -1.7053e-13, 3.82961e-17, -6.77626e-21, 1, 0, 2.87529e-18, 0, 1, -9.55016e-13, 5.5, -1.63066 )
+transform = Transform( 1, -1.7053e-13, 3.82961e-17, -6.77626e-21, 1, 0, 2.87529e-18, 0, 1, 0, 5, -1.631 )
 shape = SubResource( 1 )
 
 [node name="BoundaryArea" type="Area" parent="."]
-transform = Transform( 1, -1.7053e-13, 4.16334e-17, 0, 1, 0, 0, 0, 1, 0, -0.1, -0.830662 )
+transform = Transform( 1, -1.7053e-13, 4.16334e-17, 0, 1, 0, 0, 0, 1, 0, 0, -0.831 )
 input_ray_pickable = false
 
 [node name="Boundaries" type="CollisionShape" parent="BoundaryArea"]
-transform = Transform( 1, -8.74228e-08, 1.50996e-07, -8.74228e-08, -1, 0, 1.50996e-07, -1.32005e-14, -1, -1.05714e-13, 0.631391, -0.77693 )
+transform = Transform( 1, -8.74228e-08, 1.50996e-07, -8.74228e-08, -1, 0, 1.50996e-07, -1.32005e-14, -1, 0, 0, -0.777 )
 shape = SubResource( 2 )
 script = SubResource( 3 )
 
 [node name="Player" parent="BoundaryArea/Boundaries" instance=ExtResource( 5 )]
-transform = Transform( -1.62921e-07, 1, -6.67522e-15, 1, 1.62921e-07, 3.25846e-07, 3.25846e-07, 6.68909e-14, -1, -7.89499, 5.76256e-09, 0.349952 )
+transform = Transform( -1.62921e-07, 1, -6.67522e-15, 1, 1.62921e-07, 3.25846e-07, 3.25846e-07, 6.68909e-14, -1, -5, 0, 0.35 )
 collision_layer = 3
 
 [node name="Camera" type="Camera" parent="."]

@@ -12,7 +12,7 @@ func _ready():
 			GameConnection.is_server = true
 			GameManager.load_game( OS.get_cmdline_args()[ 1 ] )
 	$AddressInput.text = Configuration.get_parameter( "device_address" )
-	$UserInput.text = Configuration.get_parameter( "user_name" )
+	$UserInput.text = Configuration.get_parameter( "user" )
 	var interface_names = InputManager.interface_names
 	$AddressInput/InterfaceSelector/SelectionList.list_entries( interface_names )
 	$AddressInput/InterfaceSelector/SelectionList.select_entry_name( Configuration.get_parameter( "interface" ) )
@@ -123,4 +123,5 @@ func _on_OperationToggle_toggled(button_pressed):
 	else: input_device.request_state_change( InputManager.Request.PASSIVATE )
 
 func _on_PlayButton_pressed():
+	DataLog.start_new_log( Configuration.get_parameter( "user" ) + " " + Configuration.get_parameter( "game" ) )
 	GameManager.load_game( Configuration.get_parameter( "game" ) )

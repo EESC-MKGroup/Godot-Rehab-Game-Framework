@@ -21,14 +21,14 @@ func _ready():
 	position_observer.state_predictor[ 0 ][ 2 ] = pow( time_step, 2 ) / 2
 	position_observer.state_predictor[ 1 ][ 2 ] = time_step
 	position_observer.state_predictor[ 2 ][ 2 ] = 0.0
-	
+
 	force_observer.prediction_covariance_noise[ 0 ] = 4.0
 	force_observer.prediction_covariance_noise[ 1 ] = 2.0
 	force_observer.prediction_covariance_noise[ 2 ] = 1.0
 	force_observer.state_predictor[ 0 ][ 1 ] = time_step
 	force_observer.state_predictor[ 0 ][ 2 ] = pow( time_step, 2 ) / 2
 	force_observer.state_predictor[ 1 ][ 2 ] = time_step
-	
+
 	cost_2_go = _calculate_optimal_cost_2_go( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
 	feedback_gain = _calculate_feedback_gain( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
 
@@ -45,23 +45,25 @@ func predict_input_signal( remote_position, remote_velocity, remote_force, time_
 
 remote func update_server( remote_position, remote_velocity, remote_force, last_server_time, client_time=0.0 ):
 	var time_delay = calculate_delay( last_server_time )
-	
+
 	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, time_delay )
-	remote_position = remote_state[ 0 ]
+	remote_position = remote_state[ 0 ][ 0 ]
 	remote_force = remote_state[ 1 ]
 	
-	feedback_force = -( remote_state * feedback_gain ) + remote_force
+	var state_matrix = Basis( remote_state[ 0 ][ 0 ], remote_state[ 0 ][ 1 ], remote_state[ 0 ][ 2 ] )
+	feedback_force = -( state_matrix * feedback_gain ) + remote_force
 	
 	.update_server( remote_position, remote_velocity, remote_force, client_time )
 
 master func update_player( remote_position, remote_velocity, remote_force, last_client_time, server_time=0.0 ):
 	var time_delay = calculate_delay( last_client_time )
-	
+
 	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, time_delay )
-	remote_position = remote_state[ 0 ]
+	remote_position = remote_state[ 0 ][ 0 ]
 	remote_force = remote_state[ 1 ]
 	
-	feedback_force = -( remote_state * feedback_gain )
+	var state_matrix = Basis( remote_state[ 0 ][ 0 ], remote_state[ 0 ][ 1 ], remote_state[ 0 ][ 2 ] )
+	feedback_force = -( state_matrix * feedback_gain ) + remote_force
 	
 	.update_player( remote_position, remote_velocity, remote_force, server_time )
 
@@ -76,13 +78,14 @@ func set_system( inertia, damping, stiffness ):
 func _calculate_optimal_cost_2_go( A, B, X0 ):
 	var X = X0
 	var X_old = Basis( Vector3( 0.0, 0.0, 0.0 ), 0.0 )
-	while abs( X.determinant() - X_old.determinant() ) > 0.001:#not X.is_equal_approx( X_old ):
+	for i in range( 10 ):#not X.is_equal_approx( X_old ):
 		X_old = X
 		X = A.transposed() * X_old * A
 		for index in range( 3 ): X[ index ][ index ] += 1.0
 		var aux = B.dot( X_old * B ) + COST_RATIO
 		aux = ( A.transposed() * X_old * B ).outer( (1/aux) * B ) * X_old * A
 		for line in range( 3 ): for col in range( 3 ): X[ line ][ col ] -= aux[ line ][ col ]
+		if abs( X.determinant() - X_old.determinant() ) < 0.001: break
 	return X
 
 func _calculate_feedback_gain( A, B, X ):

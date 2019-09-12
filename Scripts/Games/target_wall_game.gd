@@ -42,6 +42,8 @@ func _physics_process( delta ):
 	var new_velocity = input_axis.get_force() * boundary_extents.y
 	player.move_and_slide( Vector3.BACK * new_velocity )
 	
+	$GUI.display_position( player.translation.y )
+	
 	if not input_axis.is_calibrating:
 		var measure_position = player.translation.y / boundary_extents.y
 		DataLog.register_values( [ setpoint_position, player.translation.y, score_state ] )
@@ -77,7 +79,10 @@ func _on_ScoreArea_wall_passed( has_passed_ok ):
 		player.call_deferred( "add_child", score_up )
 	setpoint_positions.pop_front()
 	waves_count += 1
-	if waves_count >= TOTAL_WAVES_NUMBER: $GUI.end_game( waves_count, score )
+	if waves_count >= TOTAL_WAVES_NUMBER: 
+		DataLog.register_values( [ waves_count, score ] )
+		$GUI.end_game( waves_count, score )
+		DataLog.end_log()
 	_set_setpoint()
 
 func _on_ScoreArea_collider_reached( collider ):

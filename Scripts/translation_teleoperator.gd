@@ -1,5 +1,5 @@
-extends "res://Scripts/force_wave_controller.gd"
-#extends "res://Scripts/prediction_optimal_controller.gd"
+#extends "res://Scripts/force_wave_controller.gd"
+extends "res://Scripts/prediction_optimal_controller.gd"
 
 func _physics_process( delta ):
 	local_position = translation 

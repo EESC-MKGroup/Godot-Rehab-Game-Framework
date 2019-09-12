@@ -1,6 +1,6 @@
 extends MenuButton
 
-signal entry_selected
+signal entry_selected( index, entry_name )
 
 var entries_list = []
 

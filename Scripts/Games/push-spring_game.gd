@@ -20,6 +20,8 @@ var cycles_count = 0
 var direction = Direction.NONE
 
 var score_state = 0
+var max_score = 0
+var score = 0
 
 onready var input_axis = GameManager.player_controls[ get_player_variables()[ 0 ] ]
 
@@ -52,6 +54,12 @@ func _physics_process( delta ):
 	var player_position = effector.translation.y / space_scale
 	input_axis.set_position( player_position )
 	
+	$GUI.display_position( effector.translation.y )
+	
+	if direction != Direction.NONE:
+		max_score += 1
+		score += score_state
+	
 	if not input_axis.is_calibrating:
 		DataLog.register_values( [ direction, player_force, player_position, score_state ] )
 
@@ -72,7 +80,9 @@ func _on_GUI_game_timeout( timeouts_count ):
 		if cycles_count >= cycles_number and direction == Direction.DOWN:
 			$SpringBase/Target.hide()
 			direction = Direction.NONE
-			$GUI.end_game( 2 * cycles_number, 0 )
+			DataLog.register_values( [ max_score, score ] )
+			$GUI.end_game( max_score, score )
+			DataLog.end_log()
 		$GUI.display_setpoint( 0.0 )
 
 func _on_GUI_game_toggle( started ):
@@ -81,5 +91,5 @@ func _on_GUI_game_toggle( started ):
 func _on_Target_body_entered( body ):
 	if direction != Direction.NONE: score_state = 1
 
-func _on_Target_body_exited(body):
+func _on_Target_body_exited( body ):
 	score_state = 0

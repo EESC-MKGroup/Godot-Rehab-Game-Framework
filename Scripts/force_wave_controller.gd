@@ -4,6 +4,7 @@ extends "res://Scripts/network_controller.gd"
 # Please refer to section 7 of 2004 paper by Niemeyer and Slotline for more details
 
 var wave_impedance = 1.0
+var local_impedance = 1.0
 
 var last_filtered_wave = Vector3.ZERO
 var last_input_wave = Vector3.ZERO
@@ -17,9 +18,9 @@ func process_input_wave( input_wave, remote_position, wave_impedance ):
 	last_input_wave = input_wave
 	# Wave corretion based on position drift
 	var position_error = local_position - remote_position
-	var wave_correction = - sqrt( 2.0 * wave_impedance ) * BANDWIDTH * position_error
-	if position_error * filtered_wave < 0: wave_correction = 0
-	elif abs( wave_correction ) > abs( filtered_wave ): wave_correction = -filtered_wave
+	var wave_correction = -sqrt( 2.0 * wave_impedance ) * BANDWIDTH * position_error
+	if position_error.dot( filtered_wave ) < 0: wave_correction = Vector3.ZERO
+	elif wave_correction.length() > filtered_wave.length(): wave_correction = -filtered_wave
 	filtered_wave += wave_correction
 	# Extract remote force from received wave variable: -F_in = b * xdot_out - sqrt( 2 * b ) * u_in
 	return -( wave_impedance * local_velocity - sqrt( 2.0 * wave_impedance ) * filtered_wave )
@@ -29,24 +30,26 @@ func process_output_wave( force, wave_impedance ):
 	# Encode output wave variable (velocity data): u_out = ( b * xdot_out + (-F_in) ) / sqrt( 2 * b )
 	return ( wave_impedance * local_velocity - force ) / sqrt( 2.0 * wave_impedance )  
 
-remote func update_server( input_wave, remote_position, remote_impedance, last_server_time, client_time=0.0 ):
-	wave_impedance = max( wave_impedance, remote_impedance )
+remote func update_server( input_wave, remote_position, remote_force, last_server_time, client_time=0.0 ):
 	# Extract remote force from received wave variable: -F_m = b * xdot_m - sqrt( 2 * b ) * v_m
 	feedback_force = process_input_wave( input_wave, remote_position, wave_impedance )
 	# Encode and send output wave variable (velocity data): u_m = ( b * xdot_m + (-F_m) ) / sqrt( 2 * b )
 	var output_wave = process_output_wave( feedback_force, wave_impedance )
 	
-	.update_server( output_wave, local_position, wave_impedance, client_time )
+	.update_server( output_wave, local_position, remote_force, client_time )
 
-master func update_player( input_wave, remote_position, remote_impedance, last_client_time, server_time=0.0 ):
-	wave_impedance = max( wave_impedance, remote_impedance )
+master func update_player( input_wave, remote_position, remote_force, last_client_time, server_time=0.0 ):
 	# Extract remote force from wave variable: F_s = -b * xdot_s + sqrt( 2 * b ) * u_s
-	var remote_force = process_input_wave( input_wave, remote_position, wave_impedance )
+	feedback_force = process_input_wave( input_wave, remote_position, wave_impedance )
 	# Encode and send output wave variable (velocity data): v_s = ( b * xdot_s - F_s ) / sqrt( 2 * b )
 	var output_wave = process_output_wave( feedback_force, wave_impedance )
 	
-	.update_client( output_wave, local_position, wave_impedance, server_time )
+	.update_player( output_wave, local_position, remote_force, server_time )
+
+remote func set_impedance( remote_impedance ):
+	wave_impedance = max( local_impedance, remote_impedance )
 
 func set_system( inertia, damping, stiffness ):
-	wave_impedance = inertia + damping + stiffness
-	if wave_impedance < 1.0: wave_impedance = 1.0
+	local_impedance = inertia + damping + stiffness
+	if local_impedance < 1.0: local_impedance = 1.0
+	rpc_unreliable( "set_impedance", local_impedance )

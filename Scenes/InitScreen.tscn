@@ -432,9 +432,9 @@ valign = 1
 [node name="EnabledToggle" type="CheckButton" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = 52.0
+margin_left = 50.0
 margin_top = 46.0
-margin_right = 272.0
+margin_right = 276.0
 margin_bottom = 96.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -442,7 +442,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 disabled = true
-text = "Enabled: "
+text = "Enabled:  "
 
 [node name="OffsetToggle" type="CheckButton" parent="ControlsPanel"]
 anchor_top = 0.5
