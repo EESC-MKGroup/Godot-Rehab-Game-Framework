@@ -50,8 +50,7 @@ remote func update_server( remote_position, remote_velocity, remote_force, last_
 	remote_position = remote_state[ 0 ][ 0 ]
 	remote_force = remote_state[ 1 ]
 	
-	var state_matrix = Basis( remote_state[ 0 ][ 0 ], remote_state[ 0 ][ 1 ], remote_state[ 0 ][ 2 ] )
-	feedback_force = -( state_matrix * feedback_gain ) + remote_force
+	feedback_force = _calculate_feedback_input( feedback_gain, remote_state[ 0 ] ) + remote_force
 	
 	.update_server( remote_position, remote_velocity, remote_force, client_time )
 
@@ -62,8 +61,7 @@ master func update_player( remote_position, remote_velocity, remote_force, last_
 	remote_position = remote_state[ 0 ][ 0 ]
 	remote_force = remote_state[ 1 ]
 	
-	var state_matrix = Basis( remote_state[ 0 ][ 0 ], remote_state[ 0 ][ 1 ], remote_state[ 0 ][ 2 ] )
-	feedback_force = -( state_matrix * feedback_gain ) + remote_force
+	feedback_force = _calculate_feedback_input( feedback_gain, remote_state[ 0 ] ) + remote_force
 	
 	.update_player( remote_position, remote_velocity, remote_force, server_time )
 
@@ -90,3 +88,6 @@ func _calculate_optimal_cost_2_go( A, B, X0 ):
 
 func _calculate_feedback_gain( A, B, X ):
 	return ( 1 / ( B.dot( X * B ) + COST_RATIO ) ) * ( ( X * A ).transposed() * B )
+
+func _calculate_feedback_input( gain, state ):
+	return -( Basis( state[ 0 ], state[ 1 ], state[ 2 ] ) * gain )
