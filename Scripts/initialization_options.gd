@@ -11,7 +11,7 @@ func _ready():
 		if OS.get_cmdline_args()[ 0 ] == "--server":
 			GameConnection.is_server = true
 			GameManager.load_game( OS.get_cmdline_args()[ 1 ] )
-	$AddressInput.text = Configuration.get_parameter( "device_address" )
+	#$AddressInput.text = Configuration.get_parameter( "device_address" )
 	$UserInput.text = Configuration.get_parameter( "user" )
 	var interface_names = InputManager.interface_names
 	$AddressInput/InterfaceSelector/SelectionList.list_entries( interface_names )
@@ -68,6 +68,8 @@ func _on_state_changed( state_reply ):
 func _on_Interface_entry_selected( index, entry_name ):
 	interface_index = index
 	input_device = InputManager.get_interface_device( index )
+	var default_address = InputManager.get_interface_default_address( index )
+	$AddressInput.text = Configuration.get_parameter( "device_address_" + entry_name, default_address )
 	Configuration.set_parameter( "interface", entry_name )
 
 func _on_Device_entry_selected( index, entry_name ):
@@ -91,10 +93,10 @@ func _on_Variable_entry_selected( index, entry_name ):
 	Configuration.set_parameter( "game_variable", entry_name )
 
 func _on_socket_connected():
-	Configuration.set_parameter( "device_address", $AddressInput.text )
+	Configuration.set_parameter( "device_address_" + Configuration.get_parameter( "interface" ), $AddressInput.text )
 	Configuration.set_parameter( "user_name", $UserInput.text )
-	input_device.request_available_configurations()
 	input_device.user_name = $UserInput.text
+	input_device.request_available_configurations()
 
 #func _on_AddressInput_text_changed( new_text ):
 #	print( "_on_AddressInput_text_changed" )

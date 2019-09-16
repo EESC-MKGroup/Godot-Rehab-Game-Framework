@@ -21,9 +21,8 @@ func _ready():
 func set_parameter( key, value ):
 	parameters[ key ] = value
 
-func get_parameter( key ):
-	if not parameters.has( key ): return null
-	return parameters[ key ]
+func get_parameter( key, default=null ):
+	return parameters.get( key, default )
 
 func _notification( what ):
 	if what == NOTIFICATION_PREDELETE:

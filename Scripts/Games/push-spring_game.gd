@@ -23,7 +23,7 @@ var score_state = 0
 var max_score = 0
 var score = 0
 
-onready var input_axis = GameManager.player_controls[ get_player_variables()[ 0 ] ]
+onready var input_axis = GameManager.get_player_control( get_player_variables()[ 0 ] )
 
 static func get_player_variables():
 	return [ "Hand" ]

@@ -12,6 +12,7 @@ onready var input_device_class = preload( "res://Scripts/input_device.gd" )
 onready var input_axis_class = preload( "res://Scripts/input_axis.gd" )
 
 var interface_names = [] setget ,_get_interface_names
+var interface_addresses = []
 var input_devices_list = []
 var input_axes_dict = {}
 
@@ -27,6 +28,7 @@ func _ready():
 	#	if plugin != null: interfaces_list.append( plugin.new() )
 	for interface in interfaces_list:
 		interface_names.append( interface.get_id() ) 
+		interface_addresses.append( interface.get_default_address() ) 
 		input_devices_list.append( input_device_class.new( interface ) )
 
 func _physics_process( delta ):
@@ -40,10 +42,19 @@ func _get_interface_names():
 func get_interface_device( interface_index ):
 	return input_devices_list[ interface_index ]
 
+func get_interface_default_address( interface_index ):
+	return interface_addresses[ interface_index ]
+
 func get_device_axis( interface_index, device_index, axis_index ):
 	var axis_key = interface_index | device_index << 8 | axis_index << 16
 	var input_axis = input_axes_dict.get( axis_key )
 	if input_axis == null:
 		var device = input_devices_list[ interface_index ]
 		input_axis = input_axis_class.new( device, axis_index )
+	return input_axis
+
+func get_null_axis():
+	var device_index = input_devices_list.find( "Null" )
+	var device = input_devices_list[ device_index ]
+	var input_axis = input_axis_class.new( device, 0 )
 	return input_axis

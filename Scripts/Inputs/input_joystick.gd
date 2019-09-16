@@ -10,6 +10,9 @@ var state = 0
 static func get_id():
 	return "JS"
 
+static func get_default_address():
+	return "0"
+
 func _ready():
 	pass
 

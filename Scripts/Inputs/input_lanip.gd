@@ -18,6 +18,9 @@ var reply_code = 0
 static func get_id():
 	return "IP"
 
+static func get_default_address():
+	return "127.0.0.1"
+
 func _ready():
 	state_buffer.resize( BUFFER_SIZE )
 	input_buffer.resize( BUFFER_SIZE )

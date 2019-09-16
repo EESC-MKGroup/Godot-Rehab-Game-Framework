@@ -34,3 +34,8 @@ func list_game_variables( game_name ):
 	game_instace = load( _get_game_path( game_name ) ).instance()
 	print( game_instace.get_player_variables() )
 	return game_instace.get_player_variables()
+
+func get_player_control( variable_name ):
+	var player_control = player_controls.get( variable_name )
+	if player_control == null: player_control = InputManager.get_null_axis()
+	return player_control

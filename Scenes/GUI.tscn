@@ -29,10 +29,13 @@ func _process( delta ):
 	$LeftPanel/TimeLeftPanel/Display.text = ( \"%d\" % ceil( $RestTimer.time_left ) )
 
 func display_setpoint( setpoint_value ):
-	$LeftPanel/SetpointDisplay/Label.text = ( \"%+.3f\" % setpoint_value )
+	$LeftPanel/SetpointDisplay.text = ( \"%+.3f\" % setpoint_value )
 
-func display_measure( measure_value ):
-	$LeftPanel/PositionDisplay/Label.text = ( \"%+.3f\" % measure_value )
+func display_position( position_value ):
+	$LeftPanel/PositionDisplay.text = ( \"%+.3f\" % position_value )
+
+func display_force( force_value ):
+	$LeftPanel/ForceDisplay.text = ( \"%+.3f\" % force_value )
 
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	print( \"setting timeouts: %f %f\" % [ play_timeout_value, rest_timeout_value ] )

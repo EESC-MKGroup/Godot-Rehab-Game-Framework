@@ -2,7 +2,8 @@ extends RigidBody
 
 const BANDWIDTH = 0.5
 
-var initial_position = Vector3.ZERO
+onready var initial_position = get_position_in_parent()
+
 var feedback_force = Vector3.ZERO
 var external_force = Vector3.ZERO
 
@@ -14,11 +15,8 @@ var target_velocity = Vector3.ZERO
 
 var was_reset = false
 
-onready var game = $"/root/Game"
-
 remotesync func enable():
-	initial_position = get_position_in_parent()
-	was_reset = true
+	reset()
 	rpc( "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec(), OS.get_ticks_msec() )
 
 remotesync func reset():
@@ -28,8 +26,6 @@ remotesync func reset():
 
 remote func update_server( remote_position, remote_velocity, remote_force, last_server_time, client_time=0.0 ):
 	print( "called update server on ", get_tree().get_network_unique_id() )
-	external_force = game.get_environment_force( self )
-	
 	var server_time = OS.get_ticks_msec()
 	rpc_unreliable( "update_player", local_position, local_velocity, external_force, client_time, server_time )
 	# Send position and velocity values directly
@@ -37,11 +33,6 @@ remote func update_server( remote_position, remote_velocity, remote_force, last_
 
 master func update_player( remote_position, remote_velocity, remote_force, last_client_time, server_time=0.0 ):
 	print( "called update player on ", get_tree().get_network_unique_id() )
-	external_force = game.get_environment_force( self ) + game.get_player_force( self )
-	
-	game.set_feedback_force( feedback_force )
-	game.set_resulting_position( local_position )
-	
 	var client_time = OS.get_ticks_msec()
 	rpc_unreliable( "update_server", local_position, local_velocity, external_force, server_time, client_time )
 
@@ -53,7 +44,7 @@ puppet func update_puppet( master_position, master_velocity, last_client_time, s
 	target_velocity = ( target_position - local_position ) / get_physics_process_delta_time()
 	target_velocity = _filter_signal( local_velocity, target_velocity, last_target_velocity )
 	target_position = local_position
-	external_force = mass * ( target_velocity - local_velocity ) / get_physics_process_delta_time()
+	feedback_force = mass * ( target_velocity - local_velocity ) / get_physics_process_delta_time()
 	was_reset = true
 
 func set_system( inertia, damping, stiffness ):

@@ -26,7 +26,7 @@ var score_state = 0
 
 var target_reached = false
 
-onready var input_axis = GameManager.player_controls[ get_player_variables()[ 0 ] ]
+onready var input_axis = GameManager.get_player_control( get_player_variables()[ 0 ] )
 
 static func get_player_variables():
 	return [ "Hand" ]
