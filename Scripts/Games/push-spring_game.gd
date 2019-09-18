@@ -11,8 +11,6 @@ const REST_TIMEOUT = 60.0
 onready var effector = $SpringBase/Effector
 onready var spring = $SpringBase/Spring
 
-onready var force_display = $ForcePanel/MeasureDisplay
-
 onready var space_scale = abs( effector.translation.y )
 
 var cycles_number = 0
@@ -42,16 +40,16 @@ func _ready():
 		$GUI.set_max_effort( 20.0 )
 	input_axis.set_position( 0.0 )
 	$GUI.display_setpoint( 0.0 )
-	$SpringBase/Spring.body_1 = $SpringBase/Base
-	$SpringBase/Spring.body_2 = $SpringBase/Effector
+	$SpringBase/Spring.body_1 = $SpringBase
+	$SpringBase/Spring.body_2 = $SpringBase/Effector/Handle
 
 func _physics_process( delta ):
-	var player_force = abs( input_axis.get_force() * space_scale )
-	var spring_force = abs( spring.get_force() )
+	var player_force = -direction * input_axis.get_force() * space_scale
+	var spring_force = spring.get_force()
 	
-	effector.add_central_force( Vector3.UP * ( player_force - spring_force ) )
+	effector.add_central_force( Vector3.UP * ( player_force + spring_force ) )
 	
-	force_display.text = ( "%+4.3fN" % player_force )
+	$GUI.display_force( player_force )
 	
 	var player_position = effector.translation.y / space_scale
 	input_axis.set_position( player_position )

@@ -7,7 +7,7 @@
 [ext_resource path="res://Textures/Floor_Wood_spec.png" type="Texture" id=5]
 [ext_resource path="res://Textures/Floor_Wood_normal.png" type="Texture" id=6]
 [ext_resource path="res://Textures/Brushed_Metal.jpg" type="Texture" id=7]
-[ext_resource path="res://Meshes/Spring-rigged.obj" type="ArrayMesh" id=8]
+[ext_resource path="res://Meshes/spring.obj" type="ArrayMesh" id=8]
 [ext_resource path="res://Scripts/spring_damp.gd" type="Script" id=9]
 [ext_resource path="res://Meshes/toon_hand_point.obj" type="ArrayMesh" id=10]
 [ext_resource path="res://Meshes/arrow.obj" type="ArrayMesh" id=11]
@@ -35,6 +35,11 @@ roughness = 0.0
 normal_enabled = true
 normal_scale = 1.0
 normal_texture = ExtResource( 6 )
+ao_enabled = true
+ao_light_affect = 0.0
+ao_texture = ExtResource( 5 )
+ao_on_uv2 = false
+ao_texture_channel = 0
 
 [sub_resource type="QuadMesh" id=4]
 material = SubResource( 3 )
@@ -50,28 +55,30 @@ material = SubResource( 5 )
 height = 0.3
 radial_segments = 16
 
-[sub_resource type="CylinderShape" id=7]
-height = 0.340329
+[sub_resource type="SpatialMaterial" id=16]
+resource_name = "Material"
+albedo_color = Color( 0.703985, 0.629338, 0.277559, 1 )
+metallic = 0.1
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=7]
 albedo_color = Color( 0.824219, 0.466742, 0.151321, 1 )
 metallic_specular = 0.0
 roughness = 0.0
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=8]
 albedo_texture = ExtResource( 7 )
 metallic = 0.5
 roughness = 0.5
 
-[sub_resource type="CylinderMesh" id=10]
-material = SubResource( 9 )
+[sub_resource type="CylinderMesh" id=9]
+material = SubResource( 8 )
 height = 0.3
 radial_segments = 16
 
-[sub_resource type="CylinderShape" id=11]
+[sub_resource type="CylinderShape" id=10]
 height = 0.261134
 
-[sub_resource type="SpatialMaterial" id=12]
+[sub_resource type="SpatialMaterial" id=11]
 flags_transparent = true
 vertex_color_use_as_albedo = true
 vertex_color_is_srgb = true
@@ -83,16 +90,16 @@ emission_energy = 0.5
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="CylinderMesh" id=13]
-material = SubResource( 12 )
+[sub_resource type="CylinderMesh" id=12]
+material = SubResource( 11 )
 height = 0.3
 radial_segments = 16
 
-[sub_resource type="CylinderShape" id=14]
+[sub_resource type="CylinderShape" id=13]
 radius = 1.07912
 height = 0.1
 
-[sub_resource type="SpatialMaterial" id=15]
+[sub_resource type="SpatialMaterial" id=14]
 albedo_color = Color( 0.47451, 1, 0, 1 )
 roughness = 0.0
 emission_enabled = true
@@ -101,7 +108,7 @@ emission_energy = 1.0
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="SpatialMaterial" id=16]
+[sub_resource type="SpatialMaterial" id=15]
 albedo_color = Color( 0.47451, 1, 0, 1 )
 roughness = 0.0
 emission_enabled = true
@@ -133,17 +140,15 @@ mesh = SubResource( 6 )
 material/0 = null
 
 [node name="Spring" type="MeshInstance" parent="SpringBase"]
-transform = Transform( 0.85, -3.31002e-07, -3.31002e-07, -3.31002e-07, -0.85, -9.48677e-20, -3.31002e-07, 1.28897e-13, -0.85, 0, -0.0218852, 0 )
+transform = Transform( 0.35, -1.36295e-07, -1.36295e-07, -1.36295e-07, -0.35, -6.1385e-20, -1.36295e-07, 5.30753e-14, -0.35, 0, -1.71, 0 )
+material_override = SubResource( 16 )
 mesh = ExtResource( 8 )
 material/0 = null
 script = ExtResource( 9 )
+stiffness = 5.0
+damping = 1.0
 body_1 = NodePath("..")
 body_2 = NodePath("../Effector/Handle")
-
-[node name="Base" type="RigidBody" parent="SpringBase"]
-
-[node name="CollisionShape" type="CollisionShape" parent="SpringBase/Base"]
-shape = SubResource( 7 )
 
 [node name="Effector" type="RigidBody" parent="SpringBase"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.45647, 0 )
@@ -152,14 +157,14 @@ gravity_scale = 0.0
 [node name="Hand" type="MeshInstance" parent="SpringBase/Effector"]
 transform = Transform( 0.3, 0, 0, 0, -4.88762e-08, -0.3, 0, 0.3, -4.88762e-08, 0.879908, -2.79586, -0.429984 )
 mesh = ExtResource( 10 )
-material/0 = SubResource( 8 )
+material/0 = SubResource( 7 )
 
 [node name="Handle" type="MeshInstance" parent="SpringBase/Effector"]
-mesh = SubResource( 10 )
+mesh = SubResource( 9 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="SpringBase/Effector"]
-shape = SubResource( 11 )
+shape = SubResource( 10 )
 
 [node name="Target" type="Area" parent="SpringBase"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.72824, 0 )
@@ -167,28 +172,34 @@ input_ray_pickable = false
 
 [node name="Mesh" type="MeshInstance" parent="SpringBase/Target"]
 transform = Transform( 1.1, 0, 0, 0, 0.5, 0, 0, 0, 1.1, 0, 0, 0 )
-mesh = SubResource( 13 )
+cast_shadow = 0
+mesh = SubResource( 12 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="SpringBase/Target"]
-shape = SubResource( 14 )
+shape = SubResource( 13 )
 
 [node name="Arrow" type="Spatial" parent="SpringBase"]
 visible = false
 
 [node name="Arrow1" type="MeshInstance" parent="SpringBase/Arrow"]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, -3.5, -3.5, 0 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 0.5, -3.25, -3.5, 0 )
+cast_shadow = 0
 mesh = ExtResource( 11 )
-material/0 = SubResource( 15 )
+material/0 = SubResource( 14 )
 
 [node name="Arrow2" type="MeshInstance" parent="SpringBase/Arrow"]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, 3.5, -3.5, 0 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 0.5, 3.25, -3.5, 0 )
+cast_shadow = 0
 mesh = ExtResource( 11 )
-material/0 = SubResource( 16 )
+material/0 = SubResource( 15 )
 
 [node name="SpotLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.828143, 0.560517, 0, -0.560517, 0.828143, 0, -4.4794, 7.71034 )
 light_energy = 1.5
+light_cull_mask = 4294967293
+shadow_enabled = true
+shadow_color = Color( 0.588235, 0.588235, 0.588235, 1 )
 omni_range = 31.0665
 
 [node name="GUI" parent="." instance=ExtResource( 12 )]
@@ -197,5 +208,8 @@ omni_range = 31.0665
 visible = false
 [connection signal="body_entered" from="SpringBase/Target" to="." method="_on_Target_body_entered"]
 [connection signal="body_exited" from="SpringBase/Target" to="." method="_on_Target_body_exited"]
+[connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
+[connection signal="game_toggle" from="GUI" to="." method="_on_GUI_game_toggle"]
+[connection signal="pressed" from="GUI/PauseMenu/ResumeButton" to="." method="_on_ResumeButton_pressed"]
 
 [editable path="GUI"]

@@ -118,7 +118,7 @@ text = "user"
 align = 1
 caret_blink = true
 
-[node name="UserLabel" type="Label" parent="ControlsPanel/UserInput"]
+[node name="Label" type="Label" parent="ControlsPanel/UserInput"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = -102.0
@@ -139,7 +139,7 @@ margin_right = -571.0
 margin_bottom = 138.0
 disabled = true
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/DeviceSelector"]
+[node name="Menu" type="MenuButton" parent="ControlsPanel/DeviceSelector"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
@@ -168,7 +168,7 @@ margin_right = -33.0
 margin_bottom = 138.0
 disabled = true
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/AxisSelector"]
+[node name="Menu" type="MenuButton" parent="ControlsPanel/AxisSelector"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
@@ -199,7 +199,7 @@ margin_right = -720.0
 margin_bottom = 171.0
 disabled = true
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/GameSelector"]
+[node name="Menu" type="MenuButton" parent="ControlsPanel/GameSelector"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
@@ -230,7 +230,7 @@ margin_right = -36.0
 margin_bottom = 171.0
 disabled = true
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/VariableSelector"]
+[node name="Menu" type="MenuButton" parent="ControlsPanel/VariableSelector"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
@@ -262,7 +262,7 @@ text = "127.0.0.1:50000"
 align = 1
 caret_blink = true
 
-[node name="AddressLabel" type="Label" parent="ControlsPanel/AddressInput"]
+[node name="Label" type="Label" parent="ControlsPanel/AddressInput"]
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = -295.0
@@ -283,7 +283,7 @@ margin_right = -375.0
 margin_bottom = 51.0
 disabled = true
 
-[node name="SelectionList" type="MenuButton" parent="ControlsPanel/AddressInput/InterfaceSelector"]
+[node name="Menu" type="MenuButton" parent="ControlsPanel/AddressInput/InterfaceSelector"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
@@ -492,12 +492,12 @@ custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
 disabled = true
 text = "Operation: "
-[connection signal="entry_selected" from="ControlsPanel/DeviceSelector/SelectionList" to="ControlsPanel" method="_on_Device_entry_selected"]
-[connection signal="entry_selected" from="ControlsPanel/AxisSelector/SelectionList" to="ControlsPanel" method="_on_Axis_entry_selected"]
-[connection signal="entry_selected" from="ControlsPanel/GameSelector/SelectionList" to="ControlsPanel" method="_on_Game_entry_selected"]
-[connection signal="entry_selected" from="ControlsPanel/VariableSelector/SelectionList" to="ControlsPanel" method="_on_Variable_entry_selected"]
+[connection signal="entry_selected" from="ControlsPanel/DeviceSelector/Menu" to="ControlsPanel" method="_on_Device_entry_selected"]
+[connection signal="entry_selected" from="ControlsPanel/AxisSelector/Menu" to="ControlsPanel" method="_on_Axis_entry_selected"]
+[connection signal="entry_selected" from="ControlsPanel/GameSelector/Menu" to="ControlsPanel" method="_on_Game_entry_selected"]
+[connection signal="entry_selected" from="ControlsPanel/VariableSelector/Menu" to="ControlsPanel" method="_on_Variable_entry_selected"]
 [connection signal="text_changed" from="ControlsPanel/AddressInput" to="ControlsPanel" method="_on_AddressInput_text_changed"]
-[connection signal="entry_selected" from="ControlsPanel/AddressInput/InterfaceSelector/SelectionList" to="ControlsPanel" method="_on_Interface_entry_selected"]
+[connection signal="entry_selected" from="ControlsPanel/AddressInput/InterfaceSelector/Menu" to="ControlsPanel" method="_on_Interface_entry_selected"]
 [connection signal="pressed" from="ControlsPanel/ConnectButton" to="ControlsPanel" method="_on_ConnectButton_pressed"]
 [connection signal="pressed" from="ControlsPanel/PlayButton" to="ControlsPanel" method="_on_PlayButton_pressed"]
 [connection signal="value_changed" from="ControlsPanel/PositionSetpointSlider" to="ControlsPanel" method="_on_PositionSetpointSlider_value_changed"]

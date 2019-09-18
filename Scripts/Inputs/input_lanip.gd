@@ -19,7 +19,7 @@ static func get_id():
 	return "IP"
 
 static func get_default_address():
-	return "127.0.0.1"
+	return "127.0.0.1:50000"
 
 func _ready():
 	state_buffer.resize( BUFFER_SIZE )

@@ -70,7 +70,6 @@ func _reset_axes( axes_list ):
 
 func _handle_state_reply( reply_code ):
 	if reply_code != previous_reply:
-		print( "reply code: ", reply_code )
 		match reply_code:
 			InputManager.Reply.CONFIGS_LISTED:
 				var available_configurations = interface.get_available_devices()

@@ -14,6 +14,7 @@ func list_files( dir_path, file_ext ):
 	files_dir.list_dir_begin()
 	while true:
 		var file = files_dir.get_next()
+		print( file )
 		if file == "": break
 		elif file.ends_with( file_ext ):
 			files_list.append( file.get_basename() )

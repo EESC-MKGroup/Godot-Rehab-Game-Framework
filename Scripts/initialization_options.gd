@@ -11,19 +11,19 @@ func _ready():
 		if OS.get_cmdline_args()[ 0 ] == "--server":
 			GameConnection.is_server = true
 			GameManager.load_game( OS.get_cmdline_args()[ 1 ] )
-	#$AddressInput.text = Configuration.get_parameter( "device_address" )
-	$UserInput.text = Configuration.get_parameter( "user" )
+	$UserInput.text = Settings.get_value( "user", "name", "User" )
 	var interface_names = InputManager.interface_names
-	$AddressInput/InterfaceSelector/SelectionList.list_entries( interface_names )
-	$AddressInput/InterfaceSelector/SelectionList.select_entry_name( Configuration.get_parameter( "interface" ) )
+	$AddressInput/InterfaceSelector/Menu.list_entries( interface_names )
+	$AddressInput/InterfaceSelector/Menu.select_entry_name( Settings.get_value( "device", "interface", "Null" ) )
 	for interface_index in range( interface_names.size() ):
 		var device = InputManager.get_interface_device( interface_index )
 		device.connect( "state_changed", self, "_on_state_changed" )
 		device.connect( "configs_listed", self, "_on_configs_listed" )
 		device.connect( "config_received", self, "_on_config_received" )
 		device.connect( "socket_connected", self, "_on_socket_connected" )
-	$GameSelector/SelectionList.list_entries( GameManager.list_games() )
-	$GameSelector/SelectionList.select_entry_name( Configuration.get_parameter( "game" ) )
+	$GameSelector/Menu.list_entries( GameManager.list_games() )
+	$GameSelector/Menu.select_entry_name( Settings.get_value( "game", "title" ) )
+	GameManager.list_files( "res://Scripts/Inputs", "" )
 	set_process( false )
 
 func _input( event ):
@@ -38,15 +38,14 @@ func _process( delta ):
 
 func _on_ConnectButton_pressed():
 	input_device.connect_socket( $AddressInput.text )
-#	DataLog.create_new_log( user_name, time_stamp )
 
-func _on_configs_listed( available_configurations ):
-	$DeviceSelector/SelectionList.list_entries( available_configurations )
-	#$DeviceSelector/SelectionList.select_entry_name( Configuration.get_parameter( "device" ) )
+func _on_configs_listed( available_settingss ):
+	$DeviceSelector/Menu.list_entries( available_settingss )
+	#$DeviceSelector/Menu.select_entry_name( Settings.get_value( "device", "id" ) )
 
 func _on_config_received( device_id, axes_list ):
-	$AxisSelector/SelectionList.list_entries( axes_list )
-	$AxisSelector/SelectionList.select_entry_name( Configuration.get_parameter( "axis" ) )
+	$AxisSelector/Menu.list_entries( axes_list )
+	$AxisSelector/Menu.select_entry_name( Settings.get_value( "device", "axis" ) )
 	$EnabledToggle.disabled = false
 	$OffsetToggle.disabled = false
 	$CalibrationToggle.disabled = false
@@ -69,32 +68,33 @@ func _on_Interface_entry_selected( index, entry_name ):
 	interface_index = index
 	input_device = InputManager.get_interface_device( index )
 	var default_address = InputManager.get_interface_default_address( index )
-	$AddressInput.text = Configuration.get_parameter( "device_address_" + entry_name, default_address )
-	Configuration.set_parameter( "interface", entry_name )
+	$AddressInput.text = Settings.get_value( "device", "address_" + entry_name, default_address )
+	Settings.set_value( "device", "interface", entry_name )
 
 func _on_Device_entry_selected( index, entry_name ):
 	device_index = index
 	input_device.configuration = entry_name
-	Configuration.set_parameter( "device", entry_name )
+	Settings.set_value( "device", "id", entry_name )
 
 func _on_Axis_entry_selected( index, entry_name ):
 	input_axis = InputManager.get_device_axis( interface_index, device_index, index )
 	$CalibrationToggle.pressed = input_axis.is_calibrating
 	set_process( true )
-	Configuration.set_parameter( "axis", entry_name )
+	Settings.set_value( "device", "axis", entry_name )
+	GameManager.player_controls[ $VariableSelector/Menu.text ] = input_axis
 
 func _on_Game_entry_selected( index, entry_name ):
-	Configuration.set_parameter( "game", entry_name )
-	$VariableSelector/SelectionList.list_entries( GameManager.list_game_variables( entry_name ) )
-	$VariableSelector/SelectionList.select_entry_name( Configuration.get_parameter( "game_variable" ) )
+	Settings.set_value( "game", "title", entry_name )
+	$VariableSelector/Menu.list_entries( GameManager.list_game_variables( entry_name ) )
+	$VariableSelector/Menu.select_entry_name( Settings.get_value( "game", "variable" ) )
 
 func _on_Variable_entry_selected( index, entry_name ):
 	GameManager.player_controls[ entry_name ] = input_axis
-	Configuration.set_parameter( "game_variable", entry_name )
+	Settings.set_value( "game", "variable", entry_name )
 
 func _on_socket_connected():
-	Configuration.set_parameter( "device_address_" + Configuration.get_parameter( "interface" ), $AddressInput.text )
-	Configuration.set_parameter( "user_name", $UserInput.text )
+	Settings.set_value( "device", "address_" + $AddressInput/InterfaceSelector/Menu.text, $AddressInput.text )
+	Settings.set_value( "user", "name", $UserInput.text )
 	input_device.user_name = $UserInput.text
 	input_device.request_available_configurations()
 
@@ -125,5 +125,5 @@ func _on_OperationToggle_toggled(button_pressed):
 	else: input_device.request_state_change( InputManager.Request.PASSIVATE )
 
 func _on_PlayButton_pressed():
-	DataLog.start_new_log( Configuration.get_parameter( "user" ) + " " + Configuration.get_parameter( "game" ) )
-	GameManager.load_game( Configuration.get_parameter( "game" ) )
+	DataLog.start_new_log( $UserInput.text + " " + $GameSelector/Menu.text )
+	GameManager.load_game( $GameSelector/Menu.text )

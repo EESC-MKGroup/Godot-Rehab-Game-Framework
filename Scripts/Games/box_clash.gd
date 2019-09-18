@@ -6,8 +6,10 @@ onready var movement_range = abs( boundary_1.translation.z - boundary_2.translat
 
 onready var box_1 = $Box1
 onready var box_2 = $Box2
-onready var arrow_1 = $Box1/Arrow
-onready var arrow_2 = $Box2/Arrow
+onready var input_arrow_1 = $Box1/InputArrow
+onready var input_arrow_2 = $Box2/InputArrow
+onready var feedback_arrow_1 = $Box1/FeedbackArrow
+onready var feedback_arrow_2 = $Box2/FeedbackArrow
 
 onready var input_axis_1 = GameManager.get_player_control( get_player_variables()[ 0 ] )
 onready var input_axis_2 = GameManager.get_player_control( get_player_variables()[ 1 ] )
@@ -19,8 +21,8 @@ static func get_player_variables():
 func _ready():
 	$GUI.set_timeouts( 10.0, 1.0 )
 	$GUI.set_max_effort( 100.0 )
-	$Spring.body_1 = box_1
-	$Spring.body_2 = box_2
+	$Spring.body_1 = $Box1/Connector
+	$Spring.body_2 = $Box2/Connector
 
 func connect_server():
 	GameConnection.connect_server( 2 ) 
@@ -34,8 +36,10 @@ func _on_client_connected( client_id ):
 	if client_id == 1: 
 		box_1 = $Box2
 		box_2 = $Box1
-		arrow_1 = $Box2/Arrow
-		arrow_2 = $Box1/Arrow
+		input_arrow_1 = $Box2/InputArrow
+		input_arrow_2 = $Box1/InputArrow
+		feedback_arrow_1 = $Box2/FeedbackArrow
+		feedback_arrow_2 = $Box1/FeedbackArrow
 	GameConnection.set_as_master( box_1 )
 	box_2.mode = RigidBody.MODE_KINEMATIC
 	$BoxTarget.show()
@@ -51,10 +55,12 @@ func _physics_process( delta ):
 	$GUI.display_force( input_axis_1.get_force() )
 	box_1.external_force.z = input_axis_1.get_force() - $Spring.get_force()
 	box_2.external_force.z = -input_axis_2.get_force() + $Spring.get_force()
-	input_axis_1.set_force( box_1.feedback_force.length() / movement_range )
-	input_axis_2.set_force( box_2.feedback_force.length() / movement_range )
-	arrow_1.update( box_1.feedback_force / movement_range )
-	arrow_2.update( box_2.feedback_force / movement_range )
+	input_axis_1.set_force( box_1.feedback_force.length() )
+	input_axis_2.set_force( box_2.feedback_force.length() )
+	input_arrow_1.update( input_axis_1.get_force() )
+	input_arrow_2.update( -input_axis_2.get_force() )
+	feedback_arrow_1.update( box_1.feedback_force.z )
+	feedback_arrow_2.update( box_2.feedback_force.z )
 	$GUI.display_position( box_1.translation.length() )
 
 puppet func set_target( new_position, is_active ):

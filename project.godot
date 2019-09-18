@@ -25,7 +25,7 @@ config/icon="res://icon.png"
 GameManager="*res://Scripts/game_manager.gd"
 InputManager="*res://Scripts/input_manager.gd"
 GameConnection="*res://Scripts/game_connection.gd"
-Configuration="*res://Scripts/persistent_configuration.gd"
+Settings="*res://Scripts/global_settings.gd"
 DataLog="*res://Scripts/data_log.gd"
 
 [display]

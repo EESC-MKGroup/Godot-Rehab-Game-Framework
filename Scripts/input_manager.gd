@@ -5,6 +5,7 @@ enum Reply { CONFIGS_LISTED=1, GOT_CONFIG, CONFIG_SET, USER_SET, DISABLED, ENABL
 
 const SCRIPTS_PATH = "res://Scripts/Inputs/"
 const SCRIPT_EXT = ".gd"
+const SCRIPT_C_EXT = ".gdc"
 const PLUGINS_PATH = "res://Plugins/Inputs/"
 const PLUGIN_EXT = ".gdns"
 
@@ -21,6 +22,10 @@ func _ready():
 	var input_scripts = GameManager.list_files( SCRIPTS_PATH, SCRIPT_EXT )
 	for script_name in input_scripts:
 		var script = load( SCRIPTS_PATH + script_name + SCRIPT_EXT )
+		if script != null: interfaces_list.append( script.new() )
+	var input_c_scripts = GameManager.list_files( SCRIPTS_PATH, SCRIPT_C_EXT )
+	for script_name in input_c_scripts:
+		var script = load( SCRIPTS_PATH + script_name + SCRIPT_C_EXT )
 		if script != null: interfaces_list.append( script.new() )
 	#var input_plugins = GameManager.list_files( PLUGINS_PATH, PLUGIN_EXT )
 	#for plugin_name in input_plugins:
