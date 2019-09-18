@@ -40,8 +40,10 @@ func _ready():
 		cycles_number = HOLD_CYCLES
 		$GUI.set_timeouts( HOLD_TIMEOUT, REST_TIMEOUT )
 		$GUI.set_max_effort( 20.0 )
-	input_axis.set_axis_values( 0.0 )
+	input_axis.set_position( 0.0 )
 	$GUI.display_setpoint( 0.0 )
+	$SpringBase/Spring.body_1 = $SpringBase/Base
+	$SpringBase/Spring.body_2 = $SpringBase/Effector
 
 func _physics_process( delta ):
 	var player_force = abs( input_axis.get_force() * space_scale )

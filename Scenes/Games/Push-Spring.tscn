@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Scripts/Games/push-spring_game.gd" type="Script" id=1]
 [ext_resource path="res://Textures/Wall.png" type="Texture" id=2]
@@ -8,7 +8,7 @@
 [ext_resource path="res://Textures/Floor_Wood_normal.png" type="Texture" id=6]
 [ext_resource path="res://Textures/Brushed_Metal.jpg" type="Texture" id=7]
 [ext_resource path="res://Meshes/Spring-rigged.obj" type="ArrayMesh" id=8]
-[ext_resource path="res://Scripts/spring.gd" type="Script" id=9]
+[ext_resource path="res://Scripts/spring_damp.gd" type="Script" id=9]
 [ext_resource path="res://Meshes/toon_hand_point.obj" type="ArrayMesh" id=10]
 [ext_resource path="res://Meshes/arrow.obj" type="ArrayMesh" id=11]
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=12]
@@ -50,25 +50,28 @@ material = SubResource( 5 )
 height = 0.3
 radial_segments = 16
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="CylinderShape" id=7]
+height = 0.340329
+
+[sub_resource type="SpatialMaterial" id=8]
 albedo_color = Color( 0.824219, 0.466742, 0.151321, 1 )
 metallic_specular = 0.0
 roughness = 0.0
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=9]
 albedo_texture = ExtResource( 7 )
 metallic = 0.5
 roughness = 0.5
 
-[sub_resource type="CylinderMesh" id=9]
-material = SubResource( 8 )
+[sub_resource type="CylinderMesh" id=10]
+material = SubResource( 9 )
 height = 0.3
 radial_segments = 16
 
-[sub_resource type="CylinderShape" id=10]
+[sub_resource type="CylinderShape" id=11]
 height = 0.261134
 
-[sub_resource type="SpatialMaterial" id=11]
+[sub_resource type="SpatialMaterial" id=12]
 flags_transparent = true
 vertex_color_use_as_albedo = true
 vertex_color_is_srgb = true
@@ -80,16 +83,16 @@ emission_energy = 0.5
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="CylinderMesh" id=12]
-material = SubResource( 11 )
+[sub_resource type="CylinderMesh" id=13]
+material = SubResource( 12 )
 height = 0.3
 radial_segments = 16
 
-[sub_resource type="CylinderShape" id=13]
+[sub_resource type="CylinderShape" id=14]
 radius = 1.07912
 height = 0.1
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=15]
 albedo_color = Color( 0.47451, 1, 0, 1 )
 roughness = 0.0
 emission_enabled = true
@@ -98,7 +101,7 @@ emission_energy = 1.0
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="SpatialMaterial" id=15]
+[sub_resource type="SpatialMaterial" id=16]
 albedo_color = Color( 0.47451, 1, 0, 1 )
 roughness = 0.0
 emission_enabled = true
@@ -134,6 +137,13 @@ transform = Transform( 0.85, -3.31002e-07, -3.31002e-07, -3.31002e-07, -0.85, -9
 mesh = ExtResource( 8 )
 material/0 = null
 script = ExtResource( 9 )
+body_1 = NodePath("..")
+body_2 = NodePath("../Effector/Handle")
+
+[node name="Base" type="RigidBody" parent="SpringBase"]
+
+[node name="CollisionShape" type="CollisionShape" parent="SpringBase/Base"]
+shape = SubResource( 7 )
 
 [node name="Effector" type="RigidBody" parent="SpringBase"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.45647, 0 )
@@ -142,14 +152,14 @@ gravity_scale = 0.0
 [node name="Hand" type="MeshInstance" parent="SpringBase/Effector"]
 transform = Transform( 0.3, 0, 0, 0, -4.88762e-08, -0.3, 0, 0.3, -4.88762e-08, 0.879908, -2.79586, -0.429984 )
 mesh = ExtResource( 10 )
-material/0 = SubResource( 7 )
+material/0 = SubResource( 8 )
 
 [node name="Handle" type="MeshInstance" parent="SpringBase/Effector"]
-mesh = SubResource( 9 )
+mesh = SubResource( 10 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="SpringBase/Effector"]
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="Target" type="Area" parent="SpringBase"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.72824, 0 )
@@ -157,11 +167,11 @@ input_ray_pickable = false
 
 [node name="Mesh" type="MeshInstance" parent="SpringBase/Target"]
 transform = Transform( 1.1, 0, 0, 0, 0.5, 0, 0, 0, 1.1, 0, 0, 0 )
-mesh = SubResource( 12 )
+mesh = SubResource( 13 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="SpringBase/Target"]
-shape = SubResource( 13 )
+shape = SubResource( 14 )
 
 [node name="Arrow" type="Spatial" parent="SpringBase"]
 visible = false
@@ -169,12 +179,12 @@ visible = false
 [node name="Arrow1" type="MeshInstance" parent="SpringBase/Arrow"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, -3.5, -3.5, 0 )
 mesh = ExtResource( 11 )
-material/0 = SubResource( 14 )
+material/0 = SubResource( 15 )
 
 [node name="Arrow2" type="MeshInstance" parent="SpringBase/Arrow"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, 3.5, -3.5, 0 )
 mesh = ExtResource( 11 )
-material/0 = SubResource( 15 )
+material/0 = SubResource( 16 )
 
 [node name="SpotLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.828143, 0.560517, 0, -0.560517, 0.828143, 0, -4.4794, 7.71034 )

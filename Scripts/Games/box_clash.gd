@@ -19,6 +19,8 @@ static func get_player_variables():
 func _ready():
 	$GUI.set_timeouts( 10.0, 1.0 )
 	$GUI.set_max_effort( 100.0 )
+	$Spring.body_1 = box_1
+	$Spring.body_2 = box_2
 
 func connect_server():
 	GameConnection.connect_server( 2 ) 
@@ -46,9 +48,9 @@ func _on_players_connected():
 	$BoxTarget.show()
 
 func _physics_process( delta ):
-	$GUI.display_force( input_axis_1.get_force() * movement_range )
-	box_1.external_force.z = input_axis_1.get_force() * movement_range + $Spring.get_force()
-	box_2.external_force.z = input_axis_2.get_force() * movement_range + $Spring.get_force()
+	$GUI.display_force( input_axis_1.get_force() )
+	box_1.external_force.z = input_axis_1.get_force() - $Spring.get_force()
+	box_2.external_force.z = -input_axis_2.get_force() + $Spring.get_force()
 	input_axis_1.set_force( box_1.feedback_force.length() / movement_range )
 	input_axis_2.set_force( box_2.feedback_force.length() / movement_range )
 	arrow_1.update( box_1.feedback_force / movement_range )

@@ -53,7 +53,7 @@ func _set_calibration( enabled ):
 		force_limits = [ force - 0.001, force + 0.001 ]
 		force_range = 1.0
 		var position = input_device.get_axis_position( axis_index )
-		position_limits = [ position - 0.001, position + 0.001 ]
+		position_limits = [ position[ 0 ] - 0.001, position[ 0 ] + 0.001 ]
 		position_range = 1.0
 	else:
 		force_range = force_limits[ 1 ] - force_limits[ 0 ]
