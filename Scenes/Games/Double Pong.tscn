@@ -12,7 +12,7 @@
 [ext_resource path="res://Textures/wood.jpg" type="Texture" id=10]
 [ext_resource path="res://Textures/wood_height.jpg" type="Texture" id=11]
 [ext_resource path="res://Textures/wood_normal.png" type="Texture" id=12]
-[ext_resource path="res://Scripts/force_wave_controller.gd" type="Script" id=13]
+[ext_resource path="res://Scripts/translation_teleoperator.gd" type="Script" id=13]
 [ext_resource path="res://Textures/planks_old.jpg" type="Texture" id=14]
 [ext_resource path="res://Textures/planks_old_normal.jpg" type="Texture" id=15]
 [ext_resource path="res://Scenes/GUI.tscn" type="PackedScene" id=16]
@@ -47,7 +47,7 @@ script/source = "extends \"res://Scripts/network_controller.gd\"
 func reset():
 	target_position = initial_position
 	target_velocity = Vector3.FORWARD.rotated( Vector3.UP, randf() * 2 * PI )
-	was_reset = false
+	was_reset = true
 
 func _integrate_forces( state ):
 	if was_reset:

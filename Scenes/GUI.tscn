@@ -21,12 +21,18 @@ func _ready():
 	_on_EffortSlider_value_changed( $RightPanel/EffortSlider.value )
 	$PlayTimer.paused = true
 	$RestTimer.paused = true
-	$RightPanel/ConnectionMenu/TypeSelector/SelectionList.list_entries( [ \"Client\", \"Server\" ] )
-	$RightPanel/ConnectionMenu/TypeSelector/SelectionList.connect( \"entry_selected\", self, \"_on_ConnectionList_entry_selected\" )
+	$RightPanel/ConnectionMenu/StateSelector/SelectionList.list_entries( [ \"Client\", \"Server\" ] )
+	$RightPanel/ConnectionMenu/StateSelector/SelectionList.connect( \"entry_selected\", self, \"_on_ConnectionList_entry_selected\" )
 	$RightPanel/ConnectionMenu/AddressEntry.text = Settings.get_value( \"game\", \"server_address\", \"127.0.0.1\" )
 
 func _process( delta ):	
 	$LeftPanel/TimeLeftPanel/Display.text = ( \"%d\" % ceil( $RestTimer.time_left ) )
+	
+#	var peers_list_string = \"\"
+#	var peers_list = get_tree().get_network_connected_peers()
+#	for peer_id in peers_list:
+#		peers_list_string += str(peer_id) + \";\"
+#	$RightPanel/ConnectionMenu/PeersList.text = peers_list_string
 
 func display_setpoint( setpoint_value ):
 	$LeftPanel/SetpointDisplay.text = ( \"%+.3f\" % setpoint_value )
@@ -109,8 +115,12 @@ func _on_ConnectionList_entry_selected( index, entry_name ):
 		$LeftPanel/SetpointDisplay.editable = false
 		$LeftPanel/PositionDisplay.editable = false
 		$LeftPanel/ForceDisplay.editable = false
+	$RightPanel/ConnectionMenu/AddressEntry/Label.text = \"Network ID\"
+	$RightPanel/ConnectionMenu/AddressEntry.text = str( get_tree().get_network_unique_id() )
 	$RightPanel/ConnectionMenu/AddressEntry.editable = false
-	$RightPanel/ConnectionMenu/TypeSelector/SelectionList.disabled = true
+	$RightPanel/ConnectionMenu/StateSelector.disabled = false
+	$RightPanel/ConnectionMenu/StateSelector/SelectionList.disabled = true
+	$RightPanel/ConnectionMenu/StateSelector/SelectionList.hide()
 
 func _on_ResumeButton_pressed():
 	$PauseMenu.hide()
@@ -124,7 +134,11 @@ func _on_ExitButton_pressed():
 	get_tree().change_scene( \"res://Scenes/InitScreen.tscn\" )
 
 func _on_AddressEntry_text_entered( new_text ):
-	Settings.set_value( \"game\", \"server_address\", new_text )"
+	Settings.set_value( \"game\", \"server_address\", new_text )
+
+func _on_StateSelector_pressed():
+	game.reset_connection()
+"
 
 [sub_resource type="StyleBoxFlat" id=2]
 
@@ -314,13 +328,15 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -125.0
 margin_top = -65.0
-margin_right = 125.0
+margin_right = 121.0
 margin_bottom = -24.0
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Server Address"
+align = 1
+clip_text = true
 
-[node name="TypeSelector" type="Button" parent="RightPanel/ConnectionMenu"]
+[node name="StateSelector" type="Button" parent="RightPanel/ConnectionMenu"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -332,9 +348,9 @@ margin_bottom = 20.0
 grow_horizontal = 0
 custom_fonts/font = SubResource( 4 )
 disabled = true
-toggle_mode = true
+text = "Reset"
 
-[node name="SelectionList" type="MenuButton" parent="RightPanel/ConnectionMenu/TypeSelector"]
+[node name="SelectionList" type="MenuButton" parent="RightPanel/ConnectionMenu/StateSelector"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -349,6 +365,18 @@ toggle_mode = true
 text = "Connect"
 switch_on_hover = true
 script = ExtResource( 4 )
+
+[node name="PeersList" type="Label" parent="RightPanel/ConnectionMenu"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -125.0
+margin_top = 16.0
+margin_right = 125.0
+margin_bottom = 46.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+align = 1
 
 [node name="PlayTimeoutSlider" type="HSlider" parent="RightPanel"]
 editor/display_folded = true
@@ -522,7 +550,8 @@ custom_fonts/font = ExtResource( 2 )
 text = "Initial Screen"
 [connection signal="toggled" from="RightPanel/StartButton" to="." method="_on_StartButton_toggled"]
 [connection signal="text_entered" from="RightPanel/ConnectionMenu/AddressEntry" to="." method="_on_AddressEntry_text_entered"]
-[connection signal="entry_selected" from="RightPanel/ConnectionMenu/TypeSelector/SelectionList" to="." method="_on_ConnectionList_entry_selected"]
+[connection signal="pressed" from="RightPanel/ConnectionMenu/StateSelector" to="." method="_on_StateSelector_pressed"]
+[connection signal="entry_selected" from="RightPanel/ConnectionMenu/StateSelector/SelectionList" to="." method="_on_ConnectionList_entry_selected"]
 [connection signal="value_changed" from="RightPanel/PlayTimeoutSlider" to="RightPanel" method="_on_PlayTimeoutSlider_value_changed"]
 [connection signal="value_changed" from="RightPanel/RestTimeoutSlider" to="RightPanel" method="_on_RestTimeoutSlider_value_changed"]
 [connection signal="value_changed" from="RightPanel/EffortSlider" to="RightPanel" method="_on_EffortSlider_value_changed"]

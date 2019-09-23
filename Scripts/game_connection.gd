@@ -2,13 +2,12 @@ extends Node
 
 const SERVER_PORT = 50004
 
-signal players_connected()
-signal client_connected( client_id )
+signal players_connected( player_ids )
 
 var peer = NetworkedMultiplayerENet.new()
 var is_server = false
 
-var clients_count = 0
+var network_ids = []
 var max_clients_number = 0
 
 func _ready():
@@ -34,27 +33,27 @@ func shutdown():
 	peer.disconnect()
 	get_tree().set_network_peer( null )
 
-func set_as_master( node ):
-	node.set_network_master( get_tree().get_network_unique_id() )
-
 func _on_peer_connected( peer_id ):
 	print( "new peer connected: " + str(peer_id) )
-	clients_count += 1
-	if clients_count >= max_clients_number:
+	network_ids.append( peer_id )
+	if network_ids.size() >= max_clients_number:
 		peer.refuse_new_connections = true
-		emit_signal( "players_connected" )
+		emit_signal( "players_connected", network_ids )
 
 func _on_peer_disconnected( peer_id ):
+	network_ids.remove( network_ids.find( peer_id ) )
 	print( "peer disconnected: " + str(peer_id) )
 
 func _on_connected_to_server():
 	var peer_id = peer.get_unique_id()
 	print( "peer new unique id: " + str(peer_id) )
-	emit_signal( "client_connected", clients_count )
-	clients_count += 1
 
 func _on_connection_failed():
 	print( "connection failed!")
 
 func _on_server_disconnected():
+	network_ids.clear()
 	print( "server disconnected!" )
+
+remote func register_player():
+	print( "player registered" )

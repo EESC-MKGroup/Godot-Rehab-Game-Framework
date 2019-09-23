@@ -45,7 +45,7 @@ func _on_configs_listed( available_settingss ):
 
 func _on_config_received( device_id, axes_list ):
 	$AxisSelector/Menu.list_entries( axes_list )
-	$AxisSelector/Menu.select_entry_name( Settings.get_value( "device", "axis" ) )
+	#$AxisSelector/Menu.select_entry_name( Settings.get_value( "device", "axis" ) )
 	$EnabledToggle.disabled = false
 	$OffsetToggle.disabled = false
 	$CalibrationToggle.disabled = false
