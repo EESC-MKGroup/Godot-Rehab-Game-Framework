@@ -56,6 +56,8 @@ func _physics_process( delta ):
 	$GUI.display_force( input_axis_1.get_force() )
 	$Box1.external_force.z = input_axis_1.get_force() - $Spring.get_force()
 	$Box2.external_force.z = input_axis_2.get_force() - $Spring.get_force()
+	$Box1.update_remote()
+	$Box2.update_remote()
 	input_axis_1.set_force( $Box1.feedback_force.length() )
 	input_axis_2.set_force( $Box2.feedback_force.length() )
 	$Box1/InputArrow.update( input_axis_1.get_force() )

@@ -112,6 +112,7 @@ ui_end={
 
 [rendering]
 
+quality/driver/fallback_to_gles2=true
 quality/filters/anisotropic_filter_level=8
 environment/default_clear_color=Color( 1, 1, 1, 1 )
 quality/filters/msaa=1

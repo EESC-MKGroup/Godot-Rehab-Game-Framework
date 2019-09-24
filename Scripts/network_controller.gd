@@ -19,12 +19,17 @@ func enable():
 	rpc( "reset" )
 	rpc( "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec(), OS.get_ticks_msec() )
 
+func update_remote():
+	if get_tree().get_network_unique_id() == 1: return
+	rpc_unreliable_id( 1, "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec() )
+
 remotesync func reset():
 	target_position = initial_position
 	target_velocity = Vector3.ZERO
 	was_reset = true
 
-remote func update_server( remote_position, remote_velocity, remote_force, last_server_time, client_time=0.0 ):
+remote func update_server( remote_position, remote_velocity, remote_force, client_time ):
+	if get_tree().get_network_unique_id() != 1: return
 	print( "called update server on ", get_tree().get_network_unique_id(), " (master:", get_network_master(), ")" )
 	var server_time = OS.get_ticks_msec()
 	rpc_unreliable( "update_player", local_position, local_velocity, external_force, client_time, server_time )
@@ -34,7 +39,7 @@ remote func update_server( remote_position, remote_velocity, remote_force, last_
 master func update_player( remote_position, remote_velocity, remote_force, last_client_time, server_time=0.0 ):
 	print( "called update player on ", get_tree().get_network_unique_id(), " (master:", get_network_master(), ")" )
 	var client_time = OS.get_ticks_msec()
-	rpc_unreliable( "update_server", local_position, local_velocity, external_force, server_time, client_time )
+#	rpc_unreliable( "update_server", local_position, local_velocity, external_force, server_time, client_time )
 
 #puppet func update_puppet( master_position, master_velocity, last_client_time, server_time ):
 #	print( "called update puppet on ", get_tree().get_network_unique_id(), " (master:", get_network_master(), ")" )
@@ -53,7 +58,7 @@ puppet func update_puppet( master_position, master_velocity, last_client_time, s
 	print( "called update puppet on ", get_tree().get_network_unique_id(), " (master:", get_network_master(), ")" )
 	var position_error = master_position - local_position
 	var velocity_error = master_velocity - local_velocity
-	feedback_force = 10.0 * position_error + 5.0 * velocity_error
+	feedback_force = 2.0 * position_error + 1.0 * velocity_error
 
 func set_system( inertia, damping, stiffness ):
 	pass
