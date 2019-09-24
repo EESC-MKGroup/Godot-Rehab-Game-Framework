@@ -32,9 +32,12 @@ remote func update_server( remote_position, remote_velocity, remote_force, clien
 	if get_tree().get_network_unique_id() != 1: return
 	print( "called update server on ", get_tree().get_network_unique_id(), " (master:", get_network_master(), ")" )
 	var server_time = OS.get_ticks_msec()
-	rpc_unreliable( "update_player", local_position, local_velocity, external_force, client_time, server_time )
 	# Send position and velocity values directly
-	rpc_unreliable( "update_puppet", local_position, local_velocity, client_time, server_time )
+	for peer_id in get_tree().get_network_connected_peers():
+		if peer_id == get_network_master():
+			rpc_unreliable_id( peer_id, "update_player", local_position, local_velocity, external_force, client_time, server_time )
+		elif peer_id != 1:
+			rpc_unreliable_id( peer_id, "update_puppet", local_position, local_velocity, client_time, server_time )
 
 master func update_player( remote_position, remote_velocity, remote_force, last_client_time, server_time=0.0 ):
 	print( "called update player on ", get_tree().get_network_unique_id(), " (master:", get_network_master(), ")" )
@@ -53,7 +56,7 @@ master func update_player( remote_position, remote_velocity, remote_force, last_
 #	feedback_force = mass * ( target_velocity - local_velocity ) / get_physics_process_delta_time()
 #	#was_reset = true
 
-puppet func update_puppet( master_position, master_velocity, last_client_time, server_time ):
+remote func update_puppet( master_position, master_velocity, last_client_time, server_time ):
 	if get_tree().get_network_unique_id() == 1: return
 	print( "called update puppet on ", get_tree().get_network_unique_id(), " (master:", get_network_master(), ")" )
 	var position_error = master_position - local_position
