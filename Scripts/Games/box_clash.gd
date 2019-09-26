@@ -65,8 +65,8 @@ func _process( delta ):
 	$GUI/RightPanel/ConnectionMenu/PeersList.text = peers_list_string
 
 func _physics_process( delta ):
-	$Box1.external_force.z = input_axis_1.get_force() - $Spring.get_force()
-	$Box2.external_force.z = -input_axis_2.get_force() + $Spring.get_force()
+	$Box1.external_force = Vector3( 0, 0, input_axis_1.get_force() - $Spring.get_force() )
+	$Box2.external_force = Vector3( 0, 0, input_axis_2.get_force() - $Spring.get_force() )
 	$Box1.update_remote()
 	$Box2.update_remote()
 	input_axis_1.set_force( $Box1.feedback_force.z )

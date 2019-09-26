@@ -4,20 +4,27 @@ const BANDWIDTH = 0.5
 
 onready var initial_position = translation
 
-var feedback_force = Vector3.ZERO
-var external_force = Vector3.ZERO
+var feedback_force = Vector3.ZERO setget ,_get_feedback_force
+var external_force = Vector3.ZERO setget _set_external_force
 
-var local_position = Vector3.ZERO
-var local_velocity = Vector3.ZERO
+var local_position = Vector3.ZERO setget ,_get_local_position
+var local_velocity = Vector3.ZERO setget ,_get_local_velocity
 
-var target_position = Vector3.ZERO
-var target_velocity = Vector3.ZERO
+var target_position = Vector3.ZERO setget ,_get_target_position
+var target_velocity = Vector3.ZERO setget ,_get_target_velocity
 
 var was_reset = false
 
+func _get_feedback_force(): return transform.basis.xform_inv( feedback_force )
+func _set_external_force( value ): external_force = transform.basis.xform( value )
+func _get_local_position(): return transform.basis.xform_inv( local_position )
+func _get_local_velocity(): return transform.basis.xform_inv( local_velocity )
+func _get_target_position(): return transform.basis.xform_inv( target_position )
+func _get_target_velocity(): return transform.basis.xform_inv( target_velocity )
+
 func enable():
 	rpc( "reset" )
-	rpc( "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec(), OS.get_ticks_msec() )
+	rpc( "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec() )
 
 func update_remote():
 	if get_tree().get_network_unique_id() == 1: return
