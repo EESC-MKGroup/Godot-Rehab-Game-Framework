@@ -128,6 +128,12 @@ size = 16.852
 
 [node name="GUI" parent="." instance=ExtResource( 8 )]
 
+[node name="FeedbackDisplay" parent="GUI/LeftPanel" index="3"]
+visible = false
+
+[node name="ConnectionMenu" parent="GUI/RightPanel" index="1"]
+visible = false
+
 [node name="Floor" type="MeshInstance" parent="."]
 transform = Transform( 50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0 )
 mesh = SubResource( 5 )
@@ -137,3 +143,5 @@ material/0 = SubResource( 6 )
 environment = SubResource( 8 )
 [connection signal="body_entered" from="GameSpace/Boundaries/Target" to="." method="_on_Target_body_entered"]
 [connection signal="body_exited" from="GameSpace/Boundaries/Target" to="." method="_on_Target_body_exited"]
+
+[editable path="GUI"]

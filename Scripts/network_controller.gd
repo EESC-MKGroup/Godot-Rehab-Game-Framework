@@ -59,9 +59,13 @@ master func update_player( remote_position, remote_velocity, remote_force, last_
 remote func update_puppet( master_position, master_velocity, last_client_time, server_time ):
 	if get_tree().get_network_unique_id() == 1: return
 	print( "called update puppet on ", get_tree().get_network_unique_id(), " (master:", get_network_master(), ")" )
-	var position_error = master_position - local_position
-	var velocity_error = master_velocity - local_velocity
+	target_position = master_position
+	target_velocity = master_velocity
+	var position_error = target_position - local_position
+	var velocity_error = target_velocity - local_velocity
 	feedback_force = 2.0 * position_error + 1.0 * velocity_error
+	
+	# s = s0 + v0t + at²/2 -> a = 2 ( s - s0 - v0t ) / t² 
 
 func set_system( inertia, damping, stiffness ):
 	pass

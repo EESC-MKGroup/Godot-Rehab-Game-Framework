@@ -19,6 +19,8 @@ func _ready():
 	$GUI.set_max_effort( 100.0 )
 	$Spring.body_1 = $Box1/Connector
 	$Spring.body_2 = $Box2/Connector
+	$Spring.stiffness = 0.0
+	$Spring.damping = 0.0
 
 func connect_server():
 	GameConnection.connect_server( 2 ) 
@@ -52,19 +54,10 @@ func reset_connection():
 	$Box1.enable()
 	$Box2.enable()
 
-func _physics_process( delta ):
-	$GUI.display_force( input_axis_1.get_force() )
-	$Box1.external_force.z = input_axis_1.get_force() - $Spring.get_force()
-	$Box2.external_force.z = input_axis_2.get_force() - $Spring.get_force()
-	$Box1.update_remote()
-	$Box2.update_remote()
-	input_axis_1.set_force( $Box1.feedback_force.length() )
-	input_axis_2.set_force( $Box2.feedback_force.length() )
-	$Box1/InputArrow.update( input_axis_1.get_force() )
-	$Box2/InputArrow.update( input_axis_2.get_force() )
-	$Box1/FeedbackArrow.update( $Box1.feedback_force.z )
-	$Box2/FeedbackArrow.update( $Box2.feedback_force.z )
-	$GUI.display_position( player_box.translation.length() )
+func _process( delta ):
+	$GUI.display_force( player_input_axis.get_force() )
+	$GUI.display_position( player_box.translation.z )
+	$GUI.display_feedback( player_box.feedback_force.z )
 	
 	var peers_list_string = "connected: "
 	var peers_list = get_tree().get_network_connected_peers()
@@ -72,6 +65,21 @@ func _physics_process( delta ):
 		peers_list_string += str(peer_id) + ";"
 	peers_list_string += "\nmasters: " + str($Box1.get_network_master()) + ";" + str($Box2.get_network_master())
 	$GUI/RightPanel/ConnectionMenu/PeersList.text = peers_list_string
+
+func _physics_process( delta ):
+	$Box1.external_force.z = input_axis_1.get_force() - $Spring.get_force()
+	$Box2.external_force.z = -input_axis_2.get_force() + $Spring.get_force()
+	$Box1.update_remote()
+	$Box2.update_remote()
+	input_axis_1.set_force( $Box1.feedback_force.z )
+	input_axis_2.set_force( $Box2.feedback_force.z )
+	$Box1/InputArrow.update( input_axis_1.get_force() )
+	$Box2/InputArrow.update( input_axis_2.get_force() )
+	$Box1/FeedbackArrow.update( $Box1.feedback_force.z )
+	$Box2/FeedbackArrow.update( $Box2.feedback_force.z )
+	
+	$Box1/ErrorArrow.update( $Box1.target_position.z - $Box1.local_position.z )
+	$Box2/ErrorArrow.update( $Box2.target_position.z - $Box2.local_position.z )
 
 puppet func set_target( new_position, is_active ):
 	$BoxTarget.translation.z = new_position

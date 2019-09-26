@@ -6,8 +6,7 @@ func _physics_process( delta ):
 	local_position = translation 
 	local_velocity = linear_velocity
 	# Apply resulting force F_m to rigid body
-	var resulting_force = global_transform.basis * ( feedback_force + external_force )
-	add_central_force( resulting_force )
+	add_central_force( feedback_force + external_force )
 
 func _integrate_forces( state ):
 	if was_reset:

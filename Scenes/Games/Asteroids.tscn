@@ -66,6 +66,12 @@ light_energy = 3.0
 
 [node name="GUI" parent="." instance=ExtResource( 6 )]
 
+[node name="FeedbackDisplay" parent="GUI/LeftPanel" index="3"]
+visible = false
+
+[node name="ConnectionMenu" parent="GUI/RightPanel" index="1"]
+visible = false
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 autoplay = true
@@ -73,3 +79,5 @@ autoplay = true
 [connection signal="body_entered" from="BoundaryArea" to="." method="_on_BoundaryArea_body_entered"]
 [connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
 [connection signal="game_toggle" from="GUI" to="." method="_on_GUI_game_toggle"]
+
+[editable path="GUI"]

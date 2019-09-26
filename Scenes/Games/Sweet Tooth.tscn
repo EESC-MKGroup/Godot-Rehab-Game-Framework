@@ -87,9 +87,17 @@ omni_range = 21.3051
 
 [node name="GUI" parent="." instance=ExtResource( 10 )]
 
+[node name="FeedbackDisplay" parent="GUI/LeftPanel" index="3"]
+visible = false
+
+[node name="ConnectionMenu" parent="GUI/RightPanel" index="1"]
+visible = false
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
 autoplay = true
 [connection signal="area_exited" from="BoundaryArea" to="." method="_on_BoundaryArea_area_exited"]
 [connection signal="game_timeout" from="GUI" to="." method="_on_GUI_game_timeout"]
 [connection signal="game_toggle" from="GUI" to="." method="_on_GUI_game_toggle"]
+
+[editable path="GUI"]

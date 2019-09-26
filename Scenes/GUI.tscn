@@ -43,6 +43,9 @@ func display_position( position_value ):
 func display_force( force_value ):
 	$LeftPanel/ForceDisplay.text = ( \"%+.3f\" % force_value )
 
+func display_feedback( feedback_value ):
+	$LeftPanel/FeedbackDisplay.text = ( \"%+.3f\" % feedback_value )
+
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	print( \"setting timeouts: %f %f\" % [ play_timeout_value, rest_timeout_value ] )
 	$RightPanel/PlayTimeoutSlider.value = play_timeout_value
@@ -200,9 +203,9 @@ valign = 1
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
-margin_top = 190.0
+margin_top = 180.0
 margin_right = 100.0
-margin_bottom = 241.0
+margin_bottom = 231.0
 custom_fonts/font = ExtResource( 1 )
 text = "+0.000"
 align = 1
@@ -216,7 +219,7 @@ margin_right = 111.0
 margin_bottom = 6.0
 custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Measurement"
+text = "Position"
 align = 1
 valign = 1
 
@@ -226,9 +229,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -100.0
-margin_top = -25.0
+margin_top = -45.0
 margin_right = 100.0
-margin_bottom = 26.0
+margin_bottom = 6.0
 custom_fonts/font = ExtResource( 1 )
 text = "+0.000N"
 align = 1
@@ -238,13 +241,41 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -44.5
-margin_top = -65.0
-margin_right = 44.5
-margin_bottom = -24.0
+margin_left = -100.0
+margin_top = -64.5
+margin_right = 100.0
+margin_bottom = -23.5
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Force"
+text = "Force Input"
+align = 1
+
+[node name="FeedbackDisplay" type="LineEdit" parent="LeftPanel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = 55.0
+margin_right = 100.0
+margin_bottom = 106.0
+custom_fonts/font = ExtResource( 1 )
+text = "+0.000N"
+align = 1
+
+[node name="Label" type="Label" parent="LeftPanel/FeedbackDisplay"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -140.0
+margin_top = -64.5
+margin_right = 138.0
+margin_bottom = -23.5
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Force Feedback"
+align = 1
 
 [node name="TimeLeftPanel" type="Panel" parent="LeftPanel"]
 anchor_left = 0.5
@@ -314,9 +345,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -100.0
-margin_top = -110.0
+margin_top = -105.0
 margin_right = 100.0
-margin_bottom = -59.0
+margin_bottom = -54.0
 custom_fonts/font = ExtResource( 1 )
 text = "0.0.0.0"
 align = 1
