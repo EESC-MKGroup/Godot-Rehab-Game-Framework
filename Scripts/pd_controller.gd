@@ -12,7 +12,7 @@ remote func update_server( remote_position, remote_velocity, remote_force, clien
 	
 	.update_server( remote_position, remote_velocity, remote_force, client_time )
 
-master func update_player( remote_position, remote_velocity, remote_force, last_client_time, server_time=0.0 ):
+remote func update_player( remote_position, remote_velocity, remote_force, last_client_time, server_time=0.0 ):
 	var time_delay = calculate_delay( last_client_time )
 	
 	target_position = remote_position
