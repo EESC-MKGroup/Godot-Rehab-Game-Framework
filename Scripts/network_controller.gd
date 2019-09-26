@@ -38,12 +38,13 @@ remotesync func reset():
 remote func update_server( remote_position, remote_velocity, remote_force, client_time ):
 	if get_tree().get_network_unique_id() != 1: return
 	var server_time = OS.get_ticks_msec()
+	rpc_unreliable( "update_player", local_position, local_velocity, external_force, client_time, server_time )
 	# Send position and velocity values directly
-	for peer_id in get_tree().get_network_connected_peers():
-		if peer_id == get_network_master():
-			rpc_unreliable_id( peer_id, "update_player", local_position, local_velocity, external_force, client_time, server_time )
-		elif peer_id != 1:
-			rpc_unreliable_id( peer_id, "update_player", local_position, local_velocity, external_force, client_time, server_time )
+#	for peer_id in get_tree().get_network_connected_peers():
+#		if peer_id == get_network_master():
+#			rpc_unreliable_id( peer_id, "update_player", local_position, local_velocity, external_force, client_time, server_time )
+#		elif peer_id != 1:
+#			rpc_unreliable_id( peer_id, "update_player", local_position, local_velocity, external_force, client_time, server_time )
 			#rpc_unreliable_id( peer_id, "update_puppet", local_position, local_velocity, client_time, server_time )
 	print( "update server: p=%.3f, pd=%.3f, v=%.3f, vd=%.3f, ef=%.3f, ff=%.3f, rf=%.3f" % [ local_position.z, target_position.z, local_velocity.z, target_velocity.z, external_force.z, feedback_force.z, remote_force.z ] )
 
