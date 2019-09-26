@@ -19,8 +19,6 @@ func _ready():
 	$GUI.set_max_effort( 100.0 )
 	$Spring.body_1 = $Box1/Connector
 	$Spring.body_2 = $Box2/Connector
-	$Spring.stiffness = 0.0
-	$Spring.damping = 0.0
 
 func connect_server():
 	GameConnection.connect_server( 2 ) 
