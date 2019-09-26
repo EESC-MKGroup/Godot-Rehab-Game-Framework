@@ -27,7 +27,7 @@ func enable():
 	rpc( "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec() )
 
 func update_remote():
-	if get_tree().get_network_unique_id() == 1: return
+	if get_tree().get_network_unique_id() == 1 or get_tree().get_network_unique_id() != get_network_master(): return
 	rpc_unreliable_id( 1, "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec() )
 
 remotesync func reset():
