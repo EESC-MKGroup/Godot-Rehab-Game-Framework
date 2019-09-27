@@ -43,27 +43,23 @@ func predict_input_signal( remote_position, remote_velocity, remote_force, time_
 	
 	return [ position_state, remote_force ]
 
-remote func update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time=0.0 ):
-	var time_delay = calculate_delay( last_server_time )
-
-	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, time_delay )
+remote func update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time ):
+	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, network_delay )
 	remote_position = remote_state[ 0 ][ 0 ]
 	remote_force = remote_state[ 1 ]
 	
 	feedback_force = _calculate_feedback_input( feedback_gain, remote_state[ 0 ] ) + remote_force
 	
-	.update_server( remote_position, remote_velocity, remote_force, client_time )
+	.update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time )
 
-remote func update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time=0.0 ):
-	var time_delay = calculate_delay( last_client_time )
-
-	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, time_delay )
+remote func update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time ):
+	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, network_delay )
 	remote_position = remote_state[ 0 ][ 0 ]
 	remote_force = remote_state[ 1 ]
 	
 	feedback_force = _calculate_feedback_input( feedback_gain, remote_state[ 0 ] ) + remote_force
 	
-	.update_client( remote_position, remote_velocity, remote_force, server_time )
+	.update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time )
 
 func set_system( inertia, damping, stiffness ):
 	position_observer.state_predictor[ 2 ][ 0 ] = -stiffness / inertia

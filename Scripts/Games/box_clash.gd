@@ -56,13 +56,7 @@ func _process( delta ):
 	$GUI.display_force( player_input_axis.get_force() )
 	$GUI.display_position( player_box.translation.z )
 	$GUI.display_feedback( player_box.feedback_force.z )
-	
-	var peers_list_string = "connected: "
-	var peers_list = get_tree().get_network_connected_peers()
-	for peer_id in peers_list:
-		peers_list_string += str(peer_id) + ";"
-	peers_list_string += "\nmasters: " + str($Box1.get_network_master()) + ";" + str($Box2.get_network_master())
-	$GUI/RightPanel/ConnectionMenu/PeersList.text = peers_list_string
+	$GUI.display_delay( player_box.network_delay )
 
 func _physics_process( delta ):
 	$Box1.external_force = Vector3( 0, 0, input_axis_1.get_force() - $Spring.get_force() )

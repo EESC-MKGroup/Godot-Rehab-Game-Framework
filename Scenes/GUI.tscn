@@ -15,14 +15,18 @@ onready var game = $\"/root/Game\"
 
 var timeouts_count = 0
 
+var player_display_index = 0
+
 func _ready():
 	_on_PlayTimeoutSlider_value_changed( $RightPanel/PlayTimeoutSlider.value )
 	_on_RestTimeoutSlider_value_changed( $RightPanel/RestTimeoutSlider.value )
 	_on_EffortSlider_value_changed( $RightPanel/EffortSlider.value )
 	$PlayTimer.paused = true
 	$RestTimer.paused = true
+	$RightPanel/PlayerSelector/SelectionList.list_entries( game.get_player_variables() )
+	#$RightPanel/PlayerSelector/SelectionList.connect( \"entry_selected\", self, \"_on_PlayerList_entry_selected\" )
 	$RightPanel/ConnectionMenu/StateSelector/SelectionList.list_entries( [ \"Client\", \"Server\" ] )
-	$RightPanel/ConnectionMenu/StateSelector/SelectionList.connect( \"entry_selected\", self, \"_on_ConnectionList_entry_selected\" )
+	#$RightPanel/ConnectionMenu/StateSelector/SelectionList.connect( \"entry_selected\", self, \"_on_ConnectionList_entry_selected\" )
 	$RightPanel/ConnectionMenu/AddressEntry.text = Settings.get_value( \"game\", \"server_address\", \"127.0.0.1\" )
 
 func _process( delta ):	
@@ -41,10 +45,13 @@ func display_position( position_value ):
 	$LeftPanel/PositionDisplay.text = ( \"%+.3f\" % position_value )
 
 func display_force( force_value ):
-	$LeftPanel/ForceDisplay.text = ( \"%+.3f\" % force_value )
+	$LeftPanel/ForceDisplay.text = ( \"%+.3f N\" % force_value )
 
 func display_feedback( feedback_value ):
-	$LeftPanel/FeedbackDisplay.text = ( \"%+.3f\" % feedback_value )
+	$LeftPanel/FeedbackDisplay.text = ( \"%+.3f N\" % feedback_value )
+
+func display_delay( delay_value ):
+	$RightPanel/ConnectionMenu/DelayDisplay.text = ( \"%d ms\" % delay_value )
 
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	print( \"setting timeouts: %f %f\" % [ play_timeout_value, rest_timeout_value ] )
@@ -109,6 +116,9 @@ func _on_StartButton_toggled( button_pressed ):
 		get_tree().paused = true
 	$RestTimer.paused = true
 	emit_signal( \"game_toggle\", button_pressed )
+
+func _on_PlayerList_entry_selected( index, entry_name ):
+	player_display_index = index
 
 func _on_ConnectionList_entry_selected( index, entry_name ):
 	if index == 0: 
@@ -233,7 +243,7 @@ margin_top = -45.0
 margin_right = 100.0
 margin_bottom = 6.0
 custom_fonts/font = ExtResource( 1 )
-text = "+0.000N"
+text = "+0.000 N"
 align = 1
 
 [node name="Label" type="Label" parent="LeftPanel/ForceDisplay"]
@@ -260,7 +270,7 @@ margin_top = 55.0
 margin_right = 100.0
 margin_bottom = 106.0
 custom_fonts/font = ExtResource( 1 )
-text = "+0.000N"
+text = "+0.000 N"
 align = 1
 
 [node name="Label" type="Label" parent="LeftPanel/FeedbackDisplay"]
@@ -320,14 +330,43 @@ custom_styles/panel = SubResource( 2 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
-margin_top = 50.0
+margin_top = 45.0
 margin_right = 100.0
-margin_bottom = 110.0
+margin_bottom = 105.0
 grow_horizontal = 0
 custom_fonts/font = SubResource( 4 )
 toggle_mode = true
 action_mode = 0
 text = "Start"
+
+[node name="PlayerSelector" type="Button" parent="RightPanel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -215.0
+margin_right = 100.0
+margin_bottom = -155.0
+grow_horizontal = 0
+custom_fonts/font = SubResource( 4 )
+disabled = true
+
+[node name="SelectionList" type="MenuButton" parent="RightPanel/PlayerSelector"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = -30.0
+margin_right = 100.0
+margin_bottom = 30.0
+grow_horizontal = 0
+custom_fonts/font = SubResource( 4 )
+toggle_mode = true
+text = "<Player>"
+switch_on_hover = true
+script = ExtResource( 4 )
 
 [node name="ConnectionMenu" type="Control" parent="RightPanel"]
 anchor_left = 0.5
@@ -335,9 +374,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -20.0
-margin_top = -20.0
+margin_top = 220.0
 margin_right = 20.0
-margin_bottom = 20.0
+margin_bottom = 260.0
 
 [node name="AddressEntry" type="LineEdit" parent="RightPanel/ConnectionMenu"]
 anchor_left = 0.5
@@ -397,26 +436,42 @@ text = "Connect"
 switch_on_hover = true
 script = ExtResource( 4 )
 
-[node name="PeersList" type="Label" parent="RightPanel/ConnectionMenu"]
+[node name="DelayDisplay" type="LineEdit" parent="RightPanel/ConnectionMenu"]
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -125.0
-margin_top = 16.0
-margin_right = 125.0
-margin_bottom = 46.0
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+anchor_bottom = 0.5
+margin_left = -17.0
+margin_top = 35.0
+margin_right = 120.0
+margin_bottom = 86.0
+custom_fonts/font = ExtResource( 1 )
+text = "000 ms"
 align = 1
+
+[node name="Label" type="Label" parent="RightPanel/ConnectionMenu/DelayDisplay"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -177.0
+margin_top = -21.5
+margin_right = -72.0
+margin_bottom = 19.5
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "delay"
+align = 1
+clip_text = true
 
 [node name="PlayTimeoutSlider" type="HSlider" parent="RightPanel"]
 editor/display_folded = true
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
-margin_top = 510.0
+margin_top = 280.0
 margin_right = 100.0
-margin_bottom = 540.0
+margin_bottom = 310.0
 min_value = 1.0
 max_value = 15.0
 value = 3.0
@@ -439,9 +494,9 @@ editor/display_folded = true
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
-margin_top = 580.0
+margin_top = 340.0
 margin_right = 100.0
-margin_bottom = 610.0
+margin_bottom = 370.0
 max_value = 120.0
 value = 60.0
 rounded = true
@@ -463,9 +518,9 @@ editor/display_folded = true
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
-margin_top = 650.0
+margin_top = 400.0
 margin_right = 100.0
-margin_bottom = 670.0
+margin_bottom = 420.0
 step = 10.0
 value = 50.0
 rounded = true
@@ -580,9 +635,12 @@ margin_bottom = -40.0
 custom_fonts/font = ExtResource( 2 )
 text = "Initial Screen"
 [connection signal="toggled" from="RightPanel/StartButton" to="." method="_on_StartButton_toggled"]
+[connection signal="pressed" from="RightPanel/PlayerSelector" to="." method="_on_StateSelector_pressed"]
+[connection signal="entry_selected" from="RightPanel/PlayerSelector/SelectionList" to="." method="_on_PlayerList_entry_selected"]
 [connection signal="text_entered" from="RightPanel/ConnectionMenu/AddressEntry" to="." method="_on_AddressEntry_text_entered"]
 [connection signal="pressed" from="RightPanel/ConnectionMenu/StateSelector" to="." method="_on_StateSelector_pressed"]
 [connection signal="entry_selected" from="RightPanel/ConnectionMenu/StateSelector/SelectionList" to="." method="_on_ConnectionList_entry_selected"]
+[connection signal="text_entered" from="RightPanel/ConnectionMenu/DelayDisplay" to="." method="_on_AddressEntry_text_entered"]
 [connection signal="value_changed" from="RightPanel/PlayTimeoutSlider" to="RightPanel" method="_on_PlayTimeoutSlider_value_changed"]
 [connection signal="value_changed" from="RightPanel/RestTimeoutSlider" to="RightPanel" method="_on_RestTimeoutSlider_value_changed"]
 [connection signal="value_changed" from="RightPanel/EffortSlider" to="RightPanel" method="_on_EffortSlider_value_changed"]
