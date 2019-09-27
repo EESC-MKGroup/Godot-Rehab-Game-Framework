@@ -10,8 +10,10 @@ remote func update_server( remote_position, remote_velocity, remote_force, clien
 	target_velocity = remote_velocity
 	var position_error = target_position - local_position
 	var velocity_error = target_velocity - local_velocity
-	feedback_force = proportional_gain * position_error + derivative_gain * velocity_error
-	
+	# feedback_force = proportional_gain * position_error + derivative_gain * velocity_error
+	var time_step = get_physics_process_delta_time()
+	feedback_force = mass * 2 * position_error / pow( time_step, 2 )
+	# s = s0 + v0t + at²/2 -> a = 2 ( s - s0 - v0t ) / t² 
 	.update_server( remote_position, remote_velocity, remote_force, client_time )
 
 remote func update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time=0.0 ):
@@ -21,9 +23,11 @@ remote func update_client( remote_position, remote_velocity, remote_force, serve
 	target_velocity = remote_velocity
 	var position_error = target_position - local_position
 	var velocity_error = target_velocity - local_velocity
-	feedback_force = proportional_gain * position_error + derivative_gain * velocity_error
+	# feedback_force = proportional_gain * position_error + derivative_gain * velocity_error
+	var time_step = get_physics_process_delta_time()
+	feedback_force = mass * 2 * position_error / pow( time_step, 2 )
 	# s = s0 + v0t + at²/2 -> a = 2 ( s - s0 - v0t ) / t² 
-	.update_player( remote_position, remote_velocity, remote_force, server_time )
+	.update_client( remote_position, remote_velocity, remote_force, server_time )
 
 func set_system( inertia, damping, stiffness ):
 	proportional_gain = stiffness
