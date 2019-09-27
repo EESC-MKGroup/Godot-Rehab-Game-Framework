@@ -56,7 +56,7 @@ func _process( delta ):
 	$GUI.display_force( player_input_axis.get_force() )
 	$GUI.display_position( player_box.translation.z )
 	$GUI.display_feedback( player_box.feedback_force.z )
-	$GUI.display_delay( player_box.network_delay )
+	$GUI.display_delay( int( 1000 * player_box.network_delay ) )
 
 func _physics_process( delta ):
 	$Box1.external_force = Vector3( 0, 0, input_axis_1.get_force() - $Spring.get_force() )
