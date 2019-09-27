@@ -63,7 +63,7 @@ remote func update_client( remote_position, remote_velocity, remote_force, serve
 	
 	feedback_force = _calculate_feedback_input( feedback_gain, remote_state[ 0 ] ) + remote_force
 	
-	.update_player( remote_position, remote_velocity, remote_force, server_time )
+	.update_client( remote_position, remote_velocity, remote_force, server_time )
 
 func set_system( inertia, damping, stiffness ):
 	position_observer.state_predictor[ 2 ][ 0 ] = -stiffness / inertia

@@ -44,7 +44,7 @@ remote func update_client( input_wave, remote_position, remote_force, server_tim
 	# Encode and send output wave variable (velocity data): v_s = ( b * xdot_s - F_s ) / sqrt( 2 * b )
 	var output_wave = process_output_wave( feedback_force, wave_impedance )
 	
-	.update_player( output_wave, local_position, remote_force, server_time )
+	.update_client( output_wave, local_position, remote_force, server_time )
 
 remote func set_impedance( remote_impedance ):
 	wave_impedance = max( local_impedance, remote_impedance )
