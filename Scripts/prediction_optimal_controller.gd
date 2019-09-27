@@ -43,7 +43,7 @@ func predict_input_signal( remote_position, remote_velocity, remote_force, time_
 	
 	return [ position_state, remote_force ]
 
-remote func update_server( remote_position, remote_velocity, remote_force, last_server_time, client_time=0.0 ):
+remote func update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time=0.0 ):
 	var time_delay = calculate_delay( last_server_time )
 
 	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, time_delay )
@@ -54,7 +54,7 @@ remote func update_server( remote_position, remote_velocity, remote_force, last_
 	
 	.update_server( remote_position, remote_velocity, remote_force, client_time )
 
-master func update_player( remote_position, remote_velocity, remote_force, last_client_time, server_time=0.0 ):
+remote func update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time=0.0 ):
 	var time_delay = calculate_delay( last_client_time )
 
 	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, time_delay )

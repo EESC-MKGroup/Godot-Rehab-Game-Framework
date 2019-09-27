@@ -30,7 +30,7 @@ func process_output_wave( force, wave_impedance ):
 	# Encode output wave variable (velocity data): u_out = ( b * xdot_out + (-F_in) ) / sqrt( 2 * b )
 	return ( wave_impedance * local_velocity - force ) / sqrt( 2.0 * wave_impedance )  
 
-remote func update_server( input_wave, remote_position, remote_force, last_server_time, client_time=0.0 ):
+remote func update_server( input_wave, remote_position, remote_force, client_time, last_server_time=0.0 ):
 	# Extract remote force from received wave variable: -F_m = b * xdot_m - sqrt( 2 * b ) * v_m
 	feedback_force = process_input_wave( input_wave, remote_position, wave_impedance )
 	# Encode and send output wave variable (velocity data): u_m = ( b * xdot_m + (-F_m) ) / sqrt( 2 * b )
@@ -38,7 +38,7 @@ remote func update_server( input_wave, remote_position, remote_force, last_serve
 	
 	.update_server( output_wave, local_position, remote_force, client_time )
 
-master func update_player( input_wave, remote_position, remote_force, last_client_time, server_time=0.0 ):
+remote func update_client( input_wave, remote_position, remote_force, server_time, last_client_time=0.0 ):
 	# Extract remote force from wave variable: F_s = -b * xdot_s + sqrt( 2 * b ) * u_s
 	feedback_force = process_input_wave( input_wave, remote_position, wave_impedance )
 	# Encode and send output wave variable (velocity data): v_s = ( b * xdot_s - F_s ) / sqrt( 2 * b )
