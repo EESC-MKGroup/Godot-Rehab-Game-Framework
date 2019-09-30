@@ -15,7 +15,7 @@ onready var game = $\"/root/Game\"
 
 var timeouts_count = 0
 
-var player_display_index = 0
+var display_variables = [ 0, 0, 0, 0, 0 ]
 
 func _ready():
 	_on_PlayTimeoutSlider_value_changed( $RightPanel/PlayTimeoutSlider.value )
@@ -32,26 +32,11 @@ func _ready():
 func _process( delta ):	
 	$LeftPanel/TimeLeftPanel/Display.text = ( \"%d\" % ceil( $RestTimer.time_left ) )
 	
-#	var peers_list_string = \"\"
-#	var peers_list = get_tree().get_network_connected_peers()
-#	for peer_id in peers_list:
-#		peers_list_string += str(peer_id) + \";\"
-#	$RightPanel/ConnectionMenu/PeersList.text = peers_list_string
-
-func display_setpoint( setpoint_value ):
-	$LeftPanel/SetpointDisplay.text = ( \"%+.3f\" % setpoint_value )
-
-func display_position( position_value ):
-	$LeftPanel/PositionDisplay.text = ( \"%+.3f\" % position_value )
-
-func display_force( force_value ):
-	$LeftPanel/ForceDisplay.text = ( \"%+.3f N\" % force_value )
-
-func display_feedback( feedback_value ):
-	$LeftPanel/FeedbackDisplay.text = ( \"%+.3f N\" % feedback_value )
-
-func display_delay( delay_value ):
-	$RightPanel/ConnectionMenu/DelayDisplay.text = ( \"%d ms\" % delay_value )
+	$LeftPanel/PositionDisplay.text = ( \"%+.3f\" % display_variables[ 0 ] )
+	$LeftPanel/SetpointDisplay.text = ( \"%+.3f\" % display_variables[ 1 ] )
+	$LeftPanel/ForceDisplay.text = ( \"%+.3f N\" % display_variables[ 2 ] )
+	$LeftPanel/FeedbackDisplay.text = ( \"%+.3f N\" % display_variables[ 3 ] )
+	$RightPanel/ConnectionMenu/DelayDisplay.text = ( \"%d ms\" % int( 1000 * display_variables[ 4 ] ) )
 
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	print( \"setting timeouts: %f %f\" % [ play_timeout_value, rest_timeout_value ] )
@@ -118,7 +103,7 @@ func _on_StartButton_toggled( button_pressed ):
 	emit_signal( \"game_toggle\", button_pressed )
 
 func _on_PlayerList_entry_selected( index, entry_name ):
-	player_display_index = index
+	display_variables = game.control_values[ index ]
 
 func _on_ConnectionList_entry_selected( index, entry_name ):
 	if index == 0: 
