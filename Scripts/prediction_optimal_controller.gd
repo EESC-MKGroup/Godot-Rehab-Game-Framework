@@ -28,18 +28,19 @@ func _ready():
 	force_observer.state_predictor[ 0 ][ 1 ] = time_step
 	force_observer.state_predictor[ 0 ][ 2 ] = pow( time_step, 2 ) / 2
 	force_observer.state_predictor[ 1 ][ 2 ] = time_step
-
+	
+	set_system( mass, 0.0, 0.0 )
 	cost_2_go = _calculate_optimal_cost_2_go( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
 	feedback_gain = _calculate_feedback_gain( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
 
 func predict_input_signal( remote_position, remote_velocity, remote_force, time_delay ): 	
 	time_delay = int( time_delay / time_step ) * time_step
-	position_state[ 0 ] = remote_position + remote_velocity * time_delay
-	position_state[ 1 ] = remote_velocity
-	position_state = position_observer.process( position_state, remote_force )
 	force_state = force_observer.predict()
 	force_state = force_observer.update( [ remote_force, force_state[ 1 ], force_state[ 2 ] ], force_state )
-	remote_force = force_state[ 0 ] + force_state[ 1 ] * time_delay + force_state[ 2 ] * 0.5 * time_delay * time_delay
+	remote_force = Vector3.ZERO#force_state[ 0 ] + force_state[ 1 ] * time_delay + force_state[ 2 ] * 0.5 * time_delay * time_delay
+	position_state[ 0 ] = remote_position #+ remote_velocity * time_delay
+	position_state[ 1 ] = remote_velocity
+	position_state = position_observer.process( position_state, remote_force + external_force )
 	
 	return [ position_state, remote_force ]
 
@@ -64,7 +65,7 @@ remote func update_client( remote_position, remote_velocity, remote_force, serve
 func set_system( inertia, damping, stiffness ):
 	position_observer.state_predictor[ 2 ][ 0 ] = -stiffness / inertia
 	position_observer.state_predictor[ 2 ][ 1 ] = -damping / inertia
-	position_observer.input_predictor[ 2 ][ 0 ] = 1 / inertia
+	position_observer.input_predictor[ 2 ] = 1 / inertia
 	
 	cost_2_go = _calculate_optimal_cost_2_go( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
 	feedback_gain = _calculate_feedback_gain( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )

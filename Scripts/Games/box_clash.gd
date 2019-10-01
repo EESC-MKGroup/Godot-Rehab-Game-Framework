@@ -54,6 +54,8 @@ func reset_connection():
 		box.enable()
 
 func _physics_process( delta ):
+	var log_values = []
+	
 	for index in range( boxes.size() ):
 		control_values[ index ][ 0 ] = boxes[ index ].translation.z
 		control_values[ index ][ 2 ] = input_axes[ index ].get_force()
@@ -65,6 +67,10 @@ func _physics_process( delta ):
 		feedback_arrows[ index ].update( control_values[ index ][ 3 ] )
 		
 		control_values[ index ][ 4 ] = boxes[ index ].network_delay
+		
+		for value in control_values[ index ]: log_values.append( value )
+	
+	DataLog.register_values( log_values )
 
 puppet func set_target( new_position, is_active ):
 	$BoxTarget.translation.z = new_position

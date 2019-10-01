@@ -4,7 +4,7 @@ var proportional_gain = 8.0
 var derivative_gain = 4.0
 
 remote func update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time ):
-	target_position = remote_position
+	target_position = remote_position + remote_velocity * network_delay
 	target_velocity = remote_velocity
 	var position_error = target_position - local_position
 	var velocity_error = target_velocity - local_velocity
@@ -13,7 +13,7 @@ remote func update_server( remote_position, remote_velocity, remote_force, clien
 	.update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time )
 
 remote func update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time ):
-	target_position = remote_position
+	target_position = remote_position + remote_velocity * network_delay
 	target_velocity = remote_velocity
 	var position_error = target_position - local_position
 	var velocity_error = target_velocity - local_velocity

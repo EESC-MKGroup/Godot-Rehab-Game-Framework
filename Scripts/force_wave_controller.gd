@@ -17,11 +17,11 @@ func process_input_wave( input_wave, remote_position, wave_impedance ):
 	last_filtered_wave = filtered_wave
 	last_input_wave = input_wave
 	# Wave corretion based on position drift
-#	var position_error = local_position - remote_position
-#	var wave_correction = -sqrt( 2.0 * wave_impedance ) * BANDWIDTH * position_error
-#	if position_error.dot( filtered_wave ) < 0: wave_correction = Vector3.ZERO
-#	elif wave_correction.length() > filtered_wave.length(): wave_correction = -filtered_wave
-#	filtered_wave += wave_correction
+	var position_error = local_position - remote_position
+	var wave_correction = -sqrt( 2.0 * wave_impedance ) * BANDWIDTH * position_error
+	if position_error.dot( filtered_wave ) < 0: wave_correction = Vector3.ZERO
+	elif wave_correction.length() > filtered_wave.length(): wave_correction = -filtered_wave
+	filtered_wave += wave_correction
 	# Extract remote force from received wave variable: -F_in = b * xdot_out - sqrt( 2 * b ) * u_in
 	return -( wave_impedance * local_velocity - sqrt( 2.0 * wave_impedance ) * filtered_wave )
 
