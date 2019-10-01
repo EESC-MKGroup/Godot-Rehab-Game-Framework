@@ -32,8 +32,8 @@ func enable():
 	server_dispatch_time = OS.get_ticks_msec()
 
 func update_remote():
-	if get_tree().get_network_unique_id() != get_network_master(): return
-	rpc_unreliable( "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec(), server_dispatch_time )
+	if get_tree().get_network_unique_id() == get_network_master():
+		rpc_unreliable( "update_server", local_position, local_velocity, external_force, OS.get_ticks_msec(), server_dispatch_time )
 
 remotesync func reset():
 	target_position = initial_position
@@ -42,14 +42,14 @@ remotesync func reset():
 
 remote func update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time ):
 	if get_tree().get_network_unique_id() != 1: return
-	var server_time = OS.get_ticks_msec()
 	calculate_delay( last_server_time )
+	var server_time = OS.get_ticks_msec()
 	rpc_unreliable( "update_client", local_position, local_velocity, external_force, server_time, client_time )
 #	print( "update server: p=%.3f, pd=%.3f, v=%.3f, vd=%.3f, ef=%.3f, ff=%.3f, rf=%.3f" % [ local_position.z, target_position.z, local_velocity.z, target_velocity.z, external_force.z, feedback_force.z, remote_force.z ] )
 
 remote func update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time ):
+	if get_tree().get_network_unique_id() == get_network_master(): calculate_delay( last_client_time )
 	server_dispatch_time = server_time
-	calculate_delay( last_client_time )
 #	print( "update client: p=%.3f, pd=%.3f, v=%.3f, vd=%.3f, ef=%.3f, ff=%.3f, rf=%.3f" % [ local_position.z, target_position.z, local_velocity.z, target_velocity.z, external_force.z, feedback_force.z, remote_force.z ] )
 
 func set_system( inertia, damping, stiffness ):
@@ -60,8 +60,8 @@ func _filter_signal( last_filtered_value, input_value, last_input_value ):
 
 # Half round-trip time calculation
 func calculate_delay( dispatch_time_ms ):
-	var raw_delay = ( OS.get_ticks_msec() - dispatch_time_ms ) / 2000
-	#print( "previous dispatch time=%d, local time=%d, delay=%f" % [ dispatch_time_ms, OS.get_ticks_msec(), raw_delay ] )
+	var raw_delay = float( OS.get_ticks_msec() - dispatch_time_ms ) / 2000
+	print( "previous dispatch time=%d, local time=%d, delay=%f" % [ dispatch_time_ms, OS.get_ticks_msec(), raw_delay ] )
 	network_delay = raw_delay#_filter_signal( last_network_delay, raw_delay, last_raw_delay )
 	last_network_delay = network_delay
 	last_raw_delay = raw_delay

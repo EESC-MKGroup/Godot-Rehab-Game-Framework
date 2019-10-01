@@ -35,7 +35,8 @@ func _process( delta ):
 	$LeftPanel/SetpointDisplay.text = ( \"%+.3f\" % display_variables[ 1 ] )
 	$LeftPanel/ForceDisplay.text = ( \"%+.3f N\" % display_variables[ 2 ] )
 	$LeftPanel/FeedbackDisplay.text = ( \"%+.3f N\" % display_variables[ 3 ] )
-	$RightPanel/ConnectionMenu/DelayDisplay.text = ( \"%d ms\" % int( 1000 * display_variables[ 4 ] ) )
+#	$RightPanel/ConnectionMenu/DelayDisplay.text = ( \"%d ms\" % int( 1000 * display_variables[ 4 ] ) )
+	$RightPanel/ConnectionMenu/DelayDisplay.text = ( \"%.3f s\" % display_variables[ 4 ] )
 
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	print( \"setting timeouts: %f %f\" % [ play_timeout_value, rest_timeout_value ] )
