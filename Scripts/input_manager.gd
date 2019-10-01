@@ -59,7 +59,7 @@ func get_device_axis( interface_index, device_index, axis_index ):
 	return input_axis
 
 func get_null_axis():
-	var device_index = input_devices_list.find( "Null" )
+	var device_index = interface_names.find( "Null" )
 	var device = input_devices_list[ device_index ]
 	var input_axis = input_axis_class.new( device, 0 )
 	return input_axis

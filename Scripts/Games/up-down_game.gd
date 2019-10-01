@@ -28,6 +28,8 @@ var target_reached = false
 
 onready var input_axis = GameManager.get_player_control( get_player_variables()[ 0 ] )
 
+var control_values = [ [ 0, 0, 0, 0, 0 ] ]
+
 static func get_player_variables():
 	return [ "Hand" ]
 
@@ -38,17 +40,17 @@ func _ready():
 #	if Controller.direction_axis == Controller.HORIZONTAL:
 #		$Camera.rotate_z( PI / 2 )
 	input_axis.set_position( 0.0 )
-	$GUI.display_setpoint( 0.0 )
+	control_values[ 0 ][ 1 ] = 0.0
 
 func _physics_process( delta ):
-	var player_force = input_axis.get_force() * space_scale
-	player.add_central_force( Vector3.UP * player_force )
+	control_values[ 0 ][ 2 ] = input_axis.get_force()
+	player.add_central_force( Vector3.UP * control_values[ 0 ][ 2 ] )
 	
-	var player_position = player.translation.y / space_scale
-	input_axis.set_position( player_position )
+	control_values[ 0 ][ 0 ] = player.translation.y
+	input_axis.set_position( control_values[ 0 ][ 0 ] / space_scale )
 	
 	if not input_axis.is_calibrating:
-		DataLog.register_values( [ direction, player_force, player_position, score_state ] )
+		DataLog.register_values( [ direction, control_values[ 0 ][ 2 ], control_values[ 0 ][ 0 ], score_state ] )
 		score_state = 0
 
 func _change_display():
@@ -64,7 +66,7 @@ func _change_display():
 	var target_position = direction * space_scale
 	target.translation.y = target_position
 	input_axis.set_position( direction )
-	$GUI.display_setpoint( direction )
+	control_values[ 0 ][ 1 ] = direction
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if direction == Direction.NONE:
@@ -93,6 +95,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 
 func _on_GUI_game_toggle( started ):
 	input_axis.set_position( 0.0 )
+	control_values[ 0 ][ 1 ] = 0.0
 	_change_display()
 
 func _on_Target_body_entered( body ):

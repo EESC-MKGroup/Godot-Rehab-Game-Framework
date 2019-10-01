@@ -23,6 +23,8 @@ var score = 0
 
 onready var input_axis = GameManager.get_player_control( get_player_variables()[ 0 ] )
 
+var control_values = [ [ 0, 0, 0, 0, 0 ] ]
+
 static func get_player_variables():
 	return [ "Hand" ]
 
@@ -39,22 +41,20 @@ func _ready():
 		$GUI.set_timeouts( HOLD_TIMEOUT, REST_TIMEOUT )
 		$GUI.set_max_effort( 20.0 )
 	input_axis.set_position( 0.0 )
-	$GUI.display_setpoint( 0.0 )
+	control_values[ 0 ][ 1 ] = 0.0
 	$SpringBase/Spring.body_1 = $SpringBase
 	$SpringBase/Spring.body_2 = $SpringBase/Effector/Handle
 
 func _physics_process( delta ):
-	var player_force = -direction * input_axis.get_force() * space_scale
+	control_values[ 0 ][ 2 ] = input_axis.get_force() * space_scale
+	var player_force = -direction * control_values[ 0 ][ 2 ]
 	var spring_force = spring.get_force()
 	
 	effector.add_central_force( Vector3.UP * ( player_force + spring_force ) )
 	
-	$GUI.display_force( player_force )
-	
-	var player_position = effector.translation.y / space_scale
+	control_values[ 0 ][ 0 ] = effector.translation.y
+	var player_position = control_values[ 0 ][ 0 ] / space_scale
 	input_axis.set_position( player_position )
-	
-	$GUI.display_position( effector.translation.y )
 	
 	if direction != Direction.NONE:
 		max_score += 1
@@ -72,7 +72,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 				$Camera.rotate_z( PI )
 				direction = Direction.DOWN
 			cycles_count = 0
-		$GUI.display_setpoint( direction )
+		control_values[ 0 ][ 1 ] = direction
 	if timeouts_count == 1:
 		$SpringBase/Arrow.hide()
 		cycles_count += 1
@@ -83,7 +83,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 			DataLog.register_values( [ max_score, score ] )
 			$GUI.end_game( max_score, score )
 			DataLog.end_log()
-		$GUI.display_setpoint( 0.0 )
+		control_values[ 0 ][ 1 ] = 0.0
 
 func _on_GUI_game_toggle( started ):
 	if not input_axis.is_calibrating: $SpringBase/Target.show()

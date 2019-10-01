@@ -51,7 +51,7 @@ shape = SubResource( 2 )
 script = SubResource( 3 )
 
 [node name="Player" parent="BoundaryArea/Boundaries" instance=ExtResource( 5 )]
-transform = Transform( -1.62921e-07, 1, -6.67522e-15, 1, 1.62921e-07, 3.25846e-07, 3.25846e-07, 6.68909e-14, -1, -5, 0, 0.35 )
+transform = Transform( -1.62921e-07, 1, -6.67522e-15, 1, 1.62921e-07, 3.25846e-07, 3.25846e-07, 6.68909e-14, -1, -4, 0, 0.35 )
 collision_layer = 3
 
 [node name="Camera" type="Camera" parent="."]
@@ -69,7 +69,7 @@ light_energy = 3.0
 [node name="FeedbackDisplay" parent="GUI/LeftPanel" index="3"]
 visible = false
 
-[node name="ConnectionMenu" parent="GUI/RightPanel" index="1"]
+[node name="ConnectionMenu" parent="GUI/RightPanel" index="2"]
 visible = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

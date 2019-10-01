@@ -61,7 +61,7 @@ func _filter_signal( last_filtered_value, input_value, last_input_value ):
 # Half round-trip time calculation
 func calculate_delay( dispatch_time_ms ):
 	var raw_delay = ( OS.get_ticks_msec() - dispatch_time_ms ) / 2000
-	print( "previous dispatch time=%d, local time=%d, delay=%f" % [ dispatch_time_ms, OS.get_ticks_msec(), raw_delay ] )
+	#print( "previous dispatch time=%d, local time=%d, delay=%f" % [ dispatch_time_ms, OS.get_ticks_msec(), raw_delay ] )
 	network_delay = raw_delay#_filter_signal( last_network_delay, raw_delay, last_raw_delay )
 	last_network_delay = network_delay
 	last_raw_delay = raw_delay

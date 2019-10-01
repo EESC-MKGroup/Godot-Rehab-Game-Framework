@@ -11,8 +11,7 @@ onready var boxes = [ $Box1, $Box2 ]
 onready var input_arrows = [ $Box1/InputArrow, $Box2/InputArrow ] 
 onready var feedback_arrows = [ $Box1/FeedbackArrow, $Box2/FeedbackArrow ] 
 
-var control_values = []
-var player_index = 0
+var control_values = [ [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0 ] ]
 
 static func get_player_variables():
 	return [ "Box 1", "Box 2" ]
@@ -23,8 +22,6 @@ func _ready():
 	$GUI.set_max_effort( 100.0 )
 	$Spring.body_1 = $Box1/Connector
 	$Spring.body_2 = $Box2/Connector
-	for variable_name in get_player_variables():
-		control_values.append( [ 0, 0, 0, 0, 0 ] )
 
 func connect_server():
 	GameConnection.connect_server( 2 ) 
@@ -45,7 +42,6 @@ remote func register_players( player_ids ):
 	for index in range( boxes.size() ):
 		boxes[ index ].set_network_master( player_ids[ index ] )
 	if get_tree().get_network_unique_id() == player_ids[ 1 ]: 
-		player_index = 1
 		$Camera.rotate_y( PI )
 	#box_2.mode = RigidBody.MODE_KINEMATIC
 	$BoxTarget.show()
@@ -54,15 +50,14 @@ remote func register_players( player_ids ):
 	$Spring.damping = 0.0
 
 func reset_connection():
-	$Box1.enable()
-	$Box2.enable()
+	for box in boxes:
+		box.enable()
 
 func _physics_process( delta ):
 	for index in range( boxes.size() ):
 		control_values[ index ][ 0 ] = boxes[ index ].translation.z
 		control_values[ index ][ 2 ] = input_axes[ index ].get_force()
-		var input = control_values[ index ][ 2 ] - $Spring.get_force()
-		boxes[ index ].external_force = Vector3( 0, 0, input )
+		boxes[ index ].external_force = Vector3( 0, 0, control_values[ index ][ 2 ] - $Spring.get_force() )
 		control_values[ index ][ 3 ] = boxes[ index ].feedback_force.z
 		boxes[ index ].update_remote()
 		input_axes[ index ].set_force( control_values[ index ][ 3 ] )
@@ -73,13 +68,16 @@ func _physics_process( delta ):
 
 puppet func set_target( new_position, is_active ):
 	$BoxTarget.translation.z = new_position
-	control_values[ player_index ][ 1 ] = new_position
-	input_axes[ player_index ].set_position( new_position / movement_range )
+	control_values[ 0 ][ 1 ] = new_position
+	control_values[ 1 ][ 1 ] = -new_position
+	for index in range( input_axes.size() ):
+		input_axes[ index ].set_position( control_values[ index ][ 1 ] / movement_range )
 	if is_active: $BoxTarget.show()
 	else: $BoxTarget.hide()
 
 func _on_GUI_game_toggle( started ):
-	input_axes[ player_index ].set_position( 0.0 )
+	for input_axis in input_axes:
+		input_axis.set_position( 0.0 )
 	GameConnection.rpc( "register_player" )
 
 func _on_GUI_game_timeout( timeouts_count ):

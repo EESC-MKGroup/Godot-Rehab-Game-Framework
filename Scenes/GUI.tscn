@@ -24,9 +24,8 @@ func _ready():
 	$PlayTimer.paused = true
 	$RestTimer.paused = true
 	$RightPanel/PlayerSelector/SelectionList.list_entries( game.get_player_variables() )
-	#$RightPanel/PlayerSelector/SelectionList.connect( \"entry_selected\", self, \"_on_PlayerList_entry_selected\" )
+	$RightPanel/PlayerSelector/SelectionList.select_entry_index( 0 )
 	$RightPanel/ConnectionMenu/StateSelector/SelectionList.list_entries( [ \"Client\", \"Server\" ] )
-	#$RightPanel/ConnectionMenu/StateSelector/SelectionList.connect( \"entry_selected\", self, \"_on_ConnectionList_entry_selected\" )
 	$RightPanel/ConnectionMenu/AddressEntry.text = Settings.get_value( \"game\", \"server_address\", \"127.0.0.1\" )
 
 func _process( delta ):	

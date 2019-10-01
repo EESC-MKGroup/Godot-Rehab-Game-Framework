@@ -22,6 +22,8 @@ var score_state = 0
 
 onready var input_axis = GameManager.get_player_control( get_player_variables()[ 0 ] )
 
+var control_values = [ [ 0, 0, 0, 0, 0 ] ]
+
 static func get_player_variables():
 	return [ "Player" ]
 
@@ -31,18 +33,17 @@ func _ready():
 	else: $GUI.set_max_effort( 80.0 )
 	#if Controller.direction_axis == Controller.HORIZONTAL:
 	#	$Camera.rotate_z( PI / 2 )
-	#	$Camera.translation.x = -3.7
 	#	$Background.translation.x = $Camera.translation.x
 	#	var background_size = $Background.region_rect.size
 	#	background_size = Vector2( background_size.y, background_size.x )
 	#	$Background.region_rect = Rect2( Vector2( 0, 0 ), background_size )
-	$GUI.display_setpoint( 0.0 )
+	control_values[ 0 ][ 1 ] = 0.0
 
 func _physics_process( delta ):
-	var new_velocity = input_axis.get_force() * boundary_extents.y
-	player.move_and_slide( Vector3.BACK * new_velocity )
+	control_values[ 0 ][ 2 ] = input_axis.get_force() * boundary_extents.y
+	player.move_and_slide( Vector3.BACK * control_values[ 0 ][ 2 ] )
 	
-	$GUI.display_position( player.translation.y )
+	control_values[ 0 ][ 0 ] = player.translation.y
 	
 	if not input_axis.is_calibrating:
 		var measure_position = player.translation.y / boundary_extents.y
@@ -53,7 +54,7 @@ func _set_setpoint():
 	if setpoint_positions.size() > 0:
 		setpoint_position = setpoint_positions.front()
 		input_axis.set_position( setpoint_position )
-		$GUI.display_setpoint( setpoint_position )
+		control_values[ 0 ][ 1 ] = setpoint_position
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if timeouts_count < TOTAL_WAVES_NUMBER:
