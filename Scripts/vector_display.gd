@@ -1,6 +1,11 @@
 extends MeshInstance
 
 onready var initial_scale = scale
+onready var initial_rotation = rotation
 
-func update( new_scale ):
-	scale = new_scale * initial_scale
+func update( vector ):
+	scale = vector.length() * initial_scale
+	var reference_vector = get_parent().transform.basis * Vector3.BACK
+	var angle = reference_vector.angle_to( vector )
+	rotation = initial_rotation + get_parent().transform.basis * Vector3.UP * angle
+	print( vector, reference_vector, angle, rotation )

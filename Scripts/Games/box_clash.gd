@@ -63,8 +63,8 @@ func _physics_process( delta ):
 		control_values[ index ][ 3 ] = boxes[ index ].feedback_force.z
 		boxes[ index ].update_remote()
 		input_axes[ index ].set_force( control_values[ index ][ 3 ] )
-		input_arrows[ index ].update( control_values[ index ][ 2 ] )
-		feedback_arrows[ index ].update( control_values[ index ][ 3 ] )
+		input_arrows[ index ].update( Vector3( 0, 0, control_values[ index ][ 2 ] ) )
+		feedback_arrows[ index ].update( boxes[ index ].feedback_force )
 		
 		control_values[ index ][ 4 ] = boxes[ index ].network_delay
 		
