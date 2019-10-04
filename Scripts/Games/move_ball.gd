@@ -11,7 +11,7 @@ static func get_player_variables():
 	return [ "Ball X", "Ball Z" ]
 
 func connect_server():
-	GameConnection.connect_server( 2 )
+	GameConnection.connect_server( 1 )
 	GameConnection.connect( "players_connected", self, "_on_players_connected" )
 
 func connect_client( address ):

@@ -5,7 +5,7 @@ onready var position_observer = kalman_filter.new()
 onready var force_observer = kalman_filter.new()
 onready var time_step = get_physics_process_delta_time()
 
-const COST_RATIO = 0.0001
+const COST_RATIO = 0.0000000001
 
 var position_state = [ Vector3.ZERO, Vector3.ZERO, Vector3.ZERO ]
 var force_state = [ Vector3.ZERO, Vector3.ZERO, Vector3.ZERO ]
@@ -35,12 +35,12 @@ func _ready():
 
 func predict_input_signal( remote_position, remote_velocity, remote_force, time_delay ): 	
 	time_delay = int( time_delay / time_step ) * time_step
-	force_state = force_observer.predict()
-	force_state = force_observer.update( [ remote_force, force_state[ 1 ], force_state[ 2 ] ], force_state )
-	remote_force = Vector3.ZERO#force_state[ 0 ] + force_state[ 1 ] * time_delay + force_state[ 2 ] * 0.5 * time_delay * time_delay
-	position_state[ 0 ] = remote_position #+ remote_velocity * time_delay
+	position_state[ 0 ] = remote_position + remote_velocity * time_delay
 	position_state[ 1 ] = remote_velocity
 	position_state = position_observer.process( position_state, remote_force + external_force )
+	force_state = force_observer.predict()
+	force_state = force_observer.update( [ remote_force, force_state[ 1 ], force_state[ 2 ] ], force_state )
+	remote_force = force_state[ 0 ] + force_state[ 1 ] * time_delay + force_state[ 2 ] * 0.5 * time_delay * time_delay
 	
 	return [ position_state, remote_force ]
 
@@ -48,8 +48,9 @@ remote func update_server( remote_position, remote_velocity, remote_force, clien
 	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, network_delay )
 	remote_position = remote_state[ 0 ][ 0 ]
 	remote_force = remote_state[ 1 ]
-	
-	feedback_force = _calculate_feedback_input( feedback_gain, remote_state[ 0 ] ) + remote_force
+	print( remote_position, local_position )
+	var error_state = [ local_position - remote_state[ 0 ][ 0 ], local_velocity - remote_state[ 0 ][ 1 ], -remote_state[ 0 ][ 2 ]  ]
+	feedback_force = _calculate_feedback_input( feedback_gain, error_state ) + remote_force
 	
 	.update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time )
 
@@ -57,8 +58,9 @@ remote func update_client( remote_position, remote_velocity, remote_force, serve
 	var remote_state = predict_input_signal( remote_position, remote_velocity, remote_force, network_delay )
 	remote_position = remote_state[ 0 ][ 0 ]
 	remote_force = remote_state[ 1 ]
-	
-	feedback_force = _calculate_feedback_input( feedback_gain, remote_state[ 0 ] ) + remote_force
+	print( remote_position, local_position )
+	var error_state = [ local_position - remote_state[ 0 ][ 0 ], local_velocity - remote_state[ 0 ][ 1 ], -remote_state[ 0 ][ 2 ]  ]
+	feedback_force = _calculate_feedback_input( feedback_gain, error_state ) + remote_force
 	
 	.update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time )
 
@@ -87,4 +89,6 @@ func _calculate_feedback_gain( A, B, X ):
 	return ( 1 / ( B.dot( X * B ) + COST_RATIO ) ) * ( ( X * A ).transposed() * B )
 
 func _calculate_feedback_input( gain, state ):
-	return -( Basis( state[ 0 ], state[ 1 ], state[ 2 ] ) * gain )
+	#print( -( Basis( state[ 0 ], state[ 1 ], state[ 2 ] ) * gain ) )
+	#return -( Basis( state[ 0 ], state[ 1 ], state[ 2 ] ) * gain )
+	return ( -10 * state[ 0 ] - 5 * state[ 1 ] )

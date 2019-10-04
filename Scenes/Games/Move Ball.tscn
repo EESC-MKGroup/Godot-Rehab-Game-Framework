@@ -134,7 +134,7 @@ material/0 = null
 script = ExtResource( 10 )
 
 [node name="FeedbackArrow" type="MeshInstance" parent="Ground/Platform/Ball"]
-transform = Transform( 0.5, 0, 0, 0, 0.1, 0, 0, 0, 0.5, 0, 0, 0 )
+transform = Transform( 0.5, 0, 0, 0, 0.1, 0, 0, 0, -0.5, 0, 0, 0 )
 material_override = SubResource( 10 )
 cast_shadow = 0
 mesh = ExtResource( 9 )
