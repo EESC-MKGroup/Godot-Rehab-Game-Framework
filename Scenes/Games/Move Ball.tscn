@@ -39,38 +39,38 @@ ao_on_uv2 = false
 ao_texture_channel = 0
 uv1_scale = Vector3( 6, 4, 1 )
 
-[sub_resource type="SphereShape" id=6]
+[sub_resource type="SphereShape" id=5]
 radius = 0.201232
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=6]
 
-[sub_resource type="SpatialMaterial" id=15]
+[sub_resource type="SpatialMaterial" id=7]
 albedo_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="GDScript" id=18]
+[sub_resource type="GDScript" id=8]
 script/source = "extends MeshInstance
 
 func _physics_process( delta ):
 	rotation += ( get_parent().linear_velocity.rotated( Vector3.UP, PI / 2 ) / $\"../Collider\".shape.radius ) * delta
 "
 
-[sub_resource type="SpatialMaterial" id=17]
+[sub_resource type="SpatialMaterial" id=9]
 flags_transparent = true
 flags_unshaded = true
-albedo_color = Color( 0.992157, 1, 0, 1 )
+albedo_color = Color( 1, 0.960784, 0, 1 )
 
-[sub_resource type="SpatialMaterial" id=16]
+[sub_resource type="SpatialMaterial" id=10]
 flags_transparent = true
 flags_unshaded = true
-albedo_color = Color( 0, 1, 0.941176, 1 )
+albedo_color = Color( 0, 0.972549, 1, 1 )
 
 [sub_resource type="BoxShape" id=11]
 extents = Vector3( 0.04, 0.3, 2 )
 
-[sub_resource type="CubeMesh" id=9]
+[sub_resource type="CubeMesh" id=12]
 size = Vector3( 1, 0.05, 4 )
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="SpatialMaterial" id=13]
 albedo_color = Color( 1, 0.870588, 0.560784, 1 )
 albedo_texture = ExtResource( 11 )
 normal_enabled = true
@@ -84,12 +84,12 @@ ao_texture_channel = 0
 uv1_scale = Vector3( 1, 5, 1 )
 uv1_offset = Vector3( 0, -0.015, 0 )
 
-[sub_resource type="SpatialMaterial" id=12]
+[sub_resource type="SpatialMaterial" id=14]
 flags_transparent = true
 albedo_color = Color( 0.0705882, 1, 0, 0.313726 )
 
-[sub_resource type="SphereMesh" id=13]
-material = SubResource( 12 )
+[sub_resource type="SphereMesh" id=15]
+material = SubResource( 14 )
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 1 )
@@ -116,25 +116,29 @@ angular_damp = 0.0
 script = ExtResource( 7 )
 
 [node name="Collider" type="CollisionShape" parent="Ground/Platform/Ball"]
-shape = SubResource( 6 )
+shape = SubResource( 5 )
 
 [node name="Mesh" type="MeshInstance" parent="Ground/Platform/Ball"]
 transform = Transform( 0.265, 0, 0, 0, 0.265, 0, 0, 0, 0.265, 0, 0, 0 )
 mesh = ExtResource( 8 )
-material/0 = SubResource( 14 )
-material/1 = SubResource( 15 )
-script = SubResource( 18 )
+material/0 = SubResource( 6 )
+material/1 = SubResource( 7 )
+script = SubResource( 8 )
 
 [node name="InputArrow" type="MeshInstance" parent="Ground/Platform/Ball"]
-transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, -0.1, 0, 0.5, -4.37114e-09, 0, 0, 0 )
+transform = Transform( 0.5, 0, 0, 0, 0.1, 0, 0, 0, -0.5, 0, 0, 0 )
+material_override = SubResource( 9 )
+cast_shadow = 0
 mesh = ExtResource( 9 )
-material/0 = SubResource( 17 )
+material/0 = null
 script = ExtResource( 10 )
 
 [node name="FeedbackArrow" type="MeshInstance" parent="Ground/Platform/Ball"]
-transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, -0.1, 0, 0.5, -4.37114e-09, 0, 0, 0 )
+transform = Transform( 0.5, 0, 0, 0, 0.1, 0, 0, 0, 0.5, 0, 0, 0 )
+material_override = SubResource( 10 )
+cast_shadow = 0
 mesh = ExtResource( 9 )
-material/0 = SubResource( 16 )
+material/0 = SubResource( 10 )
 script = ExtResource( 10 )
 
 [node name="Walls" type="StaticBody" parent="Ground/Platform"]
@@ -158,23 +162,23 @@ shape = SubResource( 11 )
 
 [node name="Mesh1" type="MeshInstance" parent="Ground/Platform/Walls"]
 transform = Transform( 1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, -0.184, 2 )
-mesh = SubResource( 9 )
-material/0 = SubResource( 10 )
+mesh = SubResource( 12 )
+material/0 = SubResource( 13 )
 
 [node name="Mesh2" type="MeshInstance" parent="Ground/Platform/Walls"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 2, -0.184, 0 )
-mesh = SubResource( 9 )
-material/0 = SubResource( 10 )
+mesh = SubResource( 12 )
+material/0 = SubResource( 13 )
 
 [node name="Mesh3" type="MeshInstance" parent="Ground/Platform/Walls"]
 transform = Transform( 1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, -0.184, -2 )
-mesh = SubResource( 9 )
-material/0 = SubResource( 10 )
+mesh = SubResource( 12 )
+material/0 = SubResource( 13 )
 
 [node name="Mesh4" type="MeshInstance" parent="Ground/Platform/Walls"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -2, -0.184, 0 )
-mesh = SubResource( 9 )
-material/0 = SubResource( 10 )
+mesh = SubResource( 12 )
+material/0 = SubResource( 13 )
 
 [node name="Target" type="Area" parent="Ground/Platform"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0 )
@@ -186,7 +190,7 @@ shape = SubResource( 11 )
 
 [node name="Mesh" type="MeshInstance" parent="Ground/Platform/Target"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
-mesh = SubResource( 13 )
+mesh = SubResource( 15 )
 material/0 = null
 
 [node name="Light" type="SpotLight" parent="."]
