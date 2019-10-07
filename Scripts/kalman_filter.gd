@@ -1,5 +1,5 @@
-var state = [ Vector3.ZERO, Vector3.ZERO, Vector3.ZERO ]
-var state_predictor = Basis( Vector3( 1.0, 0, 0 ), 0.0 )
+var state = Basis( Vector3( 0.0, 0.0, 0.0 ), 0.0 )
+var state_predictor = Basis( Vector3( 1.0, 0.0, 0.0 ), 0.0 )
 var input_predictor = Vector3.ZERO
 var prediction_covariance = Basis( Vector3( 1.0, 0, 0 ), 0.0 )
 var prediction_covariance_noise = [ 1.0, 1.0, 1.0 ]
@@ -7,7 +7,7 @@ var error_covariance_noise = [ 1.0, 1.0, 1.0 ]
   
 func predict( input=Vector3() ):
 	for index in range( 3 ): state[ index ] = state_predictor * state[ index ] + input_predictor * input[ index ]
-	
+
 	prediction_covariance = state_predictor * prediction_covariance * state_predictor.transposed()
 	for index in range( 3 ): prediction_covariance[ index ][ index ] += prediction_covariance_noise[ index ]
 	
@@ -15,7 +15,7 @@ func predict( input=Vector3() ):
   
 func update( measures, estimatedMeasures ):
 	measures = Basis( measures[ 0 ], measures[ 1 ], measures[ 2 ] ).transposed()
-	
+
 	var error = []
 	for index in range( 3 ): error.append( measures[ index ] - estimatedMeasures[ index ] )
 	
@@ -28,7 +28,7 @@ func update( measures, estimatedMeasures ):
 	var prediction_covariance_delta = gain * prediction_covariance
 	for line in range( 3 ): for col in range( 3 ): prediction_covariance[ line ][ col ] -= prediction_covariance_delta[ line ][ col ]
 	
-	return state
+	return state.transposed()
   
 func process( measures, input=Vector3() ):
 	var estimatedMeasures = predict( input )
