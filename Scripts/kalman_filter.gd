@@ -11,13 +11,13 @@ func predict( input=Vector3() ):
 	prediction_covariance = state_predictor * prediction_covariance * state_predictor.transposed()
 	for index in range( 3 ): prediction_covariance[ index ][ index ] += prediction_covariance_noise[ index ]
 	
-	return state
+	return state.transposed()
   
-func update( measures, estimatedMeasures ):
+func update( measures ):
 	measures = Basis( measures[ 0 ], measures[ 1 ], measures[ 2 ] ).transposed()
 
 	var error = []
-	for index in range( 3 ): error.append( measures[ index ] - estimatedMeasures[ index ] )
+	for index in range( 3 ): error.append( measures[ index ] - state[ index ] )
 	
 	var error_covariance = prediction_covariance
 	for index in range( 3 ): error_covariance[ index ][ index ] += error_covariance_noise[ index ]
@@ -33,4 +33,4 @@ func update( measures, estimatedMeasures ):
 func process( measures, input=Vector3() ):
 	var estimatedMeasures = predict( input )
 	
-	return update( measures, estimatedMeasures )
+	return update( measures )

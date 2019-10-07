@@ -60,6 +60,8 @@ func _physics_process( delta ):
 		control_values[ index ][ 0 ] = boxes[ index ].translation.z
 		control_values[ index ][ 2 ] = input_axes[ index ].get_force()
 		boxes[ index ].external_force = Vector3( 0, 0, control_values[ index ][ 2 ] - $Spring.get_force() )
+		var impedance = input_axes[ index ].get_impedance()
+		boxes[ index ].set_system( impedance[ 0 ], impedance[ 1 ], impedance[ 2 ] )
 		control_values[ index ][ 3 ] = boxes[ index ].feedback_force.z
 		boxes[ index ].update_remote()
 		input_axes[ index ].set_force( control_values[ index ][ 3 ] )

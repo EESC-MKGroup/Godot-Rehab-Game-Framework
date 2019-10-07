@@ -41,24 +41,23 @@ func _ready():
 	var X = Basis( Vector3( 1.0, 0, 0 ), 0.0 )
 	print( "A: ", A )
 	print( "B: ", B )
-	for i in range( 10 ):
-		X = A.transposed() * X * A
-		for index in range( 3 ): X[ index ][ index ] += 1.0
-		var aux = B.dot( X * B ) + COST_RATIO
-		aux = ( A.transposed() * X * B ).outer( (1/aux) * B ) * X * A
-		for line in range( 3 ): for col in range( 3 ): X[ line ][ col ] -= aux[ line ][ col ]
-	print( "X: ", X )
-	var gain = ( 1 / ( B.dot( X * B ) + COST_RATIO ) ) * ( ( X * A ).transposed() * B )
 	var state = Basis( Vector3( 0.0, 0.0, 0.0 ), 0.0 )
 	var input = Vector3( 0.0, 0.0, 0.0 )
 	var setpoints = [ 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0 ]
-	print( "gain: ", gain )
 	for setpoint in setpoints:
-		#state = filter.predict()
+		state = filter.predict()
 		setpoint = Vector3( setpoint, 0, 0 )
-		#state = filter.update( [ setpoint, state[ 1 ], state[ 2 ] ], state )
-		state = filter.process( [ setpoint, state[ 1 ], state[ 2 ] ], input )
+		state = filter.update( [ setpoint, state[ 1 ], state[ 2 ] ] )
+		#state = filter.process( [ setpoint, state[ 1 ], state[ 2 ] ], input )
 		print( "state: ", state[ 0 ], state[ 1 ], state[ 2 ] )
+		for i in range( 10 ):
+			X = A.transposed() * X * A
+			for index in range( 3 ): X[ index ][ index ] += 1.0
+			var aux = B.dot( X * B ) + COST_RATIO
+			aux = ( A.transposed() * X * B ).outer( (1/aux) * B ) * X * A
+			for line in range( 3 ): for col in range( 3 ): X[ line ][ col ] -= aux[ line ][ col ]
+		var gain = ( 1 / ( B.dot( X * B ) + COST_RATIO ) ) * ( ( X * A ).transposed() * B )
+		print( "X: ", X, " gain: ", gain )
 		input = -( state * gain )
 		print( "input: ", input )
 

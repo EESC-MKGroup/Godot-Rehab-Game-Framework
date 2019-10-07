@@ -1,5 +1,5 @@
-#extends "res://Scripts/force_wave_controller.gd"
-extends "res://Scripts/prediction_optimal_controller.gd"
+extends "res://Scripts/force_wave_controller.gd"
+#extends "res://Scripts/prediction_optimal_controller.gd"
 #extends "res://Scripts/pd_controller.gd"
 
 func _physics_process( delta ):
@@ -13,3 +13,6 @@ func _integrate_forces( state ):
 		state.transform.origin = target_position
 		state.linear_velocity = target_velocity
 		was_reset = false
+
+func set_system( inertia, damping, stiffness ):
+	.set_system( inertia + mass, damping, stiffness )

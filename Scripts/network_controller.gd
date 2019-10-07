@@ -1,6 +1,6 @@
 extends RigidBody
 
-const BANDWIDTH = 0.5
+const BANDWIDTH = 5.0#0.5
 
 onready var initial_position = translation
 

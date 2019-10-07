@@ -32,13 +32,17 @@ func reset_connection():
 	$Ground/Platform/Ball.enable()
 
 func _physics_process( delta ):
+	var impedance = [ 0.0, 0.0, 0.0 ]
 	for index in range( input_axes.size() ):
 		control_values[ index ][ 2 ] = input_axes[ index ].get_force()
 		input_axes[ index ].set_force( control_values[ index ][ 3 ] )
 		control_values[ index ][ 4 ] = $Ground/Platform/Ball.network_delay
+		var axis_impedance = input_axes[ index ].get_impedance()
+		for i in range( impedance.size() ): impedance[ i ] += axis_impedance[ i ]
 	control_values[ 0 ][ 0 ] = $Ground/Platform/Ball.translation.x
 	control_values[ 1 ][ 0 ] = $Ground/Platform/Ball.translation.z
 	$Ground/Platform/Ball.external_force = Vector3( control_values[ 0 ][ 2 ], 0, control_values[ 1 ][ 2 ] )
+	$Ground/Platform/Ball.set_system( impedance[ 0 ], impedance[ 1 ], impedance[ 2 ] )
 	$Ground/Platform/Ball.update_remote()
 	control_values[ 0 ][ 3 ] = $Ground/Platform/Ball.feedback_force.x
 	control_values[ 1 ][ 3 ] = $Ground/Platform/Ball.feedback_force.z
