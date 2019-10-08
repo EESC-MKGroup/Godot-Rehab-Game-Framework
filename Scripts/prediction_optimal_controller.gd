@@ -3,7 +3,6 @@ extends "res://Scripts/network_controller.gd"
 onready var kalman_filter = preload( "res://Scripts/kalman_filter.gd" ) 
 onready var position_observer = kalman_filter.new()
 onready var force_observer = kalman_filter.new()
-onready var time_step = get_physics_process_delta_time()
 
 const COST_RATIO = 0.00001
 
@@ -45,12 +44,12 @@ func _calculate_feedback_input( remote_position, remote_velocity, remote_force, 
 remote func update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time ):
 	feedback_force = _calculate_feedback_input( remote_position, remote_velocity, remote_force, network_delay )
 	
-	.update_server( remote_position, remote_velocity, remote_force, client_time, last_server_time )
+	.update_server( local_position, local_velocity, external_force, client_time, last_server_time )
 
 remote func update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time ):
 	feedback_force = _calculate_feedback_input( remote_position, remote_velocity, remote_force, network_delay )
 	
-	.update_client( remote_position, remote_velocity, remote_force, server_time, last_client_time )
+	.update_client( local_position, local_velocity, external_force, server_time, last_client_time )
 
 func set_system( inertia, damping, stiffness ):
 	position_observer.state_predictor[ 0 ][ 2 ] = -stiffness / inertia
