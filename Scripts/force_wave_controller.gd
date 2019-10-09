@@ -40,6 +40,7 @@ remote func update_server( input_wave, remote_position, remote_force, client_tim
 	print( "input wave: ", filtered_wave, ", feedback: ", feedback_force )
 	# Encode and send output wave variable (velocity data): u_m = ( b * xdot_m + (-F_m) ) / sqrt( 2 * b )
 	var output_wave = ( wave_impedance * local_velocity + external_force ) / sqrt( 2.0 * wave_impedance )
+	#var output_wave = ( wave_impedance * local_velocity - feedback_force ) / sqrt( 2.0 * wave_impedance )
 	print( "output wave: ", output_wave, ", velocity: ", local_velocity )
 	.update_server( output_wave, local_position, external_force, client_time, last_server_time )
 
@@ -50,6 +51,7 @@ remote func update_client( input_wave, remote_position, remote_force, server_tim
 	feedback_force = -( wave_impedance * local_velocity - sqrt( 2.0 * wave_impedance ) * filtered_wave )
 	# Encode and send output wave variable (velocity data): v_s = ( b * xdot_s - F_s ) / sqrt( 2 * b )
 	var output_wave = ( wave_impedance * local_velocity + external_force ) / sqrt( 2.0 * wave_impedance )
+	#var output_wave = ( wave_impedance * local_velocity - feedback_force ) / sqrt( 2.0 * wave_impedance )
 	
 	.update_client( output_wave, local_position, external_force, server_time, last_client_time )
 
