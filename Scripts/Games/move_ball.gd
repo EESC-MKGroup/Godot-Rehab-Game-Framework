@@ -3,7 +3,7 @@ extends Spatial
 onready var movement_range = $Ground/Platform.mesh.size.z
 
 onready var input_axes = [ GameManager.get_player_control( get_player_variables()[ 0 ] ),
-                           GameManager.get_player_control( get_player_variables()[ 1 ] ) ]
+						   GameManager.get_player_control( get_player_variables()[ 1 ] ) ]
 
 var control_values = [ [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0 ] ]
 

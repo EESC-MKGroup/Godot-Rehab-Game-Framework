@@ -5,7 +5,7 @@ onready var boundary_2 = $Ground/Platform/Boundaries/CollisionShape2
 onready var movement_range = abs( boundary_1.translation.z - boundary_2.translation.z )
 
 onready var input_axes = [ GameManager.get_player_control( get_player_variables()[ 0 ] ),
-                           GameManager.get_player_control( get_player_variables()[ 1 ] ) ]
+						   GameManager.get_player_control( get_player_variables()[ 1 ] ) ]
 
 onready var boxes = [ $Box1, $Box2 ] 
 onready var input_arrows = [ $Box1/InputArrow, $Box2/InputArrow ] 

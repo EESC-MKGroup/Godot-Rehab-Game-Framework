@@ -327,7 +327,6 @@ max_value = 1.0
 step = 0.001
 editable = false
 ticks_on_borders = true
-focus_mode = 0
 
 [node name="NumericDisplay" type="Label" parent="ControlsPanel/PositionSlider"]
 anchor_left = 0.5
@@ -386,7 +385,6 @@ max_value = 1.0
 step = 0.001
 editable = false
 ticks_on_borders = true
-focus_mode = 0
 
 [node name="NumericDisplay" type="Label" parent="ControlsPanel/ForceSlider"]
 anchor_left = 0.5

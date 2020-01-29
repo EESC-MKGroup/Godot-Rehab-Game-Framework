@@ -10,8 +10,8 @@ func start_new_log( log_name ):
 	if log_file.is_open(): log_file.close()
 	var date_time = OS.get_datetime_from_unix_time( OS.get_unix_time() )
 	var file_name = ( "%s-%d%02d%02d_%02d%02d" % [ log_name, 
-	                                               date_time[ "year" ], date_time[ "month" ], date_time[ "day" ],
-	                                               date_time[ "hour" ], date_time[ "minute" ] ] )
+												   date_time[ "year" ], date_time[ "month" ], date_time[ "day" ],
+												   date_time[ "hour" ], date_time[ "minute" ] ] )
 	log_file.open( LOGS_PATH + "/" + file_name + ".log", File.WRITE )
 
 func register_values( values_list ):
