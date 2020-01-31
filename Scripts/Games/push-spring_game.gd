@@ -11,8 +11,6 @@ const REST_TIMEOUT = 60.0
 onready var effector = $SpringBase/Effector
 onready var spring = $SpringBase/Spring
 
-onready var space_scale = abs( effector.translation.y )
-
 var cycles_number = 0
 var cycles_count = 0
 var direction = Direction.NONE
@@ -41,19 +39,22 @@ func _ready():
 		$GUI.set_timeouts( HOLD_TIMEOUT, REST_TIMEOUT )
 		$GUI.set_max_effort( 20.0 )
 	input_axis.set_position( 0.0 )
+	input_axis.position_scale = abs( effector.translation.y )
+	input_axis.force_scale = 1.0
 	control_values[ 0 ][ 1 ] = 0.0
 	$SpringBase/Spring.body_1 = $SpringBase
 	$SpringBase/Spring.body_2 = $SpringBase/Effector/Handle
 
 func _physics_process( delta ):
-	control_values[ 0 ][ 2 ] = input_axis.get_force() * space_scale
+	control_values[ 0 ][ 0 ] = effector.translation.y
+	var player_position = control_values[ 0 ][ 0 ]
+	
+	control_values[ 0 ][ 2 ] = input_axis.get_input( player_position )
 	var player_force = -direction * control_values[ 0 ][ 2 ]
 	var spring_force = spring.get_force()
 	
 	effector.add_central_force( Vector3.UP * ( player_force + spring_force ) )
 	
-	control_values[ 0 ][ 0 ] = effector.translation.y
-	var player_position = control_values[ 0 ][ 0 ] / space_scale
 	input_axis.set_position( player_position )
 	
 	if direction != Direction.NONE:

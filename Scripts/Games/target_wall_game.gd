@@ -37,16 +37,17 @@ func _ready():
 	#	var background_size = $Background.region_rect.size
 	#	background_size = Vector2( background_size.y, background_size.x )
 	#	$Background.region_rect = Rect2( Vector2( 0, 0 ), background_size )
+	input_axis.position_scale = boundary_extents.y
+	input_axis.force_scale = 1.0
 	control_values[ 0 ][ 1 ] = 0.0
 
 func _physics_process( delta ):
-	control_values[ 0 ][ 2 ] = input_axis.get_force() * boundary_extents.y
+	control_values[ 0 ][ 2 ] = input_axis.get_input( player.translation.y )
 	player.move_and_slide( Vector3.BACK * control_values[ 0 ][ 2 ] )
 	
 	control_values[ 0 ][ 0 ] = player.translation.y
 	
 	if not input_axis.is_calibrating:
-		var measure_position = player.translation.y / boundary_extents.y
 		DataLog.register_values( [ setpoint_position, player.translation.y, score_state ] )
 		score_state = 0
 
@@ -64,7 +65,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 		score_area.connect( "collider_reached", self, "_on_ScoreArea_collider_reached" )
 		$BoundaryArea/Boundaries.add_child( score_area )
 		var target_position = score_area.spawn_colliders( COLLIDER_SLOTS_NUMBER )
-		setpoint_positions.push_back( target_position / boundary_extents.y )
+		setpoint_positions.push_back( target_position )
 		_set_setpoint()
 
 func _on_BoundaryArea_area_exited( area ):

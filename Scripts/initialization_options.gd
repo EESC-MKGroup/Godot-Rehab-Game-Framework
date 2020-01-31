@@ -63,6 +63,10 @@ func _on_state_changed( state_reply ):
 	$OffsetToggle.pressed = toggle_states[ 1 ]
 	$CalibrationToggle.pressed = toggle_states[ 2 ]
 	$OperationToggle.pressed = toggle_states[ 3 ]
+	if $OffsetToggle.pressed: input_axis.is_offsetting = true
+	elif input_axis.is_offsetting: input_axis.is_offsetting = false
+	if $CalibrationToggle.pressed: input_axis.is_calibrating = true
+	elif input_axis.is_calibrating: input_axis.is_calibrating = false
 
 func _on_Interface_entry_selected( index, entry_name ):
 	interface_index = index
@@ -78,6 +82,8 @@ func _on_Device_entry_selected( index, entry_name ):
 
 func _on_Axis_entry_selected( index, entry_name ):
 	input_axis = InputManager.get_device_axis( interface_index, device_index, index )
+	input_axis.position_scale = 1.0
+	input_axis.force_scale = 1.0
 	$CalibrationToggle.pressed = input_axis.is_calibrating
 	set_process( true )
 	Settings.set_value( "device", "axis", entry_name )
@@ -114,7 +120,6 @@ func _on_EnabledToggle_toggled( button_pressed ):
 func _on_CalibrationToggle_toggled( button_pressed ):
 	if button_pressed: input_device.request_state_change( InputManager.Request.CALIBRATE )
 	else: input_device.request_state_change( InputManager.Request.PASSIVATE )
-	input_axis.is_calibrating = button_pressed
 
 func _on_OffsetToggle_toggled( button_pressed ):
 	if button_pressed: input_device.request_state_change( InputManager.Request.OFFSET )

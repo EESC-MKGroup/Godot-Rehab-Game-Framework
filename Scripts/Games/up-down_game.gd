@@ -8,8 +8,6 @@ const REST_TIMEOUT = 120.0
 const PLAY_CYCLES = 3
 const PLAY_TIMEOUTS = 8
 
-onready var space_scale = $GameSpace/Boundaries.shape.extents.y
-
 onready var player = $GameSpace/Boundaries/Player
 onready var target = $GameSpace/Boundaries/Target
 onready var watermelon = $GameSpace/Boundaries/Player/Watermelon
@@ -40,14 +38,16 @@ func _ready():
 #	if Controller.direction_axis == Controller.HORIZONTAL:
 #		$Camera.rotate_z( PI / 2 )
 	input_axis.set_position( 0.0 )
+	input_axis.position_scale = $GameSpace/Boundaries.shape.extents.y
+	input_axis.force_scale = 1.0
 	control_values[ 0 ][ 1 ] = 0.0
 
 func _physics_process( delta ):
-	control_values[ 0 ][ 2 ] = input_axis.get_force()
+	control_values[ 0 ][ 2 ] = input_axis.get_input( player.translation.y )
 	player.add_central_force( Vector3.UP * control_values[ 0 ][ 2 ] )
 	
 	control_values[ 0 ][ 0 ] = player.translation.y
-	input_axis.set_position( control_values[ 0 ][ 0 ] / space_scale )
+	input_axis.set_position( control_values[ 0 ][ 0 ] )
 	
 	if not input_axis.is_calibrating:
 		DataLog.register_values( [ direction, control_values[ 0 ][ 2 ], control_values[ 0 ][ 0 ], score_state ] )
@@ -63,7 +63,7 @@ func _change_display():
 	elif direction == Direction.UP:
 		watermelon.show()
 		balloon.hide()
-	var target_position = direction * space_scale
+	var target_position = direction
 	target.translation.y = target_position
 	input_axis.set_position( direction )
 	control_values[ 0 ][ 1 ] = direction

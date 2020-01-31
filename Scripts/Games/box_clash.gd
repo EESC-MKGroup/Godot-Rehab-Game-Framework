@@ -22,6 +22,9 @@ func _ready():
 	$GUI.set_max_effort( 100.0 )
 	$Spring.body_1 = $Box1/Connector
 	$Spring.body_2 = $Box2/Connector
+	for input_axis in input_axes:
+		input_axis.position_scale = movement_range
+		input_axis.force_scale = 1.0
 
 func connect_server():
 	GameConnection.connect_server( 2 ) 
@@ -58,7 +61,7 @@ func _physics_process( delta ):
 	
 	for index in range( boxes.size() ):
 		control_values[ index ][ 0 ] = boxes[ index ].translation.z
-		control_values[ index ][ 2 ] = input_axes[ index ].get_force()
+		control_values[ index ][ 2 ] = input_axes[ index ].get_input( control_values[ index ][ 0 ] )
 		boxes[ index ].external_force = Vector3( 0, 0, control_values[ index ][ 2 ] - $Spring.get_force() )
 		var impedance = input_axes[ index ].get_impedance()
 		boxes[ index ].set_system( impedance[ 0 ], impedance[ 1 ], impedance[ 2 ] )
@@ -79,7 +82,7 @@ puppet func set_target( new_position, is_active ):
 	control_values[ 0 ][ 1 ] = new_position
 	control_values[ 1 ][ 1 ] = -new_position
 	for index in range( input_axes.size() ):
-		input_axes[ index ].set_position( control_values[ index ][ 1 ] / movement_range )
+		input_axes[ index ].set_position( control_values[ index ][ 1 ] )
 	if is_active: $BoxTarget.show()
 	else: $BoxTarget.hide()
 
@@ -90,5 +93,5 @@ func _on_GUI_game_toggle( started ):
 
 func _on_GUI_game_timeout( timeouts_count ):
 	print( "timeout: ", timeouts_count )
-	$BoxTarget.translation.z = ( randf() - 0.5 ) * movement_range
+	$BoxTarget.translation.z = rand_range( -movement_range / 2, movement_range / 2 )
 	rpc( "set_target", $BoxTarget.translation.z, ( timeouts_count % 2 == 0 ) )

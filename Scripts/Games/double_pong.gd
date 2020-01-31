@@ -15,6 +15,11 @@ var control_values = [ [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0 ] ]
 static func get_player_variables():
 	return [ "Paddles 1", "Paddles 2" ]
 
+func _ready():
+	for input_axis in input_axes:
+		input_axis.position_scale = movement_range
+		input_axis.force_scale = 1.0
+
 func connect_server():
 	GameConnection.connect_server( 2 ) 
 	GameConnection.connect( "players_connected", self, "_on_players_connected" )
@@ -45,7 +50,7 @@ func reset_connection():
 func _physics_process( delta ):
 	for index in range( paddles.size() ):
 		control_values[ index ][ 0 ] = paddles[ index ].translation.z
-		control_values[ index ][ 2 ] = input_axes[ index ].get_force()
+		control_values[ index ][ 2 ] = input_axes[ index ].get_input( control_values[ index ][ 0 ] )
 		paddles[ index ].external_force = Vector3( 0, 0, control_values[ index ][ 2 ] )
 		control_values[ index ][ 3 ] = paddles[ index ].feedback_force.z
 		paddles[ index ].update_remote()

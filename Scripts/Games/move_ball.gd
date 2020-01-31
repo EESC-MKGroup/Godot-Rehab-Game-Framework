@@ -10,6 +10,11 @@ var control_values = [ [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0 ] ]
 static func get_player_variables():
 	return [ "Ball X", "Ball Z" ]
 
+func _ready():
+	for input_axis in input_axes:
+		input_axis.position_scale = movement_range
+		input_axis.force_scale = 1.0
+
 func connect_server():
 	GameConnection.connect_server( 1 )
 	GameConnection.connect( "players_connected", self, "_on_players_connected" )
@@ -33,14 +38,14 @@ func reset_connection():
 
 func _physics_process( delta ):
 	var impedance = [ 0.0, 0.0, 0.0 ]
+	control_values[ 0 ][ 0 ] = $Ground/Platform/Ball.translation.x
+	control_values[ 1 ][ 0 ] = $Ground/Platform/Ball.translation.z
 	for index in range( input_axes.size() ):
-		control_values[ index ][ 2 ] = input_axes[ index ].get_force()
+		control_values[ index ][ 2 ] = input_axes[ index ].get_input( control_values[ index ][ 0 ] )
 		input_axes[ index ].set_force( control_values[ index ][ 3 ] )
 		control_values[ index ][ 4 ] = $Ground/Platform/Ball.network_delay
 		var axis_impedance = input_axes[ index ].get_impedance()
 		for i in range( impedance.size() ): impedance[ i ] += axis_impedance[ i ]
-	control_values[ 0 ][ 0 ] = $Ground/Platform/Ball.translation.x
-	control_values[ 1 ][ 0 ] = $Ground/Platform/Ball.translation.z
 	$Ground/Platform/Ball.external_force = Vector3( control_values[ 0 ][ 2 ], 0, control_values[ 1 ][ 2 ] )
 	$Ground/Platform/Ball.set_system( impedance[ 0 ], impedance[ 1 ], impedance[ 2 ] )
 	$Ground/Platform/Ball.update_remote()
@@ -56,4 +61,8 @@ func _on_GUI_game_toggle( started ):
 
 func _on_GUI_game_timeout( timeouts_count ):
 	print( "timeout: ", timeouts_count )
-	#input_axis.set_position( 0.0 )
+	var target_x = rand_range( -movement_range / 4, movement_range / 4 )
+	var target_z = rand_range( -movement_range / 4, movement_range / 4 )
+	$Ground/Platform/Target.translation = Vector3( target_x, 0.0, target_z )
+	input_axes[ 0 ].set_position( target_x )
+	input_axes[ 1 ].set_position( target_z )
