@@ -29,8 +29,8 @@ func get_update( positions, forces, impedances ):
 		impedances[ axis_index ][ 1 ] = 0.0
 		impedances[ axis_index ][ 2 ] = 0.0
 	if forces.size() >= 2:
-		forces[ 0 ] = -0.5 if Input.is_key_pressed( KEY_UP ) else ( +0.5 if Input.is_key_pressed( KEY_DOWN ) else 0 )
-		forces[ 1 ] = -0.5 if Input.is_key_pressed( KEY_LEFT ) else ( +0.5 if Input.is_key_pressed( KEY_RIGHT ) else 0 )
+		forces[ 0 ] = -1.0 if Input.is_key_pressed( KEY_UP ) else ( +1.0 if Input.is_key_pressed( KEY_DOWN ) else 0 )
+		forces[ 1 ] = -1.0 if Input.is_key_pressed( KEY_LEFT ) else ( +1.0 if Input.is_key_pressed( KEY_RIGHT ) else 0 )
 	return reply
 
 func set_request( request, info = "" ):

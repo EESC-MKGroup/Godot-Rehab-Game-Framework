@@ -6,7 +6,7 @@ var axis_index = 0
 var position_limits = [ -0.5, 0.5 ]
 var position_range = 1.0
 
-var position_offset = 0.0
+var position_offset = -0.5
 var force_offset = 0.0
 
 var is_offsetting = false setget _set_offset
