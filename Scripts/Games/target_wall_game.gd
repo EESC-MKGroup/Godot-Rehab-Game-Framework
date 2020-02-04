@@ -22,7 +22,7 @@ var score_state = 0
 
 onready var input_axis = GameManager.get_player_control( get_player_variables()[ 0 ] )
 
-var control_values = [ [ 0, 0, 0, 0, 0 ] ]
+var control_values = [ GameManager.get_default_controls() ]
 
 static func get_player_variables():
 	return [ "Player" ]
@@ -39,13 +39,13 @@ func _ready():
 	#	$Background.region_rect = Rect2( Vector2( 0, 0 ), background_size )
 	input_axis.position_scale = boundary_extents.y
 	input_axis.force_scale = 1.0
-	control_values[ 0 ][ 1 ] = 0.0
+	control_values[ 0 ][ GameManager.SETPOINT ] = 0.0
 
 func _physics_process( delta ):
-	control_values[ 0 ][ 2 ] = input_axis.get_input( player.translation.y )
+	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player.translation.y )
 	player.move_and_slide( Vector3.BACK * control_values[ 0 ][ 2 ] )
 	
-	control_values[ 0 ][ 0 ] = player.translation.y
+	control_values[ 0 ][ GameManager.POSITION ] = player.translation.y
 	
 	if not input_axis.is_calibrating:
 		DataLog.register_values( [ setpoint_position, player.translation.y, score_state ] )
@@ -54,8 +54,8 @@ func _physics_process( delta ):
 func _set_setpoint():
 	if setpoint_positions.size() > 0:
 		setpoint_position = setpoint_positions.front()
-		input_axis.set_position( setpoint_position )
-		control_values[ 0 ][ 1 ] = setpoint_position
+		input_axis.setpoint = setpoint_position
+		control_values[ 0 ][ GameManager.SETPOINT ] = setpoint_position
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if timeouts_count < TOTAL_WAVES_NUMBER:
@@ -91,4 +91,4 @@ func _on_ScoreArea_collider_reached( collider ):
 	player.interact( collider )
 
 func _on_GUI_game_toggle( started ):
-	input_axis.set_position( 0.0 )
+	input_axis.setpoint = 0.0

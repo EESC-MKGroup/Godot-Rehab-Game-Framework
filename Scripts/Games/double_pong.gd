@@ -10,7 +10,7 @@ onready var ball_cast = $Ground/Platform/Ball/RayCast
 
 onready var paddles = [ $Ground/Platform/Paddles1, $Ground/Platform/Paddles2 ]
 
-var control_values = [ [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0 ] ]
+var control_values = [ GameManager.get_default_controls(), GameManager.get_default_controls() ]
 
 static func get_player_variables():
 	return [ "Paddles 1", "Paddles 2" ]
@@ -49,14 +49,15 @@ func reset_connection():
 
 func _physics_process( delta ):
 	for index in range( paddles.size() ):
-		control_values[ index ][ 0 ] = paddles[ index ].translation.z
-		control_values[ index ][ 2 ] = input_axes[ index ].get_input( control_values[ index ][ 0 ] )
-		paddles[ index ].external_force = Vector3( 0, 0, control_values[ index ][ 2 ] )
-		control_values[ index ][ 3 ] = paddles[ index ].feedback_force.z
+		control_values[ index ][ GameManager.POSITION ] = paddles[ index ].translation.z
+		control_values[ index ][ GameManager.INPUT ] = input_axes[ index ].get_input( paddles[ index ].translation.z )
+		paddles[ index ].external_force = Vector3( 0, 0, control_values[ index ][ GameManager.INPUT ] )
+		control_values[ index ][ GameManager.FEEDBACK ] = paddles[ index ].feedback_force.z
 		paddles[ index ].update_remote()
-		input_axes[ index ].set_force( control_values[ index ][ 3 ] )
+		input_axes[ index ].feedback = control_values[ index ][ GameManager.FEEDBACK ]
+		control_values[ index ][ GameManager.IMPEDANCE ] = paddles[ index ].set_system( input_axes[ index ].impedance )
 		
-		control_values[ index ][ 4 ] = paddles[ index ].network_delay
+		control_values[ index ][ GameManager.DELAY ] = paddles[ index ].network_delay
 	
 	ball_cast.cast_to = $Ground/Platform/Ball.linear_velocity.normalized() * movement_range
 	$Ground/Platform/Ball.hide()
@@ -64,18 +65,18 @@ func _physics_process( delta ):
 		$Ground/Platform/Ball.show()
 		target.global_transform.origin = ball_cast.get_collision_point()
 		target.look_at( target.translation + ball_cast.get_collision_normal(), Vector3.UP )
-	control_values[ 0 ][ 1 ] = target.translation.z
-	control_values[ 1 ][ 1 ] = target.translation.x
+	control_values[ 0 ][ GameManager.SETPOINT ] = target.translation.z
+	control_values[ 1 ][ GameManager.SETPOINT ] = target.translation.x
 	for index in range( input_axes.size() ):
-		input_axes[ index ].set_position( control_values[ index ][ 1 ] / movement_range )
+		input_axes[ index ].setpoint = control_values[ index ][ GameManager.SETPOINT ]
 
 func _on_GUI_game_toggle( started ):
 	for input_axis in input_axes:
-		input_axis.set_position( 0.0 )
+		input_axis.setpoint = 0.0
 
 func _on_GUI_game_timeout( timeouts_count ):
 	print( "timeout: ", timeouts_count )
-	#input_axis.set_position( 0.0 )
+	#input_axis.setpoint = 0.0
 
 func _on_Boundaries_body_exited( body ):
 	body.reset()

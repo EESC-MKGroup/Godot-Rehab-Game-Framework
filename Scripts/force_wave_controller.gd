@@ -58,7 +58,8 @@ remote func update_client( input_wave, remote_position, remote_force, server_tim
 remote func set_impedance( remote_impedance ):
 	wave_impedance = max( local_impedance, remote_impedance )
 
-func set_system( inertia, damping, stiffness ):
-	local_impedance = inertia + damping + stiffness
+func set_system( impedance ):
+	local_impedance = impedance[ 0 ] + impedance[ 1 ] + impedance[ 2 ]
 	if local_impedance < 1.0: local_impedance = 1.0
 	rpc_unreliable( "set_impedance", local_impedance )
+	return wave_impedance

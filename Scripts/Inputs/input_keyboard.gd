@@ -26,7 +26,8 @@ func get_update( positions, forces, impedances ):
 		positions[ axis_index ][ 1 ] = states[ axis_index ][ 1 ]
 		positions[ axis_index ][ 2 ] = states[ axis_index ][ 2 ]
 		impedances[ axis_index ][ 0 ] = 0.0
-		impedances[ axis_index ][ 1 ] = 0.0
+		var damping_delta = +0.1 if Input.is_key_pressed( KEY_W ) else ( -0.1 if Input.is_key_pressed( KEY_S ) else 0.0 )
+		impedances[ axis_index ][ 1 ] = max( impedances[ axis_index ][ 1 ] + damping_delta, 0.1 )
 		impedances[ axis_index ][ 2 ] = 0.0
 	if forces.size() >= 2:
 		forces[ 0 ] = -1.0 if Input.is_key_pressed( KEY_UP ) else ( +1.0 if Input.is_key_pressed( KEY_DOWN ) else 0 )

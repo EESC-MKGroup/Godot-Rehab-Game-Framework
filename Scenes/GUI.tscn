@@ -15,7 +15,7 @@ onready var game = $\"/root/Game\"
 
 var timeouts_count = 0
 
-var display_variables = [ 0, 0, 0, 0, 0 ]
+var display_variables = GameManager.get_default_controls()
 
 func _ready():
 	_on_PlayTimeoutSlider_value_changed( $RightPanel/PlayTimeoutSlider.value )
@@ -31,11 +31,12 @@ func _ready():
 func _process( delta ):	
 	$LeftPanel/TimeLeftPanel/Display.text = ( \"%d\" % ceil( $RestTimer.time_left ) )
 	
-	$LeftPanel/PositionDisplay.text = ( \"%+.3f\" % display_variables[ 0 ] )
-	$LeftPanel/SetpointDisplay.text = ( \"%+.3f\" % display_variables[ 1 ] )
-	$LeftPanel/ForceDisplay.text = ( \"%+.3f N\" % display_variables[ 2 ] )
-	$LeftPanel/FeedbackDisplay.text = ( \"%+.3f N\" % display_variables[ 3 ] )
-	$RightPanel/ConnectionMenu/DelayDisplay.text = ( \"%d ms\" % int( 1000 * display_variables[ 4 ] ) )
+	$LeftPanel/PositionDisplay.text = ( \"%+.3f\" % display_variables[ GameManager.POSITION ] )
+	$LeftPanel/SetpointDisplay.text = ( \"%+.3f\" % display_variables[ GameManager.SETPOINT ] )
+	$LeftPanel/ForceDisplay.text = ( \"%+.3f N\" % display_variables[ GameManager.INPUT ] )
+	$LeftPanel/FeedbackDisplay.text = ( \"%+.3f N\" % display_variables[ GameManager.FEEDBACK ] )
+	$LeftPanel/ImpedanceDisplay.text = ( \"%.1f N.m\" % display_variables[ GameManager.IMPEDANCE ] )
+	$RightPanel/ConnectionMenu/DelayDisplay.text = ( \"%d ms\" % int( 1000 * display_variables[ GameManager.DELAY ] ) )
 
 func set_timeouts( play_timeout_value, rest_timeout_value ):
 	print( \"setting timeouts: %f %f\" % [ play_timeout_value, rest_timeout_value ] )
@@ -176,12 +177,15 @@ custom_styles/panel = SubResource( 2 )
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
-margin_top = 80.0
+margin_top = 65.0
 margin_right = 100.0
-margin_bottom = 131.0
+margin_bottom = 116.0
 custom_fonts/font = ExtResource( 1 )
 text = "+0.000"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="LeftPanel/SetpointDisplay"]
 anchor_right = 1.0
@@ -192,17 +196,23 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Setpoint"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="PositionDisplay" type="LineEdit" parent="LeftPanel"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
-margin_top = 180.0
+margin_top = 160.0
 margin_right = 100.0
-margin_bottom = 231.0
+margin_bottom = 211.0
 custom_fonts/font = ExtResource( 1 )
 text = "+0.000"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="LeftPanel/PositionDisplay"]
 anchor_left = 0.5
@@ -216,6 +226,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Position"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ForceDisplay" type="LineEdit" parent="LeftPanel"]
 anchor_left = 0.5
@@ -223,12 +236,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -100.0
-margin_top = -45.0
+margin_top = -100.0
 margin_right = 100.0
-margin_bottom = 6.0
+margin_bottom = -49.0
 custom_fonts/font = ExtResource( 1 )
 text = "+0.000 N"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="LeftPanel/ForceDisplay"]
 anchor_left = 0.5
@@ -243,6 +259,9 @@ custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Force Input"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="FeedbackDisplay" type="LineEdit" parent="LeftPanel"]
 anchor_left = 0.5
@@ -250,12 +269,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -100.0
-margin_top = 55.0
+margin_top = -5.0
 margin_right = 100.0
-margin_bottom = 106.0
+margin_bottom = 46.0
 custom_fonts/font = ExtResource( 1 )
 text = "+0.000 N"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="LeftPanel/FeedbackDisplay"]
 anchor_left = 0.5
@@ -270,6 +292,42 @@ custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Force Feedback"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ImpedanceDisplay" type="LineEdit" parent="LeftPanel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -100.0
+margin_top = 97.0
+margin_right = 100.0
+margin_bottom = 148.0
+custom_fonts/font = ExtResource( 1 )
+text = "0.0 N.m"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="LeftPanel/ImpedanceDisplay"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -140.0
+margin_top = -64.5
+margin_right = 138.0
+margin_bottom = -23.5
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Impedance"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TimeLeftPanel" type="Panel" parent="LeftPanel"]
 anchor_left = 0.5
@@ -277,9 +335,12 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -100.0
-margin_top = -190.0
+margin_top = -185.0
 margin_right = 100.0
-margin_bottom = -30.0
+margin_bottom = -25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Display" type="Label" parent="LeftPanel/TimeLeftPanel"]
 visible = false
@@ -347,7 +408,6 @@ margin_right = 100.0
 margin_bottom = 30.0
 grow_horizontal = 0
 custom_fonts/font = SubResource( 4 )
-toggle_mode = true
 text = "<Player>"
 switch_on_hover = true
 script = ExtResource( 4 )
@@ -415,7 +475,6 @@ margin_right = 100.0
 margin_bottom = 30.0
 grow_horizontal = 0
 custom_fonts/font = SubResource( 4 )
-toggle_mode = true
 text = "Connect"
 switch_on_hover = true
 script = ExtResource( 4 )
@@ -449,7 +508,6 @@ align = 1
 clip_text = true
 
 [node name="PlayTimeoutSlider" type="HSlider" parent="RightPanel"]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
@@ -474,7 +532,6 @@ align = 1
 valign = 1
 
 [node name="RestTimeoutSlider" type="HSlider" parent="RightPanel"]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
@@ -498,7 +555,6 @@ align = 1
 valign = 1
 
 [node name="EffortSlider" type="HSlider" parent="RightPanel"]
-editor/display_folded = true
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -100.0
@@ -569,7 +625,6 @@ text = "Initial Screen"
 
 [node name="EndMenu" type="Panel" parent="."]
 pause_mode = 2
-editor/display_folded = true
 visible = false
 anchor_left = 0.5
 anchor_top = 0.5

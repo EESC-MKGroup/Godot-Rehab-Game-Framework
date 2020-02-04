@@ -31,9 +31,9 @@ func _input( event ):
 		if event.scancode == KEY_ESCAPE: get_tree().quit()
 
 func _process( delta ):
-	$PositionSlider.value = input_axis.get_position()[ 0 ]
+	$PositionSlider.value = input_axis.position[ 0 ]
 	$PositionSlider/NumericDisplay.text = ( "%+.3f" % $PositionSlider.value )
-	$ForceSlider.value = input_axis.get_force()
+	$ForceSlider.value = input_axis.force
 	$ForceSlider/NumericDisplay.text = ( "%+.3f" % $ForceSlider.value )
 
 func _on_ConnectButton_pressed():
@@ -108,10 +108,10 @@ func _on_socket_connected():
 #	print( "_on_AddressInput_text_changed" )
 
 func _on_PositionSetpointSlider_value_changed( value ):
-	input_axis.set_position( value )
+	input_axis.setpoint = value
 
 func _on_ForceSetpointSlider_value_changed( value ):
-	input_axis.set_force( value )
+	input_axis.feedback = value
 
 func _on_EnabledToggle_toggled( button_pressed ):
 	if button_pressed: input_device.request_state_change( InputManager.Request.ENABLE )

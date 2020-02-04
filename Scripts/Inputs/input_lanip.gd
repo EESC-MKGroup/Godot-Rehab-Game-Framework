@@ -80,9 +80,9 @@ func get_update( positions, forces, impedances ):
 				positions[ axis_index ][ 1 ] = input_buffer.get_float()
 				positions[ axis_index ][ 2 ] = input_buffer.get_float()
 				forces[ axis_index ] = input_buffer.get_float()
-				impedances[ axis_index ][ 0 ] = input_buffer.get_float()
-				impedances[ axis_index ][ 1 ] = input_buffer.get_float()
 				impedances[ axis_index ][ 2 ] = input_buffer.get_float()
+				impedances[ axis_index ][ 1 ] = input_buffer.get_float()
+				impedances[ axis_index ][ 0 ] = input_buffer.get_float()
 				#print( "got axis ", axis_index, " position=", positions[ axis_index ],", force=", forces[ axis_index ] )
 	return reply_code
 

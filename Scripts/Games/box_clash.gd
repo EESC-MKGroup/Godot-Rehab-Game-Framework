@@ -11,7 +11,7 @@ onready var boxes = [ $Box1, $Box2 ]
 onready var input_arrows = [ $Box1/InputArrow, $Box2/InputArrow ] 
 onready var feedback_arrows = [ $Box1/FeedbackArrow, $Box2/FeedbackArrow ] 
 
-var control_values = [ [ 0, 0, 0, 0, 0 ], [ 0, 0, 0, 0, 0 ] ]
+var control_values = [ GameManager.get_default_controls(), GameManager.get_default_controls() ]
 
 static func get_player_variables():
 	return [ "Box 1", "Box 2" ]
@@ -60,18 +60,17 @@ func _physics_process( delta ):
 	var log_values = []
 	
 	for index in range( boxes.size() ):
-		control_values[ index ][ 0 ] = boxes[ index ].translation.z
-		control_values[ index ][ 2 ] = input_axes[ index ].get_input( control_values[ index ][ 0 ] )
-		boxes[ index ].external_force = Vector3( 0, 0, control_values[ index ][ 2 ] - $Spring.get_force() )
-		var impedance = input_axes[ index ].get_impedance()
-		boxes[ index ].set_system( impedance[ 0 ], impedance[ 1 ], impedance[ 2 ] )
-		control_values[ index ][ 3 ] = boxes[ index ].feedback_force.z
+		control_values[ index ][ GameManager.POSITION ] = boxes[ index ].translation.z
+		control_values[ index ][ GameManager.INPUT ] = input_axes[ index ].get_input( control_values[ index ][ 0 ] )
+		boxes[ index ].external_force = Vector3( 0, 0, control_values[ index ][ GameManager.INPUT ] - $Spring.get_force() )
+		control_values[ index ][ GameManager.IMPEDANCE ] = boxes[ index ].set_system( input_axes[ index ].impedance )
+		control_values[ index ][ GameManager.FEEDBACK ] = boxes[ index ].feedback_force.z
 		boxes[ index ].update_remote()
-		input_axes[ index ].set_force( control_values[ index ][ 3 ] )
-		input_arrows[ index ].update( Vector3( 0, 0, control_values[ index ][ 2 ] ) )
+		input_axes[ index ].feedback = control_values[ index ][ GameManager.FEEDBACK ]
+		input_arrows[ index ].update( Vector3( 0, 0, control_values[ index ][ GameManager.INPUT ] ) )
 		feedback_arrows[ index ].update( boxes[ index ].feedback_force )
 		
-		control_values[ index ][ 4 ] = boxes[ index ].network_delay
+		control_values[ index ][ GameManager.DELAY ] = boxes[ index ].network_delay
 		
 		for value in control_values[ index ]: log_values.append( value )
 	
@@ -79,16 +78,16 @@ func _physics_process( delta ):
 
 puppet func set_target( new_position, is_active ):
 	$BoxTarget.translation.z = new_position
-	control_values[ 0 ][ 1 ] = new_position
-	control_values[ 1 ][ 1 ] = -new_position
+	control_values[ 0 ][ GameManager.SETPOINT ] = new_position
+	control_values[ 1 ][ GameManager.SETPOINT ] = -new_position
 	for index in range( input_axes.size() ):
-		input_axes[ index ].set_position( control_values[ index ][ 1 ] )
+		input_axes[ index ].setpoint = control_values[ index ][ GameManager.SETPOINT ]
 	if is_active: $BoxTarget.show()
 	else: $BoxTarget.hide()
 
 func _on_GUI_game_toggle( started ):
 	for input_axis in input_axes:
-		input_axis.set_position( 0.0 )
+		input_axis.setpoint = 0.0
 	GameConnection.rpc( "register_player" )
 
 func _on_GUI_game_timeout( timeouts_count ):

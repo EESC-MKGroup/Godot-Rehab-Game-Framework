@@ -3,9 +3,13 @@ extends Node
 const GAMES_PATH = "res://Scenes/Games"
 const GAME_EXT = ".tscn"
 
+enum { POSITION, SETPOINT, INPUT, FEEDBACK, IMPEDANCE, DELAY }
+
 var game_instace = null
 
 var player_controls = {}
+
+static func get_default_controls(): return [ 0, 0, 0, 0, 0, 0 ]
 
 func list_files( dir_path, file_ext ):
 	var files_list = []

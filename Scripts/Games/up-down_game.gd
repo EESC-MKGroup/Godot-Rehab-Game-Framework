@@ -26,7 +26,7 @@ var target_reached = false
 
 onready var input_axis = GameManager.get_player_control( get_player_variables()[ 0 ] )
 
-var control_values = [ [ 0, 0, 0, 0, 0 ] ]
+var control_values = [ GameManager.get_default_controls() ]
 
 static func get_player_variables():
 	return [ "Hand" ]
@@ -40,17 +40,17 @@ func _ready():
 	input_axis.set_position( 0.0 )
 	input_axis.position_scale = $GameSpace/Boundaries.shape.extents.y
 	input_axis.force_scale = 1.0
-	control_values[ 0 ][ 1 ] = 0.0
+	control_values[ 0 ][ GameManager.SETPOINT ] = 0.0
 
 func _physics_process( delta ):
-	control_values[ 0 ][ 2 ] = input_axis.get_input( player.translation.y )
-	player.add_central_force( Vector3.UP * control_values[ 0 ][ 2 ] )
+	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player.translation.y )
+	player.add_central_force( Vector3.UP * control_values[ 0 ][ GameManager.INPUT ] )
 	
-	control_values[ 0 ][ 0 ] = player.translation.y
-	input_axis.set_position( control_values[ 0 ][ 0 ] )
+	control_values[ 0 ][ GameManager.POSITION ] = player.translation.y
+	input_axis.set_position( control_values[ 0 ][ GameManager.POSITION ] )
 	
 	if not input_axis.is_calibrating:
-		DataLog.register_values( [ direction, control_values[ 0 ][ 2 ], control_values[ 0 ][ 0 ], score_state ] )
+		DataLog.register_values( [ direction, control_values[ 0 ][ GameManager.INPUT ], control_values[ 0 ][ GameManager.POSITION ], score_state ] )
 		score_state = 0
 
 func _change_display():
@@ -65,8 +65,8 @@ func _change_display():
 		balloon.hide()
 	var target_position = direction
 	target.translation.y = target_position
-	input_axis.set_position( direction )
-	control_values[ 0 ][ 1 ] = direction
+	input_axis.setpoint = direction
+	control_values[ 0 ][ GameManager.SETPOINT ] = direction
 
 func _on_GUI_game_timeout( timeouts_count ):
 	if direction == Direction.NONE:
@@ -94,8 +94,8 @@ func _on_GUI_game_timeout( timeouts_count ):
 	player.gravity_scale = direction
 
 func _on_GUI_game_toggle( started ):
-	input_axis.set_position( 0.0 )
-	control_values[ 0 ][ 1 ] = 0.0
+	input_axis.setpoint = 0.0
+	control_values[ 0 ][ GameManager.SETPOINT ] = 0.0
 	_change_display()
 
 func _on_Target_body_entered( body ):

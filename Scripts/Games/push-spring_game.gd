@@ -21,7 +21,7 @@ var score = 0
 
 onready var input_axis = GameManager.get_player_control( get_player_variables()[ 0 ] )
 
-var control_values = [ [ 0, 0, 0, 0, 0 ] ]
+var control_values = [ GameManager.get_default_controls() ]
 
 static func get_player_variables():
 	return [ "Hand" ]
@@ -41,21 +41,23 @@ func _ready():
 	input_axis.set_position( 0.0 )
 	input_axis.position_scale = abs( effector.translation.y )
 	input_axis.force_scale = 1.0
-	control_values[ 0 ][ 1 ] = 0.0
+	control_values[ 0 ][ GameManager.SETPOINT ] = 0.0
 	$SpringBase/Spring.body_1 = $SpringBase
 	$SpringBase/Spring.body_2 = $SpringBase/Effector/Handle
 
 func _physics_process( delta ):
-	control_values[ 0 ][ 0 ] = effector.translation.y
-	var player_position = control_values[ 0 ][ 0 ]
+	control_values[ 0 ][ GameManager.POSITION ] = effector.translation.y
+	var player_position = control_values[ 0 ][ GameManager.POSITION ]
 	
-	control_values[ 0 ][ 2 ] = input_axis.get_input( player_position )
-	var player_force = -direction * control_values[ 0 ][ 2 ]
+	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player_position )
+	var player_force = -direction * control_values[ 0 ][ GameManager.INPUT ]
 	var spring_force = spring.get_force()
 	
 	effector.add_central_force( Vector3.UP * ( player_force + spring_force ) )
 	
-	input_axis.set_position( player_position )
+	control_values[ 0 ][ GameManager.IMPEDANCE ] = input_axis.impedance[ 1 ]
+	
+	input_axis.setpoint = player_position
 	
 	if direction != Direction.NONE:
 		max_score += 1

@@ -64,8 +64,8 @@ remote func update_client( server_value_1, server_value_2, server_value_3, serve
 	local_value_3 = server_value_3
 #	print( "update client: p=%.3f, pd=%.3f, v=%.3f, vd=%.3f, ef=%.3f, ff=%.3f, rf=%.3f" % [ local_position.z, target_position.z, local_velocity.z, target_velocity.z, external_force.z, feedback_force.z, remote_force.z ] )
 
-func set_system( inertia, damping, stiffness ):
-	pass
+func set_system( impedance ):
+	return impedance[ 1 ]
 
 func _filter_signal( last_filtered_value, input_value, last_input_value ):
 	return ( ( 2 - BANDWIDTH ) * last_filtered_value + BANDWIDTH * ( input_value + last_input_value ) ) / ( 2 + BANDWIDTH )

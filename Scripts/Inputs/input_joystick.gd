@@ -1,6 +1,7 @@
 extends Node
 
 const JOY_AXES = [ "Left X", "Left Y", "Left Trigger", "Right X", "Right Y", "Right Trigger" ]  
+const JOY_AUX_AXIS = 7
 
 var available_devices = {}
 
@@ -28,8 +29,9 @@ func get_update( positions, forces, impedances ):
 		positions[ axis_index ][ 0 ] = Input.get_joy_axis( device_id, axis_index )
 		positions[ axis_index ][ 1 ] = Input.get_joy_axis( device_id, axis_index )
 		positions[ axis_index ][ 2 ] = Input.get_joy_axis( device_id, axis_index )
-		impedances[ axis_index ][ 0 ] = 0.0
-		impedances[ axis_index ][ 1 ] = 0.0
+		impedances[ axis_index ][ 0 ] = 0.1
+		impedances[ axis_index ][ 1 ] -= 0.1 * Input.get_joy_axis( device_id, JOY_AUX_AXIS )
+		impedances[ axis_index ][ 1 ] = max( impedances[ axis_index ][ 1 ], 0.0 )
 		impedances[ axis_index ][ 2 ] = 0.0
 		forces[ axis_index ] = Input.get_joy_axis( device_id, axis_index )
 	return state

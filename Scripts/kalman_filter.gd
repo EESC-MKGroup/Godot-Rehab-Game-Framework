@@ -1,7 +1,7 @@
 var state = Basis( Vector3( 0.0, 0.0, 0.0 ), 0.0 )
-var state_predictor = Basis( Vector3( 1.0, 0.0, 0.0 ), 0.0 )
+var state_predictor = Basis.IDENTITY
 var input_predictor = Vector3.ZERO
-var prediction_covariance = Basis( Vector3( 1.0, 0, 0 ), 0.0 )
+var prediction_covariance = Basis.IDENTITY
 var prediction_covariance_noise = [ 1.0, 1.0, 1.0 ]
 var error_covariance_noise = [ 1.0, 1.0, 1.0 ]
   
