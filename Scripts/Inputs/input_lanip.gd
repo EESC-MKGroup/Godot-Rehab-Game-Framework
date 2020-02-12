@@ -31,12 +31,12 @@ func connect_socket( address ):
 	var host = address_parts[ 0 ]
 	var port = int(address_parts[ 1 ])
 	print( "connecting to %s:%d" % [ host, port ] )
-	data_connection.set_dest_address( host, port )
 	if not state_connection.is_connected_to_host():
 		state_connection.connect_to_host( host, port )
 		while state_connection.get_status() == state_connection.STATUS_CONNECTING: 
 			print( "connected to %s:%d" % [ host, port ] )
 			continue
+		data_connection.set_dest_address( host, port )
 		if state_connection.is_connected_to_host(): 
 			return true
 		return false
@@ -47,11 +47,13 @@ func disconnect_socket():
 	data_connection.close()
 
 func set_request( request_code, info_string = "" ):
-	if state_connection.is_connected_to_host():
+	if state_connection.is_connected_to_host() and request_code != reply_code:
 		state_buffer.clear()
 		state_buffer.put_u8( request_code )
 		state_buffer.put_data( info_string.to_ascii() )
+		state_buffer.put_u8( 0 )
 		state_connection.put_data( state_buffer.data_array )
+		output_buffer.put_u8( 1 )
 		data_connection.put_packet( output_buffer.data_array )
 	print( "set request " + str(request_code) + "|" + info_string )
 
@@ -71,6 +73,7 @@ func get_update( positions, forces, impedances ):
 					InputManager.Reply.GOT_CONFIG, InputManager.Reply.CONFIG_SET:
 						device_info = parse_json( reply_info_string )
 		if data_connection.get_available_packet_count() > 0:
+			print( data_connection.get_packet_ip(), data_connection.get_packet_port() )
 			input_buffer.clear()
 			input_buffer.data_array = data_connection.get_packet()
 			var inputs_number = input_buffer.get_u8()

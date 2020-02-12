@@ -131,7 +131,7 @@ size = 16.852
 [node name="FeedbackDisplay" parent="GUI/LeftPanel" index="3"]
 visible = false
 
-[node name="ConnectionMenu" parent="GUI/RightPanel" index="1"]
+[node name="ConnectionMenu" parent="GUI/RightPanel" index="2"]
 visible = false
 
 [node name="Floor" type="MeshInstance" parent="."]

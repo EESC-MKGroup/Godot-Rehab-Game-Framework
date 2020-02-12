@@ -62,12 +62,14 @@ func _physics_process( delta ):
 	for index in range( boxes.size() ):
 		control_values[ index ][ GameManager.POSITION ] = boxes[ index ].translation.z
 		control_values[ index ][ GameManager.INPUT ] = input_axes[ index ].get_input( control_values[ index ][ 0 ] )
-		boxes[ index ].external_force = Vector3( 0, 0, control_values[ index ][ GameManager.INPUT ] - $Spring.get_force() )
-		control_values[ index ][ GameManager.IMPEDANCE ] = boxes[ index ].set_system( input_axes[ index ].impedance )
+		boxes[ index ].external_force = Vector3( 0, 0, control_values[ index ][ GameManager.INPUT ] - $Spring.force )
+		var impedance = input_axes[ index ].impedance
+		control_values[ index ][ GameManager.IMPEDANCE ] = boxes[ index ].set_local_impedance( impedance[ 0 ], impedance[ 1 ] )
+		# input_axes[ index ].force_scale = difficulty_adaption( impedance[ 2 ] )
 		control_values[ index ][ GameManager.FEEDBACK ] = boxes[ index ].feedback_force.z
 		boxes[ index ].update_remote()
 		input_axes[ index ].feedback = control_values[ index ][ GameManager.FEEDBACK ]
-		input_arrows[ index ].update( Vector3( 0, 0, control_values[ index ][ GameManager.INPUT ] ) )
+		input_arrows[ index ].update( Vector3( 0, 0, input_axes[ index ].force[ 1 ] ) )
 		feedback_arrows[ index ].update( boxes[ index ].feedback_force )
 		
 		control_values[ index ][ GameManager.DELAY ] = boxes[ index ].network_delay

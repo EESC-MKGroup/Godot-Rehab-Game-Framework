@@ -8,9 +8,6 @@ const HOLD_TIMEOUT = 15.0
 const HOLD_CYCLES = 5
 const REST_TIMEOUT = 60.0
 
-onready var effector = $SpringBase/Effector
-onready var spring = $SpringBase/Spring
-
 var cycles_number = 0
 var cycles_count = 0
 var direction = Direction.NONE
@@ -39,21 +36,21 @@ func _ready():
 		$GUI.set_timeouts( HOLD_TIMEOUT, REST_TIMEOUT )
 		$GUI.set_max_effort( 20.0 )
 	input_axis.set_position( 0.0 )
-	input_axis.position_scale = abs( effector.translation.y )
+	input_axis.position_scale = abs( $SpringBase/Effector.translation.y )
 	input_axis.force_scale = 1.0
 	control_values[ 0 ][ GameManager.SETPOINT ] = 0.0
 	$SpringBase/Spring.body_1 = $SpringBase
 	$SpringBase/Spring.body_2 = $SpringBase/Effector/Handle
 
 func _physics_process( delta ):
-	control_values[ 0 ][ GameManager.POSITION ] = effector.translation.y
+	control_values[ 0 ][ GameManager.POSITION ] = $SpringBase/Effector.translation.y
 	var player_position = control_values[ 0 ][ GameManager.POSITION ]
 	
 	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player_position )
 	var player_force = -direction * control_values[ 0 ][ GameManager.INPUT ]
-	var spring_force = spring.get_force()
+	var spring_force = $SpringBase/Spring.force
 	
-	effector.add_central_force( Vector3.UP * ( player_force + spring_force ) )
+	$SpringBase/Effector.add_central_force( Vector3.UP * ( player_force + spring_force ) )
 	
 	control_values[ 0 ][ GameManager.IMPEDANCE ] = input_axis.impedance[ 1 ]
 	
@@ -75,7 +72,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 				$Camera.rotate_z( PI )
 				direction = Direction.DOWN
 			cycles_count = 0
-		control_values[ 0 ][ 1 ] = direction
+		control_values[ 0 ][ GameManager.SETPOINT ] = direction
 	if timeouts_count == 1:
 		$SpringBase/Arrow.hide()
 		cycles_count += 1
@@ -86,7 +83,7 @@ func _on_GUI_game_timeout( timeouts_count ):
 			DataLog.register_values( [ max_score, score ] )
 			$GUI.end_game( max_score, score )
 			DataLog.end_log()
-		control_values[ 0 ][ 1 ] = 0.0
+		control_values[ 0 ][ GameManager.SETPOINT ] = 0.0
 
 func _on_GUI_game_toggle( started ):
 	if not input_axis.is_calibrating: $SpringBase/Target.show()

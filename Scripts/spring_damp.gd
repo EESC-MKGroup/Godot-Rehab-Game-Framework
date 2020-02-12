@@ -9,6 +9,8 @@ export(NodePath) var body_2
 onready var initial_length = 0.0#_get_length()
 onready var initial_scale = scale
 
+var force = 0.0 setget ,_get_force
+
 var last_length = 0.0
 var relative_velocity = 0.0
 
@@ -21,5 +23,5 @@ func _physics_process( delta ):
 	last_length = current_length
 	global_transform.origin = ( body_1.global_transform.origin + body_2.global_transform.origin ) / 2
 
-func get_force():
+func _get_force():
 	return stiffness * ( last_length - initial_length ) + damping * relative_velocity

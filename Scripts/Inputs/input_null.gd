@@ -19,7 +19,7 @@ func get_update( positions, forces, impedances ):
 	for axis_index in range( positions.size() ):
 		for var_index in range( 3 ):
 			positions[ axis_index ][ var_index ] = 0.0
-			impedances[ axis_index ][ var_index ] = 0.0
+			impedances[ axis_index ][ var_index ] = 0.1
 		forces[ axis_index ] = 0.0
 	return reply
 

@@ -55,7 +55,9 @@ func _physics_process( delta ):
 		control_values[ index ][ GameManager.FEEDBACK ] = paddles[ index ].feedback_force.z
 		paddles[ index ].update_remote()
 		input_axes[ index ].feedback = control_values[ index ][ GameManager.FEEDBACK ]
-		control_values[ index ][ GameManager.IMPEDANCE ] = paddles[ index ].set_system( input_axes[ index ].impedance )
+		var impedance = input_axes[ index ].impedance
+		control_values[ index ][ GameManager.IMPEDANCE ] = paddles[ index ].set_local_impedance( impedance[ 0 ], impedance[ 1 ] )
+		# input_axes[ index ].force_scale = difficulty_adaption( impedance[ 2 ] )
 		
 		control_values[ index ][ GameManager.DELAY ] = paddles[ index ].network_delay
 	

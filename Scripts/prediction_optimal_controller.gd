@@ -10,7 +10,7 @@ const GAMMA = 0.7
 var feedback_gain = Vector3.ZERO
 var cost_2_go = Basis( Vector3( 1.0, 0, 0 ), 0.0 )
 
-var plant_damping = 0.0
+var local_damping = 0.0
 var extra_energy = 0.0
 
 func _ready():
@@ -59,17 +59,25 @@ remote func update_client( remote_position, remote_velocity, remote_force, serve
 	
 	.update_client( local_position, local_velocity, external_force, server_time, last_client_time )
 
-func set_system( impedance ):
-	position_observer.state_predictor[ 0 ][ 2 ] = -impedance[ 2 ] / impedance[ 0 ]
-	position_observer.state_predictor[ 1 ][ 2 ] = -impedance[ 1 ] / impedance[ 0 ]
-	position_observer.input_predictor[ 2 ] = 1 / impedance[ 0 ]
+func set_local_impedance( inertia, damping ):
+	#position_observer.state_predictor[ 0 ][ 2 ] = -stiffness / inertia
+	#position_observer.state_predictor[ 1 ][ 2 ] = -damping / inertia
+	position_observer.input_predictor[ 2 ] = 1 / inertia
 	
-	plant_damping = impedance[ 1 ]
+	local_damping = damping
 	
 	cost_2_go = _calculate_optimal_cost_2_go( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
 	feedback_gain = _calculate_feedback_gain( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
 	
-	return plant_damping
+	return local_damping
+
+remote func set_remote_impedance( inertia, damping, stiffness ):
+	position_observer.state_predictor[ 0 ][ 2 ] = -stiffness / inertia
+	position_observer.state_predictor[ 1 ][ 2 ] = -damping / inertia
+	#position_observer.input_predictor[ 2 ] = 1 / inertia
+	
+	cost_2_go = _calculate_optimal_cost_2_go( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
+	feedback_gain = _calculate_feedback_gain( position_observer.state_predictor, position_observer.input_predictor, cost_2_go )
 
 func _calculate_optimal_cost_2_go( A, B, X ):
 	X = A.transposed() * X * A
@@ -84,7 +92,7 @@ func _calculate_feedback_gain( A, B, X ):
 
 func stabilize_force( input_force ):
 	var input_power = input_force.dot( local_velocity )
-	var damping_power = ( plant_damping * local_velocity ).dot( local_velocity )
+	var damping_power = ( local_damping * local_velocity ).dot( local_velocity )
 	if damping_power < 0.0: damping_power = 0.0
 	var energy_diff = ( input_power - damping_power ) * time_step
 	extra_energy = GAMMA * extra_energy + energy_diff

@@ -49,6 +49,8 @@ func _physics_process( delta ):
 	control_values[ 0 ][ GameManager.POSITION ] = player.translation.y
 	input_axis.set_position( control_values[ 0 ][ GameManager.POSITION ] )
 	
+	control_values[ 0 ][ GameManager.IMPEDANCE ] = input_axis.impedance[ 1 ]
+	
 	if not input_axis.is_calibrating:
 		DataLog.register_values( [ direction, control_values[ 0 ][ GameManager.INPUT ], control_values[ 0 ][ GameManager.POSITION ], score_state ] )
 		score_state = 0

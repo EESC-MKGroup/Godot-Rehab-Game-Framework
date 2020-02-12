@@ -21,7 +21,7 @@ remote func update_client( remote_position, remote_velocity, remote_force, serve
 
 	.update_client( local_position, local_velocity, external_force, server_time, last_client_time )
 
-func set_system( impedance ):
-	proportional_gain = (2.0/3) * ( impedance[ 0 ] + impedance[ 1 ] + impedance[ 2 ] ) / time_step / 2
-	derivative_gain = (1.0/3) * ( impedance[ 0 ] + impedance[ 1 ] + impedance[ 2 ] ) / time_step / 2
-	return impedance[ 1 ]
+func set_local_impedance( inertia, damping ):
+	proportional_gain = (2.0/3) * ( inertia + damping ) #/ time_step / 2
+	derivative_gain = (1.0/3) * ( inertia + damping ) #/ time_step / 2
+	return derivative_gain

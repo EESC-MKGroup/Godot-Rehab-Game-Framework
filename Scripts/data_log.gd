@@ -15,7 +15,7 @@ func start_new_log( log_name ):
 	log_file.open( LOGS_PATH + "/" + file_name + ".log", File.WRITE )
 
 func register_values( values_list ):
-	var string_buffer = str( float( OS.get_ticks_msec() ) / 1000 )
+	var string_buffer = str( OS.get_system_time_msecs() / 1000.0 )
 	for value in values_list:
 		string_buffer += " " + str(value)
 	log_file.store_line( string_buffer )

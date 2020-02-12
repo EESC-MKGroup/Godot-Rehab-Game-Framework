@@ -33,8 +33,10 @@ func _input( event ):
 func _process( delta ):
 	$PositionSlider.value = input_axis.position[ 0 ]
 	$PositionSlider/NumericDisplay.text = ( "%+.3f" % $PositionSlider.value )
-	$ForceSlider.value = input_axis.force
+	$ForceSlider.value = input_axis.force[ 1 ]
 	$ForceSlider/NumericDisplay.text = ( "%+.3f" % $ForceSlider.value )
+	#if input_axis.is_calibrating:
+	#	print( input_axis.impedance )
 
 func _on_ConnectButton_pressed():
 	input_device.connect_socket( $AddressInput.text )
@@ -63,10 +65,11 @@ func _on_state_changed( state_reply ):
 	$OffsetToggle.pressed = toggle_states[ 1 ]
 	$CalibrationToggle.pressed = toggle_states[ 2 ]
 	$OperationToggle.pressed = toggle_states[ 3 ]
-	if $OffsetToggle.pressed: input_axis.is_offsetting = true
-	elif input_axis.is_offsetting: input_axis.is_offsetting = false
-	if $CalibrationToggle.pressed: input_axis.is_calibrating = true
-	elif input_axis.is_calibrating: input_axis.is_calibrating = false
+	if input_axis != null:
+		if $OffsetToggle.pressed: input_axis.is_offsetting = true
+		elif input_axis.is_offsetting: input_axis.is_offsetting = false
+		if $CalibrationToggle.pressed: input_axis.is_calibrating = true
+		elif input_axis.is_calibrating: input_axis.is_calibrating = false
 
 func _on_Interface_entry_selected( index, entry_name ):
 	interface_index = index
@@ -108,10 +111,10 @@ func _on_socket_connected():
 #	print( "_on_AddressInput_text_changed" )
 
 func _on_PositionSetpointSlider_value_changed( value ):
-	input_axis.setpoint = value
+	if input_axis != null: input_axis.setpoint = value
 
 func _on_ForceSetpointSlider_value_changed( value ):
-	input_axis.feedback = value
+	if input_axis != null: input_axis.feedback = value
 
 func _on_EnabledToggle_toggled( button_pressed ):
 	if button_pressed: input_device.request_state_change( InputManager.Request.ENABLE )

@@ -43,9 +43,11 @@ func _ready():
 
 func _physics_process( delta ):
 	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player.translation.y )
-	player.move_and_slide( Vector3.BACK * control_values[ 0 ][ 2 ] )
+	player.move_and_slide( Vector3.BACK * control_values[ 0 ][ GameManager.INPUT ] )
 	
 	control_values[ 0 ][ GameManager.POSITION ] = player.translation.y
+	
+	control_values[ 0 ][ GameManager.IMPEDANCE ] = input_axis.impedance[ 1 ]
 	
 	if not input_axis.is_calibrating:
 		DataLog.register_values( [ setpoint_position, player.translation.y, score_state ] )
@@ -92,3 +94,4 @@ func _on_ScoreArea_collider_reached( collider ):
 
 func _on_GUI_game_toggle( started ):
 	input_axis.setpoint = 0.0
+	control_values[ 0 ][ GameManager.SETPOINT ] = 0.0
