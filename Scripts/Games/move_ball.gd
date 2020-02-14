@@ -13,6 +13,7 @@ static func get_player_variables():
 	return [ "Ball X", "Ball Z" ]
 
 func _ready():
+	$GUI.set_timeouts( 5.0, 10.0 )
 	for input_axis in input_axes:
 		input_axis.position_scale = movement_range
 		input_axis.force_scale = 1.0
@@ -23,19 +24,18 @@ func connect_server():
 
 func connect_client( address ):
 	GameConnection.connect_client( address )
+	$GUI.disconnect( "game_timeout", self, "_on_GUI_game_timeout" )
 
 func _on_players_connected( player_ids ):
 	print( "received player ids ", player_ids )
 	rpc( "register_players", player_ids )
-	#GameConnection.connect( "game_timeout", $GUI, "_on_GUI_game_timeout" )
+	$GUI/RightPanel/StartButton.pressed = true
 	$Ground/Platform/Target.show()
-	is_playing = true
 
 remote func register_players( player_ids ):
 	$Ground/Platform/Target.show()
 	$Ground/Platform/Ball.set_network_master( get_tree().get_network_unique_id() )
 	reset_connection()
-	is_playing = true
 
 func reset_connection():
 	$Ground/Platform/Ball.enable()
@@ -59,25 +59,32 @@ func _physics_process( delta ):
 	control_values[ 1 ][ GameManager.FEEDBACK ] = $Ground/Platform/Ball.feedback_force.z
 	
 	$Ground/Platform/Ball/InputArrow.update( Vector3( input_axes[ 0 ].force[ 1 ], 0, input_axes[ 1 ].force[ 1 ] ) )
-	$Ground/Platform/Ball/FeedbackArrow.update( $Ground/Platform/Ball.feedback_force )
+	$Ground/Platform/Ball/FeedbackArrow.update( Vector3( input_axes[ 0 ].feedback[ 1 ], 0, input_axes[ 1 ].feedback[ 1 ] ) )
 	
 	if is_playing:
 		DataLog.register_values( [ control_values[ 0 ][ GameManager.SETPOINT ],
 								   control_values[ 0 ][ GameManager.POSITION ], 
 								   $Ground/Platform/Ball.linear_velocity.x, $Ground/Platform/Ball.local_acceleration.x,
-								   control_values[ 0 ][ GameManager.INPUT ], control_values[ 0 ][ GameManager.FEEDBACK ],
+								   input_axes[ 0 ].force[ 0 ], input_axes[ 0 ].feedback[ 0 ],
 								   impedance[ 0 ], impedance[ 1 ], impedance[ 2 ] ] )
 
 func _on_GUI_game_toggle( started ):
 	for input_axis in input_axes:
 		input_axis.setpoint = 0.0
+	is_playing = true
 
 func _on_GUI_game_timeout( timeouts_count ):
-	print( "timeout: ", timeouts_count )
-	var target_x = rand_range( -movement_range / 4, movement_range / 4 )
-	var target_z = rand_range( -movement_range / 4, movement_range / 4 )
-	$Ground/Platform/Target.translation = Vector3( target_x, 0.0, target_z )
-	control_values[ 0 ][ GameManager.SETPOINT ] = $Ground/Platform/Target.translation.x
-	control_values[ 1 ][ GameManager.SETPOINT ] = $Ground/Platform/Target.translation.z
-	input_axes[ 0 ].setpoint = control_values[ 0 ][ GameManager.SETPOINT ]
-	input_axes[ 1 ].setpoint = control_values[ 1 ][ GameManager.SETPOINT ]
+	var target = $Ground/Platform/Ball.translation
+	target.x = rand_range( -movement_range / 3, movement_range / 3 )
+	target.z = 0.0#rand_range( -movement_range / 3, movement_range / 3 )
+	rpc( "set_target", target )
+
+puppetsync func set_target( target ):
+	print( "set target: ", target )
+	if is_playing:
+		$GUI.reset_timer()
+		$Ground/Platform/Target.translation = target
+		control_values[ 0 ][ GameManager.SETPOINT ] = target.x
+		control_values[ 1 ][ GameManager.SETPOINT ] = target.z
+		input_axes[ 0 ].setpoint = control_values[ 0 ][ GameManager.SETPOINT ]
+		input_axes[ 1 ].setpoint = control_values[ 1 ][ GameManager.SETPOINT ]

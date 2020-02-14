@@ -12,6 +12,7 @@ signal game_timeout( timeouts_count )
 signal game_toggle( started )
 
 onready var game = $\"/root/Game\"
+onready var current_timer = $PlayTimer
 
 var timeouts_count = 0
 
@@ -27,9 +28,11 @@ func _ready():
 	$RightPanel/PlayerSelector/SelectionList.select_entry_index( 0 )
 	$RightPanel/ConnectionMenu/StateSelector/SelectionList.list_entries( [ \"Client\", \"Server\" ] )
 	$RightPanel/ConnectionMenu/AddressEntry.text = Settings.get_value( \"game\", \"server_address\", \"127.0.0.1\" )
+	$LeftPanel/TimeLeftPanel/Display.add_color_override( \"font_color\", Color.green )
+	$LeftPanel/TimeLeftPanel/Display.hide()
 
 func _process( delta ):	
-	$LeftPanel/TimeLeftPanel/Display.text = ( \"%d\" % ceil( $RestTimer.time_left ) )
+	$LeftPanel/TimeLeftPanel/Display.text = ( \"%d\" % ceil( current_timer.time_left ) )
 	
 	$LeftPanel/PositionDisplay.text = ( \"%+.3f\" % display_variables[ GameManager.POSITION ] )
 	$LeftPanel/SetpointDisplay.text = ( \"%+.3f\" % display_variables[ GameManager.SETPOINT ] )
@@ -51,15 +54,21 @@ func get_event_time_left():
 func set_max_effort( max_effort ):
 	$RightPanel/EffortSlider.value = max_effort
 
+func reset_timer():
+	$PlayTimer.start()
+	$RestTimer.start()
+
 func wait_rest():
 	$PlayTimer.paused = true
 	$RestTimer.paused = false
 	$RestTimer.start()
-	$LeftPanel/TimeLeftPanel/Display.show()
+	current_timer = $RestTimer
+	$LeftPanel/TimeLeftPanel/Display.add_color_override( \"font_color\", Color.yellow )
 
 func end_game( targets_number, score ):
 	$PlayTimer.paused = true
 	$RestTimer.paused = true
+	$LeftPanel/TimeLeftPanel/Display.hide()
 	#get_tree().paused = true
 	#start_button.pressed = false
 	$EndMenu/ScoreDisplay.text = ( \"Targets: %d\\nScore: %d (%.1f%s)\" % [ targets_number, score, 100 * score / targets_number, \"%\" ] )
@@ -82,7 +91,8 @@ func _on_PlayTimer_timeout():
 	timeouts_count += 1
 
 func _on_RestTimer_timeout():
-	$LeftPanel/TimeLeftPanel/Display.hide()
+	current_timer = $PlayTimer
+	$LeftPanel/TimeLeftPanel/Display.add_color_override( \"font_color\", Color.green )
 	timeouts_count = 0
 	$PlayTimer.paused = false
 	$PlayTimer.start()
@@ -91,11 +101,13 @@ func _on_RestTimer_timeout():
 func _on_StartButton_toggled( button_pressed ):
 	if button_pressed: 
 		$PlayTimer.paused = false
+		$LeftPanel/TimeLeftPanel/Display.show()
 		$PlayTimer.start()
 		$RightPanel/StartButton.text = \"Stop\"
 		_on_PlayTimer_timeout()
 	else: 
 		$PlayTimer.paused = true
+		$LeftPanel/TimeLeftPanel/Display.hide()
 		$RightPanel/StartButton.text = \"Start\"
 		$PauseMenu.show()
 		get_tree().paused = true
@@ -158,6 +170,9 @@ font_data = ExtResource( 3 )
 margin_right = 40.0
 margin_bottom = 40.0
 script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="PlayTimer" type="Timer" parent="."]
 
@@ -353,9 +368,9 @@ margin_top = -55.5
 margin_right = 75.0
 margin_bottom = 55.5
 custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0.953125, 0.871216, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-text = "10"
+text = "0"
 align = 1
 valign = 1
 
@@ -673,6 +688,8 @@ margin_right = -50.0
 margin_bottom = -40.0
 custom_fonts/font = ExtResource( 2 )
 text = "Initial Screen"
+[connection signal="timeout" from="PlayTimer" to="." method="_on_PlayTimer_timeout"]
+[connection signal="timeout" from="RestTimer" to="." method="_on_RestTimer_timeout"]
 [connection signal="toggled" from="RightPanel/StartButton" to="." method="_on_StartButton_toggled"]
 [connection signal="pressed" from="RightPanel/PlayerSelector" to="." method="_on_StateSelector_pressed"]
 [connection signal="entry_selected" from="RightPanel/PlayerSelector/SelectionList" to="." method="_on_PlayerList_entry_selected"]

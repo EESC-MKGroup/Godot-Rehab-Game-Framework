@@ -73,7 +73,6 @@ func get_update( positions, forces, impedances ):
 					InputManager.Reply.GOT_CONFIG, InputManager.Reply.CONFIG_SET:
 						device_info = parse_json( reply_info_string )
 		if data_connection.get_available_packet_count() > 0:
-			print( data_connection.get_packet_ip(), data_connection.get_packet_port() )
 			input_buffer.clear()
 			input_buffer.data_array = data_connection.get_packet()
 			var inputs_number = input_buffer.get_u8()

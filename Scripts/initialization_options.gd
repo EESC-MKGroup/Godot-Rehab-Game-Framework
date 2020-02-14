@@ -35,8 +35,8 @@ func _process( delta ):
 	$PositionSlider/NumericDisplay.text = ( "%+.3f" % $PositionSlider.value )
 	$ForceSlider.value = input_axis.force[ 1 ]
 	$ForceSlider/NumericDisplay.text = ( "%+.3f" % $ForceSlider.value )
-	#if input_axis.is_calibrating:
-	#	print( input_axis.impedance )
+	if input_axis.is_calibrating:
+		print( input_axis.impedance )
 
 func _on_ConnectButton_pressed():
 	input_device.connect_socket( $AddressInput.text )

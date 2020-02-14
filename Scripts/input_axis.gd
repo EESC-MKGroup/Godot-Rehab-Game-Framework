@@ -13,9 +13,9 @@ var position_offset = 0.0
 var force_offset = 0.0
 
 var position = [ 0.0, 0.0, 0.0 ] setget ,_get_position
-var setpoint = 0.0 setget _set_position
+var setpoint = 0.0 setget _set_setpoint
 var force = [ 0.0, 0.0 ] setget ,_get_force
-var feedback = 0.0 setget _set_force
+var feedback = 0.0 setget _set_feedback,_get_feedback
 var impedance = [ 0.0, 0.0, 0.0 ] setget ,_get_impedance
 
 var is_offsetting = false setget _set_offset
@@ -47,8 +47,8 @@ func _get_position():
 		position[ 2 ] = raw_position[ 2 ] / position_range * position_scale
 	return position.duplicate()
 
-func _set_position( setpoint ):
-	setpoint = ( setpoint * position_range / 2 ) + position_offset
+func _set_setpoint( player_setpoint ):
+	setpoint = ( player_setpoint * position_range / 2 ) + position_offset
 	input_device.set_axis_position( axis_index, setpoint / position_scale )
 
 func _get_force():
@@ -66,8 +66,12 @@ func _get_force():
 		force[ 1 ] = 2 * ( raw_force - force_offset ) / force_range
 	return force.duplicate()
 
-func _set_force( setpoint ):
-	input_device.set_axis_force( axis_index, setpoint / force_scale + force_offset )
+func _set_feedback( player_feedback ):
+	feedback = player_feedback
+	input_device.set_axis_force( axis_index, feedback / force_scale + force_offset )
+
+func _get_feedback():
+	return [ feedback, 2 * feedback / force_range ]
 
 func _get_impedance(): 
 	var raw_impedance = input_device.get_axis_impedance( axis_index )
