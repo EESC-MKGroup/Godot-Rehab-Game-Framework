@@ -13,7 +13,7 @@ var position_offset = 0.0
 var force_offset = 0.0
 
 var position = [ 0.0, 0.0, 0.0 ] setget ,_get_position
-var setpoint = 0.0 setget _set_setpoint
+var setpoint = 0.0 setget _set_setpoint,_get_setpoint
 var force = [ 0.0, 0.0 ] setget ,_get_force
 var feedback = 0.0 setget _set_feedback,_get_feedback
 var impedance = [ 0.0, 0.0, 0.0 ] setget ,_get_impedance
@@ -41,15 +41,20 @@ func _get_position():
 		position[ 1 ] = raw_position[ 1 ]
 		position[ 2 ] = raw_position[ 2 ]
 	else:
-		position[ 0 ] = 2 * ( raw_position[ 0 ] - position_offset ) / position_range
-		position[ 0 ] = position[ 0 ] * position_scale
-		position[ 1 ] = raw_position[ 1 ] / position_range * position_scale
-		position[ 2 ] = raw_position[ 2 ] / position_range * position_scale
+		var scale = position_scale / position_range
+		position[ 0 ] = 2 * ( raw_position[ 0 ] - position_offset ) * scale
+		position[ 1 ] = raw_position[ 1 ] * scale
+		position[ 2 ] = raw_position[ 2 ] * scale
 	return position.duplicate()
 
 func _set_setpoint( player_setpoint ):
-	setpoint = ( player_setpoint * position_range / 2 ) + position_offset
-	input_device.set_axis_position( axis_index, setpoint / position_scale )
+	var scale = position_scale / position_range
+	setpoint = clamp( player_setpoint / scale, -position_range, position_range ) / 2
+	input_device.set_axis_position( axis_index, setpoint + position_offset )
+
+func _get_setpoint():
+	var scale = position_scale / position_range
+	return 2 * setpoint * scale
 
 func _get_force():
 	var raw_force = input_device.get_axis_force( axis_index )
@@ -62,42 +67,51 @@ func _get_force():
 		force[ 0 ] = raw_force - force_offset
 		force[ 1 ] = raw_force - force_offset
 	else:
-		force[ 0 ] = ( raw_force - force_offset ) * force_scale
+		var scale = force_scale * position_scale / position_range
+		force[ 0 ] = 2 * ( raw_force - force_offset ) * scale
 		force[ 1 ] = 2 * ( raw_force - force_offset ) / force_range
 	return force.duplicate()
 
 func _set_feedback( player_feedback ):
-	feedback = player_feedback
-	input_device.set_axis_force( axis_index, feedback / force_scale + force_offset )
+	var scale = position_scale / position_range
+	feedback = clamp( player_feedback / scale, -force_range, force_range ) / 2
+	input_device.set_axis_force( axis_index, feedback )#+ force_offset )
 
 func _get_feedback():
-	return [ feedback, 2 * feedback / force_range ]
+	if is_calibrating or is_offsetting: return [ 0.0, 0.0 ]
+	var scale = position_scale / position_range
+	return [ 2 * feedback * scale, 2 * feedback / force_range ]
 
 func _get_impedance(): 
 	var raw_impedance = input_device.get_axis_impedance( axis_index )
-	if not is_calibrating:
-		impedance[ 0 ] = raw_impedance[ 0 ] * position_range / position_scale
-		impedance[ 1 ] = raw_impedance[ 1 ] * position_range / position_scale
-		impedance[ 2 ] = raw_impedance[ 2 ] * position_range / position_scale
+	if is_offsetting:
+		impedance[ 0 ] = 0.0
+		impedance[ 1 ] = 0.0
+		impedance[ 2 ] = 0.0
+	else:
+		impedance[ 0 ] = raw_impedance[ 0 ]
+		impedance[ 1 ] = raw_impedance[ 1 ]
+		impedance[ 2 ] = raw_impedance[ 2 ]
 	return impedance.duplicate()
 
-func get_input( player_position ):
-	if is_calibrating: return 0.0
+func get_input( player_position, player_velocity ):
+	if is_calibrating or is_offsetting: return 0.0
 	var force = _get_force()
 	var position = _get_position()
 	var impedance = _get_impedance()
 	var position_error = position[ 0 ] - player_position
-	var correction = ( impedance[ 0 ] * position_error - impedance[ 1 ] * position[ 1 ] ) * force_scale
-	if abs( correction ) > abs( force[ 0 ] ): correction = sign( correction ) * abs( force[ 0 ] )
-	return force[ 0 ] + correction
+	var correction = ( impedance[ 2 ] * position_error - impedance[ 1 ] * player_velocity ) * force_scale
+	return clamp( force[ 0 ] + correction, -force_range / 2, force_range / 2 )
 
 func _set_offset( enabled ):
 	if enabled:
 		position_offset = 0.0
 		force_offset = 0.0
 	else:
-		position_offset = position[ 0 ]
-		force_offset = force[ 0 ]
+		var raw_position = input_device.get_axis_position( axis_index )
+		var raw_force = input_device.get_axis_force( axis_index )
+		position_offset = raw_position[ 0 ]
+		force_offset = raw_force
 	is_offsetting = enabled
 
 func _set_calibration( enabled ):

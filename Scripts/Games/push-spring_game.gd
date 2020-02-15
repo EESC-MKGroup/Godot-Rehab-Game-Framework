@@ -45,8 +45,9 @@ func _ready():
 func _physics_process( delta ):
 	control_values[ 0 ][ GameManager.POSITION ] = $SpringBase/Effector.translation.y
 	var player_position = control_values[ 0 ][ GameManager.POSITION ]
+	var player_velocity = $SpringBase/Effector.linear_velocity.y
 	
-	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player_position )
+	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player_position, player_velocity )
 	var player_force = -direction * control_values[ 0 ][ GameManager.INPUT ]
 	var spring_force = $SpringBase/Spring.force
 	

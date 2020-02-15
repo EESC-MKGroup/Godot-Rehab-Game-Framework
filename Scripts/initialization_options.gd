@@ -32,11 +32,10 @@ func _input( event ):
 
 func _process( delta ):
 	$PositionSlider.value = input_axis.position[ 0 ]
-	$PositionSlider/NumericDisplay.text = ( "%+.3f" % $PositionSlider.value )
+	$PositionSlider/NumericDisplay.text = ( "%+.3f" % input_axis.position[ 0 ] )
 	$ForceSlider.value = input_axis.force[ 1 ]
-	$ForceSlider/NumericDisplay.text = ( "%+.3f" % $ForceSlider.value )
-	if input_axis.is_calibrating:
-		print( input_axis.impedance )
+	$ForceSlider/NumericDisplay.text = ( "%+.3f" % input_axis.force[ 1 ] )
+	$ImpedanceDisplay/NumericDisplay.text = ( "I=%.1f\nD=%.1f\nK=%.1f" % input_axis.impedance )
 
 func _on_ConnectButton_pressed():
 	input_device.connect_socket( $AddressInput.text )
@@ -133,5 +132,7 @@ func _on_OperationToggle_toggled(button_pressed):
 	else: input_device.request_state_change( InputManager.Request.PASSIVATE )
 
 func _on_PlayButton_pressed():
+	#input_device.request_state_change( InputManager.Request.OPERATE )
+	#_on_state_changed( InputManager.Reply.OPERATING )
 	DataLog.start_new_log( $UserInput.text + " " + $GameSelector/Menu.text )
 	GameManager.load_game( $GameSelector/Menu.text )

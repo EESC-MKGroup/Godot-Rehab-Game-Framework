@@ -105,6 +105,9 @@ margin_right = -10.0
 margin_bottom = -10.0
 custom_styles/panel = SubResource( 3 )
 script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="UserInput" type="LineEdit" parent="ControlsPanel"]
 anchor_right = 1.0
@@ -117,6 +120,9 @@ custom_fonts/font = ExtResource( 5 )
 text = "user"
 align = 1
 caret_blink = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="ControlsPanel/UserInput"]
 anchor_top = 0.5
@@ -317,7 +323,7 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 34.0
 margin_top = -60.0
-margin_right = -841.0
+margin_right = -891.0
 margin_bottom = -42.0
 rect_scale = Vector2( 1.5, 1.5 )
 focus_mode = 0
@@ -327,19 +333,25 @@ max_value = 1.0
 step = 0.001
 editable = false
 ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="NumericDisplay" type="Label" parent="ControlsPanel/PositionSlider"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -188.5
+margin_left = -167.167
 margin_top = -28.3333
-margin_right = 184.5
+margin_right = 167.833
 margin_bottom = 6.66669
 custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Position: 0"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="PositionSetpointSlider" type="HSlider" parent="ControlsPanel"]
 anchor_top = 0.5
@@ -347,7 +359,7 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 33.0
 margin_top = 9.0
-margin_right = -842.0
+margin_right = -892.0
 margin_bottom = 25.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 1
@@ -355,27 +367,33 @@ min_value = -1.0
 max_value = 1.0
 step = 0.001
 ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="NumericDisplay" type="Label" parent="ControlsPanel/PositionSetpointSlider"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -186.5
+margin_left = -167.167
 margin_top = -29.6667
-margin_right = 186.5
+margin_right = 167.833
 margin_bottom = 5.33331
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Position setpoint: 0"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ForceSlider" type="HSlider" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = 648.0
+margin_left = 726.0
 margin_top = -60.0
-margin_right = -230.0
+margin_right = -199.0
 margin_bottom = -42.0
 rect_scale = Vector2( 1.5, 1.5 )
 focus_mode = 0
@@ -385,27 +403,33 @@ max_value = 1.0
 step = 0.001
 editable = false
 ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="NumericDisplay" type="Label" parent="ControlsPanel/ForceSlider"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -189.0
+margin_left = -167.0
 margin_top = -28.3333
-margin_right = 184.0
+margin_right = 168.0
 margin_bottom = 6.66669
 custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Force: 0"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ForceSetpointSlider" type="HSlider" parent="ControlsPanel"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = 648.0
+margin_left = 726.0
 margin_top = 9.0
-margin_right = -229.0
+margin_right = -199.0
 margin_bottom = 25.0
 rect_scale = Vector2( 1.5, 1.5 )
 size_flags_vertical = 1
@@ -413,19 +437,60 @@ min_value = -1.0
 max_value = 1.0
 step = 0.001
 ticks_on_borders = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="NumericDisplay" type="Label" parent="ControlsPanel/ForceSetpointSlider"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -185.5
+margin_left = -167.5
 margin_top = -29.6667
-margin_right = 187.5
+margin_right = 167.5
 margin_bottom = 5.33331
 custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Force setpoint: 0"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ImpedanceDisplay" type="Panel" parent="ControlsPanel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -75.0
+margin_top = -96.5
+margin_right = 75.0
+margin_bottom = 32.5
+grow_horizontal = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NumericDisplay" type="Label" parent="ControlsPanel/ImpedanceDisplay"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -75.0
+margin_top = -64.5
+margin_right = 76.0
+margin_bottom = 64.5
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "I=0.0
+D=0.0
+K=0.0"
+align = 1
+valign = 1
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="EnabledToggle" type="CheckButton" parent="ControlsPanel"]
 anchor_top = 0.5

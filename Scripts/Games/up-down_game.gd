@@ -43,7 +43,7 @@ func _ready():
 	control_values[ 0 ][ GameManager.SETPOINT ] = 0.0
 
 func _physics_process( delta ):
-	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player.translation.y )
+	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player.translation.y, player.linear_velocity.y )
 	player.add_central_force( Vector3.UP * control_values[ 0 ][ GameManager.INPUT ] )
 	
 	control_values[ 0 ][ GameManager.POSITION ] = player.translation.y

@@ -42,7 +42,7 @@ func _ready():
 	control_values[ 0 ][ GameManager.SETPOINT ] = 0.0
 
 func _physics_process( delta ):
-	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player.translation.y )
+	control_values[ 0 ][ GameManager.INPUT ] = input_axis.get_input( player.translation.y, 0.0 )
 	player.move_and_slide( Vector3.BACK * control_values[ 0 ][ GameManager.INPUT ] )
 	
 	control_values[ 0 ][ GameManager.POSITION ] = player.translation.y

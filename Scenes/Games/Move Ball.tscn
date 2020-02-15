@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Scripts/Games/move_ball.gd" type="Script" id=1]
 [ext_resource path="res://Textures/grass.png" type="Texture" id=2]
@@ -84,12 +84,26 @@ ao_texture_channel = 0
 uv1_scale = Vector3( 1, 5, 1 )
 uv1_offset = Vector3( 0, -0.015, 0 )
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=16]
 flags_transparent = true
-albedo_color = Color( 0.0705882, 1, 0, 0.313726 )
+albedo_color = Color( 0.101961, 1, 0, 0.313726 )
 
 [sub_resource type="SphereMesh" id=15]
-material = SubResource( 14 )
+material = SubResource( 16 )
+
+[sub_resource type="SpatialMaterial" id=17]
+flags_transparent = true
+albedo_color = Color( 0.964706, 1, 0, 0.498039 )
+
+[sub_resource type="SphereMesh" id=18]
+material = SubResource( 17 )
+
+[sub_resource type="SpatialMaterial" id=19]
+flags_transparent = true
+albedo_color = Color( 0, 0.941176, 1, 0.498039 )
+
+[sub_resource type="SphereMesh" id=20]
+material = SubResource( 19 )
 
 [node name="Game" type="Spatial"]
 script = ExtResource( 1 )
@@ -191,6 +205,17 @@ shape = SubResource( 11 )
 [node name="Mesh" type="MeshInstance" parent="Ground/Platform/Target"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 mesh = SubResource( 15 )
+material/0 = null
+
+[node name="Local" type="MeshInstance" parent="Ground/Platform"]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.3, 0 )
+mesh = SubResource( 18 )
+material/0 = null
+
+[node name="Remote" type="MeshInstance" parent="Ground/Platform"]
+transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.3, 0 )
+visible = false
+mesh = SubResource( 20 )
 material/0 = null
 
 [node name="Light" type="SpotLight" parent="."]

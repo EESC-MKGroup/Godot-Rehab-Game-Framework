@@ -35,8 +35,10 @@ func _ready():
 func _calculate_feedback_input( remote_position, remote_velocity, remote_force ): 	
 	var time_delay = int( network_delay / time_step ) * time_step
 	var error_state = position_observer.predict( remote_force + external_force )
-	var position_error = local_position - ( remote_position + remote_velocity * time_delay )
-	var velocity_error = local_velocity - remote_velocity
+	target_position = remote_position #+ remote_velocity * time_delay
+	target_velocity = remote_velocity
+	var position_error = local_position - target_position
+	var velocity_error = local_velocity - target_velocity
 	error_state = position_observer.update( [ position_error, velocity_error, error_state[ 2 ] ] )
 	
 	var force_state = force_observer.predict()

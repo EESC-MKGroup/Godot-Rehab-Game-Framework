@@ -26,6 +26,7 @@ func process_input_wave( input_wave, input_wave_integral, input_wave_energy ):
 	var time_delay = int( network_delay / time_step ) * time_step
 	input_wave_integral = input_wave_integral + input_wave * time_delay
 	var wave_state = wave_observer.process( [ input_wave_integral, input_wave, Vector3.ZERO ] )
+	var filtered_integral = wave_state[ 0 ]
 	var filtered_wave = wave_state[ 1 ]
 	# Check energy balance to keep stability under variable delay
 	#var input_energy_delta = 0.5 * filtered_wave.dot( filtered_wave ) * time_step
@@ -33,6 +34,9 @@ func process_input_wave( input_wave, input_wave_integral, input_wave_energy ):
 	input_energy += 0.5 * filtered_wave.dot( filtered_wave ) * time_step
 	# Extract remote force from received wave variable: -F_in = b * xdot_out - sqrt( 2 * b ) * u_in
 	var input_force = -( wave_impedance * local_velocity - sqrt( 2.0 * wave_impedance ) * filtered_wave )
+	
+	var local_momentum = mass * linear_velocity
+	target_position = ( sqrt( 2.0 * wave_impedance ) * filtered_integral - local_momentum ) / wave_impedance
 	
 	return [ input_force, wave_state[ 0 ], wave_state[ 1 ] ]
 

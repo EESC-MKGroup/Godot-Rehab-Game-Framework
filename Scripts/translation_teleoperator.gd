@@ -1,6 +1,6 @@
-#extends "res://Scripts/wave_prediction_controller.gd"
+extends "res://Scripts/wave_prediction_controller.gd"
 #extends "res://Scripts/force_wave_controller.gd"
-extends "res://Scripts/prediction_optimal_controller.gd"
+#extends "res://Scripts/prediction_optimal_controller.gd"
 #extends "res://Scripts/pd_controller.gd"
 
 func _ready():

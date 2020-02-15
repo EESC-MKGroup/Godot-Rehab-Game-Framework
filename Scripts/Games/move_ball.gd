@@ -30,26 +30,27 @@ func _on_players_connected( player_ids ):
 	print( "received player ids ", player_ids )
 	rpc( "register_players", player_ids )
 	$GUI/RightPanel/StartButton.pressed = true
-	$Ground/Platform/Target.show()
+	$Ground/Platform/Remote.show()
 
 remote func register_players( player_ids ):
-	$Ground/Platform/Target.show()
 	$Ground/Platform/Ball.set_network_master( get_tree().get_network_unique_id() )
 	reset_connection()
+	$Ground/Platform/Remote.show()
 
 func reset_connection():
 	$Ground/Platform/Ball.enable()
 
 func _physics_process( delta ):
 	var impedance = [ 0.0, 0.0, 0.0 ]
-	control_values[ 0 ][ GameManager.POSITION ] = $Ground/Platform/Ball.translation.x
-	control_values[ 1 ][ GameManager.POSITION ] = $Ground/Platform/Ball.translation.z
+	var positions = [ $Ground/Platform/Ball.translation.x, $Ground/Platform/Ball.translation.z ]
+	var velocities = [ $Ground/Platform/Ball.linear_velocity.x, $Ground/Platform/Ball.linear_velocity.z ]
 	for index in range( input_axes.size() ):
-		control_values[ index ][ GameManager.INPUT ] = input_axes[ index ].get_input( control_values[ index ][ GameManager.POSITION ] )
+		control_values[ index ][ GameManager.POSITION ] = positions[ index ]
+		control_values[ index ][ GameManager.INPUT ] = input_axes[ index ].get_input( positions[ index ], velocities[ index ] )
 		input_axes[ index ].feedback = control_values[ index ][ GameManager.FEEDBACK ]
 		control_values[ index ][ GameManager.DELAY ] = $Ground/Platform/Ball.network_delay
 		for i in range( impedance.size() ): impedance[ i ] += input_axes[ index ].impedance[ i ]
-	$Ground/Platform/Ball.external_force = Vector3( control_values[ 0 ][ GameManager.INPUT ], 0, control_values[ 1 ][ GameManager.INPUT ] )
+	$Ground/Platform/Ball.external_force = Vector3( control_values[ 0 ][ GameManager.INPUT ], 0.0, control_values[ 1 ][ GameManager.INPUT ] )
 	control_values[ 0 ][ GameManager.IMPEDANCE ] = $Ground/Platform/Ball.set_local_impedance( impedance[ 0 ], impedance[ 1 ] )
 	control_values[ 1 ][ GameManager.IMPEDANCE ] = $Ground/Platform/Ball.set_local_impedance( impedance[ 0 ], impedance[ 1 ] )
 	# input_axes[ 0 ].force_scale = difficulty_adaption( impedance[ 2 ] )
@@ -58,12 +59,17 @@ func _physics_process( delta ):
 	control_values[ 0 ][ GameManager.FEEDBACK ] = $Ground/Platform/Ball.feedback_force.x
 	control_values[ 1 ][ GameManager.FEEDBACK ] = $Ground/Platform/Ball.feedback_force.z
 	
-	$Ground/Platform/Ball/InputArrow.update( Vector3( input_axes[ 0 ].force[ 1 ], 0, input_axes[ 1 ].force[ 1 ] ) )
-	$Ground/Platform/Ball/FeedbackArrow.update( Vector3( input_axes[ 0 ].feedback[ 1 ], 0, input_axes[ 1 ].feedback[ 1 ] ) )
+	$Ground/Platform/Ball/InputArrow.update( Vector3( input_axes[ 0 ].force[ 1 ], 0.0, input_axes[ 1 ].force[ 1 ] ) )
+	$Ground/Platform/Ball/FeedbackArrow.update( Vector3( input_axes[ 0 ].feedback[ 1 ], 0.0, input_axes[ 1 ].feedback[ 1 ] ) )
+	
+	$Ground/Platform/Local.translation = $Ground/Platform/Ball.translation
+	$Ground/Platform/Local.translation.x = input_axes[ 0 ].position[ 0 ]
+	$Ground/Platform/Local.translation.z = input_axes[ 1 ].position[ 0 ]
+	
+	$Ground/Platform/Remote.translation = $Ground/Platform/Ball.target_position
 	
 	if is_playing:
-		DataLog.register_values( [ control_values[ 0 ][ GameManager.SETPOINT ],
-								   control_values[ 0 ][ GameManager.POSITION ], 
+		DataLog.register_values( [ input_axes[ 0 ].setpoint, input_axes[ 0 ].position[ 0 ], 
 								   $Ground/Platform/Ball.linear_velocity.x, $Ground/Platform/Ball.local_acceleration.x,
 								   input_axes[ 0 ].force[ 0 ], input_axes[ 0 ].feedback[ 0 ],
 								   impedance[ 0 ], impedance[ 1 ], impedance[ 2 ] ] )
@@ -71,6 +77,7 @@ func _physics_process( delta ):
 func _on_GUI_game_toggle( started ):
 	for input_axis in input_axes:
 		input_axis.setpoint = 0.0
+	$Ground/Platform/Target.show()
 	is_playing = true
 
 func _on_GUI_game_timeout( timeouts_count ):
